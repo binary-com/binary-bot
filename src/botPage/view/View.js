@@ -17,9 +17,9 @@ import { isVirtual } from '../common/tools';
 import {
     logoutAllTokens,
     getOAuthURL,
-    generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
+    generateDerivApiInstance,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
@@ -52,48 +52,50 @@ let realityCheckTimeout;
 let chart;
 const clientInfo = {};
 
-const api = generateLiveApiInstance();
+const api = generateDerivApiInstance();
 
-api.events.on('balance', response => {
-    if (response.balance.accounts) {
-        clientInfo.balance = response.balance;
-    } else {
-        const accountToUpdate = response.balance.loginid;
-        const isDemo = accountToUpdate.includes('VRTC');
-
-        clientInfo.balance.accounts[accountToUpdate].balance = response.balance.balance;
-        if (isDemo) {
-            clientInfo.balance.total.deriv_demo.amount = response.balance.balance;
+api.onMessage().subscribe(({ data }) => {
+    if (data?.msg_type === 'balance') {
+        const { balance } = data;
+        if (balance?.accounts) {
+            clientInfo.balance = balance;
         } else {
-            Object.keys(response.balance.total).forEach(
-                plf => (clientInfo.balance.total[plf] = response.balance.total[plf])
-            );
+            const account_to_update = balance?.loginid;
+            const is_demo = account_to_update.includes('VRTC');
+
+            clientInfo.balance.accounts[account_to_update].balance = balance.balance;
+            if (is_demo) {
+                clientInfo.balance.total.deriv_demo.amount = balance.balance;
+            } else {
+                Object.keys(balance.total).forEach(platform => {
+                    clientInfo.balance.total[platform] = balance.total[platform];
+                });
+            }
         }
+
+        ReactDOM.render(
+            <Provider store={store}>
+                <Header clientInfo={clientInfo} />
+            </Provider>,
+            document.getElementById('header-wrapper')
+        );
+
+        const el_top_menu_balances = document.querySelectorAll('.topMenuBalance');
+        const local_string = getLanguage().replace('_', '-');
+        const bal = (+balance.balance).toLocaleString(local_string, {
+            minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(balance.currency) ? 8 : 2,
+        });
+
+        el_top_menu_balances.forEach(el_top_menu_balance => {
+            const element = el_top_menu_balance;
+            element.textContent = `${bal} ${balance.currency === 'UST' ? 'USDT' : balance.currency}`;
+        });
+
+        globalObserver.setState({
+            balance: bal,
+            currency: balance.currency,
+        });
     }
-
-    ReactDOM.render(
-        <Provider store={store}>
-            <Header clientInfo={clientInfo} />
-        </Provider>,
-        document.getElementById('header-wrapper')
-    );
-
-    const {
-        balance: { balance: b, currency },
-    } = response;
-
-    const elTopMenuBalances = document.querySelectorAll('.topMenuBalance');
-    const localString = getLanguage().replace('_', '-');
-    const balance = (+b).toLocaleString(localString, {
-        minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2,
-    });
-
-    elTopMenuBalances.forEach(elTopMenuBalance => {
-        const element = elTopMenuBalance;
-        element.textContent = `${balance} ${currency === 'UST' ? 'USDT' : currency}`;
-    });
-
-    globalObserver.setState({ balance: b, currency });
 });
 
 const subscribeToAllAccountsBalance = token => {
@@ -645,8 +647,7 @@ export default class View {
                 const elRunButton = el;
                 elRunButton.removeAttribute('disabled');
             });
-
-            if (error.error && error.error.error.code === 'InvalidToken') {
+            if (error?.error?.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
                 this.stop();

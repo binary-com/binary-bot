@@ -6,18 +6,18 @@ import { observer as globalObserver } from '../../common/utils/observer';
 
 /* eslint-disable func-names, no-underscore-dangle */
 JSInterpreter.prototype.takeStateSnapshot = function() {
-    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true);
-    return newStateStack;
+    const new_state_stack = clone(this.state_stack, undefined, undefined, undefined, true);
+    return new_state_stack;
 };
 
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
-    this.stateStack = clone(snapshot, undefined, undefined, undefined, true);
-    this.globalObject = this.stateStack[0].scope.object;
-    this.initFunc_(this, this.globalObject);
+    this.state_stack = clone(snapshot, undefined, undefined, undefined, true);
+    this.global_object = this.state_stack[0].scope.object;
+    this.initFunc_(this, this.global_object);
 };
 /* eslint-enable */
 
-const unrecoverableErrors = [
+const unrecoverable_errors = [
     'InsufficientBalance',
     'CustomLimitsReached',
     'OfferingsValidationError',
@@ -29,14 +29,15 @@ const unrecoverableErrors = [
     'InvalidToken',
     'ClientUnwelcome',
 ];
+
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
-const shouldRestartOnError = (bot, errorName = '') =>
-    !unrecoverableErrors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const shouldRestartOnError = (bot, error_name = '') =>
+    !unrecoverable_errors.includes(error_name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
-const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailableCustom'];
-    if (stopErrors.includes(errorName) && botInitialized(bot)) {
+const shouldStopOnError = (bot, error_name = '') => {
+    const stop_errors = ['SellNotAvailableCustom'];
+    if (stop_errors.includes(error_name) && botInitialized(bot)) {
         return true;
     }
     return false;
@@ -48,6 +49,7 @@ export default class Interpreter {
     constructor() {
         this.init();
     }
+
     init() {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
@@ -56,6 +58,7 @@ export default class Interpreter {
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
         );
     }
+
     run(code) {
         const initFunc = (interpreter, scope) => {
             const botInterface = this.bot.getInterface('Bot');
@@ -153,32 +156,31 @@ export default class Interpreter {
             };
 
             this.$scope.observer.register('Error', onError);
-
             this.interpreter = new JSInterpreter(code, initFunc);
-
             this.onFinish = resolve;
             this.loop();
         });
     }
+
     loop() {
         if (this.stopped || !this.interpreter.run()) {
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
+
     revert(state) {
         this.interpreter.restoreStateSnapshot(state);
         // eslint-disable-next-line no-underscore-dangle
         this.interpreter.paused_ = false;
         this.loop();
     }
+
     terminateSession() {
-        const { socket } = this.$scope.api;
-        if (socket.readyState === 0) {
-            socket.addEventListener('open', () => {
-                this.$scope.api.disconnect();
-            });
-        } else if (socket.readyState === 1) {
-            this.$scope.api.disconnect();
+        const { connection } = this.$scope.api;
+        if (connection.readyState === 0) {
+            connection.addEventListener('open', () => connection.close());
+        } else if (connection.readyState === 1) {
+            connection.close();
         }
         this.stopped = true;
         this.isErrorTriggered = false;
@@ -186,6 +188,7 @@ export default class Interpreter {
         globalObserver.emit('bot.stop');
         globalObserver.setState({ isRunning: false });
     }
+
     stop() {
         if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
             globalObserver.register('contract.status', contractStatus => {
@@ -198,6 +201,7 @@ export default class Interpreter {
             this.terminateSession();
         }
     }
+
     createAsync(interpreter, func) {
         const asyncFunc = (...args) => {
             const callback = args.pop();
@@ -225,6 +229,7 @@ export default class Interpreter {
         Object.defineProperty(asyncFunc, 'length', { value: MAX_ACCEPTABLE_FUNC_ARGS + 1 });
         return interpreter.createAsyncFunction(asyncFunc);
     }
+
     hasStarted() {
         return !this.stopped;
     }

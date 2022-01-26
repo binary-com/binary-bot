@@ -49,7 +49,6 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
-    "binary-live-api": "^29.0.1",
     "chai": "^4.1.2",
     "coveralls": "^3.0.3",
     "deep-diff": "^1.0.2",
@@ -104,6 +103,7 @@
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
+    "@deriv/deriv-api": "^1.0.9",
     "@deriv/deriv-charts": "0.3.16",
     "@reduxjs/toolkit": "^1.6.2",
     "binary-style": "^0.2.4",
