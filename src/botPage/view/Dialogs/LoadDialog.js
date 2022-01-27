@@ -5,13 +5,13 @@ import { SAVE_LOAD_TYPE, useIsMounted } from './utils';
 import LoadingButton from './LoadingButton';
 import * as style from '../style';
 import { translate } from '../../../common/i18n';
-import google_drive_util from '../../../common/integrations/GoogleDrive';
+import googleDriveUtil from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
 
 const Load = React.memo(({ closeDialog }) => {
-    const [load_type, setLoadType] = React.useState(SAVE_LOAD_TYPE.local);
-    const [is_loading, setLoading] = React.useState(false);
-    const [is_gd_logged_in, setGdLoggedIn] = React.useState(false);
+    const [loadType, setLoadType] = React.useState(SAVE_LOAD_TYPE.local);
+    const [isLoading, setLoading] = React.useState(false);
+    const [isGdLoggedIn, setGdLoggedIn] = React.useState(false);
 
     const isMounted = useIsMounted();
 
@@ -24,10 +24,10 @@ const Load = React.memo(({ closeDialog }) => {
     const onSubmit = e => {
         e.preventDefault();
 
-        if (load_type === SAVE_LOAD_TYPE.google_drive) {
+        if (loadType === SAVE_LOAD_TYPE.google_drive) {
             setLoading(true);
 
-            google_drive_util
+            googleDriveUtil
                 .createFilePicker()
                 .then(() => closeDialog())
                 .finally(() => isMounted() && setLoading(false));
@@ -51,7 +51,7 @@ const Load = React.memo(({ closeDialog }) => {
                     />
                     <label htmlFor="load-local">{translate('My computer')}</label>
                 </span>
-                {is_gd_logged_in && (
+                {isGdLoggedIn && (
                     <span className="integration-option">
                         <input
                             type="radio"
@@ -65,8 +65,8 @@ const Load = React.memo(({ closeDialog }) => {
                 )}
             </div>
             <div className="center-text input-row last">
-                <button id="load-strategy" type="submit" disabled={is_loading}>
-                    {is_loading ? <LoadingButton /> : translate('Load')}
+                <button id="load-strategy" type="submit" disabled={isLoading}>
+                    {isLoading ? <LoadingButton /> : translate('Load')}
                 </button>
             </div>
         </form>

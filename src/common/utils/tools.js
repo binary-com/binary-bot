@@ -105,8 +105,8 @@ export const loadExternalScript = (src, async = true, defer = true) =>
         script.onerror = reject;
 
         function handleLoad() {
-            const load_state = this.readyState;
-            if (load_state && !/loaded|complete/.test(load_state)) return;
+            const loadState = this.readyState;
+            if (loadState && !/loaded|complete/.test(loadState)) return;
 
             script.onload = null;
             script.onreadystatechange = null;
@@ -120,7 +120,7 @@ export const loadExternalScript = (src, async = true, defer = true) =>
     });
 
 export const errLogger = (err, msg) => {
-    const err_str = JSON.stringify(err);
-    const err_msg = `${msg} - Error: ${err_str}`;
-    console.warn(err_msg);
+    const errStr = JSON.stringify(err);
+    const errMsg = `${msg} - Error: ${errStr}`;
+    console.warn(errMsg);
 };

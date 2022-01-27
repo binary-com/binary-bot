@@ -30,7 +30,7 @@ import {
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
-import google_drive_util from '../../common/integrations/GoogleDrive';
+import googleDriveUtil from '../../common/integrations/GoogleDrive';
 import { getLanguage, showBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
@@ -443,7 +443,7 @@ export default class View {
                 .then(() => {
                     this.stop();
                     Elevio.logoutUser();
-                    google_drive_util.logout();
+                    googleDriveUtil.logout();
                     GTM.setVisitorId();
                     removeTokens();
                 })
