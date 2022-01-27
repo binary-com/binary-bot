@@ -115,7 +115,8 @@ class GoogleDrive {
 
         if (language === 'zhTw') {
             return 'zh-TW';
-        } else if (language === 'zhCn') {
+        }
+        if (language === 'zhCn') {
             return 'zh-CN';
         }
         return language;

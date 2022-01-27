@@ -103,6 +103,7 @@ const TradeTable = ({ account_id, api }) => {
     const settledContract = async ({ contract_id }) => {
         let settled = false;
         let delay = 3000;
+
         const sleep = () => new Promise(resolve => setTimeout(() => resolve(), delay));
 
         while (!settled) {

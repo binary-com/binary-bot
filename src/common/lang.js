@@ -1,6 +1,7 @@
-import { parseQueryString } from '../common/utils/tools';
-import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
-import { setCookieLanguage } from '../common/utils/cookieManager';
+/* eslint-disable import/no-cycle */
+import { parseQueryString } from './utils/tools';
+import { set as setStorage, get as getStorage } from './utils/storageManager';
+import { setCookieLanguage } from './utils/cookieManager';
 import { supportedLanguages, translate, init } from './i18n';
 
 export const getLanguage = () => {

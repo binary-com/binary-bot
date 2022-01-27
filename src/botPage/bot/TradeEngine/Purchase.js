@@ -24,7 +24,7 @@ export default Engine =>
                 GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
-                    id  : 'contract.purchase_recieved',
+                    id: 'contract.purchase_recieved',
                     data: buy.transaction_id,
                     proposal,
                     currency,
@@ -39,18 +39,18 @@ export default Engine =>
                 notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
 
                 info({
-                    accountID      : this.accountInfo.loginid,
-                    totalRuns      : this.updateAndReturnTotalRuns(),
+                    accountID: this.accountInfo.loginid,
+                    totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
-                    contract_type  : contractType,
-                    buy_price      : buy.buy_price,
+                    contract_type: contractType,
+                    buy_price: buy.buy_price,
                 });
             };
 
             this.isSold = false;
 
             contractStatus({
-                id  : 'contract.purchase_sent',
+                id: 'contract.purchase_sent',
                 data: proposal.ask_price,
                 proposal,
                 currency,
@@ -84,7 +84,10 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
+
+        /* eslint-disable class-methods-use-this */
         getPurchaseReference = () => purchaseReference;
+
         regeneratePurchaseReference = () => {
             purchaseReference = getUUID();
         };

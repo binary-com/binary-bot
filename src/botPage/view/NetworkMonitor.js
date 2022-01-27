@@ -4,6 +4,7 @@ export default class NetworkMonitor {
         this.parentElement = parentElement;
         this.addEvents();
     }
+
     addEvents() {
         if ('onLine' in navigator) {
             window.addEventListener('online', () => this.setStatus());
@@ -14,6 +15,7 @@ export default class NetworkMonitor {
         }
         this.setStatus();
     }
+
     setStatus() {
         if (navigator.onLine) {
             this.parentElement.html('<span class=\'connecting\'></span>');

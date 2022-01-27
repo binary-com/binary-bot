@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import {
     ChartMode,
     DrawTools,
@@ -18,14 +19,14 @@ import { getLanguage } from '../../../common/lang';
 setSmartChartsPublicPath('./js/');
 
 export const BarrierTypes = {
-    CALL       : 'ABOVE',
-    PUT        : 'BELOW',
+    CALL: 'ABOVE',
+    PUT: 'BELOW',
     EXPIRYRANGE: 'BETWEEN',
-    EXPIRYMISS : 'OUTSIDE',
-    RANGE      : 'BETWEEN',
-    UPORDOWN   : 'OUTSIDE',
-    ONETOUCH   : 'NONE_SINGLE',
-    NOTOUCH    : 'NONE_SINGLE',
+    EXPIRYMISS: 'OUTSIDE',
+    RANGE: 'BETWEEN',
+    UPORDOWN: 'OUTSIDE',
+    ONETOUCH: 'NONE_SINGLE',
+    NOTOUCH: 'NONE_SINGLE',
 };
 
 const chartWidth = 600;
@@ -40,12 +41,12 @@ class ChartContent extends PureComponent {
         this.listeners = [];
         this.chartId = 'binary-bot-chart';
         this.state = {
-            chartType  : 'mountain',
+            chartType: 'mountain',
             granularity: 0,
             barrierType: undefined,
-            high       : undefined,
-            low        : undefined,
-            symbol     : globalObserver.getState('symbol'),
+            high: undefined,
+            low: undefined,
+            symbol: globalObserver.getState('symbol'),
         };
         this.shouldBarrierDisplay = false;
     }
@@ -72,6 +73,7 @@ class ChartContent extends PureComponent {
         });
     }
 
+    // eslint-disable-next-line class-methods-use-this
     getKey = request => {
         const key = `${request.ticks_history}-${request.granularity}`;
         return key;
@@ -115,6 +117,7 @@ class ChartContent extends PureComponent {
         delete this.listeners[requsestKey];
     }
 
+    // eslint-disable-next-line class-methods-use-this
     renderTopWidgets = () => <span />;
 
     renderToolbarWidgets = () => (
@@ -134,15 +137,15 @@ class ChartContent extends PureComponent {
         const barriers = this.shouldBarrierDisplay
             ? [
                 {
-                    shade         : this.state.barrierType,
-                    shadeColor    : '#0000ff',
-                    color         : '#c03',
-                    relative      : false,
-                    draggable     : false,
-                    lineStyle     : 'dotted',
+                    shade: this.state.barrierType,
+                    shadeColor: '#0000ff',
+                    color: '#c03',
+                    relative: false,
+                    draggable: false,
+                    lineStyle: 'dotted',
                     hidePriceLines: false,
-                    high          : parseFloat(this.state.high),
-                    low           : parseFloat(this.state.low),
+                    high: parseFloat(this.state.high),
+                    low: parseFloat(this.state.low),
                 },
             ]
             : [];
@@ -171,8 +174,8 @@ class ChartContent extends PureComponent {
 export default class Chart extends Dialog {
     constructor(api) {
         super('chart-dialog', translate('Chart'), <ChartContent api={api} />, {
-            width    : chartWidth,
-            height   : chartHeight,
+            width: chartWidth,
+            height: chartHeight,
             resizable: false,
         });
     }

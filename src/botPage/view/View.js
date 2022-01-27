@@ -369,11 +369,13 @@ export default class View {
                 handleFileSelect(ev);
             });
     }
+
     setElementActions() {
         this.setFileBrowser();
         this.addBindings();
         this.addEventHandlers();
     }
+
     addBindings() {
         const stop = e => {
             if (e) {
@@ -625,9 +627,11 @@ export default class View {
             document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;
         });
     }
+
     stop() {
         this.blockly.stop();
     }
+
     addEventHandlers() {
         const getRunButtonElements = () => document.querySelectorAll('#runButton, #summaryRunButton');
         const getStopButtonElements = () => document.querySelectorAll('#stopButton, #summaryStopButton');

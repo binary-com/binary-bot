@@ -1,5 +1,5 @@
 import * as constants from '../constants';
-import * as actions from './';
+import * as actions from '.';
 
 const getDispatchFromAction = ({ action, state }) => {
     const dispatch = jest.fn();
@@ -12,9 +12,9 @@ const toBeCalledWith = args => expect(getDispatchFromAction(args)).toBeCalledWit
 const notToBeCalled = args => expect(getDispatchFromAction(args)).not.toBeCalled();
 
 const beforePurchase = {
-    correctScope  : args => toBeCalledWith({ ...args, state: { scope: constants.BEFORE_PURCHASE } }),
+    correctScope: args => toBeCalledWith({ ...args, state: { scope: constants.BEFORE_PURCHASE } }),
     incorrectScope: action => notToBeCalled({ action, state: { scope: constants.DURING_PURCHASE } }),
-    isReady       : args =>
+    isReady: args =>
         toBeCalledWith({
             ...args,
             state: { scope: constants.BEFORE_PURCHASE, proposalsReady: true },
@@ -25,9 +25,9 @@ const beforePurchase = {
 describe('response actions', () => {
     it('START is fired if the scope is STOP', () => {
         toBeCalledWith({
-            action    : actions.start,
+            action: actions.start,
             calledWith: { type: constants.START },
-            state     : { scope: constants.STOP },
+            state: { scope: constants.STOP },
         });
     });
     it('START is not fired if the scope is not STOP', () => {
@@ -41,7 +41,7 @@ describe('response actions', () => {
     });
     it('PURCHASE_SUCCESSFUL is fired if BEFORE_PURCHASE is ready', () => {
         beforePurchase.isReady({
-            action    : actions.purchaseSuccessful,
+            action: actions.purchaseSuccessful,
             calledWith: { type: constants.PURCHASE_SUCCESSFUL },
         });
     });
@@ -51,9 +51,9 @@ describe('response actions', () => {
     it('OPEN_CONTRACT is fired if BEFORE_PURCHASE is ready or scope is DURING_PURCHASE', () => {
         beforePurchase.isReady({ action: actions.openContractReceived, calledWith: { type: constants.OPEN_CONTRACT } });
         toBeCalledWith({
-            action    : actions.openContractReceived,
+            action: actions.openContractReceived,
             calledWith: { type: constants.OPEN_CONTRACT },
-            state     : { scope: constants.DURING_PURCHASE, openContract: false },
+            state: { scope: constants.DURING_PURCHASE, openContract: false },
         });
     });
     it('OPEN_CONTRACT is not fired if BEFORE_PURCHASE is not ready and scope is not DURING_PURCHASE', () => {
@@ -62,9 +62,9 @@ describe('response actions', () => {
     });
     it('SELL is fired if the scope is DURING_PURCHASE', () => {
         toBeCalledWith({
-            action    : actions.sell,
+            action: actions.sell,
             calledWith: { type: constants.SELL },
-            state     : { scope: constants.DURING_PURCHASE, openContract: false },
+            state: { scope: constants.DURING_PURCHASE, openContract: false },
         });
     });
     it('SELL is not fired the scope is not DURING_PURCHASE', () => {

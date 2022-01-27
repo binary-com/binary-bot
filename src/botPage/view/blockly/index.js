@@ -139,7 +139,7 @@ const overrideBlocklyDefaultShape = () => {
                             '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
                         );
                         xml.appendChild(Blockly.Xml.blockToDom(this));
-                        save('binary-bot-block', true, xml);
+                        save(xml, 'binary-bot-block', true);
                     },
                 });
             };
@@ -405,6 +405,7 @@ export default class _Blockly {
             });
         });
     }
+
     /* eslint-disable class-methods-use-this */
     zoomOnPlusMinus(zoomIn) {
         const metrics = Blockly.mainWorkspace.getMetrics();
@@ -414,6 +415,7 @@ export default class _Blockly {
             Blockly.mainWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, -1);
         }
     }
+
     resetWorkspace() {
         importFile('xml/main.xml').then(dom => {
             Blockly.Events.setGroup('reset');
@@ -423,6 +425,7 @@ export default class _Blockly {
             this.cleanUp();
         });
     }
+
     /* eslint-disable class-methods-use-this */
     cleanUp() {
         Blockly.Events.setGroup(true);
@@ -441,6 +444,7 @@ export default class _Blockly {
         // Fire an event to allow scrollbars to resize.
         Blockly.mainWorkspace.resizeContents();
     }
+
     /* eslint-disable class-methods-use-this */
     save(arg) {
         const { filename, collection } = arg;
@@ -450,8 +454,9 @@ export default class _Blockly {
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
 
-        save(filename, collection, xml);
+        save(xml, filename, collection);
     }
+
     run(limitations = {}) {
         disableStrayBlocks();
         let code;
@@ -515,6 +520,7 @@ while(true) {
             this.stop();
         }
     }
+
     stop(stopBeforeStart) {
         if (!stopBeforeStart) {
             const elRunButtons = document.querySelectorAll('#runButton, #summaryRunButton');
@@ -534,16 +540,19 @@ while(true) {
             this.interpreter = null;
         }
     }
+
     /* eslint-disable class-methods-use-this */
     undo() {
         Blockly.Events.setGroup('undo');
         Blockly.mainWorkspace.undo();
         Blockly.Events.setGroup(false);
     }
+
     /* eslint-disable class-methods-use-this */
     redo() {
         Blockly.mainWorkspace.undo(true);
     }
+
     /* eslint-disable class-methods-use-this */
     hasStarted() {
         return this.interpreter && this.interpreter.hasStarted();

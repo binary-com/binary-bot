@@ -23,33 +23,33 @@ export default class Save extends PureComponent {
         const collection = $(this.isCollection).prop('checked');
 
         if (this.state.saveType === 'local') {
-            this.props.blockly.save({filename,collection,})
+            this.props.blockly.save({ filename, collection })
             this.props.closeDialog();
             return;
         }
-            const initialButtonText = $(this.submitButton).text();
-            showSpinnerInButton($(this.submitButton));
+        const initialButtonText = $(this.submitButton).text();
+        showSpinnerInButton($(this.submitButton));
 
-            const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-            cleanBeforeExport(xml);
+        const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        cleanBeforeExport(xml);
 
-            xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-            xml.setAttribute('collection', collection);
+        xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+        xml.setAttribute('collection', collection);
 
-            googleDrive
-                .saveFile({
-                    name    : filename,
-                    content : Blockly.Xml.domToPrettyText(xml),
-                    mimeType: 'application/xml',
-                })
-                .then(() => {
-                    globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive'));
-                    this.props.closeDialog();
-                    removeSpinnerInButton($(this.submitButton), initialButtonText);
-                })
-                .catch(() => {
-                    removeSpinnerInButton($(this.submitButton), initialButtonText);
-                });
+        googleDrive
+            .saveFile({
+                name    : filename,
+                content : Blockly.Xml.domToPrettyText(xml),
+                mimeType: 'application/xml',
+            })
+            .then(() => {
+                globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive'));
+                this.props.closeDialog();
+                removeSpinnerInButton($(this.submitButton), initialButtonText);
+            })
+            .catch(() => {
+                removeSpinnerInButton($(this.submitButton), initialButtonText);
+            });
     }
 
     onChange(event) {

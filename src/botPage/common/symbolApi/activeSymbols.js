@@ -25,7 +25,7 @@ const parseSymbols = () => {
         submarket.symbols = submarket.symbols || {};
         const symbol = {
             ...s,
-            display  : s.display_name,
+            display: s.display_name,
             is_active: !s.is_trading_suspended && s.exchange_is_open,
         };
         parsedSymbols[s.symbol.toLowerCase()] = symbol;
@@ -39,7 +39,7 @@ const parseSubmarkets = () => {
         const market = parsedMarkets[symbol.market];
         market.submarkets = market.submarkets || {};
         const submarket = {
-            name     : symbol.submarket_display_name,
+            name: symbol.submarket_display_name,
             is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
         };
         parsedSubmarkets[k] = submarket;
@@ -51,7 +51,7 @@ const parseMarkets = () => {
     Object.keys(groupedMarkets).forEach(k => {
         const symbol = groupedMarkets[k][0];
         parsedMarkets[k] = {
-            name     : symbol.market_display_name,
+            name: symbol.market_display_name,
             is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
         };
     });
@@ -66,10 +66,12 @@ export default class ActiveSymbols {
         parseSubmarkets();
         parseSymbols();
     }
+
     /* eslint-disable class-methods-use-this */
     getMarkets() {
         return parsedMarkets;
     }
+
     getSymbols() {
         return parsedSymbols;
     }

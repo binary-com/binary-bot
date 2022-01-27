@@ -1,7 +1,8 @@
+/* eslint-disable import/no-cycle */
 import RenderHTML from 'react-render-html';
-import { translate as i18nTranslate } from '../../common/i18n';
-import { getLanguage } from '../../common/lang';
-import AppIdMap from '../../common/appIdResolver';
+import { translate as i18nTranslate } from '../i18n';
+import { getLanguage } from '../lang';
+import AppIdMap from '../appIdResolver';
 
 export const MAX_MOBILE_WIDTH = 813;
 
@@ -11,7 +12,8 @@ export const parseQueryString = () => {
     }
     const str = window.location.search;
     const objURL = {};
-    str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+
+    str.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
         objURL[a1] = a3;
     });
     return objURL;

@@ -31,6 +31,7 @@ export default Engine =>
                 tickListenerKey = key;
             }
         }
+
         getTicks(toString = false) {
             return new Promise(resolve => {
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
@@ -46,6 +47,7 @@ export default Engine =>
                 });
             });
         }
+
         getLastTick(raw, toString = false) {
             return new Promise(resolve =>
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
@@ -57,16 +59,19 @@ export default Engine =>
                 })
             );
         }
+
         getLastDigit() {
             return new Promise(resolve =>
                 this.getLastTick().then(tick => resolve(getLastDigit(tick, this.getPipSize())))
             );
         }
+
         getLastDigitList() {
             return new Promise(resolve =>
                 this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick, this.getPipSize()))))
             );
         }
+
         checkDirection(dir) {
             return new Promise(resolve =>
                 this.$scope.ticksService
@@ -74,6 +79,7 @@ export default Engine =>
                     .then(ticks => resolve(getDirection(ticks) === dir))
             );
         }
+
         getOhlc(args) {
             const { granularity = this.options.candleInterval || 60, field } = args || {};
 
@@ -83,6 +89,7 @@ export default Engine =>
                     .then(ohlc => resolve(field ? ohlc.map(o => o[field]) : ohlc))
             );
         }
+
         getOhlcFromEnd(args) {
             const { index: i = 1 } = args || {};
 
@@ -90,6 +97,7 @@ export default Engine =>
 
             return new Promise(resolve => this.getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
         }
+
         getPipSize() {
             return this.$scope.ticksService.pipSizes[this.symbol];
         }

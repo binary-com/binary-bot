@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+/* eslint-disable import/no-cycle */
 import { fieldGeneratorMapping } from './blocks/shared';
 import { saveAs } from '../shared';
 import config from '../../common/const';
@@ -271,7 +273,7 @@ export const insideMainBlocks = block => {
     return parent.type && isMainBlock(parent.type);
 };
 
-export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
+export const save = (xmlDom, filename = 'binary-bot', collection = false) => {
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
@@ -310,6 +312,7 @@ class DeleteStray extends Blockly.Events.Abstract {
         super(block);
         this.run(true);
     }
+
     run(redo) {
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
@@ -336,6 +339,7 @@ class Hide extends Blockly.Events.Abstract {
         this.sourceHeaderId = header.id;
         this.run(true);
     }
+
     run() {
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
@@ -451,7 +455,7 @@ export const addLoadersFirst = (xml, header = null) =>
         }
     });
 
-const loadBlocksFromHeader = (blockStr = '', header) =>
+const loadBlocksFromHeader = (header, blockStr = '') =>
     new Promise((resolve, reject) => {
         let xml;
         try {
@@ -536,7 +540,7 @@ export const loadRemote = blockObj =>
                         deleteBlocksLoadedBy(blockObj.id);
                     })
                     .done(xml => {
-                        loadBlocksFromHeader(xml, blockObj).then(() => {
+                        loadBlocksFromHeader(blockObj, xml).then(() => {
                             enable(blockObj);
                             blockObj.url = url; // eslint-disable-line no-param-reassign
                             resolve(blockObj);

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { LiveApi } from 'binary-live-api';
 import {
     addToken,
@@ -6,8 +7,8 @@ import {
     removeAllTokens,
     get as getStorage,
     set as setStorage,
-} from '../common/utils/storageManager';
-import { parseQueryString, isProduction, getExtension } from '../common/utils/tools';
+} from './utils/storageManager';
+import { parseQueryString, isProduction, getExtension } from './utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 import GTM from './gtm';
@@ -92,7 +93,8 @@ const generateOAuthDomain = () => {
     const endpointUrl = getCustomEndpoint().url;
     if (endpointUrl) {
         return endpointUrl;
-    } else if (isProduction()) {
+    }
+    if (isProduction()) {
         return `oauth.deriv.${getExtension()}`;
     }
     return 'oauth.deriv.com';
@@ -117,7 +119,7 @@ const options = {
 
 export const generateLiveApiInstance = () => new LiveApi(options);
 
-export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
+export const generateTestLiveApiInstance = overrideOptions => new LiveApi({ ...options, ...overrideOptions });
 
 export async function addTokenIfValid(token, tokenObjectList) {
     const api = generateLiveApiInstance();

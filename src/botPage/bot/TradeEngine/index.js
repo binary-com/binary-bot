@@ -1,7 +1,8 @@
+/* eslint-disable max-classes-per-file */
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { durationToSecond } from '../../../common/utils/tools';
-import { translate } from '../../..//common/i18n';
+import { translate } from '../../../common/i18n';
 import { createError } from '../../common/error';
 import { doUntilDone } from '../tools';
 import { expectInitArg, expectTradeOptions } from '../sanitize';
@@ -22,7 +23,7 @@ const watchBefore = store =>
         store,
         stopScope: constants.DURING_PURCHASE,
         passScope: constants.BEFORE_PURCHASE,
-        passFlag : 'proposalsReady',
+        passFlag: 'proposalsReady',
     });
 
 const watchDuring = store =>
@@ -30,7 +31,7 @@ const watchDuring = store =>
         store,
         stopScope: constants.STOP,
         passScope: constants.DURING_PURCHASE,
-        passFlag : 'openContract',
+        passFlag: 'openContract',
     });
 
 /* The watchScope function is called randomly and resets the prevTick
@@ -70,12 +71,13 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.$scope = $scope;
         this.observe();
         this.data = {
-            contract         : {},
-            proposals        : [],
+            contract: {},
+            proposals: [],
             forgetProposalIds: [],
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
+
     init(...args) {
         const [token, options] = expectInitArg(args);
 
@@ -89,6 +91,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.watchTicks(symbol);
     }
+
     start(tradeOptions) {
         if (!this.options) {
             throw createError('NotInitialized', translate('Bot.init is not called'));
@@ -107,6 +110,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.checkProposalReady();
     }
+
     loginAndGetBalance(token) {
         if (this.token === token) {
             return Promise.resolve();
@@ -138,11 +142,13 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             })
         );
     }
+
     getContractDuration() {
         const { duration, duration_unit: durationUnit } = this.tradeOptions;
 
         return durationToSecond(`${duration}${durationUnit}`);
     }
+
     observe() {
         this.observeOpenContract();
 
@@ -150,15 +156,18 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         this.observeProposals();
     }
+
     watch(watchName) {
         if (watchName === 'before') {
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
     }
+
     getData() {
         return this.data;
     }
+
     listen(n, f) {
         this.api.events.on(n, f);
     }
