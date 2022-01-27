@@ -55,7 +55,7 @@ GD_CLIENT_ID=GOOGLE_DRIVE_CLIENT_ID
 GD_API_KEY=GOOGLE_DRIVE_API_KEY
 GD_APP_ID=GOOGLE_DRIVE_APP_ID
 ```
-Here comes useful links for more information on how to confgure your project
+Here comes useful links for more information on how to configure your project
 with Google Drive integration:
 - [Enabling the Google Drive API](https://developers.google.com/drive/api/v3/enable-drive-api)
 - [Creating API Key](https://developers.google.com/maps/documentation/javascript/get-api-key)
