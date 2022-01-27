@@ -1,152 +1,131 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Dialog from './Dialog';
+import { SAVE_LOAD_TYPE, useIsMounted } from './utils';
+import LoadingButton from './LoadingButton';
 import { cleanBeforeExport } from '../blockly/utils';
 import * as style from '../style';
 import { translate } from '../../../common/i18n';
-import googleDrive from '../../../common/integrations/GoogleDrive';
+import google_drive_util from '../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { showSpinnerInButton, removeSpinnerInButton } from '../../../common/utils/tools';
 
-class SaveContent extends PureComponent {
-    constructor() {
-        super();
-        this.state = {
-            error   : null,
-            saveType: 'local',
-        };
-    }
+const Save = React.memo(({ closeDialog, onSave }) => {
+    const [is_loading, setLoading] = React.useState(false);
+    const [file_name, setFileName] = React.useState('binary-bot');
+    const [save_type, setSaveType] = React.useState(SAVE_LOAD_TYPE.local);
+    const [save_as_collection, setSaveAsCollection] = React.useState(false);
+    const [is_gd_logged_in, setGdLoggedIn] = React.useState(false);
 
-    submit() {
-        const filename = $(this.filename).val() || 'binary-bot';
-        const collection = $(this.isCollection).prop('checked');
+    const isMounted = useIsMounted();
 
-        if (this.state.saveType === 'google-drive') {
-            const initialButtonText = $(this.submitButton).text();
-            showSpinnerInButton($(this.submitButton));
+    React.useEffect(() => {
+        globalObserver.register('googledrive.authorised', data => setGdLoggedIn(data));
+    }, []);
 
-            const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-            cleanBeforeExport(xml);
+    const onChange = e =>
+        e.target.type === 'radio' ? setSaveType(e.target.value) : setSaveAsCollection(e.target.checked);
 
-            xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-            xml.setAttribute('collection', collection);
+    const onSubmit = e => {
+        e.preventDefault();
 
-            googleDrive
-                .saveFile({
-                    name    : filename,
-                    content : Blockly.Xml.domToPrettyText(xml),
-                    mimeType: 'application/xml',
-                })
-                .then(() => {
-                    globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive'));
-                    this.props.closeDialog();
-                    removeSpinnerInButton($(this.submitButton), initialButtonText);
-                })
-                .catch(() => {
-                    removeSpinnerInButton($(this.submitButton), initialButtonText);
-                });
-        } else {
-            this.props.onSave({
-                filename,
-                collection,
-            });
+        if (save_type === SAVE_LOAD_TYPE.local) {
+            onSave({ file_name, save_as_collection });
+            closeDialog();
+            return;
         }
-    }
 
-    onChange(event) {
-        this.setState({ saveType: event.target.value });
-    }
+        setLoading(true);
+        const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        cleanBeforeExport(xml);
+        xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+        xml.setAttribute('collection', save_as_collection);
 
-    render() {
-        return (
-            <form
-                id="save-dialog"
-                action="javascript:;" // eslint-disable-line no-script-url
-                onSubmit={() => this.submit()}
-                className="dialog-content"
-                style={style.content}
-            >
-                <div className="input-row">
+        closeDialog();
+        google_drive_util
+            .saveFile({
+                name    : file_name,
+                content : Blockly.Xml.domToPrettyText(xml),
+                mimeType: 'application/xml',
+            })
+            .then(() => globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive')))
+            .finally(() => isMounted() && setLoading(false));
+    };
+
+    return (
+        <form id="save-dialog" onSubmit={onSubmit} className="dialog-content" style={style.content}>
+            <div className="input-row">
+                <input
+                    id="save-filename"
+                    name="save-filename"
+                    title="Choose filename for your blocks"
+                    type="text"
+                    onChange={e => setFileName(e.target.value)}
+                    defaultValue="binary-bot"
+                    data-lpignore="true"
+                    autoComplete="false"
+                />
+            </div>
+            <div className="input-row center-text">
+                <span className="integration-option">
                     <input
-                        id="save-filename"
-                        name="save-filename"
-                        title="Choose filename for your blocks"
-                        type="text"
-                        ref={el => {
-                            this.filename = el;
-                        }}
-                        defaultValue="binary-bot"
-                        data-lpignore="true"
-                        autoComplete="false"
+                        type="radio"
+                        id="save-local"
+                        name="save-option"
+                        value={SAVE_LOAD_TYPE.local}
+                        defaultChecked
+                        onChange={onChange}
                     />
-                </div>
-                <div className="input-row center-text">
+                    <label htmlFor="save-local">{translate('My computer')}</label>
+                </span>
+                {is_gd_logged_in && (
                     <span className="integration-option">
-                        <input
-                            type="radio"
-                            id="save-local"
-                            name="save-option"
-                            value="local"
-                            defaultChecked={true}
-                            onChange={e => this.onChange(e)}
-                        />
-                        <label htmlFor="save-local">{translate('My computer')}</label>
-                    </span>
-                    <span className="integration-option invisible">
                         <input
                             type="radio"
                             id="save-google-drive"
                             name="save-option"
-                            value="google-drive"
-                            onChange={e => this.onChange(e)}
+                            value={SAVE_LOAD_TYPE.google_drive}
+                            onChange={onChange}
                         />
                         <label htmlFor="save-google-drive">Google Drive</label>
                     </span>
+                )}
+            </div>
+            <div id="collection" className="input-row">
+                <input
+                    title={translate(
+                        'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
+                    )}
+                    name="save-is-collection"
+                    id="save-is-collection"
+                    type="checkbox"
+                    onChange={onChange}
+                    style={style.checkbox}
+                />
+                <label
+                    title={translate(
+                        'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
+                    )}
+                    htmlFor="save-is-collection"
+                >
+                    {translate('Save as collection')}
+                </label>
+                <div className="description">
+                    {translate('Save your blocks and settings for re-use in other strategies')}
                 </div>
-                <div id="collection" className="input-row">
-                    <input
-                        title={translate(
-                            'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
-                        )}
-                        name="save-is-collection"
-                        id="save-is-collection"
-                        type="checkbox"
-                        ref={el => {
-                            this.isCollection = el;
-                        }}
-                        style={style.checkbox}
-                    />
-                    <label
-                        title={translate(
-                            'Save your blocks individually in a collection. They will be added to your existing workspace (main blocks will be replaced) when loaded.'
-                        )}
-                        htmlFor="save-is-collection"
-                    >
-                        {translate('Save as collection')}
-                    </label>
-                    <div className="description">
-                        {translate('Save your blocks and settings for re-use in other strategies')}
-                    </div>
-                </div>
-                <div className="center-text input-row last">
-                    <button
-                        type="submit"
-                        ref={el => {
-                            this.submitButton = el;
-                        }}
-                    >
-                        {translate('Save')}
-                    </button>
-                </div>
-            </form>
-        );
-    }
+            </div>
+            <div className="center-text input-row last">
+                <button type="submit" disabled={is_loading}>
+                    {is_loading ? <LoadingButton /> : translate('Save')}
+                </button>
+            </div>
+        </form>
+    );
+});
 
-    static props = {
-        onSave     : PropTypes.func,
-        closeDialog: PropTypes.func,
-    };
-}
+Save.propTypes = {
+    closeDialog: PropTypes.func.isRequired,
+    onSave     : PropTypes.func.isRequired,
+};
 
 export default class SaveDialog extends Dialog {
     constructor() {
@@ -160,7 +139,7 @@ export default class SaveDialog extends Dialog {
         super(
             'save-dialog',
             translate('Save blocks'),
-            <SaveContent onSave={onSave} closeDialog={closeDialog} />,
+            <Save onSave={onSave} closeDialog={closeDialog} />,
             style.dialogLayout
         );
         this.registerCloseOnOtherDialog();
