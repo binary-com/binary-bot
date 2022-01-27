@@ -52,6 +52,13 @@ commands:
     description: "Build"
     steps:
       - run:
+          name: "Create environment variables file"
+          command: |
+            echo GD_CLIENT_ID=${GD_CLIENT_ID} > .env
+            echo GD_API_KEY=${GD_API_KEY} >> .env
+            echo GD_APP_ID=${GD_APP_ID} >> .env
+            echo TRACKJS_TOKEN=${TRACKJS_TOKEN} >> .env
+      - run:
           name: "npm run build"
           command: node_modules/gulp/bin/gulp.js build-min
   deploy:
