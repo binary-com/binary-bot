@@ -107,3 +107,171 @@ a:hover {
         margin-left: -5% !important;
     }
 }
+
+.animator-tooltip {
+    visibility: hidden;
+    &.pointer {
+        margin-top: 0.7em;
+        margin-left: 50%;
+        transform: translate(-50%, -50%);
+        height: 10px;
+        width: 10px;
+        border: 10px solid #fef1cf;
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
+
+    // &.top {
+    //     margin-bottom: 0.5em;
+    //     margin-top: -2.5em;
+    //     position: absolute;
+    // }
+
+    p {
+        font-size: 11px;
+        text-align: center;
+        margin-top: -0.91em;
+        padding: 0.5em;
+        border-radius: 0.5em;
+        background-color: #fef1cf;
+        width: 120px;
+    }
+
+    &.running {
+        p {
+            color: #468847;
+            background-color: #DFF0D8;
+            border-color: #D6E9C6;
+        }
+    }
+
+    &.active {
+        visibility: visible;
+        animation: slide-tooltip 0.8s 1;
+    }
+
+}
+
+.trade-animator {
+    min-width: 19.5rem;
+    max-width: 767px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    &__indicator-message {
+        display: flex;
+        justify-content: center;
+        div {
+            @extend .animator-tooltip;
+        }
+    }
+    &__stages {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        min-height: 5rem;
+        margin-top: 0.5rem;
+    }
+    &__stage {
+        min-width: 6.5rem;
+        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .title {
+            font-size: 11px;
+        }
+        .circle {
+            &::after {
+                content: '';
+                width: 0.5rem;
+                height: 0.5rem;
+                border-radius: 100%;
+                border: 0.25rem solid $disabled-color;
+                display: block;
+                background-color: $disabled-color;
+                position: absolute;
+                right: 50%;
+                top: 40%;
+                transform: translate(50%, -50%);
+                z-index: 1;
+            }
+            &.active {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: $dynamic-circle-diameter;
+                    height: $dynamic-circle-diameter;
+                    background-color: $circle-color;
+                    border-radius: 100%;
+                    opacity: 0.32;
+                    animation: animate-circle 0.8s infinite;
+                    transform: translate(-50%, -50%);
+                    top: 40%;
+                    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+                    z-index: 1;
+                }
+            }
+            &.complete {
+                &::after {
+                    border: 0.25em solid $circle-color;
+                }
+            }
+        }
+        .indicator {
+            padding: 4px;
+            background-color: #fef1cf;
+            border-radius: 4px;
+            position: relative;
+            p {
+                font-size: 11px;
+            }
+            visibility: hidden;
+            &::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                transform: translate(-50%, -50%);
+                border: 10px solid #fef1cf;
+                border-top-color: transparent;
+                border-left-color: transparent;
+                border-right-color: transparent;
+            }
+            &.active {
+                visibility: visible;
+                animation: slide-tooltip 0.8s 1;
+            }
+        }
+    }
+    &__progress-bar {
+        position: absolute;
+        height: 5px;
+        background-color: $disabled-color;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+        width: calc(100% - 6.5rem);
+        &::after {
+            content: '';
+            position: absolute;
+            height: 5px;
+        }
+        &.active {
+            &::after {
+                background-color: $circle-color;
+                width: 50%;
+                animation: animate-progress 0.5s 1;
+                animation-fill-mode: forwards;
+            }
+        }
+        &.complete {
+            &::after {
+                background-color: $circle-color;
+                width: 100%;
+                animation: animate-progress-complete 0.5s 1;
+                animation-fill-mode: forwards;
+            }
+        }
+    }
+}
