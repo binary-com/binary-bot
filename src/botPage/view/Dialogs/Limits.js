@@ -1,5 +1,4 @@
-/* eslint-disable max-classes-per-file */
-import { LiveApi } from 'binary-live-api';
+import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from './Dialog';
@@ -184,7 +183,7 @@ class LimitsContent extends PureComponent {
 
     static props = {
         onSave: PropTypes.func,
-        api: PropTypes.instanceOf(LiveApi),
+        api: PropTypes.instanceOf(DerivAPIBasic),
     };
 }
 

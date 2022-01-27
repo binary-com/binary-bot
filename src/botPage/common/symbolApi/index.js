@@ -3,14 +3,12 @@ import config from '../const';
 import { getObjectValue } from '../../../common/utils/tools';
 import { getTokenList, removeAllTokens } from '../../../common/utils/storageManager';
 
-const noop = () => {};
+let parsed_asset_index;
 
-let parsedAssetIndex;
-
-const parseAssetIndex = assetIndex => {
+const parseAssetIndex = asset_index => {
     const parsed = {};
 
-    assetIndex.forEach(symbol => {
+    asset_index.forEach(symbol => {
         parsed[symbol[0].toLowerCase()] = {};
 
         symbol[2].forEach(category => {
@@ -23,7 +21,7 @@ const parseAssetIndex = assetIndex => {
 const getAllowedConditionsOrCategoriesForSymbol = symbol => {
     let conditions = [];
     const categories = [];
-    const index = parsedAssetIndex[symbol.toLowerCase()];
+    const index = parsed_asset_index[symbol.toLowerCase()];
     if (index) {
         Object.keys(config.conditionsCategory).forEach(conditionName => {
             if (conditionName in index) {
@@ -45,19 +43,19 @@ export default class _Symbol {
         this.api = api;
         this.initPromise = new Promise(resolve => {
             const getActiveSymbolsLogic = () => {
-                this.api.getActiveSymbolsBrief().then(r => {
+                this.api.send({ active_symbols: 'brief' }).then(r => {
                     this.activeSymbols = new ActiveSymbols(r.active_symbols);
-                    this.api.getAssetIndex().then(r2 => {
-                        parsedAssetIndex = parseAssetIndex(r2.asset_index);
+                    this.api.send({ asset_index: 1 }).then(({ asset_index }) => {
+                        parsed_asset_index = parseAssetIndex(asset_index);
                         resolve();
-                    }, noop);
-                }, noop);
+                    });
+                });
             };
             // Authorize the WS connection when possible for accurate offered Symbols & AssetIndex
-            const tokenList = getTokenList();
-            if (tokenList.length) {
+            const token_list = getTokenList();
+            if (token_list.length) {
                 this.api
-                    .authorize(tokenList[0].token)
+                    .authorize(token_list[0].token)
                     .then(() => getActiveSymbolsLogic())
                     .catch(() => {
                         removeAllTokens();
@@ -73,7 +71,7 @@ export default class _Symbol {
     getLimitation(symbol, condition) {
         const category = getCategoryForCondition(condition);
         return {
-            minDuration: parsedAssetIndex[symbol.toLowerCase()][category],
+            minDuration: parsed_asset_index[symbol.toLowerCase()][category],
         };
     }
 

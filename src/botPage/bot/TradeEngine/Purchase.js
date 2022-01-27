@@ -5,22 +5,21 @@ import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import GTM from '../../../common/gtm';
 
-let delayIndex = 0;
-let purchaseReference;
+let delay_index = 0;
+let purchase_reference;
 
 export default Engine =>
     class Purchase extends Engine {
-        purchase(contractType) {
+        purchase(contract_type) {
             // Prevent calling purchase twice
             if (this.store.getState().scope !== BEFORE_PURCHASE) {
                 return Promise.resolve();
             }
 
-            const { currency, proposal } = this.selectProposal(contractType);
-            const onSuccess = response => {
+            const { currency, proposal } = this.selectProposal(contract_type);
+            const onSuccess = ({ buy, echo_req }) => {
                 // Don't unnecessarily send a forget request for a purchased contract.
-                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
-                const { buy } = response;
+                this.data.proposals = this.data.proposals.filter(p => p.id !== echo_req.buy);
                 GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
@@ -34,7 +33,7 @@ export default Engine =>
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
 
-                delayIndex = 0;
+                delay_index = 0;
 
                 notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
 
@@ -42,7 +41,7 @@ export default Engine =>
                     accountID: this.accountInfo.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
-                    contract_type: contractType,
+                    contract_type,
                     buy_price: buy.buy_price,
                 });
             };
@@ -56,7 +55,7 @@ export default Engine =>
                 currency,
             });
 
-            const action = () => this.api.buyContract(proposal.id, proposal.ask_price);
+            const action = () => this.api.send({ buy: proposal.id, price: proposal.ask_price });
 
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
@@ -64,9 +63,9 @@ export default Engine =>
 
             return recoverFromError(
                 action,
-                (errorCode, makeDelay) => {
+                (error_code, makeDelay) => {
                     // if disconnected no need to resubscription (handled by live-api)
-                    if (errorCode !== 'DisconnectError') {
+                    if (error_code !== 'DisconnectError') {
                         this.renewProposalsOnPurchase();
                     } else {
                         this.clearProposals();
@@ -81,14 +80,15 @@ export default Engine =>
                     });
                 },
                 ['PriceMoved', 'InvalidContractProposal'],
-                delayIndex++
+                delay_index++
             ).then(onSuccess);
         }
 
-        /* eslint-disable class-methods-use-this */
-        getPurchaseReference = () => purchaseReference;
+        // eslint-disable-next-line class-methods-use-this
+        getPurchaseReference = () => purchase_reference;
 
+        // eslint-disable-next-line class-methods-use-this
         regeneratePurchaseReference = () => {
-            purchaseReference = getUUID();
+            purchase_reference = getUUID();
         };
     };

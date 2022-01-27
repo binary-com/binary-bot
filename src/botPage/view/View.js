@@ -17,13 +17,13 @@ import { isVirtual } from '../common/tools';
 import {
     logoutAllTokens,
     getOAuthURL,
-    generateLiveApiInstance,
     AppConstants,
     addTokenIfValid,
+    generateDerivApiInstance,
 } from '../../common/appId';
 import { translate } from '../../common/i18n';
 import { isEuCountry, showHideEuElements, hasEuAccount } from '../../common/footer-checks';
-import googleDrive from '../../common/integrations/GoogleDrive';
+import google_drive_util from '../../common/integrations/GoogleDrive';
 import { getLanguage, showBanner } from '../../common/lang';
 import { observer as globalObserver } from '../../common/utils/observer';
 import {
@@ -48,52 +48,53 @@ import Header from './deriv/layout/Header';
 import Main from './deriv/layout/Main';
 import store from './deriv/store';
 
-let realityCheckTimeout;
 let chart;
 const clientInfo = {};
 
-const api = generateLiveApiInstance();
+const api = generateDerivApiInstance();
 
-api.events.on('balance', response => {
-    if (response.balance.accounts) {
-        clientInfo.balance = response.balance;
-    } else {
-        const accountToUpdate = response.balance.loginid;
-        const isDemo = accountToUpdate.includes('VRTC');
-
-        clientInfo.balance.accounts[accountToUpdate].balance = response.balance.balance;
-        if (isDemo) {
-            clientInfo.balance.total.deriv_demo.amount = response.balance.balance;
+api.onMessage().subscribe(({ data }) => {
+    if (data?.msg_type === 'balance') {
+        const { balance } = data;
+        if (balance?.accounts) {
+            clientInfo.balance = balance;
         } else {
-            Object.keys(response.balance.total).forEach(
-                plf => (clientInfo.balance.total[plf] = response.balance.total[plf])
-            );
+            const account_to_update = balance?.loginid;
+            const is_demo = account_to_update.includes('VRTC');
+
+            clientInfo.balance.accounts[account_to_update].balance = balance.balance;
+            if (is_demo) {
+                clientInfo.balance.total.deriv_demo.amount = balance.balance;
+            } else {
+                Object.keys(balance.total).forEach(platform => {
+                    clientInfo.balance.total[platform] = balance.total[platform];
+                });
+            }
         }
+
+        ReactDOM.render(
+            <Provider store={store}>
+                <Header clientInfo={clientInfo} />
+            </Provider>,
+            document.getElementById('header-wrapper')
+        );
+
+        const el_top_menu_balances = document.querySelectorAll('.topMenuBalance');
+        const local_string = getLanguage().replace('_', '-');
+        const bal = (+balance.balance).toLocaleString(local_string, {
+            minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(balance.currency) ? 8 : 2,
+        });
+
+        el_top_menu_balances.forEach(el_top_menu_balance => {
+            const element = el_top_menu_balance;
+            element.textContent = `${bal} ${balance.currency === 'UST' ? 'USDT' : balance.currency}`;
+        });
+
+        globalObserver.setState({
+            balance: bal,
+            currency: balance.currency,
+        });
     }
-
-    ReactDOM.render(
-        <Provider store={store}>
-            <Header clientInfo={clientInfo} />
-        </Provider>,
-        document.getElementById('header-wrapper')
-    );
-
-    const {
-        balance: { balance: b, currency },
-    } = response;
-
-    const elTopMenuBalances = document.querySelectorAll('.topMenuBalance');
-    const localString = getLanguage().replace('_', '-');
-    const balance = (+b).toLocaleString(localString, {
-        minimumFractionDigits: config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2,
-    });
-
-    elTopMenuBalances.forEach(elTopMenuBalance => {
-        const element = elTopMenuBalance;
-        element.textContent = `${balance} ${currency === 'UST' ? 'USDT' : currency}`;
-    });
-
-    globalObserver.setState({ balance: b, currency });
 });
 
 const subscribeToAllAccountsBalance = token => {
@@ -109,58 +110,6 @@ const subscribeToAllAccountsBalance = token => {
 };
 
 const tradingView = new TradingView();
-
-const showRealityCheck = () => {
-    $('.blocker').show();
-    $('.reality-check').show();
-};
-
-const hideRealityCheck = () => {
-    $('#rc-err').hide();
-    $('.blocker').hide();
-    $('.reality-check').hide();
-};
-
-const stopRealityCheck = () => {
-    clearInterval(realityCheckTimeout);
-    realityCheckTimeout = null;
-};
-
-const realityCheckInterval = stopCallback => {
-    realityCheckTimeout = setInterval(() => {
-        const now = parseInt(new Date().getTime() / 1000);
-        const checkTime = +getStorage('realityCheckTime');
-        if (checkTime && now >= checkTime) {
-            showRealityCheck();
-            stopRealityCheck();
-            stopCallback();
-        }
-    }, 1000);
-};
-
-const startRealityCheck = (time, token, stopCallback) => {
-    stopRealityCheck();
-    if (time) {
-        const start = parseInt(new Date().getTime() / 1000) + time * 60;
-        setStorage('realityCheckTime', start);
-        realityCheckInterval(stopCallback);
-    } else {
-        const tokenObj = getToken(token);
-        if (tokenObj.hasRealityCheck) {
-            const checkTime = +getStorage('realityCheckTime');
-            if (!checkTime) {
-                showRealityCheck();
-            } else {
-                realityCheckInterval(stopCallback);
-            }
-        }
-    }
-};
-
-const clearRealityCheck = () => {
-    setStorage('realityCheckTime', null);
-    stopRealityCheck();
-};
 
 const integrationsDialog = new IntegrationsDialog();
 
@@ -292,7 +241,6 @@ export default class View {
                     updateTokenList();
                     this.blockly = new _Blockly();
                     this.blockly.initPromise.then(() => {
-                        initRealityCheck(() => $('#stopButton').triggerHandler('click'));
                         renderReactComponents(this.blockly);
                         applyToolboxPermissions();
                         this.setElementActions();
@@ -381,7 +329,6 @@ export default class View {
             if (e) {
                 e.preventDefault();
             }
-            stopRealityCheck();
             this.stop();
         };
 
@@ -407,7 +354,7 @@ export default class View {
             })
                 .then(() => {
                     this.stop();
-                    googleDrive.signOut();
+                    google_drive_util.logout();
                     GTM.setVisitorId();
                     removeTokens();
                 })
@@ -418,7 +365,6 @@ export default class View {
             logoutAllTokens().then(() => {
                 updateTokenList();
                 globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                clearRealityCheck();
                 clearActiveTokens();
                 window.location.reload();
             });
@@ -501,44 +447,11 @@ export default class View {
         $('#deriv__logout-btn, #logout, #toolbox-logout').click(() => {
             saveBeforeUnload();
             logout();
-            hideRealityCheck();
         });
 
         globalObserver.register('ui.logout', () => {
             $('.barspinner').show();
             removeTokens();
-            hideRealityCheck();
-        });
-
-        const submitRealityCheck = () => {
-            const time = parseInt($('#realityDuration').val());
-            if (time >= 10 && time <= 60) {
-                hideRealityCheck();
-                startRealityCheck(time, null, () => $('#stopButton').triggerHandler('click'));
-            } else {
-                $('#rc-err').show();
-            }
-        };
-
-        $('#continue-trading').click(() => {
-            submitRealityCheck();
-        });
-
-        $('#realityDuration').keypress(e => {
-            const char = String.fromCharCode(e.which);
-            if (e.keyCode === 13) {
-                submitRealityCheck();
-            }
-            /* Unicode check is for firefox because it
-             * trigger this event when backspace, arrow keys are pressed
-             * in chrome it is not triggered
-             */
-            const unicodeStrings = /[\u0008|\u0000]/; // eslint-disable-line no-control-regex
-            if (unicodeStrings.test(char)) return;
-
-            if (!/([0-9])/.test(char)) {
-                e.preventDefault();
-            }
         });
 
         const startBot = limitations => {
@@ -570,7 +483,6 @@ export default class View {
                 .first()
                 .attr('value');
             const tokenObj = getToken(token);
-            initRealityCheck(() => $('#stopButton').triggerHandler('click'));
 
             if (tokenObj && tokenObj.hasTradeLimitation) {
                 const limits = new Limits(api);
@@ -622,10 +534,6 @@ export default class View {
                 document.location = getOAuthURL();
             })
             .text(translate('Log in'));
-
-        $('#statement-reality-check').click(() => {
-            document.location = `https://www.binary.com/${getLanguage()}/user/statementws.html#no-reality-check`;
-        });
     }
 
     stop() {
@@ -641,7 +549,6 @@ export default class View {
             if (['activeToken', 'active_loginid'].includes(e.key) && e.newValue !== e.oldValue) {
                 window.location.reload();
             }
-            if (e.key === 'realityCheckTime') hideRealityCheck();
         });
 
         globalObserver.register('Error', error => {
@@ -649,8 +556,7 @@ export default class View {
                 const elRunButton = el;
                 elRunButton.removeAttribute('disabled');
             });
-
-            if (error.error && error.error.error.code === 'InvalidToken') {
+            if (error?.error?.code === 'InvalidToken') {
                 removeAllTokens();
                 updateTokenList();
                 this.stop();
@@ -701,15 +607,6 @@ export default class View {
     }
 }
 
-function initRealityCheck(stopCallback) {
-    startRealityCheck(
-        null,
-        $('.account-id')
-            .first()
-            .attr('value'),
-        stopCallback
-    );
-}
 function renderReactComponents(blockly) {
     ReactDOM.render(
         <Provider store={store}>

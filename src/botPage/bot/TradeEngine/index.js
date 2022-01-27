@@ -80,15 +80,11 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     init(...args) {
         const [token, options] = expectInitArg(args);
-
         const { symbol } = options;
 
         this.initArgs = args;
-
         this.options = options;
-
         this.startPromise = this.loginAndGetBalance(token);
-
         this.watchTicks(symbol);
     }
 
@@ -101,59 +97,49 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         globalObserver.setState({ isRunning: true });
 
         this.tradeOptions = expectTradeOptions(tradeOptions);
-
         this.store.dispatch(start());
-
         this.checkLimits(tradeOptions);
-
         this.makeProposals({ ...this.options, ...tradeOptions });
-
         this.checkProposalReady();
     }
 
     loginAndGetBalance(token) {
-        if (this.token === token) {
-            return Promise.resolve();
-        }
+        if (this.token === token) return Promise.resolve();
 
         doUntilDone(() => this.api.authorize(token)).catch(e => this.$scope.observer.emit('Error', e));
 
         return new Promise(resolve =>
-            this.listen('authorize', ({ authorize }) => {
-                this.accountInfo = authorize;
-                this.token = token;
-
-                // Only subscribe to balance in browser, not for tests.
-                if (document) {
-                    this.api.subscribeToBalance().then(response => {
-                        const {
-                            balance: { balance, currency },
-                        } = response;
-
-                        globalObserver.setState({
-                            balance: Number(balance),
-                            currency,
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data?.msg_type === 'authorize') {
+                    const { authorize } = data;
+                    this.accountInfo = authorize;
+                    this.token = token;
+                    // Only subscribe to balance in browser, not for tests.
+                    if (document) {
+                        // Get the balance before opening contract
+                        this.api.send({ balance: 1, subscribe: 1 }).then(({ balance }) => {
+                            globalObserver.setState({
+                                balance: Number(balance.balance),
+                                currency: balance.currency,
+                            });
+                            resolve();
                         });
+                    } else {
                         resolve();
-                    });
-                } else {
-                    resolve();
+                    }
                 }
             })
         );
     }
 
     getContractDuration() {
-        const { duration, duration_unit: durationUnit } = this.tradeOptions;
-
-        return durationToSecond(`${duration}${durationUnit}`);
+        const { duration, duration_unit } = this.tradeOptions;
+        return durationToSecond(`${duration}${duration_unit}`);
     }
 
     observe() {
         this.observeOpenContract();
-
         this.observeBalance();
-
         this.observeProposals();
     }
 
@@ -166,9 +152,5 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     getData() {
         return this.data;
-    }
-
-    listen(n, f) {
-        this.api.events.on(n, f);
     }
 }

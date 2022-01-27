@@ -69,11 +69,11 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         );
     }
 
-    getProposal(contractType) {
+    getProposal(contract_type) {
         return this.tradeEngine.data.proposals.find(
             proposal =>
-                proposal.contractType === contractType &&
-                proposal.purchaseReference === this.tradeEngine.getPurchaseReference()
+                proposal.contract_type === contract_type &&
+                proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
         );
     }
 

@@ -5,30 +5,30 @@ import { TrackJSError } from '../../view/logger';
 
 export default Engine =>
     class Proposal extends Engine {
-        makeProposals(tradeOption) {
-            if (!this.isNewTradeOption(tradeOption)) {
+        makeProposals(trade_option) {
+            if (!this.isNewTradeOption(trade_option)) {
                 return;
             }
 
             // Generate a purchase reference when trade options are different from previous trade options.
             // This will ensure the bot doesn't mistakenly purchase the wrong proposal.
             this.regeneratePurchaseReference();
-            this.tradeOption = tradeOption;
-            this.proposalTemplates = tradeOptionToProposal(tradeOption, this.getPurchaseReference());
+            this.trade_option = trade_option;
+            this.proposalTemplates = tradeOptionToProposal(trade_option, this.getPurchaseReference());
             this.renewProposalsOnPurchase();
         }
 
-        selectProposal(contractType) {
+        selectProposal(contract_type) {
             const { proposals } = this.data;
 
             if (proposals.length === 0) {
                 throw Error(translate('Proposals are not ready'));
             }
 
-            const toBuy = proposals.find(proposal => {
+            const to_buy = proposals.find(proposal => {
                 if (
-                    proposal.contractType === contractType &&
-                    proposal.purchaseReference === this.getPurchaseReference()
+                    proposal.contract_type === contract_type &&
+                    proposal.purchase_reference === this.getPurchaseReference()
                 ) {
                     // Below happens when a user has had one of the proposals return
                     // with a ContractBuyValidationError. We allow the logic to continue
@@ -46,7 +46,7 @@ export default Engine =>
                 return false;
             });
 
-            if (!toBuy) {
+            if (!to_buy) {
                 throw new TrackJSError(
                     'CustomInvalidProposal',
                     translate('Selected proposal does not exist'),
@@ -55,8 +55,8 @@ export default Engine =>
             }
 
             return {
-                proposal: toBuy,
-                currency: this.tradeOption.currency,
+                proposal: to_buy,
+                currency: this.trade_option.currency,
             };
         }
 
@@ -72,38 +72,37 @@ export default Engine =>
         requestProposals() {
             Promise.all(
                 this.proposalTemplates.map(proposal =>
-                    doUntilDone(() =>
-                        this.api.subscribeToPriceForContractProposal(proposal).catch(error => {
-                            // We intercept ContractBuyValidationError as user may have specified
-                            // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
-                            // the other is valid. We will error on Purchase rather than here.
-                            if (error && error.name === 'ContractBuyValidationError') {
-                                this.data.proposals.push({
-                                    ...error.error.echo_req,
-                                    ...error.error.echo_req.passthrough,
-                                    error,
-                                });
-                                return null;
-                            }
+                    doUntilDone(() => this.api.send(proposal)).catch(error => {
+                        // We intercept ContractBuyValidationError as user may have specified
+                        // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
+                        // the other is valid. We will error on Purchase rather than here.
+                        if (error && error.name === 'ContractBuyValidationError') {
+                            this.data.proposals.push({
+                                ...error.error.echo_req,
+                                ...error.error.echo_req.passthrough,
+                                error,
+                            });
+                            return null;
+                        }
 
-                            throw error;
-                        })
-                    )
+                        throw error;
+                    })
                 )
             ).catch(e => this.$scope.observer.emit('Error', e));
         }
 
         observeProposals() {
-            this.listen('proposal', response => {
-                const { passthrough, proposal } = response;
-
-                if (
-                    this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
-                    !this.data.forgetProposalIds.includes(proposal.id)
-                ) {
-                    // Add proposals based on the ID returned by the API.
-                    this.data.proposals.push({ ...proposal, ...passthrough });
-                    this.checkProposalReady();
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data?.msg_type === 'proposal') {
+                    const { passthrough, proposal } = data;
+                    if (
+                        this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
+                        !this.data.forgetProposalIds.includes(proposal.id)
+                    ) {
+                        // Add proposals based on the ID returned by the API.
+                        this.data.proposals.push({ ...proposal, ...passthrough });
+                        this.checkProposalReady();
+                    }
                 }
             });
         }
@@ -127,7 +126,7 @@ export default Engine =>
                         return Promise.resolve();
                     }
 
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() =>
+                    return doUntilDone(() => this.api.forget(proposal.id)).then(() =>
                         removeForgetProposalById(proposal.id)
                     );
                 })
@@ -144,25 +143,27 @@ export default Engine =>
                     template =>
                         proposals.findIndex(
                             proposal =>
-                                proposal.purchaseReference === template.passthrough.purchaseReference &&
-                                proposal.contractType === template.contract_type
+                                proposal.purchase_reference === template.passthrough.purchase_reference &&
+                                proposal.contract_type === template.contract_type
                         ) !== -1
                 );
 
                 if (hasEqualProposals) {
-                    this.startPromise.then(() => this.store.dispatch(proposalsReady()));
+                    this.startPromise.then(() => {
+                        this.store.dispatch(proposalsReady());
+                    });
                 }
             }
         }
 
-        isNewTradeOption(tradeOption) {
-            if (!this.tradeOption) {
-                this.tradeOption = tradeOption;
+        isNewTradeOption(trade_option) {
+            if (!this.trade_option) {
+                this.trade_option = trade_option;
                 return true;
             }
 
-            // Compare incoming "tradeOption" argument with "this.tradeOption", if any
-            // of the values is different, this is a new tradeOption and new proposals
+            // Compare incoming "trade_option" argument with "this.trade_option", if any
+            // of the values is different, this is a new trade_option and new proposals
             // should be generated.
             return [
                 'amount',
@@ -173,6 +174,6 @@ export default Engine =>
                 'prediction',
                 'secondBarrierOffset',
                 'symbol',
-            ].some(value => this.tradeOption[value] !== tradeOption[value]);
+            ].some(value => this.trade_option[value] !== trade_option[value]);
         }
     };
