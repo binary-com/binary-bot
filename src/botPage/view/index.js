@@ -13,7 +13,7 @@ $.ajaxSetup({
 
 // eslint-disable-next-line no-underscore-dangle
 window._trackJs = {
-    token      : '346262e7ffef497d85874322fff3bbf8',
+    token      : process.env.TRACKJS_TOKEN,
     application: 'binary-bot',
     enabled    : isProduction(),
     console    : {
