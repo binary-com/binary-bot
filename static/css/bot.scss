@@ -5,7 +5,6 @@
 @import 'panel';
 @import 'blockly-toolbox';
 @import 'toolbox';
-@import 'reality-check';
 @import 'tour';
 @import 'deriv/index';
 
@@ -104,14 +103,6 @@ body {
     text-align: right;
     padding: 3px 20px;
     display: table;
-}
-
-#all-accounts.main-nav, #toolbox-all-accounts.main-nav {
-    >li {
-        >ul {
-            width: 165px;
-        }
-    }
 }
 
 .left-header {

@@ -2,14 +2,17 @@ import classNames from "classnames";
 import React from "react";
 import  Popover from '../../../components/popover';
 import { translate} from "../../../../../../common/utils/tools";
+import { api } from "../../../../View";
 
-
-const NetworkStatus = ({ api }) => {
+const NetworkStatus = () => {
     const [status, setStatus] = React.useState("offline");
 
     React.useEffect(() => {
         api.send({ website_status: '1', subscribe: 1 });
         api.onMessage().subscribe(({ data }) => {
+            if (data?.error?.code) {
+                return;
+            }
             if (data?.msg_type === 'website_status') {
                 $('.web-status').trigger('notify-hide');
                 const { website_status } = data;

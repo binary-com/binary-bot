@@ -8,11 +8,12 @@ import {
 } from "../../../../../common/utils/storageManager";
 import { updateShowTour } from "../../store/ui-slice";
 import Footer from "../Footer";
+import Header from "../Header";
 import ToolBox from "../ToolBox";
 import SidebarToggle from '../../components/SidebarToggle';
 
 
-const Main = ({api, blockly}) => {
+const Main = ({blockly}) => {
   const { should_show_tour } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -24,15 +25,15 @@ const Main = ({api, blockly}) => {
   return (
     <div className="main">
       {should_show_tour && <Tour />}
+      <Header />
       <ToolBox blockly={blockly} />
       <SidebarToggle />
-      <Footer api={api} />
+      <Footer/>
     </div>
   );
 };
 
 Main.propTypes = {
-    api: PropTypes.object.isRequired,
     blockly: PropTypes.object.isRequired,
   }
 export default Main;
