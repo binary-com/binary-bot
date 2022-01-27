@@ -13,22 +13,6 @@ const INDICATOR_MESSAGES = {
     stopped: translate('Bot has stopped.'),
 };
 
-const resetAnimation = () => {
-    $('.circle-wrapper').removeClass('active complete');
-    $('.line').removeClass('active complete');
-    $('.stage-tooltip:not(.top)').removeClass('active');
-};
-
-const activateStage = index => {
-    console.log(index, 'activateStage');
-    if (index > 0) {
-        $(`.circle-wrapper:eq(${index - 1})`).removeClass('active');
-        $(`.circle-wrapper:eq(${index - 1})`).addClass('complete');
-    }
-    $(`.circle-wrapper:eq(${index})`).addClass('active');
-    $(`.stage-tooltip.bottom:eq(${index})`).addClass('active');
-};
-
 const CONTRACT_STATUS = {
     not_running: 'not_running',
     attempting_to_buy: 'attempting_to_buy',
@@ -44,7 +28,6 @@ const AnimateTrade = () => {
     const isMounted = useIsMounted();
 
     const resetSummary = () => {
-        resetAnimation();
         setIndicatorMessage(INDICATOR_MESSAGES.not_running);
     };
 
@@ -52,12 +35,7 @@ const AnimateTrade = () => {
 
     const animateStage = contract => {
         if (contract.id === 'contract.purchase_sent') {
-            resetAnimation();
-
-            activateStage(0);
-            // circle at 0: active complete
             setContractStatus(CONTRACT_STATUS.attempting_to_buy);
-
             setBuyPrice(
                 roundBalance({
                     balance: contract.proposal.ask_price,
@@ -65,52 +43,34 @@ const AnimateTrade = () => {
                 })
             );
         } else if (contract.id === 'contract.purchase_recieved') {
-            $('.line').addClass('active');
-            activateStage(1);
             setContractStatus(CONTRACT_STATUS.buy_succeeded);
-            // circle at 1: active
-            // bottom tooltip at 1: active
 
             setBuyId(contract.data);
         } else if (contract.id === 'contract.sold') {
-            $('.line').addClass('complete');
-            activateStage(2);
             setContractStatus(CONTRACT_STATUS.contract_closed);
-            // circle at 2: actie
-            // bottom tooltip at 2: active
             setSellId(contract.data);
         }
-        activateStage(contract.id);
-    };
-
-    const onStop = () => {
-        console.log('onStop is called');
-        $('.stage-tooltip.top:eq(0)').removeClass('running');
-        if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.stopped);
-    };
-
-    const onRun = () => {
-        $('.stage-tooltip.top:eq(0)').addClass('running');
-        if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.running);
     };
 
     React.useEffect(() => {
         globalObserver.register('reset_animation', resetSummary);
         globalObserver.register('summary.clear', resetSummary);
-        globalObserver.register('bot.running', onRun);
-        globalObserver.register('bot.stop', onStop);
+        globalObserver.register('bot.running', () => {
+            if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.running);
+        });
+        globalObserver.register('bot.stop', () => {
+            if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.stopped);
+        });
 
         $('#stopButton').on('click', () => {
-            $('.stage-tooltip.top:eq(0)').removeClass('running');
             setIndicatorMessage(
                 globalObserver.getState('isRunning') ? INDICATOR_MESSAGES.stopping : INDICATOR_MESSAGES.stopped
             );
         });
 
         $('#runButton').on('click', () => {
-            resetAnimation();
-            $('.stage-tooltip.top:eq(0)').addClass('running');
             setIndicatorMessage(INDICATOR_MESSAGES.starting);
+            setContractStatus(CONTRACT_STATUS.not_running);
             globalObserver.emit('summary.disable_clear');
             globalObserver.register('contract.status', contract => animateStage(contract));
         });
@@ -121,162 +81,83 @@ const AnimateTrade = () => {
         };
     }, []);
 
+    const is_running = indicator_message === INDICATOR_MESSAGES.running;
+    const is_starting = indicator_message === INDICATOR_MESSAGES.starting;
+    const is_stopping = indicator_message === INDICATOR_MESSAGES.stopping;
+    const is_not_running = indicator_message === INDICATOR_MESSAGES.not_running;
+
+    const is_attempting_to_buy = contract_status === CONTRACT_STATUS.attempting_to_buy;
+    const is_buy_succeeded = contract_status === CONTRACT_STATUS.buy_succeeded;
+    const is_contract_closed = contract_status === CONTRACT_STATUS.contract_closed;
+
     return (
         <div>
             <div className="trade-animator">
                 <div className="trade-animator__indicator-message">
-                    {/* running class need to be added */}
-                    <div
-                        className={classNames('active', { running: indicator_message === INDICATOR_MESSAGES.running })}
-                    >
+                    <div className={classNames('active', { running: is_running })}>
                         <p>{indicator_message}</p>
                     </div>
                 </div>
                 <div className="trade-animator__stages">
-                    <div className="trade-animator__stage">
-                        <p className="title">{translate('Attempting to Buy')}</p>
-                        <span
-                            className={classNames('circle', {
-                                active:
-                                    indicator_message === INDICATOR_MESSAGES.running &&
-                                    contract_status === CONTRACT_STATUS.attempting_to_buy,
-                                complete:
-                                    indicator_message !== INDICATOR_MESSAGES.not_running &&
-                                    indicator_message !== INDICATOR_MESSAGES.starting,
-                            })}
-                        />
-                        <div
-                            className={classNames('indicator', {
-                                active:
-                                    indicator_message !== INDICATOR_MESSAGES.starting &&
-                                    contract_status !== CONTRACT_STATUS.not_running,
-                            })}
-                        >
-                            <p>
-                                {translate('Buy amount')}: {buy_price || 0}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="trade-animator__stage">
-                        <p className="title">{translate('Buy succeeded')}</p>
-                        <span
-                            className={classNames('circle', {
-                                active:
-                                    (indicator_message === INDICATOR_MESSAGES.running ||
-                                        indicator_message === INDICATOR_MESSAGES.stopping) &&
-                                    contract_status === CONTRACT_STATUS.buy_succeeded,
-                                complete:
-                                    (indicator_message !== INDICATOR_MESSAGES.starting ||
-                                        indicator_message !== INDICATOR_MESSAGES.not_running) &&
-                                    (contract_status === CONTRACT_STATUS.buy_succeeded ||
-                                        contract_status === CONTRACT_STATUS.contract_closed),
-                            })}
-                        />
-                        <div
-                            className={classNames('indicator', {
-                                active:
-                                    indicator_message !== INDICATOR_MESSAGES.starting &&
-                                    (contract_status === CONTRACT_STATUS.buy_succeeded ||
-                                        contract_status === CONTRACT_STATUS.contract_closed),
-                            })}
-                        >
-                            <p>
-                                {translate('ID')}: {buy_id || ''}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="trade-animator__stage">
-                        <p className="title">{translate('Contract closed')}</p>
-                        <span
-                            className={classNames('circle', {
-                                active:
-                                    indicator_message === INDICATOR_MESSAGES.running &&
-                                    contract_status === CONTRACT_STATUS.contract_closed,
-                                complete:
-                                    (indicator_message !== INDICATOR_MESSAGES.starting ||
-                                        indicator_message !== INDICATOR_MESSAGES.not_running) &&
-                                    contract_status === CONTRACT_STATUS.contract_closed,
-                            })}
-                        />
-                        <div
-                            className={classNames('indicator', {
-                                active:
-                                    indicator_message !== INDICATOR_MESSAGES.starting &&
-                                    contract_status === CONTRACT_STATUS.contract_closed,
-                            })}
-                        >
-                            <p>
-                                {translate('ID')}: {sell_id || ''}
-                            </p>
-                        </div>
-                    </div>
+                    <Stage
+                        title={translate('Attempting to Buy')}
+                        classes={{
+                            circle: classNames('circle', {
+                                active: is_running && is_attempting_to_buy,
+                                complete: !(is_starting || is_not_running),
+                            }),
+                            tooltip: classNames('tooltip', {
+                                active: !(is_starting || is_not_running),
+                            }),
+                        }}
+                        tooltip_text={`${translate('Buy amount')}: ${buy_price || 0}`}
+                    />
+                    <Stage
+                        title={translate('Buy succeeded')}
+                        classes={{
+                            circle: classNames('circle', {
+                                active: (is_running || is_stopping) && is_buy_succeeded,
+                                complete: !(is_starting || is_not_running) && (is_buy_succeeded || is_contract_closed),
+                            }),
+                            tooltip: classNames('tooltip', {
+                                active: !is_starting && (is_buy_succeeded || is_contract_closed),
+                            }),
+                        }}
+                        tooltip_text={`${translate('ID')}: ${buy_id || ''}`}
+                    />
+                    <Stage
+                        title={translate('Contract closed')}
+                        classes={{
+                            circle: classNames('circle', {
+                                active: is_running && is_contract_closed,
+                                complete: !is_starting && is_contract_closed,
+                            }),
+                            tooltip: classNames('tooltip', {
+                                active: !is_starting && is_contract_closed,
+                            }),
+                        }}
+                        tooltip_text={`${translate('ID')}: ${sell_id || ''}`}
+                    />
                     <span
                         className={classNames('trade-animator__progress-bar', {
-                            active:
-                                indicator_message !== INDICATOR_MESSAGES.starting &&
-                                (contract_status === CONTRACT_STATUS.buy_succeeded ||
-                                    contract_status === CONTRACT_STATUS.contract_closed),
-                            complete:
-                                contract_status === CONTRACT_STATUS.contract_closed &&
-                                indicator_message !== INDICATOR_MESSAGES.starting,
+                            active: !is_starting && (is_buy_succeeded || is_contract_closed),
+                            complete: is_contract_closed && !is_starting,
                         })}
                     />
                 </div>
             </div>
         </div>
     );
-
-    return (
-        <div>
-            <div id="current-trade-status">
-                <span className="stage">
-                    <div className="stage-label">{translate('Attempting to Buy')}</div>
-                    <span className="circle-wrapper">
-                        <span className="static-circle" />
-                        <span className="dynamic-circle" />
-                        <div className="line">
-                            <div className="progress-bar" />
-                        </div>
-                    </span>
-                    <div className="stage-tooltip bottom">
-                        <div className="triangle" />
-                        <p>
-                            {translate('Buy amount')}: {buy_price || 0}
-                        </p>
-                    </div>
-                </span>
-                <span className="stage">
-                    <div className="stage-tooltip top active">
-                        <p>{indicator_message}</p>
-                    </div>
-                    <div className="stage-label">{translate('Buy succeeded')}</div>
-                    <span className="circle-wrapper">
-                        <span className="static-circle" />
-                        <span className="dynamic-circle" />
-                    </span>
-                    <div className="stage-tooltip bottom">
-                        <div className="triangle" />
-                        <p>
-                            {translate('ID')}: {buy_id || ''}
-                        </p>
-                    </div>
-                </span>
-                <span className="stage">
-                    <div className="stage-label">{translate('Contract closed')}</div>
-                    <span className="circle-wrapper">
-                        <span className="static-circle" />
-                        <span className="dynamic-circle" />
-                    </span>
-                    <div className="stage-tooltip bottom">
-                        <div className="triangle" />
-                        <p>
-                            {translate('ID')}: {sell_id || ''}
-                        </p>
-                    </div>
-                </span>
-            </div>
-        </div>
-    );
 };
 
 export default AnimateTrade;
+
+const Stage = ({ title, classes: { circle, tooltip }, tooltip_text }) => (
+    <div className="trade-animator__stage">
+        <p className="title">{title}</p>
+        <span className={circle} />
+        <div className={tooltip}>
+            <p>{tooltip_text}</p>
+        </div>
+    </div>
+);
