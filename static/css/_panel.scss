@@ -303,11 +303,9 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
     p {
         font-size: 11px;
         text-align: center;
-        margin-top: -0.91em;
-        padding: 0.5em;
-        border-radius: 0.5em;
+        padding: 4px 8px;
+        border-radius: 4px;
         background-color: $COLOR_YELLOW;
-        width: 120px;
     }
 
     &.running {
