@@ -42,11 +42,16 @@ const AnimateTrade = () => {
                     currency: contract.currency,
                 })
             );
-        } else if (contract.id === 'contract.purchase_recieved') {
-            setContractStatus(CONTRACT_STATUS.buy_succeeded);
+            return;
+        }
 
+        if (contract.id === 'contract.purchase_recieved') {
+            setContractStatus(CONTRACT_STATUS.buy_succeeded);
             setBuyId(contract.data);
-        } else if (contract.id === 'contract.sold') {
+            return;
+        }
+
+        if (contract.id === 'contract.sold') {
             setContractStatus(CONTRACT_STATUS.contract_closed);
             setSellId(contract.data);
         }

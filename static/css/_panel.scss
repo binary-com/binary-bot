@@ -3,8 +3,8 @@
 @import './deriv/devices.scss';
 @import 'constants';
 
-$STATIC_CIRCLE_DIAMETER: 0.5em;
-$DYNAMIC_CIRCLE_DIAMETER: 1.5em;
+$STATIC_CIRCLE_DIAMETER: 0.5rem;
+$DYNAMIC_CIRCLE_DIAMETER: 1.5rem;
 $DISABLED_COLOR: #F2F2F2;
 $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
 
@@ -157,16 +157,16 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
         outline: none;
     }
     .react-grid-Grid {
-        border: 1px solid #f2f2f2;
+        border: 1px solid $DISABLED_COLOR;
     }
     .react-grid-Cell {
-        border-bottom: 1px solid #f2f2f2;
-        border-right: 1px solid #f2f2f2;
+        border-bottom: 1px solid $DISABLED_COLOR;
+        border-right: 1px solid $DISABLED_COLOR;
     }
     .react-grid-HeaderCell {
         font-size: 11px;
-        border-bottom: 1px solid #f2f2f2;
-        border-right: 1px solid #f2f2f2;
+        border-bottom: 1px solid $DISABLED_COLOR;
+        border-right: 1px solid $DISABLED_COLOR;
         padding-left: 8px !important;
         display: flex !important;
         align-items: center;
