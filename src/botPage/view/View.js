@@ -9,7 +9,7 @@ import IntegrationsDialog from './Dialogs/IntegrationsDialog';
 import TradingView from './Dialogs/TradingView';
 import logHandler from './logger';
 import LogTable from './LogTable';
-import { symbolPromise } from './shared';
+import { symbolPromise, getActiveToken } from './shared';
 import TradeInfoPanel from './TradeInfoPanel';
 import { showDialog } from '../bot/tools';
 import config, { updateConfigCurrencies } from '../common/const';
@@ -29,7 +29,6 @@ import { observer as globalObserver } from '../../common/utils/observer';
 import {
     getTokenList,
     removeAllTokens,
-    get as getStorage,
     set as setStorage,
     getToken,
     syncWithDerivApp,
@@ -113,11 +112,6 @@ const tradingView = new TradingView();
 
 const integrationsDialog = new IntegrationsDialog();
 
-const getActiveToken = (tokenList, activeToken) => {
-    const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === activeToken);
-    return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
-};
-
 const updateTokenList = () => {
     const tokenList = getTokenList();
     const loginButton = $('#login, #toolbox-login');
@@ -144,7 +138,7 @@ const updateTokenList = () => {
         loginButton.hide();
         accountList.show();
 
-        const activeToken = getActiveToken(tokenList, getStorage(AppConstants.STORAGE_ACTIVE_TOKEN));
+        const activeToken = getActiveToken(tokenList);
         showHideEuElements(hasEuAccount(tokenList));
         showBanner();
         subscribeToAllAccountsBalance(activeToken.token);
