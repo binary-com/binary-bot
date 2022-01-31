@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { generateLiveApiInstance } from './appId';
+import { generateDerivApiInstance } from './appId';
 
 export const showHideEuElements = isEu => {
     document.querySelectorAll('.eu-hide').forEach(el => {
@@ -26,7 +26,7 @@ export const isEuLandingCompany = landing_company => /^(maltainvest|malta|iom)$/
 export const hasEuAccount = token_list =>
     token_list.some(token_obj => isEuLandingCompany(token_obj.loginInfo.landing_company_name));
 
-export const isEuCountry = async (api = generateLiveApiInstance()) => {
+export const isEuCountry = async (api = generateDerivApiInstance()) => {
     const { website_status } = await api.send({ website_status: 1 });
     const { clients_country } = website_status;
     const { landing_company } = await api.send({ landing_company: clients_country });

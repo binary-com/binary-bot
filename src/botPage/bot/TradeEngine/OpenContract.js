@@ -9,94 +9,93 @@ const AFTER_FINISH_TIMEOUT = 5;
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            this.listen('proposal_open_contract', r => {
-                const contract = r.proposal_open_contract;
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data?.msg_type === 'proposal_open_contract') {
+                    const contract = data.proposal_open_contract;
+                    if (!this.expectedContractId(contract.contract_id)) return;
 
-                if (!this.expectedContractId(contract.contract_id)) {
-                    return;
-                }
+                    this.setContractFlags(contract);
 
-                this.setContractFlags(contract);
+                    this.data.contract = contract;
 
-                this.data.contract = contract;
+                    broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
-                broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
+                    if (this.isSold) {
+                        contractStatus({
+                            id: 'contract.sold',
+                            data: contract.transaction_ids.sell,
+                            contract,
+                        });
 
-                if (this.isSold) {
-                    contractStatus({
-                        id  : 'contract.sold',
-                        data: contract.transaction_ids.sell,
-                        contract,
-                    });
-                    contractSettled(contract);
-                    this.contractId = '';
-                    this.updateTotals(contract);
-                    if (this.afterPromise) {
-                        this.afterPromise();
-                    }
+                        contractSettled(contract);
 
-                    this.store.dispatch(sell());
+                        this.contractId = '';
+                        this.updateTotals(contract);
 
-                    this.cancelSubscriptionTimeout();
-                } else {
-                    this.store.dispatch(openContractReceived());
-                    if (!this.isExpired) {
-                        this.resetSubscriptionTimeout();
+                        if (this.afterPromise) {
+                            this.afterPromise();
+                        }
+
+                        this.store.dispatch(sell());
+                        this.cancelSubscriptionTimeout();
+                    } else {
+                        this.store.dispatch(openContractReceived());
+                        if (!this.isExpired) {
+                            this.resetSubscriptionTimeout();
+                        }
                     }
                 }
             });
         }
+
         waitForAfter() {
             return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
         }
-        subscribeToOpenContract(contractId = this.contractId) {
-            if (this.contractId !== contractId) {
+
+        subscribeToOpenContract(contract_id = this.contractId) {
+            if (this.contractId !== contract_id) {
                 this.resetSubscriptionTimeout();
             }
-            this.contractId = contractId;
+            this.contractId = contract_id;
 
             doUntilDone(() =>
-                this.api.subscribeToOpenContract(contractId).then(response => {
-                    this.openContractId = response.proposal_open_contract.id;
+                this.api.send({
+                    proposal_open_contract: 1,
+                    contract_id,
                 })
             ).catch(error => {
                 observer.emit('reset_animation');
                 observer.emit('Error', error);
             });
         }
+
         resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
-            this.subscriptionTimeout = setInterval(() => {
+            this.subscription_timeout = setInterval(() => {
                 this.subscribeToOpenContract();
                 this.resetSubscriptionTimeout(timeout);
             }, timeout * 1000);
         }
+
         cancelSubscriptionTimeout() {
-            clearTimeout(this.subscriptionTimeout);
+            clearTimeout(this.subscription_timeout);
         }
-        setContractFlags(contract) {
-            const {
-                is_expired: isExpired,
-                is_valid_to_sell: isValidToSell,
-                is_sold: isSold,
-                entry_tick: entryTick,
-            } = contract;
 
-            this.isSold = Boolean(isSold);
-
-            this.isSellAvailable = !this.isSold && Boolean(isValidToSell);
-
-            this.isExpired = Boolean(isExpired);
-
-            this.hasEntryTick = Boolean(entryTick);
+        setContractFlags({ is_expired, is_valid_to_sell, is_sold, entry_tick }) {
+            this.isSold = !!is_sold;
+            this.isSellAvailable = !this.isSold && !!is_valid_to_sell;
+            this.isExpired = !!is_expired;
+            this.hasEntryTick = !!entry_tick;
         }
-        expectedContractId(contractId) {
-            return this.contractId && contractId === this.contractId;
+
+        expectedContractId(contract_id) {
+            return this.contractId && contract_id === this.contractId;
         }
+
         getSellPrice() {
-            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.contract;
-            return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));
+            const { bid_price, buy_price, currency } = this.data.contract;
+            return Number(roundBalance({ currency, balance: Number(bid_price) - Number(buy_price) }));
         }
     };

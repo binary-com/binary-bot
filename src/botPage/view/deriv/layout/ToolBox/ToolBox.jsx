@@ -1,17 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Modal from "../../components/modal";
-import { translate } from "../../../../../common/i18n";
+import { useSelector } from "react-redux";
 import Load from "./components/load";
 import Save from "./components/save";
 import Reset from "./components/reset";
+import Modal from "../../components/modal";
+import { translate } from "../../../../../common/i18n";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
-  if (!modal) return ;
+  if (!modal) return;
   const { component: Component, props, title } = modal;
   return (
     <Modal onClose={onClose} title={title} class_name={class_name}>
-      <Component {...props}/>
+      <Component {...props} />
     </Modal>
   );
 };
@@ -20,8 +21,11 @@ const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
 
+  const { is_gd_ready } = useSelector(state => state.ui);
+  const { is_gd_logged_in } = useSelector(state => state.client);
+
   React.useEffect(() => {
-    const Keys = Object.freeze({"zoomIn": 187,"zoomOut": 189})
+    const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
     document.body.addEventListener("keydown", (e) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {
         // Ctrl + -
@@ -52,6 +56,7 @@ const ToolBox = ({ blockly }) => {
       title: translate("Load Blocks"),
       props: {
         closeDialog: onCloseModal,
+        is_gd_logged_in,
       },
     },
     save: {
@@ -59,7 +64,8 @@ const ToolBox = ({ blockly }) => {
       title: translate("Save Blocks"),
       props: {
         closeDialog: onCloseModal,
-      blockly,
+        is_gd_logged_in,
+        blockly,
       },
     },
     reset: {
@@ -94,12 +100,14 @@ const ToolBox = ({ blockly }) => {
           onShowModal("save");
         }}
       />
-      <button
-        id="integrations"
-        className="toolbox-button icon-integrations invisible"
-      />
+      {is_gd_ready && (
+        <button
+          id="integrations"
+          className="toolbox-button icon-integrations"
+        />
+      )}
 
-      <span className="toolbox-separator"/>
+      <span className="toolbox-separator" />
       <button
         id="undo"
         className="toolbox-button icon-undo"
@@ -111,7 +119,7 @@ const ToolBox = ({ blockly }) => {
         onClick={() => blockly.redo()}
       />
 
-      <span className="toolbox-separator"/>
+      <span className="toolbox-separator" />
       <button
         id="zoomIn"
         className="toolbox-button icon-zoom-in"
@@ -128,13 +136,13 @@ const ToolBox = ({ blockly }) => {
         onClick={() => blockly.cleanUp()}
       />
       {/* Needs Refactor ClientInfo Structure */}
-      <span className="toolbox-separator"/>
-      <button id="showSummary" className="toolbox-button icon-summary"/>
-      <button id="runButton" className="toolbox-button icon-run"/>
-      <button id="stopButton" className="toolbox-button icon-stop"/>
-      <button id="logButton" className="toolbox-button icon-info"/>
+      <span className="toolbox-separator" />
+      <button id="showSummary" className="toolbox-button icon-summary" />
+      <button id="runButton" className="toolbox-button icon-run" />
+      <button id="stopButton" className="toolbox-button icon-stop" />
+      <button id="logButton" className="toolbox-button icon-info" />
 
-      <span className="toolbox-separator"/>
+      <span className="toolbox-separator" />
       {/* Needs resizeable modal */}
       <button
         id="chartButton"

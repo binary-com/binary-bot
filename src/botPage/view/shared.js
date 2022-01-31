@@ -1,10 +1,10 @@
 import filesaver from 'file-saver';
 import Observer from '../../common/utils/observer';
-import { generateLiveApiInstance } from '../../common/appId';
+import { generateDerivApiInstance } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
 
-let tmpApi = generateLiveApiInstance();
+let tmpApi = generateDerivApiInstance();
 
 export const symbolApi = new _Symbol(tmpApi);
 
@@ -16,10 +16,10 @@ export const symbolPromise = new Promise(resolve => {
     });
 });
 
-export const ticksService = new TicksService(generateLiveApiInstance());
+export const ticksService = new TicksService(generateDerivApiInstance());
 
 export const createScope = () => {
-    const api = generateLiveApiInstance();
+    const api = generateDerivApiInstance();
     const observer = new Observer();
 
     return { observer, api, ticksService, symbolApi };
