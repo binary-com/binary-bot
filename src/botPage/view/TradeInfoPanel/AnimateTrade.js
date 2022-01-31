@@ -4,6 +4,7 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import useIsMounted from '../../../common/hooks/isMounted';
+import Stage from './components/Stage';
 
 const INDICATOR_MESSAGES = {
     not_running: translate('Bot is not running.'),
@@ -22,16 +23,43 @@ const CONTRACT_STATUS = {
 
 const AnimateTrade = () => {
     const [indicator_message, setIndicatorMessage] = React.useState(INDICATOR_MESSAGES.not_running);
-    const [buy_price, setBuyPrice] = React.useState();
-    const [buy_id, setBuyId] = React.useState();
-    const [sell_id, setSellId] = React.useState();
+    const [buy_price, setBuyPrice] = React.useState(0);
+    const [buy_id, setBuyId] = React.useState(0);
+    const [sell_id, setSellId] = React.useState(0);
+    const [contract_status, setContractStatus] = React.useState(CONTRACT_STATUS.not_running);
     const isMounted = useIsMounted();
+
+    React.useEffect(() => {
+        globalObserver.register('reset_animation', resetSummary);
+        globalObserver.register('summary.clear', resetSummary);
+        globalObserver.register('bot.running', () => {
+            if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.running);
+        });
+
+        globalObserver.register('bot.stop', () => {
+            if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.stopped);
+        });
+        $('#stopButton').on('click', () => {
+            setIndicatorMessage(
+                globalObserver.getState('isRunning') ? INDICATOR_MESSAGES.stopping : INDICATOR_MESSAGES.stopped
+            );
+        });
+
+        $('#runButton').on('click', () => {
+            setIndicatorMessage(INDICATOR_MESSAGES.starting);
+            setContractStatus(CONTRACT_STATUS.not_running);
+            globalObserver.emit('summary.disable_clear');
+            globalObserver.register('contract.status', contract => animateStage(contract));
+        });
+        return () => {
+            $('#stopButton').off('click');
+            $('#runButton').off('click');
+        };
+    }, []);
 
     const resetSummary = () => {
         setIndicatorMessage(INDICATOR_MESSAGES.not_running);
     };
-
-    const [contract_status, setContractStatus] = React.useState(CONTRACT_STATUS.not_running);
 
     const animateStage = contract => {
         if (contract.id === 'contract.purchase_sent') {
@@ -57,35 +85,6 @@ const AnimateTrade = () => {
         }
     };
 
-    React.useEffect(() => {
-        globalObserver.register('reset_animation', resetSummary);
-        globalObserver.register('summary.clear', resetSummary);
-        globalObserver.register('bot.running', () => {
-            if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.running);
-        });
-        globalObserver.register('bot.stop', () => {
-            if (isMounted()) setIndicatorMessage(INDICATOR_MESSAGES.stopped);
-        });
-
-        $('#stopButton').on('click', () => {
-            setIndicatorMessage(
-                globalObserver.getState('isRunning') ? INDICATOR_MESSAGES.stopping : INDICATOR_MESSAGES.stopped
-            );
-        });
-
-        $('#runButton').on('click', () => {
-            setIndicatorMessage(INDICATOR_MESSAGES.starting);
-            setContractStatus(CONTRACT_STATUS.not_running);
-            globalObserver.emit('summary.disable_clear');
-            globalObserver.register('contract.status', contract => animateStage(contract));
-        });
-
-        return () => {
-            $('#stopButton').off('click');
-            $('#runButton').off('click');
-        };
-    }, []);
-
     const is_running = indicator_message === INDICATOR_MESSAGES.running;
     const is_starting = indicator_message === INDICATOR_MESSAGES.starting;
     const is_stopping = indicator_message === INDICATOR_MESSAGES.stopping;
@@ -106,7 +105,7 @@ const AnimateTrade = () => {
                 <div className="trade-animator__stages">
                     <Stage
                         title={translate('Attempting to Buy')}
-                        classes={{
+                        inner_classes={{
                             circle: classNames('circle', {
                                 active: is_running && is_attempting_to_buy,
                                 complete: !(is_starting || is_not_running),
@@ -119,7 +118,7 @@ const AnimateTrade = () => {
                     />
                     <Stage
                         title={translate('Buy succeeded')}
-                        classes={{
+                        inner_classes={{
                             circle: classNames('circle', {
                                 active: (is_running || is_stopping) && is_buy_succeeded,
                                 complete: !(is_starting || is_not_running) && (is_buy_succeeded || is_contract_closed),
@@ -132,7 +131,7 @@ const AnimateTrade = () => {
                     />
                     <Stage
                         title={translate('Contract closed')}
-                        classes={{
+                        inner_classes={{
                             circle: classNames('circle', {
                                 active: is_running && is_contract_closed,
                                 complete: !is_starting && is_contract_closed,
@@ -156,13 +155,3 @@ const AnimateTrade = () => {
 };
 
 export default AnimateTrade;
-
-const Stage = ({ title, classes: { circle, tooltip }, tooltip_text }) => (
-    <div className="trade-animator__stage">
-        <p className="title">{title}</p>
-        <span className={circle} />
-        <div className={tooltip}>
-            <p>{tooltip_text}</p>
-        </div>
-    </div>
-);
