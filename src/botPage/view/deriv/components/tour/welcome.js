@@ -1,5 +1,6 @@
 import React from 'react';
 import { translate } from '../../../../../common/i18n';
+import { isLoggedInDeriv } from '../../../../../common/utils/storageManager';
 import { isMobile } from '../../../../../common/utils/tools';
 
 // [TODO]: Refactor direct DOM calls
@@ -80,7 +81,7 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Accounts'),
             content: <ForthStep />,
-            target:  '#acc_switcher',
+            target:  isLoggedInDeriv() ? '#acc_switcher' : '.header__btn',
             placement: 'left',
         },
         {
