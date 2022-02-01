@@ -23,10 +23,14 @@ const GoogleDriveIntegration = () => {
             </div>
             <div className="right">
                 <a onClick={() => googleDriveUtil.authorise()} className={!isGdLoggedIn ? 'button' : 'button-disabled'}>
-                    <span id="connect-google-drive">{translate('Connect')}</span>
+                    <span id="connect-google-drive" style={{ minWidth: '130px' }}>
+                        {translate('Connect')}
+                    </span>
                 </a>
                 <a onClick={() => googleDriveUtil.logout()} className={isGdLoggedIn ? 'button' : 'button-disabled'}>
-                    <span id="disconnect-google-drive">{translate('Disconnect')}</span>
+                    <span id="disconnect-google-drive" style={{ minWidth: '130px' }}>
+                        {translate('Disconnect')}
+                    </span>
                 </a>
             </div>
         </div>
