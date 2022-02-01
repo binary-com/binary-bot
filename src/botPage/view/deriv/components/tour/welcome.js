@@ -1,6 +1,5 @@
 import React from 'react';
 import { translate } from '../../../../../common/i18n';
-import { isLoggedInDeriv } from '../../../../../common/utils/storageManager';
 import { isMobile } from '../../../../../common/utils/tools';
 
 // [TODO]: Refactor direct DOM calls
@@ -46,7 +45,7 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: 'Take a quick tour',
             content: <CustomBeaconComponent closeTourPermanently={closeTourPermanently} continueTour={continueTour}  />,
-            target: '#welcome-tour',
+            target: '#first-step-placement',
             placement: 'center',
             offset: 200,
             disableBeacon: true,
@@ -68,21 +67,21 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Workspace'),
             content: <SecondStep />,
-            target: '#workspace',
+            target: '#second-step-placement',
             placement: 'bottom',
         
         },
         {
             title: translate('Blocks toolbox'),
             content: <ThirdStep />,
-            target: '.blocklyToolboxDiv',
-            placement: 'right',
+            target: '#third-step-placement',
+            placement: 'right-start',
         },
         {
             title: translate('Accounts'),
             content: <ForthStep />,
-            target:  isLoggedInDeriv() ? '#acc_switcher' : '.header__btn',
-            placement: 'left',
+            target:  '#forth-step-placement',
+            placement: 'left-start',
         },
         {
             title: translate('Bot controls'),
@@ -93,7 +92,7 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Enjoy!'),
             content: <SixthStep />,
-            target: '#center',
+            target: '#first-step-placement',
             placement: 'center',
             style: {
                 arrow: {
