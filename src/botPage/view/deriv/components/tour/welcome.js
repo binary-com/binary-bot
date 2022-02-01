@@ -45,7 +45,7 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: 'Take a quick tour',
             content: <CustomBeaconComponent closeTourPermanently={closeTourPermanently} continueTour={continueTour}  />,
-            target: '#center',
+            target: '#welcome-tour',
             placement: 'center',
             offset: 200,
             disableBeacon: true,
@@ -67,9 +67,9 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Workspace'),
             content: <SecondStep />,
-            target: '#center',
+            target: '#workspace',
             placement: 'bottom',
-            offset: 200,
+        
         },
         {
             title: translate('Blocks toolbox'),
@@ -82,11 +82,6 @@ function welcome (closeTourPermanently, continueTour) {
             content: <ForthStep />,
             target:  '#acc_switcher',
             placement: 'left',
-            styles: {
-                floater: {
-                    top: '15px', 
-                },
-            },
         },
         {
             title: translate('Bot controls'),

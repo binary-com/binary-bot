@@ -8,7 +8,27 @@ import Footer from '../Footer';
 import ToolBox from '../ToolBox';
 import SidebarToggle from '../../components/SidebarToggle';
 
-const Center = () => ( <div className='center' id='center'/>);
+const WelcomeTour = () => ( <div
+    style={{
+        position: 'fixed',
+        width: '1em',
+        height: '1em',
+        top: '50%',
+        left: '50%',
+    }} 
+    id='welcome-tour'
+/>);
+
+const Workspace = () => ( <div
+    style={{
+        position: 'absolute',
+        width: '1em',
+        height: '1em',
+        top: '70%',
+        left: '50%',
+    }} 
+    id='workspace'
+/>);
 
 const Main = ({api, blockly}) => {
     const dispatch = useDispatch();
@@ -20,7 +40,8 @@ const Main = ({api, blockly}) => {
     }, []);
     return (
         <div className="main">
-            <Center />
+            <WelcomeTour />
+            <Workspace />
             <Tour />
             <ToolBox blockly={blockly} />
             <SidebarToggle />

@@ -64,7 +64,6 @@ const Tour = () => {
                         cursor: 'default',
                         padding: '20px',
                         pointerEvents: 'auto',
-                        // transform: 'translate3d(0, 0, 0)',
                         width: '20em',
                         zIndex: '10000',
                         position: 'fixed !important',
@@ -75,7 +74,6 @@ const Tour = () => {
                         borderRadius: '4px',
                         color: '#fff',
                         padding: '10px 25px',
-                        // transition: 'background-color 0.2s ease-in-out',
                         border: 'none',
                    
                     },
@@ -97,9 +95,7 @@ const Tour = () => {
                     tooltipContent:{
                         textAlign: 'left',
                         padding: '0',
-                    },
-
-                    
+                    },          
                 }}
             />
         </div>
