@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initial_states = {
     show_tour: false,
     is_gd_ready: false,
-    show_message_page: false,
+    show_bot_unavailable_page: false,
 };
 
 export const uiSlice = createSlice({
@@ -17,7 +17,7 @@ export const uiSlice = createSlice({
             state.is_gd_ready = action.payload;
         },
         updateShowMessagePage: (state, action) => {
-            state.show_message_page = action.payload;
+            state.show_bot_unavailable_page = action.payload;
         },
     },
 });

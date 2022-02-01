@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 
 const MessagePage = ({title, message, children}) => (
     (
@@ -13,5 +13,11 @@ const MessagePage = ({title, message, children}) => (
         </div>
     )
 );
+
+MessagePage.propTypes = {
+    title: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    children: PropTypes.any,
+};
 
 export default MessagePage;

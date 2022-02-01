@@ -4,10 +4,10 @@ import MessagePage from './message-page.jsx';
 import { translate } from '../../../../../common/i18n';
 
 const BotUnavailableMessage = () => {
-    const { show_message_page } = useSelector(state => state.ui);
+    const { show_bot_unavailable_page } = useSelector(state => state.ui);
 
     return (
-        show_message_page && (
+        show_bot_unavailable_page && (
             <MessagePage
                 title={translate('Binary Bot is not available for your account')}
                 message={translate(
