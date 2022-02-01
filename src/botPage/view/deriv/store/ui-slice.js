@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initial_states = {
     show_tour: false,
     is_gd_ready: false,
+    show_message_page: false,
 };
 
 export const uiSlice = createSlice({
@@ -15,10 +16,13 @@ export const uiSlice = createSlice({
         setGdReady: (state, action) => {
             state.is_gd_ready = action.payload;
         },
+        updateShowMessagePage: (state, action) => {
+            console.log('state: ', state);
+            state.show_message_page = action.payload;
+        },
     },
 });
 
-export const { updateShowTour } = uiSlice.actions;
-export const { setGdReady } = uiSlice.actions;
+export const { updateShowTour, setGdReady, updateShowMessagePage } = uiSlice.actions;
 
 export default uiSlice.reducer;

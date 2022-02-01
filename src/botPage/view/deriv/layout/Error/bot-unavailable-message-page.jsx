@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { getTokenList } from '../../../../../common/utils/storageManager';
-import { getActiveToken } from '../../../shared';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import MessagePage from './message-page.jsx';
 import { translate } from '../../../../../common/i18n';
 
 const BotUnavailableMessage = () => {
-    const [show, setShow] = useState(false);
-
-    useEffect(() => {
-        const activeToken = getActiveToken(getTokenList());
-        const landing_company = activeToken?.loginInfo.landing_company_name;
-        if (landing_company === 'maltainvest') setShow(true);
-    }, []);
+    const { show_message_page } = useSelector(state => state.ui);
 
     return (
-        show && (
+        show_message_page && (
             <MessagePage
                 title={translate('Binary Bot is not available for your account')}
                 message={translate(
