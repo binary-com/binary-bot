@@ -17,7 +17,6 @@ export const uiSlice = createSlice({
             state.is_gd_ready = action.payload;
         },
         updateShowMessagePage: (state, action) => {
-            console.log('state: ', state);
             state.show_message_page = action.payload;
         },
     },

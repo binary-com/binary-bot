@@ -16,10 +16,10 @@ const BotUnavailableMessage = () => {
             >
                 <div className='bot-unavailable-message-page__container'>
                     <a href='https://app.deriv.com/mt5#real' 
-                        className='LinkButton bot-unavailable-message-page__container-button'>
+                        className='link_button bot-unavailable-message-page__container-button'>
                         {translate('Trade on DMT5')}
                     </a>
-                    <a href='https://app.deriv.com' className='LinkButton'>
+                    <a href='https://app.deriv.com' className='link_button'>
                         {translate('Trade on DTrader')}
                     </a>
                 </div>
