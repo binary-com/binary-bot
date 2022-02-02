@@ -67,9 +67,9 @@ export const payout = block => {
     amountInput.setCheck("Number");
 
     if (block.type === "tradeOptions_payout") {
-      amountInput.appendField(`${translate("Payout")}:`);
+      amountInput.appendField(translate("Payout"));
     } else {
-      amountInput.appendField(`${translate("Stake")}:     `);
+      amountInput.appendField(translate("Stake"));
     }
     const active_account = getActiveAccount();
     amountInput.appendField(active_account?.currency ? active_account.currency : "USD", "CURRENCY_LIST");
