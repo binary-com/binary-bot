@@ -48,7 +48,7 @@ export default Engine =>
             // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
             // See interpreter for SellNotAvailableCustom.
             const customError = new Error(error.message);
-            customError.error.code = "SellNotAvailableCustom";
+            customError.name = "SellNotAvailableCustom";
             throw customError;
           });
 
