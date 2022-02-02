@@ -68,7 +68,13 @@ function welcome (closeTourPermanently, continueTour) {
             title: translate('Workspace'),
             content: <SecondStep />,
             target: '#second-step-target',
-            placement: 'bottom',
+            placement: 'top',
+            styles:{
+                buttonClose:{
+                    paddingTop: '27px',     
+                    paddingRight: '27px',     
+                },
+            },
         
         },
         {

@@ -4,11 +4,12 @@ import { isLoggedInDeriv } from '../../../../../common/utils/storageManager';
 
 const FirstStepTarget = () => ( <div
     style={{
-        position: 'fixed',
+        position: 'absolute',
         width: '1em',
         height: '1em',
         top: '50%',
         left: '50%',
+        transform: 'translate(-50%, -50%)',
     }} 
     id='first-step-target'
 />);
@@ -18,8 +19,9 @@ const SecontStepTarget = () => ( <div
         position: 'absolute',
         width: '1em',
         height: '1em',
-        top: '70%',
+        top: '50%',
         left: '50%',
+        transform: 'translate(-50%, -50%)',
     }} 
     id='second-step-target'
 />);
