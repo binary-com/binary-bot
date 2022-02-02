@@ -11,8 +11,8 @@ export default Engine =>
         }
         if (data?.msg_type === "balance") {
           const { currency, balance } = data.balance;
-          const balance = roundBalance({ currency, balance });
-          const balance_str = `${balance} ${currency}`;
+          const round_balance = roundBalance({ currency, balance });
+          const balance_str = `${round_balance} ${currency}`;
 
           globalObserver.setState({ balance, currency });
           info({ accountID: this.accountInfo.loginid, balance: balance_str });
