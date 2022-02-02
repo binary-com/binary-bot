@@ -177,20 +177,6 @@ const TradeTable = ({ account_id, api }) => {
             to_data_row.id = index + 1;
             return to_data_row;
         });
-        // const data = json2csv({
-        //     data: to_data_rows,
-        //     fields: [
-        //         'id',
-        //         'timestamp',
-        //         'reference',
-        //         'contract_type',
-        //         'entry_tick',
-        //         'exit_tick',
-        //         'buy_price',
-        //         'sell_price',
-        //         'profit',
-        //     ],
-        // });
 
         const json2csvParser = new Parser({ fields: [
             'id',

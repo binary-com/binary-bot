@@ -39,7 +39,6 @@ const LogTable = () => {
     };
 
     const exportLogs = () => {
-        // const data = json2csv({ data: rows, fields: ['timestamp', 'message'] });
         const json2csvParser = new Parser({ fields: 
             ['timestamp', 'message'],
         });

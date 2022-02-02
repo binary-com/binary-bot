@@ -45,7 +45,7 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: 'Take a quick tour',
             content: <CustomBeaconComponent closeTourPermanently={closeTourPermanently} continueTour={continueTour}  />,
-            target: '#first-step-placement',
+            target: '#first-step-target',
             placement: 'center',
             offset: 200,
             disableBeacon: true,
@@ -67,20 +67,20 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Workspace'),
             content: <SecondStep />,
-            target: '#second-step-placement',
+            target: '#second-step-target',
             placement: 'bottom',
         
         },
         {
             title: translate('Blocks toolbox'),
             content: <ThirdStep />,
-            target: '#third-step-placement',
+            target: '#third-step-target',
             placement: 'right-start',
         },
         {
             title: translate('Accounts'),
             content: <ForthStep />,
-            target:  '#forth-step-placement',
+            target:  '#forth-step-target',
             placement: 'left-start',
         },
         {
@@ -92,7 +92,7 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Enjoy!'),
             content: <SixthStep />,
-            target: '#first-step-placement',
+            target: '#first-step-target',
             placement: 'center',
             style: {
                 arrow: {
