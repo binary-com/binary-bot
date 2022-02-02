@@ -82,12 +82,23 @@ function welcome (closeTourPermanently, continueTour) {
             content: <ForthStep />,
             target:  '#forth-step-target',
             placement: 'left-start',
+            styles:{
+                buttonClose:{
+                    paddingRight: '29px',     
+                },
+            },
         },
         {
             title: translate('Bot controls'),
             content: <FifthStep />,
             target: isMobile() ? '#toolbox' : '#zoomIn',
             placement: 'bottom',
+            styles:{
+                buttonClose:{
+                    paddingTop: '27px',     
+                    paddingRight: '27px',     
+                },
+            },
         },
         {
             title: translate('Enjoy!'),

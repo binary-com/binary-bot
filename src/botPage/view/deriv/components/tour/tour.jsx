@@ -69,6 +69,7 @@ const Tour = () => {
                         position: 'fixed !important',
                         filter: 'drop-shadow(-1px -2px 3px rgba(0,0,0,0.3)) drop-shadow(1px 2px 3px rgba(0,0,0,0.1))',
                     },
+                    
                     buttonNext: {
                         backgroundColor: '#2e8836',
                         borderRadius: '4px',
