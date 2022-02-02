@@ -11,6 +11,7 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 const getTotalDemo = (accounts)=>{
+    if(!accounts) return 0
     const demo_account = Object.values(accounts).find(acc=> acc.demo_account && acc.type === "deriv");
     const total =  demo_account?.balance || 0;
     return total.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[total]?.fractional_digits ?? 2 })

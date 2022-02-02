@@ -15,6 +15,7 @@ const initial_state = {
   is_eu: false,
   is_logged: false,
   is_gd_logged_in: false,
+  accounnts: {},
 };
 
 export const clientSlice = createSlice({

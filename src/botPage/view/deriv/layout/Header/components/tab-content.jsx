@@ -18,12 +18,6 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const isReal = tab === "real";
   const token_list = getTokenList();
 
-  function switchAccount(index) {
-    setIsAccDropdownOpen(false);
-    const token = item_ref.current[index].querySelector(".token").value;
-    globalObserver.emit("ui.switch_account", token);
-  }
-
   return (
     <div className={`account__switcher-tabs-content ${isActive ? "" : "hide"}`}>
       <div className="account__switcher-accordion">
@@ -44,7 +38,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
         <div
           className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}
         >
-          {Object.keys(accounts).map((acc, index) => {
+          {accounts && Object.keys(accounts).map((acc, index) => {
             const account = accounts[acc]
             return (
               isReal !== Boolean(account.demo_account) && (
