@@ -1,4 +1,10 @@
 import React from 'react';
+import classNames from 'classnames';
+import { translate } from '../../../../../../common/utils/tools';
+import MenuLinks from './menu-links.jsx';
+import PlatformDropdown from './platform-dropdown.jsx';
+import { platforms } from '../../../config';
+
 
 const DrawerMenu = ({
     updateShowDrawerMenu,
@@ -9,7 +15,6 @@ const DrawerMenu = ({
     is_logged,
     })=>{
     const drawer_ref = React.useRef();
-
     React.useEffect(() => {
         function handleClickOutside(event) {
             if (drawer_ref.current && !drawer_ref.current.contains(event.target)) {
