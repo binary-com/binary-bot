@@ -250,7 +250,6 @@ export default () => {
                 const tradeType = getParentValue(tradeOptionsBlock, 'TRADETYPE_LIST');
                 const durationTypeList = tradeOptionsBlock.getField('DURATIONTYPE_LIST');
                 const selectedDuration = durationTypeList.getValue();
-
                 const durations = getDurationsForContracts(contracts, tradeType);
                 const durationOptions = durations.map(duration => [duration.label, duration.unit]);
 

@@ -1,90 +1,84 @@
 import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import React from "react";
+import LoadingButton from "../loading_button";
+import SAVE_LOAD_TYPE from "../../common/";
 import * as style from "../../../../../style";
 import { translate } from "../../../../../../../common/i18n";
-import googleDrive from "../../../../../../../common/integrations/GoogleDrive";
-import {
-  showSpinnerInButton,
-  removeSpinnerInButton,
-} from "../../../../../../../common/utils/tools";
+import google_drive_util from "../../../../../../../common/integrations/GoogleDrive";
+import useIsMounted from "../../../../../../../common/hooks/isMounted";
 
+const Load = ({ closeDialog, is_gd_logged_in }) => {
+  const [load_type, setLoadType] = React.useState(SAVE_LOAD_TYPE.local);
+  const [is_loading, setLoading] = React.useState(false);
+  const isMounted = useIsMounted();
 
-// [To Do]: Needs to refactor to functional componnennt
-export default class Load extends PureComponent {
-  constructor() {
-    super();
-    this.state = { loadType: "local" };
-  }
+  const onChange = e => setLoadType(e.target.value);
 
-  onChange(event) {
-    this.setState({ loadType: event.target.value });
-  }
+  const onSubmit = e => {
+    e.preventDefault();
 
-  submit() {
-    if (this.state.loadType === "google-drive") {
-      const initialButtonText = $(this.submitButton).text();
-      showSpinnerInButton($(this.submitButton));
-      googleDrive
+    if (load_type === SAVE_LOAD_TYPE.google_drive) {
+      setLoading(true);
+
+      google_drive_util
         .createFilePicker()
-        .then(() => {
-          this.props.closeDialog();
-          removeSpinnerInButton($(this.submitButton), initialButtonText);
-        })
-        .catch(() => {
-          removeSpinnerInButton($(this.submitButton), initialButtonText);
-        });
+        .then(() => closeDialog())
+        .finally(() => isMounted() && setLoading(false));
     } else {
-      $("#files").click();
-      this.props.closeDialog();
+      // [TODO]: Refactor to use react
+      document.getElementById('files').click();
+      closeDialog();
     }
-  }
+  };
 
-  render() {
-    return (
-        <form
-          id="load-dialog"
-          action="javascript:;" // eslint-disable-line no-script-url
-          className="dialog-content"
-          style={style.content}
-          onSubmit={() => this.submit()}
+  return (
+    <form
+      id="load-dialog"
+      className="dialog-content"
+      style={style.content}
+      onSubmit={onSubmit}
+    >
+      <div className="center-text input-row">
+        <span className="integration-option">
+          <input
+            type="radio"
+            id="load-local"
+            name="load-option"
+            value={SAVE_LOAD_TYPE.local}
+            defaultChecked
+            onChange={onChange}
+          />
+          <label htmlFor="load-local">{translate("My computer")}</label>
+        </span>
+        {is_gd_logged_in && (
+          <span className="integration-option">
+            <input
+              type="radio"
+              id="load-google-drive"
+              name="load-option"
+              value={SAVE_LOAD_TYPE.google_drive}
+              onChange={onChange}
+            />
+            <label htmlFor="load-google-drive">Google Drive</label>
+          </span>
+        )}
+      </div>
+      <div className="center-text input-row last">
+        <button
+          id="load-strategy"
+          type="submit"
+          disabled={is_loading}
         >
-          <div className="center-text input-row">
-            <span className="integration-option">
-              <input
-                type="radio"
-                id="load-local"
-                name="load-option"
-                value="local"
-                defaultChecked={true}
-                onChange={(e) => this.onChange(e)}
-              />
-              <label htmlFor="load-local">{translate("My computer")}</label>
-            </span>
-            <span className="integration-option invisible">
-              <input
-                type="radio"
-                id="load-google-drive"
-                name="load-option"
-                value="google-drive"
-                onChange={(e) => this.onChange(e)}
-              />
-              <label htmlFor="load-google-drive">Google Drive</label>
-            </span>
-          </div>
-          <div className="center-text input-row last">
-            <button
-              id="load-strategy"
-              type="submit"
-              ref={(el) => {
-                this.submitButton = el;
-              }}
-            >
-              {translate("Load")}
-            </button>
-          </div>
-        </form>
-    );
-  }
+          {is_loading ? <LoadingButton /> : translate('Load')}
+        </button>
+      </div>
+    </form>
+  );
+};
 
-  static props = { closeDialog: PropTypes.func };
-}
+Load.propTypes = {
+  closeDialog: PropTypes.func.isRequired,
+  is_gd_logged_in: PropTypes.bool.isRequired,
+};
+
+export default React.memo(Load);

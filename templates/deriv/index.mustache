@@ -21,26 +21,6 @@
       <div id="logTable" class="logTable-scroll"></div>
     </span>
     <span id="summaryPanel" class="draggable-dialog" data-i18n-title="Summary"></span>
-    <div>
-        <div class="blocker"></div>
-        <div class="reality-check" style="display: none">
-            <h1 data-i18n-text="Reality Check"></h1>
-            <p data-i18n-text="Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis."></p>
-            <p data-i18n-text="Please specify your preferred reality-check interval in minutes">
-                <input id="realityDuration" interval="1" maxlength="2" value="10">
-            </p>
-            <p id="rc-err" style="display: none;" class="error-msg" data-i18n-text="Please enter a number between 10 to 60."></p>
-            <div>
-                <button bcont="1" class="button" id="continue-trading" data-i18n-text="Continue Trading"></button>
-                <a id="statement-reality-check" class="button-secondary" href="#">
-                    <span data-i18n-text="Statement"></span>
-                </a>
-                <a id="logout-reality-check" class="button-secondary" href="#">
-                    <span data-i18n-text="Log out"></span>
-                </a>
-            </div>
-        </div>
-    </div>
     {{> ../partials/loading }}
     <div id='header-wrapper'></div>
     <div id="main"></div>
