@@ -58,7 +58,7 @@ export default class TicksService {
 
         if (!this.active_symbols_promise) {
             this.active_symbols_promise = new Promise(resolve => {
-                this.api.getActiveSymbolsBrief().then(r => {
+                this.api.send({ active_symbols: 'brief' }).then(r => {
                     const { active_symbols: symbols } = r;
                     this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
                         // eslint-disable-next-line no-param-reassign
@@ -151,7 +151,7 @@ export default class TicksService {
             ...(tickSubscription || []),
         ];
 
-        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))));
+        Promise.all(subscription.map(id => doUntilDone(() => this.api.forget(id))));
 
         this.subscriptions = new Map();
     }
@@ -180,31 +180,31 @@ export default class TicksService {
         }
     }
     observe() {
-        this.api.events.on('tick', r => {
-            const {
-                tick,
-                tick: { symbol, id },
-            } = r;
-
-            if (this.ticks.has(symbol)) {
-                this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
-                this.updateTicksAndCallListeners(symbol, updateTicks(this.ticks.get(symbol), parseTick(tick)));
+        this.api.onMessage().subscribe(({ data }) => {
+            if (data?.msg_type === 'tick') {
+                const {
+                    tick,
+                    tick: { symbol, id },
+                } = data;
+                if (this.ticks.has(symbol)) {
+                    this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
+                    this.updateTicksAndCallListeners(symbol, updateTicks(this.ticks.get(symbol), parseTick(tick)));
+                }
             }
-        });
 
-        this.api.events.on('ohlc', r => {
-            const {
-                ohlc,
-                ohlc: { symbol, granularity, id },
-            } = r;
-
-            if (this.candles.hasIn([symbol, Number(granularity)])) {
-                this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
-                const address = [symbol, Number(granularity)];
-                this.updateCandlesAndCallListeners(
-                    address,
-                    updateCandles(this.candles.getIn(address), parseOhlc(ohlc))
-                );
+            if (data?.msg_type === 'ohlc') {
+                const {
+                    ohlc,
+                    ohlc: { symbol, granularity, id },
+                } = data;
+                if (this.candles.hasIn([symbol, Number(granularity)])) {
+                    this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
+                    const address = [symbol, Number(granularity)];
+                    this.updateCandlesAndCallListeners(
+                        address,
+                        updateCandles(this.candles.getIn(address), parseOhlc(ohlc))
+                    );
+                }
             }
         });
     }
@@ -238,17 +238,17 @@ export default class TicksService {
     }
     requestTicks(options) {
         const { symbol, granularity, style } = options;
+        const request_object = {
+            ticks_history: symbol,
+            subscribe: 1,
+            end: 'latest',
+            count: 1000,
+            granularity: granularity ? Number(granularity) : undefined,
+            style,
+        };
 
         return new Promise((resolve, reject) => {
-            doUntilDone(() =>
-                this.api.getTickHistory(symbol, {
-                    subscribe: 1,
-                    end: 'latest',
-                    count: 1000,
-                    granularity: granularity ? Number(granularity) : undefined,
-                    style,
-                })
-            )
+            doUntilDone(() => this.api.send(request_object))
                 .then(r => {
                     if (style === 'ticks') {
                         const ticks = historyToTicks(r.history);

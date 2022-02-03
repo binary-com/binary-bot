@@ -1,5 +1,5 @@
 import { translate } from '../../common/i18n';
-import { generateLiveApiInstance } from '../../common/appId';
+import { generateDerivApiInstance } from '../../common/appId';
 import { load as loadLang } from '../../common/lang';
 
 loadLang();
@@ -274,9 +274,9 @@ const config = {
     quick_strategies: ['martingale', 'dalembert'],
 };
 
-export async function updateConfigCurrencies(api = generateLiveApiInstance()) {
+export async function updateConfigCurrencies(api = generateDerivApiInstance()) {
     try {
-        const response = await api.getPayoutCurrencies();
+        const response = await api.send({ payout_currencies: 1 });
         config.lists.CURRENCY = response.payout_currencies.map(c => {
             if (c === 'UST') return ['USDT', 'UST'];
             return [c, c];
