@@ -59,8 +59,11 @@
   z-index: 2;
   height: 25px;
   position: relative;
-  &.logTable {
+  &.log-table {
     height: 35px;
+    &:before {
+      cursor: col-resize;
+    }
   }
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
@@ -69,7 +72,6 @@
     content: '';
     position: absolute;
     height: 100px;
-    cursor: col-resize;
     border-right: 1px solid #f2f2f2;
   }
 }

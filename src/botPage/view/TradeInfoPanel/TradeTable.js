@@ -38,30 +38,19 @@ const TradeTable = ({ account_id, api }) => {
 
     const rows = account_id in account_state ? account_state[account_id].rows : [];
 
-    const [widths, setWidths] = React.useState({
-        timestamp: 0.25,
-        reference: 0.15,
-        contract_type: 0.1,
-        entry_tick: 0.1,
-        exit_tick: 0.1,
-        buy_price: 0.1,
-        profit: 0.1,
-        contract_status: 0.1,
-    });
-
     const total_width = 750;
     const min_height = 290;
     const row_height = 25;
 
     const columns = [
-        { key: 'timestamp', label: translate('Timestamp') },
-        { key: 'reference', label: translate('Reference') },
-        { key: 'contract_type', label: translate('Trade type') },
-        { key: 'entry_tick', label: translate('Entry spot') },
-        { key: 'exit_tick', label: translate('Exit spot') },
-        { key: 'buy_price', label: translate('Buy price') },
-        { key: 'profit', label: translate('Profit/Loss') },
-        { key: 'contract_status', label: translate('Status') },
+        { key: 'timestamp', label: translate('Timestamp'), width: 196 },
+        { key: 'reference', label: translate('Reference'), width: 88 },
+        { key: 'contract_type', label: translate('Trade type'), width: 70 },
+        { key: 'entry_tick', label: translate('Entry spot'), width: 71 },
+        { key: 'exit_tick', label: translate('Exit spot'), width: 71 },
+        { key: 'buy_price', label: translate('Buy price'), width: 84 },
+        { key: 'profit', label: translate('Profit/Loss'), width: 89 },
+        { key: 'contract_status', label: translate('Status'), width: 73 },
     ];
 
     const getTradeObject = contract => {
@@ -228,12 +217,6 @@ const TradeTable = ({ account_id, api }) => {
                         axis="x"
                         defaultClassName="DragHandle"
                         defaultClassNameDragging="DragHandleActive"
-                        onDrag={(e, { deltaX }) =>
-                            resizeRow({
-                                deltaX,
-                                headerIndex,
-                            })
-                        }
                         position={{ x: 0 }}
                         zIndex={999}
                     >
@@ -242,21 +225,6 @@ const TradeTable = ({ account_id, api }) => {
                 )}
             </React.Fragment>
         );
-    };
-
-    const resizeRow = ({ deltaX, headerIndex }) => {
-        const updatedWidths = { ...widths };
-        Object.keys(widths).forEach((key, index) => {
-            console.log(headerIndex, index, key, 'here here here');
-            const width = widths[key];
-            if (headerIndex === index) {
-                updatedWidths[key] = width + deltaX / total_width;
-            } else {
-                updatedWidths[key] = width - deltaX / total_width;
-            }
-        });
-        setWidths(updatedWidths);
-        console.log(updatedWidths, 'updatedWidths');
     };
 
     const cellRenderer = ({ cellData, dataKey }) => {
@@ -279,11 +247,11 @@ const TradeTable = ({ account_id, api }) => {
                     textTransform: 'capitalize',
                 }}
             >
-                {columns.map(({ label, key }, index) => (
+                {columns.map(({ label, key, width }, index) => (
                     <Column
                         headerRenderer={headerRenderer}
                         cellRenderer={cellRenderer}
-                        width={widths[key] * total_width}
+                        width={width}
                         key={index}
                         label={label}
                         dataKey={key}

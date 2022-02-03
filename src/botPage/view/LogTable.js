@@ -70,7 +70,7 @@ const Logtable = () => {
                         position={{ x: 0 }}
                         zIndex={999}
                     >
-                        <span className="DragHandleIcon logTable" />
+                        <span className="DragHandleIcon log-table" />
                     </Draggable>
                 )}
             </React.Fragment>
