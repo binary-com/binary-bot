@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import  Popover from '../../../components/popover.jsx';
+import  Popover from '../../../components/popover';
 import { translate} from "../../../../../../common/utils/tools";
 
 
@@ -8,6 +8,22 @@ const NetworkStatus = ({ api }) => {
     const [status, setStatus] = React.useState("offline");
 
     React.useEffect(() => {
+        api.send({ website_status: '1', subscribe: 1 });
+        api.onMessage().subscribe(({ data }) => {
+            if (data?.msg_type === 'website_status') {
+                $('.web-status').trigger('notify-hide');
+                const { website_status } = data;
+                if(website_status?.message) {
+                    $.notify(website_status.message, {
+                        position: 'bottom left',
+                        autoHide: false,
+                        className: 'warn web-status',
+                    });
+                }
+
+            }
+        })
+        
         if ("onLine" in navigator) {
             window.addEventListener("online", () => updateStatus());
             window.addEventListener("offline", () => updateStatus());
@@ -28,7 +44,7 @@ const NetworkStatus = ({ api }) => {
 
     const updateStatus = () => {
         if (navigator.onLine) {
-            api.socket.readyState !== 1 ?
+            api.connection.readyState !== 1 ?
                 setStatus("blinker") :
                 api.send({ ping: "1" }).then(() => setStatus("online"));
         } else {

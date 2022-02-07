@@ -2,7 +2,7 @@ import { TrackJS } from 'trackjs';
 import { oppositesToDropdown } from '../utils';
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
-import { generateLiveApiInstance } from '../../../../common/appId';
+import { generateDerivApiInstance } from '../../../../common/appId';
 import { translate } from '../../../../common/i18n';
 import {
     get as getStorage,
@@ -309,7 +309,7 @@ export const getContractsAvailableForSymbol = async underlyingSymbol => {
 };
 
 export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
-    const api = generateLiveApiInstance();
+    const api = generateDerivApiInstance();
     let tokenList = getTokenList();
     if (tokenList.length) {
         try {
@@ -321,7 +321,7 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
     }
     const contractsForSymbol = {};
     try {
-        const response = await api.getContractsForSymbol(underlyingSymbol);
+        const response = await api.send({ contracts_for: underlyingSymbol });
         if (response.contracts_for) {
             Object.assign(contractsForSymbol, {
                 symbol: underlyingSymbol,

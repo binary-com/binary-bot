@@ -457,50 +457,53 @@ export default class _Blockly {
         let code;
         try {
             code = `
-var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
+                var BinaryBotPrivateInit;
+                var BinaryBotPrivateStart;
+                var BinaryBotPrivateBeforePurchase;
+                var BinaryBotPrivateDuringPurchase;
+                var BinaryBotPrivateAfterPurchase;
+                var BinaryBotPrivateLastTickTime;
+                var BinaryBotPrivateTickAnalysisList = [];
 
-var BinaryBotPrivateLastTickTime
-var BinaryBotPrivateTickAnalysisList = [];
+                function BinaryBotPrivateRun(f, arg) {
+                    if (f) return f(arg);
+                    return false;
+                }
 
-function BinaryBotPrivateRun(f, arg) {
- if (f) return f(arg);
- return false;
-}
+                function BinaryBotPrivateTickAnalysis() {
+                    var currentTickTime = Bot.getLastTick(true).epoch
+                    if (currentTickTime === BinaryBotPrivateLastTickTime) {
+                        return
+                    }
+                    BinaryBotPrivateLastTickTime = currentTickTime
+                    for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
+                        BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
+                    }
+                }
 
-function BinaryBotPrivateTickAnalysis() {
- var currentTickTime = Bot.getLastTick(true).epoch
- if (currentTickTime === BinaryBotPrivateLastTickTime) {
-   return
- }
- BinaryBotPrivateLastTickTime = currentTickTime
- for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
-   BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
- }
-}
+                var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
 
-var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
+                ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
-${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+                BinaryBotPrivateRun(BinaryBotPrivateInit);
 
-BinaryBotPrivateRun(BinaryBotPrivateInit);
-
-while(true) {
- BinaryBotPrivateTickAnalysis();
- BinaryBotPrivateRun(BinaryBotPrivateStart)
- while(watch('before')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
- }
- while(watch('during')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
- }
- BinaryBotPrivateTickAnalysis();
- if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
-   break;
- }
-}
-       `;
+                while(true) {
+                    BinaryBotPrivateTickAnalysis();
+                    BinaryBotPrivateRun(BinaryBotPrivateStart)
+                    while(watch('before')) {
+                        BinaryBotPrivateTickAnalysis();
+                        BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
+                    }
+                    while(watch('during')) {
+                        BinaryBotPrivateTickAnalysis();
+                        BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
+                    }
+                    BinaryBotPrivateTickAnalysis();
+                    if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
+                        break;
+                    }
+                }
+            `;
             this.generatedJs = code;
             if (code) {
                 this.stop(true);

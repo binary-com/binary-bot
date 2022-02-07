@@ -1,5 +1,5 @@
 import React from "react";
-import  Popover from '../../../components/popover.jsx';
+import  Popover from '../../../components/popover';
 
 const ServerTime = ({ api }) => {
     const [hasApiResponse, setHasApiResponse] = React.useState(false);
@@ -22,7 +22,7 @@ const ServerTime = ({ api }) => {
     };
 
     const getServerTime = () => {
-        if (!navigator.onLine || api.socket.readyState !== 1) setHasApiResponse(false);
+        if (!navigator.onLine || api.connection.readyState !== 1) setHasApiResponse(false);
 
         api.send({ time: 1 }).then(response => {
             const newDate = new Date(response.time * 1000);

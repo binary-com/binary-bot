@@ -1,0 +1,82 @@
+@import "devices";
+@import 'color';
+
+.modal {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    overflow: scroll;
+    &__container {
+        width: 25em;
+        height: auto;
+        background: $white;
+        border: 1px solid #ddd;
+        background: $white;
+        color: #333;
+        padding: 5px;
+        border-radius: 3px;
+        @include mobile {
+            width: 90vw;
+        }
+    }
+    &__header {
+        border: 1px solid #2a3052;
+        border-bottom-right-radius: 3px;
+        background: #2a3052;
+        color: $white;
+        font-family: roboto, sans-serif;
+        font-weight: 400;
+        padding: 0.4em;
+        padding-left: 1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &-right {
+            &-close {
+                width: 1.5em;
+                height: 1.5em;
+                background: #2e8836;
+                border-radius: 3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: $white;
+                padding:0;
+                &::after {
+                    content: "\00d7";
+                    font-weight: 200;
+                }
+            }
+        }
+    }
+    &__content {
+        & .input-row {
+            margin: 1em 0;
+        }
+    }
+    &-reset{
+        & .modal__container{
+            width: 600px;
+        }
+        & .reset__footer{
+            border-top:1px solid #ddd;
+            margin-top: 0.5em;
+            padding: 0.8em 1em 0.5em 0.4em;
+            width: 100%;
+            display:flex;
+            justify-content: end;
+            & button{
+                height: 40px;
+                margin: 5px;
+                float: right;
+            }
+        }
+    }
+    
+}
