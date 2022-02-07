@@ -85,7 +85,6 @@ const ToolBox = ({ blockly }) => {
   };
   return (
     <div id="toolbox">
-     
       <Tooltip content={translate("Reset the blocks to their initial state")} direction="right">
           <button
         id="resetButton"
