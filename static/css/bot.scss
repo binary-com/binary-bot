@@ -213,17 +213,7 @@ label {
     z-index: 10001 !important;
 }
 
-/* Custom properties */
-:root {
-  --tooltip-text-color: white;
-  --tooltip-background-color: black;
-  --tooltip-margin: 10px;
-  --tooltip-arrow-size: 6px;
-}
-
-
 .bot-tooltip {
-    
   display: inline-block;
   position: relative;
     &__popover {
@@ -233,11 +223,9 @@ label {
         left: 50%;
         transform: translateX(-50%);
         padding: 6px;
-        color: var(--tooltip-text-color);
-        background: var(--tooltip-background-color);
+        color: $white;
+        background: $black;
         font-size: 14px;
-        font-family: sans-serif;
-        line-height: 1;
         white-space: nowrap;
 
         &:before {
@@ -249,53 +237,52 @@ label {
             width: 0;
             position: absolute;
             pointer-events: none;
-            border-width: var(--tooltip-arrow-size);
-            margin-left: calc(var(--tooltip-arrow-size) * -1);
+            border-width: $TOOLTIP-ARROW-SIZE;
+            margin-left: calc($TOOLTIP-ARROW-SIZE * -1);
         }
 
         &.top {
-            top: calc(var(--tooltip-margin) * -1);
+            top: calc($TOOLTIP-MARGIN * -1);
             &:before {
                 top: 100%;
-                border-top-color: var(--tooltip-background-color);
+                border-top-color: $black;
             }
         }
         &.right {
-            left: calc(100% + var(--tooltip-margin));
+            left: calc(100% + $TOOLTIP-MARGIN);
             top: 50%;
             transform: translateX(0) translateY(-50%);
             &:before {
-                left: calc(var(--tooltip-arrow-size) * -1);
+                left: calc($TOOLTIP-ARROW-SIZE * -1);
                 top: 50%;
                 transform: translateX(0) translateY(-50%);
-                border-right-color: var(--tooltip-background-color);
+                border-right-color: $black;
             }
              
         }
         &.bottom {
-            bottom: calc(var(--tooltip-margin) * -1);
+            bottom: calc($TOOLTIP-MARGIN * -1);
             &::before {
                 bottom: 100%;
-                border-bottom-color: var(--tooltip-background-color);
+                border-bottom-color: $black;
             }
         }
         &.left {
             left: auto;
-            right: calc(100% + var(--tooltip-margin));
+            right: calc(100% + $TOOLTIP-MARGIN);
             top: 50%;
             transform: translateX(0) translateY(-50%);
             &:before {
                 left: auto;
-                right: calc(var(--tooltip-arrow-size) * -2);
+                right: calc($TOOLTIP-ARROW-SIZE * -2);
                 top: 50%;
                 transform: translateX(0) translateY(-50%);
-                border-left-color: var(--tooltip-background-color);
+                border-left-color: $black;
             }
         }
-         @include mobile {
+        @include mobile {
              display: none;
+        }
     }
-    }
-   
 }
 
