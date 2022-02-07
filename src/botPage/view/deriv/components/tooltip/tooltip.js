@@ -1,9 +1,10 @@
 /* eslint-disable indent */
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Tooltip = props => {
     let timeout;
-    const [active, setActive] = useState(false);
+    const [active, setActive] = React.useState(false);
 
     const showTip = () => {
         timeout = setTimeout(() => {
@@ -17,16 +18,17 @@ const Tooltip = props => {
     };
 
     return (
-        <div
-            className="Tooltip-Wrapper"
-            // When to show the tooltip
-            onMouseEnter={showTip}
-            onMouseLeave={hideTip}
-        >
+        <div className="bot-tooltip" onMouseEnter={showTip} onMouseLeave={hideTip}>
             {props.children}
-            {active && <div className={`Tooltip-Tip ${props.direction || 'top'}`}>{props.content}</div>}
+            {active && <div className={`bot-tooltip__popover ${props.direction || 'top'}`}>{props.content}</div>}
         </div>
     );
+};
+
+Tooltip.propTypes = {
+    delay: PropTypes.number,
+    direction: PropTypes.string,
+    content: PropTypes.string.isRequired,
 };
 
 export default Tooltip;
