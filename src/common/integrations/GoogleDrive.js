@@ -119,6 +119,7 @@ class GoogleDriveUtil {
         generalCallback,
         rejectCallback,
         generalRejectCallback,
+        selectFolderEnabled = true,
     }) {
         this.authorise()
             .then(() => {
@@ -126,7 +127,7 @@ class GoogleDriveUtil {
                     .then(() => {
                         const view = new google.picker.DocsView();
                         view.setIncludeFolders(true)
-                            .setSelectFolderEnabled(true)
+                            .setSelectFolderEnabled(selectFolderEnabled)
                             .setMimeTypes(mimeType);
 
                         const picker = new google.picker.PickerBuilder();
@@ -207,6 +208,7 @@ class GoogleDriveUtil {
                     reject(error);
                 },
                 generalRejectCallback: reject,
+                selectFolderEnabled  : false,
             });
         });
     }
