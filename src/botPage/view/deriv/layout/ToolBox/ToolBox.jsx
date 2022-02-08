@@ -6,6 +6,9 @@ import Save from "./components/save";
 import Reset from "./components/reset";
 import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
+import {setIsBotRunning} from '../../store/ui-slice';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
+import { useDispatch } from "react-redux";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
@@ -21,10 +24,14 @@ const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
 
+  const dispatch = useDispatch();
   const { is_gd_ready } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
 
   React.useEffect(() => {
+    globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
+    globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
+    
     const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
     document.body.addEventListener("keydown", (e) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {
