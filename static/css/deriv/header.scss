@@ -110,7 +110,19 @@
                 }
             }
         }
-        &-right,
+        &-right{
+            > * {
+                align-self: center;
+            }
+            &-loader{
+                width: 100%;
+                height: 100%;
+                & > svg{
+                    max-height: 80%;
+                    margin-right:10px;
+                }
+            }
+        }
         &-left {
             > * {
                 align-self: center;
