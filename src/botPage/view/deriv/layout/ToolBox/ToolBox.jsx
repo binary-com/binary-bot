@@ -4,18 +4,16 @@
 /* eslint-disable indent */
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Load from "./components/load";
 import Save from "./components/save";
 import Reset from "./components/reset";
 import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
-// import Tooltip from "../../../deriv/components/tooltip/tooltip";
+import {setIsBotRunning} from '../../store/ui-slice';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { isMobile } from "../../../../../common/utils/tools";
-import Popover  from "../../components/popover/index";
-
-
-
+import Popover from "../../components/popover/index";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
@@ -31,11 +29,15 @@ const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
 
+  const dispatch = useDispatch();
   const { is_gd_ready } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
 
 
   React.useEffect(() => {
+    globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
+    globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
+    
     const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
     document.body.addEventListener("keydown", (e) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {

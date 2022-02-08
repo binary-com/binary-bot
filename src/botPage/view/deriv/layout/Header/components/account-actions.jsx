@@ -4,16 +4,19 @@ import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
 import { currencyNameMap } from "../../../config";
 import { generateDerivLink } from "../../../utils";
+import { useSelector } from "react-redux";
 
-const AccountActions = ({ clientInfo }) => {
-    const { currency, is_virtual, loginid } = clientInfo.tokenList[0].loginInfo;
-    const balance = clientInfo.balance?.accounts[loginid].balance || clientInfo.tokenList[0].loginInfo.balance;
-    const [isAccDropdownOpen, setIsAccDropdownOpen] = React.useState(false);
+const AccountActions = () => {
+    const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state=>state.client);
+    const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
 
     return (
         <React.Fragment>
             <Notifications />
+            {/* [Todo] Needs to remove input after add client info to blockly */}
+            <input type="hidden" id="active-token"value={active_token}/>
+            <input type="hidden" id="active-account-name"value={active_account_name}/>
             <a className="url-account-details header__account header__menu-item mobile-hide" href={generateDerivLink('account')}>
                 <img className="header__icon-button" id="header__account-settings" src="image/deriv/ic-user-outline.svg" />
             </a>
@@ -21,7 +24,7 @@ const AccountActions = ({ clientInfo }) => {
             <div 
                 id="acc_switcher"
                 className="header__menu-item header__menu-acc"
-                onClick={() => setIsAccDropdownOpen(!isAccDropdownOpen)}
+                onClick={() => setIsAccDropdownOpen(!is_acc_dropdown_open)}
             >
                 <div className="header__acc-info">
                     <img 
@@ -34,14 +37,14 @@ const AccountActions = ({ clientInfo }) => {
                         <span className="symbols">&nbsp;{currency}</span>
                     </div>
                     <img 
-                        className={`header__icon header__expand ${isAccDropdownOpen ? "open" : ""}`}
+                        className={`header__icon header__expand ${is_acc_dropdown_open ? "open" : ""}`}
                         src="image/deriv/ic-chevron-down-bold.svg" 
                     />
                 </div>
             </div>
-            {isAccDropdownOpen && 
+            {is_acc_dropdown_open && 
             <AccountDropdown 
-                clientInfo={clientInfo}
+                virtual = {is_virtual}
                 ref={dropdownRef}
                 setIsAccDropdownOpen = {setIsAccDropdownOpen}
             />}
