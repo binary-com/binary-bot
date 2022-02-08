@@ -13,7 +13,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const [account_switch_modal, updateAccountSwitchModal] = React.useState(false);
   const [selected_token,updateSelectedToken] = React.useState('')
   const {is_bot_running} = useSelector(state=>state.ui);
-  const { accounts } = useSelector((state) => state.client);
+  const { accounts, active_account_name } = useSelector((state) => state.client);
   const item_ref = React.useRef([]);
   const isReal = tab === "real";
   const token_list = getTokenList();
@@ -38,7 +38,9 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
         <div
           className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}
         >
-          {accounts && Object.keys(accounts).map((acc, index) => {
+          {accounts && Object.keys(accounts)
+            .sort((acc,acc1)=>{return acc === active_account_name ? -1 : acc1 === active_account_name ? 1:0})
+            .map((acc, index) => {
             const account = accounts[acc]
             return (
               isReal !== Boolean(account.demo_account) && (
