@@ -10,9 +10,13 @@ import AccountSwitchModal from "./account-switch-modal.jsx";
 
 const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
-  const [account_switch_modal, updateAccountSwitchModal] = React.useState(false);
-  const [selected_token,updateSelectedToken] = React.useState('')
-  const {is_bot_running} = useSelector(state=>state.ui);
+  const [account_switch_modal, updateAccountSwitchModal] = React.useState(
+    false
+  );
+  const [selected_token, updateSelectedToken] = React.useState("");
+  const { is_bot_running, show_bot_unavailable_page } = useSelector(
+    (state) => state.ui
+  );
   const { accounts } = useSelector((state) => state.client);
   const item_ref = React.useRef([]);
   const isReal = tab === "real";
@@ -38,58 +42,66 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
         <div
           className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}
         >
-          {accounts && Object.keys(accounts).map((acc, index) => {
-            const account = accounts[acc]
-            return (
-              isReal !== Boolean(account.demo_account) && (
-                <div
-                  className={`account__switcher-acc ${
-                    index === 0 ? "account__switcher-acc--active" : ""
-                  }`}
-                  key={acc}
-                  onClick={() => {
-                    const account_token = token_list.find(token=> token.accountName === acc)
-                    if(account_token?.token){
-                      updateSelectedToken(account_token.token);
-                      updateAccountSwitchModal(true);
-                    }
-                  }}
-                  ref={(el) => (item_ref.current[index] = el)}
-                >
-                  <input type="hidden" name="account_name" value={acc} />
-                  <img
-                    src={`image/deriv/currency/ic-currency-${
-                      acc.demo_account
-                        ? "virtual"
-                        : account.currency?.toLowerCase()
-                    }.svg`}
-                  />
-                  <span>
-                    {acc.demo_account
-                      ? translate("Demo")
-                      : currencyNameMap[account.currency]?.name ||
-                        account.currency}
-                    <div className="account__switcher-loginid">
-                      {acc}
-                    </div>
-                  </span>
-                  <span className="account__switcher-balance">
-                    {account?.balance?.toLocaleString(undefined, {
-                      minimumFractionDigits:
-                        currencyNameMap[account.currency]
-                          ?.fractional_digits ?? 2,
-                    })}
-                    <span className="symbols">
-                      &nbsp;
-                      {account?.currency === "UST"
-                        ? "USDT"
-                        : account?.currency}
+          {accounts &&
+            Object.keys(accounts).map((acc, index) => {
+              const account = accounts[acc];
+              return (
+                isReal !== Boolean(account.demo_account) && (
+                  <div
+                    className={`account__switcher-acc ${
+                      index === 0 ? "account__switcher-acc--active" : ""
+                    }`}
+                    key={acc}
+                    onClick={() => {
+                      const account_token = token_list.find(
+                        (token) => token.accountName === acc
+                      );
+                      if (account_token?.token) {
+                        updateSelectedToken(account_token.token);
+                        if (show_bot_unavailable_page) {
+                          globalObserver.emit(
+                            "ui.switch_account",
+                            account_token.token
+                          );
+                        } else {
+                          updateAccountSwitchModal(true);
+                        }
+                      }
+                    }}
+                    ref={(el) => (item_ref.current[index] = el)}
+                  >
+                    <input type="hidden" name="account_name" value={acc} />
+                    <img
+                      src={`image/deriv/currency/ic-currency-${
+                        acc.demo_account
+                          ? "virtual"
+                          : account.currency?.toLowerCase()
+                      }.svg`}
+                    />
+                    <span>
+                      {acc.demo_account
+                        ? translate("Demo")
+                        : currencyNameMap[account.currency]?.name ||
+                          account.currency}
+                      <div className="account__switcher-loginid">{acc}</div>
                     </span>
-                  </span>
-                </div>
-              )
-            );
-          })}
+                    <span className="account__switcher-balance">
+                      {account?.balance?.toLocaleString(undefined, {
+                        minimumFractionDigits:
+                          currencyNameMap[account.currency]
+                            ?.fractional_digits ?? 2,
+                      })}
+                      <span className="symbols">
+                        &nbsp;
+                        {account?.currency === "UST"
+                          ? "USDT"
+                          : account?.currency}
+                      </span>
+                    </span>
+                  </div>
+                )
+              );
+            })}
           {isReal && (
             <a
               href={generateDerivLink("redirect", "action=add_account")}
@@ -107,20 +119,23 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
           )}
         </div>
       </div>
-      {account_switch_modal &&(
-            <Modal
-                title={translate('Are you sure?')}
-                class_name="account-switcher"
-                onClose={()=>{updateAccountSwitchModal(false)}}
-            >
-                <AccountSwitchModal 
-                  is_bot_running={is_bot_running} 
-                  onClose={()=>updateAccountSwitchModal(false)}
-                  onAccept ={()=>globalObserver.emit("ui.switch_account", selected_token)}
-                />
-                
-            </Modal>   
-        )}
+      {account_switch_modal && (
+        <Modal
+          title={translate("Are you sure?")}
+          class_name="account-switcher"
+          onClose={() => {
+            updateAccountSwitchModal(false);
+          }}
+        >
+          <AccountSwitchModal
+            is_bot_running={is_bot_running}
+            onClose={() => updateAccountSwitchModal(false)}
+            onAccept={() =>
+              globalObserver.emit("ui.switch_account", selected_token)
+            }
+          />
+        </Modal>
+      )}
     </div>
   );
 };
