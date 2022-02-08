@@ -59,13 +59,13 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                   <input type="hidden" name="account_name" value={acc} />
                   <img
                     src={`image/deriv/currency/ic-currency-${
-                      acc.demo_account
+                      accounts[acc].demo_account
                         ? "virtual"
                         : account.currency?.toLowerCase()
                     }.svg`}
                   />
                   <span>
-                    {acc.demo_account
+                    {accounts[acc].demo_account
                       ? translate("Demo")
                       : currencyNameMap[account.currency]?.name ||
                         account.currency}
