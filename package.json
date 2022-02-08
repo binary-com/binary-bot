@@ -120,6 +120,7 @@
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.4",
     "pako": "^1.0.11",
+    "react-content-loader": "^6.1.0",
     "react-redux": "^7.2.6",
     "react-render-html": "^0.6.0",
     "react-tiny-popover": "^7.0.0",
