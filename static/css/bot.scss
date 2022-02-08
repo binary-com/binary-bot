@@ -8,6 +8,7 @@
 @import 'tour';
 @import 'deriv/index';
 
+
 * {
     box-sizing: border-box;
 }
@@ -213,76 +214,5 @@ label {
     z-index: 10001 !important;
 }
 
-.bot-tooltip {
-  display: inline-block;
-  position: relative;
-    &__popover {
-        z-index: 100;
-        position: absolute;
-        border-radius: 4px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 6px;
-        color: $white;
-        background: $black;
-        font-size: 14px;
-        white-space: nowrap;
-
-        &:before {
-            content: " ";
-            z-index: 100;
-            left: 50%;
-            border: solid transparent;
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-width: $TOOLTIP-ARROW-SIZE;
-            margin-left: calc($TOOLTIP-ARROW-SIZE * -1);
-        }
-
-        &.top {
-            top: calc($TOOLTIP-MARGIN * -1);
-            &:before {
-                top: 100%;
-                border-top-color: $black;
-            }
-        }
-        &.right {
-            left: calc(100% + $TOOLTIP-MARGIN);
-            top: 50%;
-            transform: translateX(0) translateY(-50%);
-            &:before {
-                left: calc($TOOLTIP-ARROW-SIZE * -1);
-                top: 50%;
-                transform: translateX(0) translateY(-50%);
-                border-right-color: $black;
-            }
-             
-        }
-        &.bottom {
-            bottom: calc($TOOLTIP-MARGIN * -1);
-            &::before {
-                bottom: 100%;
-                border-bottom-color: $black;
-            }
-        }
-        &.left {
-            left: auto;
-            right: calc(100% + $TOOLTIP-MARGIN);
-            top: 50%;
-            transform: translateX(0) translateY(-50%);
-            &:before {
-                left: auto;
-                right: calc($TOOLTIP-ARROW-SIZE * -2);
-                top: 50%;
-                transform: translateX(0) translateY(-50%);
-                border-left-color: $black;
-            }
-        }
-        @include mobile {
-             display: none;
-        }
-    }
-}
+// 
 

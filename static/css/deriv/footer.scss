@@ -197,4 +197,7 @@
 }
 .react-tiny-popover-container{
     z-index: 10000;
+    @include mobile{
+        display: none;
+    }
 }

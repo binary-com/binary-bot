@@ -10,8 +10,12 @@ import Save from "./components/save";
 import Reset from "./components/reset";
 import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
-import Tooltip from "../../../deriv/components/tooltip/tooltip";
+// import Tooltip from "../../../deriv/components/tooltip/tooltip";
 import { isMobile } from "../../../../../common/utils/tools";
+import Popover  from "../../components/popover/index";
+
+
+
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
@@ -29,6 +33,7 @@ const ToolBox = ({ blockly }) => {
 
   const { is_gd_ready } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
+
 
   React.useEffect(() => {
     const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
@@ -85,7 +90,9 @@ const ToolBox = ({ blockly }) => {
   };
   return (
     <div id="toolbox">
-      <Tooltip content={translate("Reset the blocks to their initial state")} direction="right">
+      <Popover  content={translate("Reset the blocks to their initial state")}
+        position="bottom"
+        >
         <button
           id="resetButton"
           className="toolbox-button icon-reset"
@@ -93,8 +100,9 @@ const ToolBox = ({ blockly }) => {
             onShowModal("reset");
           }}
         />
-      </Tooltip>
-      <Tooltip content={translate("Load new blocks (xml file)")} direction="right">
+       
+      </Popover>
+      <Popover content={translate("Load new blocks (xml file)")} position="bottom">
         <button
           id="load-xml"
           className="toolbox-button icon-browse"
@@ -102,8 +110,8 @@ const ToolBox = ({ blockly }) => {
             onShowModal("load");
           }}
         />
-      </Tooltip>
-      <Tooltip content={translate("Save the existing blocks (xml file)")} direction="right">
+      </Popover>
+      <Popover content={translate("Save the existing blocks (xml file)")} position="bottom">
         <button
           id="save-xml"
           className="toolbox-button icon-save"
@@ -111,81 +119,81 @@ const ToolBox = ({ blockly }) => {
             onShowModal("save");
           }}
         />
-      </Tooltip>
+      </Popover>
       {is_gd_ready && (
-        <Tooltip content={translate("Connect Binary Bot to your Google Drive to easily save and re-use your blocks")} direction="right">
+        <Popover content={translate("Connect Binary Bot to your Google Drive to easily save and re-use your blocks")} position="bottom">
           <button
             id="integrations"
             className="toolbox-button icon-integrations"
           />
-        </Tooltip>
+        </Popover>
       )}
 
       <span className="toolbox-separator" />
-      <Tooltip content={translate("Undo the changes (Ctrl+Z)")} direction="right">
+      <Popover content={translate("Undo the changes (Ctrl+Z)")} position="bottom">
         <button
           id="undo"
           className="toolbox-button icon-undo"
           onClick={() => blockly.undo()}
         />
-      </Tooltip>
-      <Tooltip content={translate("Redo the changes (Ctrl+Shift+Z)")} direction="right">
+      </Popover>
+      <Popover content={translate("Redo the changes (Ctrl+Shift+Z)")} position="bottom">
         <button
           id="redo"
           className="toolbox-button icon-redo"
           onClick={() => blockly.redo()}
         />
-      </Tooltip>
+      </Popover>
       <span className="toolbox-separator" />
-      <Tooltip content={translate("Zoom In (Ctrl + +)")} direction={isMobile() ? "left" : "right"}>
+      <Popover content={translate("Zoom In (Ctrl + +)")} position={isMobile() ? "left" : "bottom"}>
         <button
           id="zoomIn"
           className="toolbox-button icon-zoom-in"
           onClick={() => blockly.zoomOnPlusMinus(true)}
         />
-      </Tooltip>
-      <Tooltip content={translate("Zoom Out (Ctrl + -)")} direction={isMobile() ? "left" : "right"}>
+      </Popover>
+      <Popover content={translate("Zoom Out (Ctrl + -)")} position={isMobile() ? "left" : "bottom"}>
         <button
           id="zoomOut"
           className="toolbox-button icon-zoom-out"
           onClick={() => blockly.zoomOnPlusMinus(false)}
         />
-      </Tooltip>
-      <Tooltip content={translate("Rearrange Vertically")} direction={isMobile() ? "left" : "right"}>
+      </Popover>
+      <Popover content={translate("Rearrange Vertically")} position={isMobile() ? "left" : "bottom"}>
         <button
           id="rearrange"
           className="toolbox-button icon-sort"
           onClick={() => blockly.cleanUp()}
         />
-      </Tooltip>
+      </Popover>
       {/* Needs Refactor ClientInfo Structure */}
       <span className="toolbox-separator" />
-      <Tooltip content={translate("Show/hide the summary pop-up")} direction="right">
+      {/* <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
         <button id="showSummary" className="toolbox-button icon-summary" />
-      </Tooltip>
-      <Tooltip content={translate("Run the bot")} direction="right">
+      </Popover> */}
+      {/* <Popover content={translate("Run the bot")} position="bottom">
         <button id="runButton" className="toolbox-button icon-run" />
-      </Tooltip>
-      <Tooltip content={translate("Stop the bot")} direction="right">
+      </Popover>
+      <Popover content={translate("Stop the bot")} position="bottom">
         <button id="stopButton" className="toolbox-button icon-stop" />
-      </Tooltip>
-      <Tooltip content={translate("Show log")} direction="right">
+      </Popover>
+      <Popover content={translate("Show log")} position="bottom">
         <button id="logButton" className="toolbox-button icon-info" />
-      </Tooltip>
+      </Popover> */}
       <span className="toolbox-separator" />
       {/* Needs resizeable modal */}
-      <Tooltip content={translate("Show chart")} direction="right">
+      <Popover content={translate("Show chart")} position="bottom">
         <button
           id="chartButton"
           className="toolbox-button icon-chart-line"
         />
-      </Tooltip>
-      <Tooltip content={translate("Show Trading View")} direction="right">
+      </Popover>
+      <Popover content={translate("Show Trading View")} position="bottom">
         <button
           id="tradingViewButton"
           className="toolbox-button icon-trading-view"
         />
-      </Tooltip>
+      </Popover>
       {should_show_modal && (
         <ShowModal
           modal={MODALS[selected_modal]}
@@ -193,7 +201,6 @@ const ToolBox = ({ blockly }) => {
           class_name={selected_modal}
         />
       )}
-
     </div>
   );
 };
@@ -203,3 +210,6 @@ ToolBox.propTypes = {
 };
 
 export default ToolBox;
+
+
+

@@ -2,7 +2,7 @@
     &__container {
         position: relative;
         font-size: 12px;
-        margin: 12px 12px 15px;
+        margin: 12px;
         height: 25px;
         & > span{
             background: var(--general-active);
@@ -23,6 +23,7 @@
             display: block;
             width: 0;
             z-index: 1;
+            display: none;
         }
     }
 }
