@@ -35,7 +35,7 @@ const AccountSwitcher = () => {
   const query_string = parseQueryString();
   const query_string_array = queryToObjectArray(query_string);
   // [Todo] We should remove this after update the structure of get token list on login
-  if(query_string_array.length && query_string_array[0]?.token){
+  if(query_string_array[0]?.token){
     return (
       <div className="header__menu-right-loader">
         <AccountSwitcherLoader />

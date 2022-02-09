@@ -39,7 +39,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
           className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}
         >
           {accounts && Object.keys(accounts)
-            .sort((acc,acc1)=>{return acc === active_account_name ? -1 : acc1 === active_account_name ? 1:0})
+            .sort((acc,acc1)=>{acc === active_account_name ? -1 : (acc1 === active_account_name ? 1:0)})
             .map((acc, index) => {
             const account = accounts[acc]
             return (
