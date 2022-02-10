@@ -12,14 +12,14 @@ const HelpCenter = () => (
     </a>
 );
 
-const Footer = ({ api }) => {
+const Footer = () => {
     return (
         <footer className="footer">
-            <NetworkStatus api={api} />
+            <NetworkStatus />
             <FooterIconSeparator />
             <LanguageSelector />
             <FooterIconSeparator />
-            <ServerTime api={api} />
+            <ServerTime/>
             <FooterIconSeparator />
             <div className="footer__links">
                 <HelpCenter />

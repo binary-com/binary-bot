@@ -57,60 +57,6 @@
     }
 }
 
-#toolbox-login {
-    margin-top: 1px;
-    margin-right: 20px;
-}
-
-#toolbox-account {
-    display: table;
-    height: 40px;
-}
-
-#toolbox-account-list {
-    position: relative;
-    user-select: none;
-    display: table-cell;
-    vertical-align: middle;
-    padding-right: 20px;
-    &>a {
-        color: $black;
-        &:hover, &:visited {
-            text-decoration: none;
-        }
-    }
-}
-
-#toolbox-main-account {
-    display: inline;
-    padding-inline-start: 0;
-    &>li {
-        display: inline;
-        margin: 0 2px;
-    }
-    &>li:not(:first-child):not(:last-child):before {
-        content: '\2022';
-        margin-right: 7px;
-    }
-    &>.nav-caret {
-        display: inline-block;
-    }
-}
-
-#toolbox-all-accounts {
-    border: 0;
-    z-index: 100;
-    margin-top: -1px;
-    background: none;
-    right: 20px;
-    & li {
-        height: 100%;
-        & a {
-            margin-top: 0;
-        }
-    }
-}
-
 button {
     & > .barspinner.white {
         position: relative;
