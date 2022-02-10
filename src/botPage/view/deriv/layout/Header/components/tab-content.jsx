@@ -1,18 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { translate } from "../../../../../../common/utils/tools";
-import { observer as globalObserver } from "../../../../../../common/utils/observer";
 import { currencyNameMap } from "../../../config";
 import { generateDerivLink } from "../../../utils";
 import { getTokenList } from "../../../../../../common/utils/storageManager";
-import Modal from "../../../components/modal";
-import AccountSwitchModal from "./account-switch-modal.jsx";
+import { useDispatch } from "react-redux";
+import { setAccountSwitcherToken } from "../../../store/ui-slice";
 
 const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
-  const [account_switch_modal, updateAccountSwitchModal] = React.useState(false);
-  const [selected_token,updateSelectedToken] = React.useState('')
-  const {is_bot_running} = useSelector(state=>state.ui);
+  const dispatch = useDispatch();
   const { accounts, active_account_name } = useSelector((state) => state.client);
   const item_ref = React.useRef([]);
   const isReal = tab === "real";
@@ -39,7 +36,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
           className={`account__switcher-list ${isAccordionOpen ? "open" : ""}`}
         >
           {accounts && Object.keys(accounts)
-            .sort((acc,acc1)=>{acc === active_account_name ? -1 : (acc1 === active_account_name ? 1:0)})
+            .sort((acc,acc1)=>{return acc === active_account_name ? -1 : (acc1 === active_account_name ? 1:0)})
             .map((acc, index) => {
             const account = accounts[acc]
             return (
@@ -51,9 +48,9 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                   key={acc}
                   onClick={() => {
                     const account_token = token_list.find(token=> token.accountName === acc)
-                    if(account_token?.token){
-                      updateSelectedToken(account_token.token);
-                      updateAccountSwitchModal(true);
+                    if(account_token?.token && acc !== active_account_name){
+                      dispatch(setAccountSwitcherToken(account_token?.token));
+                      setIsAccDropdownOpen(false);
                     }
                   }}
                   ref={(el) => (item_ref.current[index] = el)}
@@ -109,20 +106,6 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
           )}
         </div>
       </div>
-      {account_switch_modal &&(
-            <Modal
-                title={translate('Are you sure?')}
-                class_name="account-switcher"
-                onClose={()=>{updateAccountSwitchModal(false)}}
-            >
-                <AccountSwitchModal 
-                  is_bot_running={is_bot_running} 
-                  onClose={()=>updateAccountSwitchModal(false)}
-                  onAccept ={()=>globalObserver.emit("ui.switch_account", selected_token)}
-                />
-                
-            </Modal>   
-        )}
     </div>
   );
 };
