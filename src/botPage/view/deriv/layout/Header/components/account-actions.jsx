@@ -65,7 +65,10 @@ const AccountActions = () => {
                 <AccountSwitchModal 
                   is_bot_running={is_bot_running} 
                   onClose={()=>{dispatch(setAccountSwitcherToken(''))}}
-                  onAccept ={()=>globalObserver.emit("ui.switch_account", account_switcher_token)}
+                  onAccept ={()=>{
+                        dispatch(setAccountSwitcherToken(''))
+                        globalObserver.emit("ui.switch_account", account_switcher_token)
+                    }}
                 />
                 
             </Modal>   
