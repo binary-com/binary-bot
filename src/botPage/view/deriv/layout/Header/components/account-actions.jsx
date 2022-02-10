@@ -5,11 +5,18 @@ import AccountDropdown from "./account-dropdown.jsx";
 import { currencyNameMap } from "../../../config";
 import { generateDerivLink } from "../../../utils";
 import { useSelector } from "react-redux";
+import Modal from "../../../components/modal";
+import AccountSwitchModal from "./account-switch-modal.jsx";
+import { observer as globalObserver } from "../../../../../../common/utils/observer";
+import { useDispatch } from "react-redux";
+import { setAccountSwitcherToken } from "../../../store/ui-slice";
 
 const AccountActions = () => {
     const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state=>state.client);
+    const {account_switcher_token, is_bot_running} = useSelector(state=>state.ui);
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
+    const dispatch = useDispatch();
 
     return (
         <React.Fragment>
@@ -49,6 +56,23 @@ const AccountActions = () => {
                 setIsAccDropdownOpen = {setIsAccDropdownOpen}
             />}
             <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href="https://app.deriv.com/cashier/deposit">{translate("Deposit")}</a>
+            {account_switcher_token &&(
+            <Modal
+                title={translate('Are you sure?')}
+                class_name="account-switcher"
+                onClose={()=>{dispatch(setAccountSwitcherToken(''))}}
+            >
+                <AccountSwitchModal 
+                  is_bot_running={is_bot_running} 
+                  onClose={()=>{dispatch(setAccountSwitcherToken(''))}}
+                  onAccept ={()=>{
+                        dispatch(setAccountSwitcherToken(''))
+                        globalObserver.emit("ui.switch_account", account_switcher_token)
+                    }}
+                />
+                
+            </Modal>   
+        )}
         </React.Fragment>
     )
 };
