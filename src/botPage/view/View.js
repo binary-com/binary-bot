@@ -12,7 +12,7 @@ import LogTable from "./LogTable";
 import { symbolPromise } from "./shared";
 import TradeInfoPanel from "./TradeInfoPanel";
 import config, { updateConfigCurrencies } from "../common/const";
-import { logoutAllTokens, AppConstants, addTokenIfValid, generateDerivApiInstance } from "../../common/appId";
+import api, { logoutAllTokens, AppConstants, addTokenIfValid } from "../../common/appId";
 import { translate } from "../../common/i18n";
 import google_drive_util from "../../common/integrations/GoogleDrive";
 import { observer as globalObserver } from "../../common/utils/observer";
@@ -37,7 +37,6 @@ import store from "./deriv/store";
 import { updateTokenList } from "./deriv/utils";
 
 let chart;
-export const api = generateDerivApiInstance();
 
 const tradingView = new TradingView();
 
