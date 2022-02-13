@@ -5,6 +5,7 @@ const initial_states = {
   is_gd_ready: false,
   is_bot_running: false,
   account_switcher_loader: true,
+  account_switcher_token: "",
 };
 
 export const uiSlice = createSlice({
@@ -23,9 +24,18 @@ export const uiSlice = createSlice({
     setAccountSwitcherLoader: (state, action) => {
       state.account_switcher_loader = action.payload;
     },
+    setAccountSwitcherToken: (state, action) => {
+      state.account_switcher_token = action.payload;
+    },
   },
 });
 
-export const { updateShowTour, setGdReady, setIsBotRunning, setAccountSwitcherLoader } = uiSlice.actions;
+export const {
+  updateShowTour,
+  setGdReady,
+  setIsBotRunning,
+  setAccountSwitcherLoader,
+  setAccountSwitcherToken,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;
