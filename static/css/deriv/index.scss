@@ -41,22 +41,6 @@ a:hover {
             overflow: scroll;
         }
     }
-    & .stage {
-        @include mobile {
-            margin: 0 !important;
-            max-width: 33%;
-        }
-    }
-    & .line {
-        @include mobile{
-            width: 1300% !important;
-        }
-    }
-}
-#current-trade-status {
-    @include mobile {
-        width: 100%;
-    }
 }
 .ui-dialog {
     @include mobile {
@@ -102,7 +86,8 @@ a:hover {
         }
     }
 }
-.barspinner{
+
+.barspinner {
     @include mobile{
         margin-left: -5% !important;
     }

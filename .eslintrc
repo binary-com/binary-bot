@@ -32,7 +32,9 @@
     "linebreak-style": 0,
     "key-spacing" : 0,
     "camelcase": 0,
-    "no-param-reassign": 0
+    "no-param-reassign": 0,
+    "indent": 0,
+    "quotes": 0
   },
   "settings": {
     "react": {

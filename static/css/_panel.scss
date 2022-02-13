@@ -1,10 +1,12 @@
 @import 'color';
 @import 'toolbox';
+@import './deriv/devices.scss';
+@import 'constants';
 
-$static-circle-diameter: 1em;
-$dynamic-circle-diameter: 1.5em;
-$circle-color: #E98024;
-$disabled-color: #F2F2F2;
+$STATIC_CIRCLE_DIAMETER: 0.5rem;
+$DYNAMIC_CIRCLE_DIAMETER: 1.5rem;
+$DISABLED_COLOR: #F2F2F2;
+$ANIMATOR_CIRCLE_POSITION_TOP: 44%;
 
 @keyframes animate-circle {
     0% { 
@@ -58,140 +60,6 @@ $disabled-color: #F2F2F2;
     #sync-warning {
         font-size: 11px;
         color: lightgray;
-    }
-    #current-trade-status{
-        margin-top: 3.5em;
-    }
-    .stage {
-        display: inline-block;
-        margin: 0 8.68% 0 8.68%;
-        vertical-align: top;
-        max-width: 120px;
-        .stage-tooltip .triangle {
-            margin-top: 0.7em;
-            margin-left: 50%;
-            transform: translate(-50%, -50%);
-            height: 10px;
-            width: 10px;
-            border: 10px solid #fef1cf;
-            border-top-color: transparent;
-            border-left-color: transparent;
-            border-right-color: transparent;
-        }
-        .stage-tooltip.top {
-            margin-bottom: 0.5em;
-            margin-top: -2.5em;
-            position: absolute;
-        }
-        .stage-tooltip p {
-            font-size: 11px;
-            text-align: center;
-            margin-top: -0.91em;
-            padding: 0.5em;
-            border-radius: 0.5em;
-            background-color: #fef1cf;
-            width: 120px;
-        }
-        .stage-tooltip.running p {
-            color: #468847;
-            background-color: #DFF0D8;
-            border-color: #D6E9C6;
-        }
-    }
-    .stage-tooltip {
-        visibility: hidden;
-    }
-    .stage-tooltip.active {
-        visibility: visible;
-        animation: slide-tooltip 0.8s 1;
-    }
-    .stage-label {
-        text-align: center;
-        font-size: 11px;
-        min-height: 24px;
-    }
-    .circle-wrapper {
-        width: $static-circle-diameter;
-        height: $static-circle-diameter;
-        display: inline-block;
-        transform: translate(-50%, 50%);
-        margin-left: 50%;
-        .static-circle {
-            width: $static-circle-diameter;
-            height: $static-circle-diameter;
-            border-radius: 100%;
-            border: 0.25em solid $disabled-color;
-            display: inline-block;
-            position: relative;
-            background-color: $disabled-color;
-        }
-    }
-    .circle-wrapper.active {
-         .static-circle {
-            width: $static-circle-diameter;
-            height: $static-circle-diameter;
-            border-radius: 100%;
-            border: 0.25em solid $circle-color;
-            display: inline-block;
-            position: relative;
-            background-color: #FFF;
-            z-index: 2;
-        }
-        .dynamic-circle {
-            position: absolute;
-            width: $dynamic-circle-diameter;
-            height: $dynamic-circle-diameter;
-            background-color: $circle-color;
-            border-radius: 100%;
-            opacity: 0.32;
-            animation: animate-circle 0.8s infinite;
-            transform: translate(-50%, -50%);
-            margin-top: 50%;
-            margin-left: -50%;
-            animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
-            z-index: 1;
-        }
-    }
-    .circle-wrapper.complete {
-         .static-circle {
-            width: $static-circle-diameter;
-            height: $static-circle-diameter;
-            border-radius: 100%;
-            border: 0.25em solid $circle-color;
-            display: inline-block;
-            position: relative;
-            background-color: #FFF;
-            z-index: 2;
-        }
-    }
-    .line {
-        position: absolute;
-        display: inline-block;
-        top: 37.5%;
-        width: 3050%;
-        height: 0.25em;
-        background-color: $disabled-color;
-    }
-    .line.active {
-         .progress-bar {
-            float: left;
-            box-shadow: none;
-            height: 100%;
-            background-color: $circle-color;
-            display: inline-block;
-            animation: animate-progress 0.5s 1;
-            animation-fill-mode: forwards;
-        }   
-    }
-    .line.complete {
-         .progress-bar {
-            box-shadow: none;
-            height: 100%;
-            background-color: $circle-color;
-            display: inline-block;
-            animation: animate-progress-complete 0.5s 1;
-            animation-fill-mode: forwards;
-        }
     }
     .summary-toolbox {
         text-align: center;
@@ -289,16 +157,16 @@ $disabled-color: #F2F2F2;
         outline: none;
     }
     .react-grid-Grid {
-        border: 1px solid #f2f2f2;
+        border: 1px solid $DISABLED_COLOR;
     }
     .react-grid-Cell {
-        border-bottom: 1px solid #f2f2f2;
-        border-right: 1px solid #f2f2f2;
+        border-bottom: 1px solid $DISABLED_COLOR;
+        border-right: 1px solid $DISABLED_COLOR;
     }
     .react-grid-HeaderCell {
         font-size: 11px;
-        border-bottom: 1px solid #f2f2f2;
-        border-right: 1px solid #f2f2f2;
+        border-bottom: 1px solid $DISABLED_COLOR;
+        border-right: 1px solid $DISABLED_COLOR;
         padding-left: 8px !important;
         display: flex !important;
         align-items: center;
@@ -428,5 +296,184 @@ $disabled-color: #F2F2F2;
 @media (max-width: 768px) {
     .blocklyTreeRoot {
         padding-bottom: 0;
+    }
+}
+
+.animator-tooltip {
+    p {
+        font-size: 11px;
+        text-align: center;
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: $COLOR_YELLOW;
+    }
+
+    &.running {
+        p {
+            color: #468847;
+            background-color: #DFF0D8;
+            border-color: #D6E9C6;
+        }
+    }
+}
+
+.trade-animator {
+    min-width: 19.5rem;
+    max-width: 767px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+
+    &__indicator-message {
+        display: flex;
+        justify-content: center;
+
+        div {
+            @extend .animator-tooltip;
+        }
+    }
+
+    &__stages {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        min-height: 5rem;
+        margin-top: 0.5rem;
+    }
+
+    &__stage {
+        min-width: 6.5rem;
+        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &:first-child {
+            margin-left: 5rem;
+        }
+
+        &:nth-child(3) {
+            margin-right: 5rem;
+        }
+
+        @include mobile {
+            &:first-child {
+                margin-left: 0;
+            }
+            &:nth-child(3) {
+                margin-right: 0;
+            }
+        }
+
+        .title {
+            font-size: 11px;
+        }
+
+        .circle {
+            &::after {
+                content: '';
+                position: absolute;
+                width: $STATIC_CIRCLE_DIAMETER;
+                height: $STATIC_CIRCLE_DIAMETER;
+                border-radius: 100%;
+                border: 0.25rem solid $DISABLED_COLOR;
+                display: block;
+                background-color: $DISABLED_COLOR;
+                right: 50%;
+                top: $ANIMATOR_CIRCLE_POSITION_TOP;
+                transform: translate(50%, -50%);
+                z-index: 1;
+            }
+
+            &.active {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: $DYNAMIC_CIRCLE_DIAMETER;
+                    height: $DYNAMIC_CIRCLE_DIAMETER;
+                    background-color: $COLOR_ORANGE;
+                    border-radius: 100%;
+                    opacity: 0.32;
+                    animation: animate-circle 0.8s infinite;
+                    transform: translate(-50%, -50%);
+                    top: $ANIMATOR_CIRCLE_POSITION_TOP;
+                    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+                    z-index: 1;
+                }
+            }
+
+            &.complete {
+                &::after {
+                    border: 0.25em solid $COLOR_ORANGE;
+                }
+            }
+        }
+
+        .tooltip {
+            padding: 4px;
+            background-color: $COLOR_YELLOW;
+            border-radius: 4px;
+            position: relative;
+
+            p {
+                font-size: 11px;
+            }
+
+            visibility: hidden;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                transform: translate(-50%, -50%);
+                border: 10px solid $COLOR_YELLOW;
+                border-top-color: transparent;
+                border-left-color: transparent;
+                border-right-color: transparent;
+            }
+
+            &.active {
+                visibility: visible;
+                animation: slide-tooltip 0.8s 1;
+            }
+        }
+    }
+
+    &__progress-bar {
+        position: absolute;
+        height: 4px;
+        background-color: $DISABLED_COLOR;
+        left: 50%;
+        top: $ANIMATOR_CIRCLE_POSITION_TOP;
+        transform: translate(-50%, -50%);
+        width: calc(100% - 16.5rem);
+
+        @include mobile {
+            width: calc(100% - 6.5rem);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            height: 4px;
+        }
+
+        &.active {
+            &::after {
+                background-color: $COLOR_ORANGE;
+                width: 50%;
+                animation: animate-progress 0.5s 1;
+                animation-fill-mode: forwards;
+            }
+        }
+
+        &.complete {
+            &::after {
+                background-color: $COLOR_ORANGE;
+                width: 100%;
+                animation: animate-progress-complete 0.5s 1;
+                animation-fill-mode: forwards;
+            }
+        }
     }
 }
