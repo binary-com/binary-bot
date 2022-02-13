@@ -79,6 +79,10 @@
         }
     }
     &-logout, &-account-switcher{
+        background: #aaaaaa4d;
+        & .logout-dialog{
+            padding:0 10px;
+        }
         & .modal__container{
             width: 600px;
         }

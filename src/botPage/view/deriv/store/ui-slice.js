@@ -6,6 +6,7 @@ const initial_states = {
   is_bot_running: false,
   account_switcher_loader: true,
   show_bot_unavailable_page: false,
+  account_switcher_token: "",
 };
 
 export const uiSlice = createSlice({
@@ -27,6 +28,9 @@ export const uiSlice = createSlice({
     updateShowMessagePage: (state, action) => {
       state.show_bot_unavailable_page = action.payload;
     },
+    setAccountSwitcherToken: (state, action) => {
+      state.account_switcher_token = action.payload;
+    },
   },
 });
 
@@ -36,6 +40,7 @@ export const {
   setIsBotRunning,
   setAccountSwitcherLoader,
   updateShowMessagePage,
+  setAccountSwitcherToken,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

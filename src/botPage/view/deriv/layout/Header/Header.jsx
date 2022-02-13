@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isMobile, isDesktop } from "../../../../../common/utils/tools";
+import { isMobile, isDesktop, parseQueryString } from "../../../../../common/utils/tools";
 import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
 import classNames from "classnames";
@@ -27,10 +27,21 @@ import {
   AccountSwitcherLoader,
 } from "./components";
 import { api } from "../../../View";
+import { queryToObjectArray } from "../../../../../common/appId";
 
 const AccountSwitcher = () => {
   const { account_switcher_loader } = useSelector((state) => state.ui);
   const { is_logged } = useSelector((state) => state.client);
+  const query_string = parseQueryString();
+  const query_string_array = queryToObjectArray(query_string);
+  // [Todo] We should remove this after update the structure of get token list on login
+  if(query_string_array[0]?.token){
+    return (
+      <div className="header__menu-right-loader">
+        <AccountSwitcherLoader />
+      </div>
+    );
+  }
   if (account_switcher_loader) {
     return (
       <div className="header__menu-right-loader">
