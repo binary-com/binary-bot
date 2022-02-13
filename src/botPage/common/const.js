@@ -1,5 +1,5 @@
 import { translate } from "../../common/i18n";
-import Api from "../../common/appId";
+import api from "../../common/appId";
 import { load as loadLang } from "../../common/lang";
 
 loadLang();
@@ -274,7 +274,7 @@ const config = {
   quick_strategies: ["martingale", "dalembert"],
 };
 
-export async function updateConfigCurrencies(api = Api) {
+export async function updateConfigCurrencies() {
   try {
     const response = await api.send({ payout_currencies: 1 });
     config.lists.CURRENCY = response.payout_currencies.map(c => {
