@@ -147,7 +147,6 @@ export async function addTokenIfValid(token, tokenObjectList) {
     GTM.setVisitorId();
     throw e;
   }
-  return api.disconnect();
 }
 
 export const logoutAllTokens = () =>
@@ -155,7 +154,6 @@ export const logoutAllTokens = () =>
     const tokenList = getTokenList();
     const logout = () => {
       removeAllTokens();
-      api.disconnect();
       resolve();
     };
     if (tokenList.length === 0) {
