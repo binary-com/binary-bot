@@ -1,4 +1,4 @@
-import json2csv from 'json2csv';
+import { Parser } from 'json2csv';
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../common/utils/observer';
@@ -39,7 +39,11 @@ const LogTable = () => {
     };
 
     const exportLogs = () => {
-        const data = json2csv({ data: rows, fields: ['timestamp', 'message'] });
+        const json2csvParser = new Parser({ fields: 
+            ['timestamp', 'message'],
+        });
+        const data = json2csvParser.parse(rows);
+
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     };
 

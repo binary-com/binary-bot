@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect }  from "react";
 import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
@@ -9,14 +9,19 @@ import Modal from "../../../components/modal";
 import AccountSwitchModal from "./account-switch-modal.jsx";
 import { observer as globalObserver } from "../../../../../../common/utils/observer";
 import { useDispatch } from "react-redux";
-import { setAccountSwitcherToken } from "../../../store/ui-slice";
+import { setAccountSwitcherToken, setIsHeaderLoaded } from "../../../store/ui-slice";
+import Tour, { TourTargets } from "../../../components/tour";
 
 const AccountActions = () => {
     const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state=>state.client);
-    const {account_switcher_token, is_bot_running} = useSelector(state=>state.ui);
+    const {account_switcher_token, is_bot_running } = useSelector(state=>state.ui);
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(setIsHeaderLoaded(true));
+    },[]);
 
     return (
         <React.Fragment>
@@ -73,6 +78,8 @@ const AccountActions = () => {
                 
             </Modal>   
         )}
+        <TourTargets />
+        <Tour />
         </React.Fragment>
     )
 };
