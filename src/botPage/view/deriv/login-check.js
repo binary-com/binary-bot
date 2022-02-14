@@ -1,7 +1,7 @@
-import { parseQueryString } from "../../common/utils/tools";
-import endpoint from "../../indexPage/endpoint";
-import { queryToObjectArray, addTokenIfValid, AppConstants } from "../../common/appId";
-import { getTokenList, set as setStorage, get as getStorage } from "../../common/utils/storageManager";
+import { parseQueryString } from "../../../common/utils/tools";
+import endpoint from "../../../indexPage/endpoint";
+import { queryToObjectArray, addTokenIfValid, AppConstants } from "../../../common/appId";
+import { getTokenList, set as setStorage, get as getStorage } from "../../../common/utils/storageManager";
 
 export default function loginCheck() {
   return new Promise(resolve => {

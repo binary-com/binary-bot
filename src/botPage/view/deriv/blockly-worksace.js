@@ -1,29 +1,29 @@
-import config, { updateConfigCurrencies } from "./const";
-import logHandler from "../view/logger";
-import { updateTokenList } from "../view/deriv/utils";
+import config, { updateConfigCurrencies } from "../../../botPage/common/const";
+import logHandler from "../../view/logger";
+import { updateTokenList } from "./utils";
 import {
   getTokenList,
   set as setStorage,
   syncWithDerivApp,
   getToken,
   removeAllTokens,
-} from "../../common/utils/storageManager";
-import { observer as globalObserver } from "../../common/utils/observer";
-import { translate } from "../../common/i18n";
-import api, { logoutAllTokens, addTokenIfValid, AppConstants } from "../../common/appId";
-import IntegrationsDialog from "../../botPage/view/Dialogs/IntegrationsDialog";
-import Chart from "../../botPage/view/Dialogs/Chart";
-import TradingView from "../../botPage/view/Dialogs/TradingView";
-import Limits from "../../botPage/view/Dialogs/Limits";
+} from "../../../common/utils/storageManager";
+import { observer as globalObserver } from "../../../common/utils/observer";
+import { translate } from "../../../common/i18n";
+import api, { logoutAllTokens, addTokenIfValid, AppConstants } from "../../../common/appId";
+import IntegrationsDialog from "../Dialogs/IntegrationsDialog";
+import Chart from "../Dialogs/Chart";
+import TradingView from "../Dialogs/TradingView";
+import Limits from "../Dialogs/Limits";
 import {
   saveBeforeUnload,
   getMissingBlocksTypes,
   getDisabledMandatoryBlocks,
   getUnattachedMandatoryPairs,
-} from "../../botPage/view/blockly/utils";
-import GTM from "../../common/gtm";
-import google_drive_util from "../../common/integrations/GoogleDrive";
-import { load } from "../view/blockly";
+} from "../blockly/utils";
+import GTM from "../../../common/gtm";
+import google_drive_util from "../../../common/integrations/GoogleDrive";
+import { load } from "../../view/blockly";
 
 const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();
