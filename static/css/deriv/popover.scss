@@ -10,20 +10,6 @@
             padding: 8px;
             line-height: 15px;
             border-radius: 4px;
-            
-        }
-        &:after {
-            content: "";
-            position: absolute;
-            bottom: -2px;
-            left: calc(50% - 10px);
-            border-style: solid;
-            border-width: 10px 10px 0;
-            border-color: var(--general-active) transparent;
-            display: block;
-            width: 0;
-            z-index: 1;
-            display: none;
         }
     }
 }

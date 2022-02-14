@@ -170,10 +170,10 @@ const ToolBox = ({ blockly }) => {
       </Popover>
       {/* Needs Refactor ClientInfo Structure */}
       <span className="toolbox-separator" />
-      {/* <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
+      <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
         <button id="showSummary" className="toolbox-button icon-summary" />
-      </Popover> */}
-      {/* <Popover content={translate("Run the bot")} position="bottom">
+      </Popover>
+      <Popover content={translate("Run the bot")} position="bottom">
         <button id="runButton" className="toolbox-button icon-run" />
       </Popover>
       <Popover content={translate("Stop the bot")} position="bottom">
@@ -181,9 +181,9 @@ const ToolBox = ({ blockly }) => {
       </Popover>
       <Popover content={translate("Show log")} position="bottom">
         <button id="logButton" className="toolbox-button icon-info" />
-      </Popover> */}
+      </Popover>
       <span className="toolbox-separator" />
-      {/* Needs resizeable modal */}
+       {/* Needs resizeable modal */}
       <Popover content={translate("Show chart")} position="bottom">
         <button
           id="chartButton"
@@ -212,6 +212,3 @@ ToolBox.propTypes = {
 };
 
 export default ToolBox;
-
-
-
