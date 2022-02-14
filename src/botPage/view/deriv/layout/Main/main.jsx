@@ -1,7 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import Tour from "../../../tour";
 import {
   get as getStorage,
   isDone,
@@ -15,8 +14,8 @@ import SidebarToggle from "../../components/SidebarToggle";
 import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
 import { getActiveToken } from "../../../shared";
 
-const Main = ({ blockly }) => {
-  const { should_show_tour } = useSelector((state) => state.ui);
+
+const Main = ({blockly}) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     const activeToken = getActiveToken(getTokenList());
@@ -30,7 +29,6 @@ const Main = ({ blockly }) => {
   }, []);
   return (
     <div className="main">
-      {should_show_tour && <Tour />}
       <Header />
       <BotUnavailableMessage />
       <ToolBox blockly={blockly} />
@@ -41,6 +39,6 @@ const Main = ({ blockly }) => {
 };
 
 Main.propTypes = {
-  blockly: PropTypes.object.isRequired,
-};
+    blockly: PropTypes.object.isRequired,
+}
 export default Main;

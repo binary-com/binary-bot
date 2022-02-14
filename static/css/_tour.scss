@@ -1,62 +1,28 @@
-@import 'color';
+   
+.tour {
 
-$joyride-color: $brand-orange;
-$joyride-button-bg-color: $brand-btn;
-$joyride-tooltip-width: (15em, 20em, 20em);
+    &__beacon{
+      margin-top: 6px;
 
-@import '../../node_modules/react-joyride/lib/react-joyride';
+      &__button {
+        margin-right: 8px;
+      }
+    }
 
-#tour {
-    position: absolute;
-    display: inline;
-    bottom: 1em;
-    right: 1em;
-    z-index: 999 !important;
+
+    &__checkbox {
+      margin-top: 1em;
+    }
+
 }
 
-.tour-first-pop-up {
-    .joyride-tooltip {
-        position: fixed !important;
-        &__main {
-            padding-bottom: 0;
-        }
-    }
-}
+@keyframes joyride-animation {
+  0% {
+    transform: scale(0.1);
+  }
 
-.tour-custom-buttons {
-    text-align: center;
-    margin-top: 1em;
-    button: {
-        margin-left: 0.1em;
-    }
-}
-
-.joyride-tooltip__button {
-    padding: 10px 25px;
-    &--primary {
-        color: $white;
-        background-color: $brand-btn;
-    }
-    &--primary:hover {
-        color: $white;
-        background-color: $brand-btn-active;
-    }
-    &--secondary {
-        color: $black;
-        background-color: $brand-gray;
-    }
-    &--secondary:hover {
-        background-color: #dedede;
-    }
-}
-
-.button-secondary {
-    span {
-        margin-bottom: 0.5em;
-        margin-right: 0.5em;
-    }
-}
-
-.joyride-beacon {
-    display: none;
+  100% {
+    opacity: 1;
+    transform: perspective(1px) scale(1);
+  }
 }
