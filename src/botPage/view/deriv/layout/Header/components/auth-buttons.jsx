@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect }  from "react";
 import { translate } from "../../../../../../common/i18n";
 import { saveBeforeUnload } from "../../../../blockly/utils";
 import { getOAuthURL } from "../../../../../../common/appId";
+import { useDispatch } from "react-redux";
+import { setIsHeaderLoaded } from "../../../store/ui-slice";
+import Tour, { TourTargets } from "../../../components/tour";
 
 const AuthButtons = () => {
+  const dispatch = useDispatch();
+  
   const onLogin = () => {
     saveBeforeUnload();
     document.location = getOAuthURL();
   };
+  
+  useEffect(()=>{
+    dispatch(setIsHeaderLoaded(true));
+  },[]);
+
   return (
     <div className="header__btn">
       <button
@@ -26,6 +36,8 @@ const AuthButtons = () => {
       >
         {translate("Sign up")}
       </a>
+      <TourTargets />
+      <Tour />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import json2csv from 'json2csv';
+import { Parser } from 'json2csv';
 import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import { observer as global_observer } from '../../../common/utils/observer';
@@ -177,20 +177,20 @@ const TradeTable = ({ account_id, api }) => {
             to_data_row.id = index + 1;
             return to_data_row;
         });
-        const data = json2csv({
-            data: to_data_rows,
-            fields: [
-                'id',
-                'timestamp',
-                'reference',
-                'contract_type',
-                'entry_tick',
-                'exit_tick',
-                'buy_price',
-                'sell_price',
-                'profit',
-            ],
-        });
+
+        const json2csvParser = new Parser({ fields: [
+            'id',
+            'timestamp',
+            'reference',
+            'contract_type',
+            'entry_tick',
+            'exit_tick',
+            'buy_price',
+            'sell_price',
+            'profit',
+        ] });
+        const data = json2csvParser.parse(to_data_rows);
+
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     };
 
