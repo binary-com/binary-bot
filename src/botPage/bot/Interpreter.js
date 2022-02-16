@@ -172,12 +172,6 @@ export default class Interpreter {
   }
 
   terminateSession() {
-    const { connection } = this.$scope.api;
-    if (connection.readyState === 0) {
-      connection.addEventListener("open", () => connection.close());
-    } else if (connection.readyState === 1) {
-      connection.close();
-    }
     this.stopped = true;
     this.isErrorTriggered = false;
 
