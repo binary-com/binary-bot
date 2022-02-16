@@ -14,24 +14,20 @@
     <span id="integrations-dialog"></span>
     <span id="chart-dialog"></span>
     <span id="trading-view-dialog"></span>
-    <span id="logPanel" class="draggable-dialog" data-i18n-title="Log">
-      <div id="logTable" class="logTable-scroll"></div>
-    </span>
-    <span id="summaryPanel" class="draggable-dialog" data-i18n-title="Summary"></span>
     {{> ../partials/loading }}
     <div id="main"></div>
-    <div id="blocklyArea"></div>
-    <div id="blocklyDiv" style="position: absolute;"></div>
     
     <form id="fileUploadForm" style="display: none;">
         <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
             multiple />
     </form>
+
     <audio id="announcement" src="sound/announcement.ogg" autostart="false"></audio>
     <audio id="earned-money" src="sound/coins.ogg" autostart="false"></audio>
     <audio id="job-done" src="sound/job-done.ogg" autostart="false"></audio>
     <audio id="error" src="sound/out-of-bounds.ogg" autostart="false"></audio>
     <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false"></audio>
+    
     {{> bundle}} {{> bot}}
     {{> gtm_iframe }}
     <iframe id="localstorage-sync" sandbox="allow-same-origin allow-scripts" style="display: none; visibility: hidden;"></iframe>

@@ -27,7 +27,13 @@ const BlockLyWorkspace = ({ blockly }) => {
   }, []);
   */
 
-  return null;
+  return (
+    <div id="bot-blockly" style={{ height: 'calc(100vh - 90px)'}}>
+      {/* Blockly workspace will be injected here */}
+      <div id="blocklyArea"></div>
+      <div id="blocklyDiv" style={{ position: 'absolute' }}></div>
+    </div>
+  );
 };
 
 BlockLyWorkspace.propTypes = {
