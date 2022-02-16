@@ -303,7 +303,7 @@ export default class View {
         return;
       }
 
-      const token = document.getElementById("active-token").value;
+      const token = document.getElementById("active-token")?.value;
       const tokenObj = getToken(token);
 
       if (tokenObj && tokenObj.hasTradeLimitation) {
@@ -398,7 +398,7 @@ export default class View {
 
     globalObserver.register("bot.info", info => {
       if ("profit" in info) {
-        const token = document.getElementById("active-token").value;
+        const token = document.getElementById("active-token")?.value;
         const user = getToken(token);
         globalObserver.emit("log.revenue", {
           user,
