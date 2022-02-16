@@ -27,7 +27,7 @@ const Main = () => {
   }, []);
 
   const init = () => {
-    blockly.initPromise
+    blockly.initPromise;
 
     const days_passed =
       Date.now() >

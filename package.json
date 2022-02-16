@@ -123,6 +123,7 @@
     "react-content-loader": "^6.1.0",
     "react-redux": "^7.2.6",
     "react-render-html": "^0.6.0",
+    "react-router-dom": "^6.2.1",
     "react-tiny-popover": "^7.0.1",
     "react-transition-group": "^4.4.2"
   }
