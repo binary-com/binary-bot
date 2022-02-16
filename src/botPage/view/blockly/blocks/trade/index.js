@@ -118,7 +118,7 @@ Blockly.Blocks.trade = {
 };
 
 Blockly.JavaScript.trade = block => {
-  const account = document.getElementById("active-token").value;
+  const account = document.getElementById("active-token")?.value;
   if (!account) {
     throw Error("Please login");
   }
