@@ -116,9 +116,12 @@ export const getActiveAccount = () => {
   if (client_accounts_storage?.length) {
     const active_account = get("active_loginid");
     const client_accounts_info = JSON.parse(client_accounts_storage);
-    const active_account_info = client_accounts_info?.find(account => account.accountName === active_account);
-    if (active_account_info?.loginInfo) {
-      return active_account_info.loginInfo;
+    if (Array.isArray(client_accounts_info)) {
+      const active_account_info = client_accounts_info?.find(account => account.accountName === active_account);
+      if (active_account_info?.loginInfo) {
+        return active_account_info.loginInfo;
+      }
+      return {};
     }
     return {};
   }
