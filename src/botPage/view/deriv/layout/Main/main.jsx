@@ -20,15 +20,12 @@ const Main = () => {
   const blockly = new _Blockly();
   const dispatch = useDispatch();
 
-  
-
   React.useEffect(() => {
     init();
   }, []);
 
   const init = () => {
     blockly.initPromise;
-
     const days_passed =
       Date.now() >
       (parseInt(getStorage("closedTourPopup")) || 0) + 24 * 60 * 60 * 1000;

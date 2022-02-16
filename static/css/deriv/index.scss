@@ -92,3 +92,18 @@ a:hover {
         margin-left: -5% !important;
     }
 }
+
+.endpoint-form-container {
+    border: 1px solid #bababa;
+    padding: 1em;
+    border-radius: 0.5em;
+    #details {
+        tbody tr td {
+            border: none;
+
+            &:first-child {
+                text-align: right;
+            }
+        }
+    }
+}
