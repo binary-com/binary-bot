@@ -105,8 +105,7 @@ const addBlocklyTranslation = () => {
 
 const onresize = () => {
     let element = document.getElementById('blocklyArea');
-    const blocklyArea = element;
-    const blocklyDiv = document.getElementById('blocklyDiv');
+    if (!element) return;
     let x = 0;
     let y = 0;
     do {
@@ -114,11 +113,6 @@ const onresize = () => {
         y += element.offsetTop;
         element = element.offsetParent;
     } while (element);
-    // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = `${x}px`;
-    blocklyDiv.style.top = `${y}px`;
-    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
-    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
 };
 
 const render = workspace => () => {

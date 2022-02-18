@@ -1,11 +1,9 @@
 import { parseQueryString } from "../../../common/utils/tools";
-import endpoint from "../../../indexPage/endpoint";
 import { queryToObjectArray, addTokenIfValid, AppConstants } from "../../../common/appId";
 import { getTokenList, set as setStorage, get as getStorage } from "../../../common/utils/storageManager";
 
 export default function loginCheck() {
   return new Promise(resolve => {
-    if (endpoint()) resolve();
     const queryStr = parseQueryString();
     const tokenObjectList = queryToObjectArray(queryStr);
     if (!getTokenList().length) {
@@ -21,7 +19,7 @@ export default function loginCheck() {
       }
       const active_account = getStorage("active_loginid") || "";
       let token_list = [];
-      if (getStorage("cleint.accounts")) {
+      if (getStorage("client.accounts")) {
         token_list = JSON.parse(getStorage("client.accounts"));
       }
       if (active_account && token_list.length) {

@@ -2,6 +2,7 @@ import React from 'react';
 import { get as getStorage, set as setStorage } from '../../../../../common/utils/storageManager';
 import { generateWebSocketURL, getDefaultEndpoint, generateTestDerivApiInstance } from '../../../../../common/appId';
 import { translate } from '../../../../../common/utils/tools';
+import { Link } from 'react-router-dom';
 
 const MessageProperties = {
   connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
@@ -12,15 +13,12 @@ let api; // to close the error connection
 const Endpoint = () => {
 
   React.useEffect(() => {
-    $(document).ready(() => {
-      $('#error').hide();
-      $('#connected').hide();
-
-      $('#new_endpoint').click(addEndpoint);
-      $('#reset').click(resetEndpoint);
-
-      init();
-    });
+    $(".barspinner").hide();
+    $('#error').hide();
+    $('#connected').hide();
+    $('#new_endpoint').click(addEndpoint);
+    $('#reset').click(resetEndpoint);
+    init();
   }, [])
 
   const checkConnection = async (appId, apiUrl) => {

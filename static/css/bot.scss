@@ -7,6 +7,7 @@
 @import 'toolbox';
 @import 'tour';
 @import 'deriv/index';
+@import 'deriv/devices.scss';
 
 * {
     box-sizing: border-box;
@@ -41,14 +42,21 @@ body {
     border-radius: 100%;
 }
 
+#bot-blockly {
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    @include mobile {
+        height: calc(100vh - 7.5rem);
+    }
+}
+
 #blocklyDiv {
     position: absolute;
     height: 100%;
     width: 100%;
-}
-
-#blocklyArea {
-    height: calc(100% - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    @include mobile {
+        max-height: calc(100vh - 7.5rem);
+    }
 }
 
 @media only screen and (max-height: 723px) {
@@ -61,8 +69,8 @@ body {
     position: fixed;
     left: 50%;
     top: 50%;
-    margin-left: -5rem;
     z-index: 9999;
+    transform: translate(-50%, 50%);
 }
 
 .icon-remove:before {

@@ -1,25 +1,75 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { TrackJS } from "trackjs";
-import loginCheck from "../../login-check";
 import initialize from '../../blockly-worksace';
+import SidebarToggle from "../SidebarToggle";
+import { parseQueryString } from "../../../../../common/utils/tools";
+import { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
+import { getTokenList, set as setStorage, get as getStorage } from "../../../../../common/utils/storageManager";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateActiveAccount, updateActiveToken, updateIsLooged } from "../../store/client-slice";
+import { isLoggedIn } from "../../utils";
 
 const BlockLyWorkspace = ({ blockly }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    loginCheck()
-      .then(() => {
-        initialize(blockly)
-          .then(() => {
-            $(".show-on-load").show();
-            $(".barspinner").hide();
-            window.dispatchEvent(new Event("resize"));
-            TrackJS.configure({
-              userId: document.getElementById("active-account-name")?.value,
-            });
-          })
-      });
+    loginCheck().then(() => {
+      initializeBlockly();
+    })
   }, []);
+
+
+  const loginCheck = async () => {
+    return new Promise(resolve => {
+      const queryStr = parseQueryString();
+      const tokenObjectList = queryToObjectArray(queryStr);
+
+      if (!getTokenList().length) {
+        if (tokenObjectList.length) {
+          addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
+            const accounts = getTokenList();
+            if (accounts.length) {
+              setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
+              dispatch(updateActiveToken(accounts[0].token));
+              dispatch(updateActiveAccount(accounts[0].loginInfo));
+            }
+            dispatch(updateIsLooged(isLoggedIn()));
+            navigate('/', { replace: true });
+            resolve();
+          });
+        }
+        const active_account = getStorage("active_loginid") || "";
+        let token_list = [];
+        if (getStorage("client.accounts")?.length) {
+          token_list = JSON.parse(getStorage("client.accounts"));
+        }
+        if (active_account && token_list.length) {
+          const active_token = token_list.find(account => account.accountName === active_account).token;
+          setStorage("activeToken", active_token);
+          window.location.reload();
+          resolve();
+        }
+        setStorage("tokenList", JSON.stringify(token_list));
+      }
+      resolve();
+    });
+  }
+
+
+  const initializeBlockly = () => {
+    initialize(blockly)
+      .then(() => {
+        $(".show-on-load").show();
+        $(".barspinner").hide();
+        window.dispatchEvent(new Event("resize"));
+        TrackJS.configure({
+          userId: document.getElementById("active-account-name")?.value,
+        });
+      })
+  }
 
   /* TODO: [Implement should_reload_workspace for account switching]
   React.useEffect(() => {
@@ -28,10 +78,12 @@ const BlockLyWorkspace = ({ blockly }) => {
   */
 
   return (
-    <div id="bot-blockly" style={{ height: 'calc(100vh - 90px)'}}>
+    <div id="bot-blockly">
       {/* Blockly workspace will be injected here */}
-      <div id="blocklyArea"></div>
-      <div id="blocklyDiv" style={{ position: 'absolute' }}></div>
+      <div id="blocklyArea">
+        <div id="blocklyDiv" style={{ position: 'absolute' }}></div>
+        <SidebarToggle />
+      </div>
     </div>
   );
 };
