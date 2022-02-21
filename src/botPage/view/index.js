@@ -8,7 +8,7 @@ import GTM from "../../common/gtm";
 import { parseQueryString } from "../../common/utils/tools";
 import endpoint from "../../indexPage/endpoint";
 import { queryToObjectArray, addTokenIfValid, AppConstants } from "../../common/appId";
-import { getTokenList, set as setStorage, get as getStorage } from "../../common/utils/storageManager";
+import { getTokenList, set as setStorage, get as getStorage, removeAllTokens } from "../../common/utils/storageManager";
 
 $.ajaxSetup({
   cache: false,
@@ -36,6 +36,9 @@ function loginCheck() {
     if (endpoint()) resolve();
     const queryStr = parseQueryString();
     const tokenObjectList = queryToObjectArray(queryStr);
+    if (!Array.isArray(getTokenList())) {
+      removeAllTokens();
+    }
     if (!getTokenList().length) {
       if (tokenObjectList.length) {
         addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
