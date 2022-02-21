@@ -49,7 +49,7 @@ function loginCheck() {
       }
       const active_account = getStorage("active_loginid") || "";
       let token_list = [];
-      if (getStorage("cleint.accounts")) {
+      if (getStorage("client.accounts")) {
         token_list = JSON.parse(getStorage("client.accounts"));
       }
       if (active_account && token_list.length) {
