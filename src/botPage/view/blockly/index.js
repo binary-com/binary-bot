@@ -104,15 +104,15 @@ const addBlocklyTranslation = () => {
 };
 
 const onresize = () => {
-    let element = document.getElementById('blocklyArea');
-    if (!element) return;
-    let x = 0;
-    let y = 0;
-    do {
-        x += element.offsetLeft;
-        y += element.offsetTop;
-        element = element.offsetParent;
-    } while (element);
+    // let element = document.getElementById('blocklyArea');
+    // if (!element) return;
+    // let x = 0;
+    // let y = 0;
+    // do {
+    //     x += element.offsetLeft;
+    //     y += element.offsetTop;
+    //     element = element.offsetParent;
+    // } while (element);
 };
 
 const render = workspace => () => {
