@@ -58,6 +58,7 @@ export const removeToken = token => {
 export const removeAllTokens = () => {
   delete store.tokenList;
   set("active_loginid", null);
+  set("tokenList", "[]");
   set("client.accounts", "[]");
   syncWithDerivApp();
 };
