@@ -8,7 +8,12 @@ import GTM from "../../common/gtm";
 import { parseQueryString } from "../../common/utils/tools";
 import endpoint from "../../indexPage/endpoint";
 import { queryToObjectArray, addTokenIfValid, AppConstants } from "../../common/appId";
-import { getTokenList, set as setStorage, get as getStorage } from "../../common/utils/storageManager";
+import { 
+  convertForDerivStore, 
+  getTokenList, 
+  set as setStorage, 
+  get as getStorage,
+} from "../../common/utils/storageManager";
 
 $.ajaxSetup({
   cache: false,
@@ -49,8 +54,8 @@ function loginCheck() {
       }
       const active_account = getStorage("active_loginid") || "";
       let token_list = [];
-      if (getStorage("client.accounts")) {
-        token_list = JSON.parse(getStorage("client.accounts"));
+      if (getStorage("tokenList")) {
+        token_list = JSON.parse(getStorage("tokenList"));
       }
       if (active_account && token_list.length) {
         const active_token = token_list.find(account => account.accountName === active_account).token;
@@ -59,6 +64,7 @@ function loginCheck() {
         resolve();
       }
       setStorage("tokenList", JSON.stringify(token_list));
+      setStorage("client.accounts", JSON.stringify(convertForDerivStore(token_list)));
     }
     resolve();
   });

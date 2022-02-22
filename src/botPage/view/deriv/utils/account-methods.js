@@ -4,6 +4,7 @@ import {
   set as setStorage,
   get as getStorage,
   syncWithDerivApp,
+  convertForDerivStore,
 } from "../../../../common/utils/storageManager";
 
 export const isLoggedIn = () => !!getTokenList()?.length;
@@ -21,7 +22,7 @@ export const updateTokenList = () => {
     if ("loginInfo" in active_token) {
       const activeLoginId = token_list[0].accountName;
       setStorage("active_loginid", activeLoginId);
-      setStorage("client.accounts", JSON.stringify(token_list));
+      setStorage("client.accounts", JSON.stringify(convertForDerivStore(token_list)));      
       syncWithDerivApp();
     }
   }
