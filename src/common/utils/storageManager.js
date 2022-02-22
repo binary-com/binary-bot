@@ -183,7 +183,7 @@ export const convertForBinaryStore = clientAccounts => {
 
 export const convertForDerivStore = tokenList => {
   const clientAccounts = {};
-  const accountList = tokenList[0].loginInfo.accountList ? 'accountList' : 'account_list';
+  const accountList = tokenList[0]?.loginInfo.accountList ? 'accountList' : 'account_list';
   tokenList.forEach((account, index) => {
       const accId = account.accountName;
 
