@@ -4,12 +4,13 @@ import { TrackJS } from "trackjs";
 import initialize from '../../blockly-worksace';
 import SidebarToggle from "../SidebarToggle";
 import { parseQueryString } from "../../../../../common/utils/tools";
-import { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
+import api, { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
 import { getTokenList, set as setStorage, get as getStorage } from "../../../../../common/utils/storageManager";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateActiveAccount, updateActiveToken, updateIsLooged } from "../../store/client-slice";
 import { isLoggedIn } from "../../utils";
+
 
 const BlockLyWorkspace = ({ blockly }) => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const BlockLyWorkspace = ({ blockly }) => {
             }
             dispatch(updateIsLooged(isLoggedIn()));
             navigate('/', { replace: true });
+            api.send({ balance: 1, account: 'all' });
             resolve();
           });
         }

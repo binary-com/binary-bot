@@ -11,7 +11,6 @@ import ToolBox from "../ToolBox";
 import BlockLyWorkspace from '../../components/blockly-workspace';
 import _Blockly from "../../../blockly";
 import LogTable from "../../../LogTable";
-import { translate } from "../../../../../common/i18n";
 import TradeInfoPanel from "../../../TradeInfoPanel";
 
 const Main = () => {
@@ -36,16 +35,8 @@ const Main = () => {
       <ToolBox blockly={blockly} />
       <BlockLyWorkspace blockly={blockly} />
       <Footer />
-
-      <span id="logPanel" className="draggable-dialog" title={translate("Log")}>
-        <div id="logTable" className="logTable-scroll">
-          <LogTable />
-        </div>
-      </span>
-
-      <span id="summaryPanel" className="draggable-dialog" title={translate("Summary")}>
-        <TradeInfoPanel />
-      </span>
+      <LogTable />
+      <TradeInfoPanel />
     </div>
   );
 };

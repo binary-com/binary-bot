@@ -13,11 +13,11 @@ const PlatformDropdown = React.forwardRef(({ platforms, hideDropdown }, platform
             <div id="platform__list" className="platform__dropdown-list" ref={platformDropdownRef}>
                 {platforms.map(platform => {
                     return (
-                        <a href={platform.link} 
+                        <a href={platform.link}
                             className={
                                 platform.title === "Binary Bot" ? "platform__list-item platform__list-item--active" : "platform__list-item"
                             }
-                            key={`link-to-${platform.title.replace(/ /g,'').toLowerCase()}`}
+                            key={`link-to-${platform.title.replace(/ /g, '').toLowerCase()}`}
                         >
                             <img src={platform.logo} className="platform__list-item-icon" />
                             <div className="platform__list-item-text">

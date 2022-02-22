@@ -35,7 +35,7 @@ const AccountSwitcher = () => {
   const query_string = parseQueryString();
   const query_string_array = queryToObjectArray(query_string);
   // [Todo] We should remove this after update the structure of get token list on login
-  if(query_string_array[0]?.token){
+  if (query_string_array[0]?.token) {
     return (
       <div className="header__menu-right-loader">
         <AccountSwitcherLoader />
@@ -61,7 +61,7 @@ const Header = () => {
   );
   const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
   const platformDropdownRef = React.useRef();
-  const { is_logged} = useSelector((state) => state.client);
+  const { is_logged } = useSelector((state) => state.client);
   const dispatch = useDispatch();
   const hideDropdown = (e) =>
     !platformDropdownRef.current.contains(e.target) &&
@@ -88,8 +88,8 @@ const Header = () => {
     }
     if (active_token) {
       api.authorize(active_token.token).then((account) => {
-        if(account?.error?.code){
-            return;
+        if (account?.error?.code) {
+          return;
         }
         dispatch(updateActiveToken(active_token.token))
         dispatch(updateActiveAccount(account.authorize));
@@ -101,10 +101,10 @@ const Header = () => {
             subscribe: 1,
           });
         });
-      }).catch(()=>{
-          removeAllTokens();
-          dispatch(resetClient())
-          dispatch(setAccountSwiitcherLoader(true))  
+      }).catch(() => {
+        removeAllTokens();
+        dispatch(resetClient())
+        dispatch(setAccountSwiitcherLoader(true))
       });
       syncWithDerivApp();
     }

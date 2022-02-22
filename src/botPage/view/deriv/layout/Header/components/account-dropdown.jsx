@@ -10,18 +10,18 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
-const getTotalDemo = (accounts)=>{
-    if(!accounts) return 0
-    const demo_account = Object.values(accounts).find(acc=> acc.demo_account && acc.type === "deriv");
-    const total =  demo_account?.balance || 0;
+const getTotalDemo = (accounts) => {
+    if (!accounts) return 0
+    const demo_account = Object.values(accounts).find(acc => acc.demo_account && acc.type === "deriv");
+    const total = demo_account?.balance || 0;
     return total.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[total]?.fractional_digits ?? 2 })
 };
 
-const AccountDropdown = React.forwardRef(({setIsAccDropdownOpen,virtual }, dropdownRef) => {
+const AccountDropdown = React.forwardRef(({ setIsAccDropdownOpen, virtual }, dropdownRef) => {
     const [activeTab, setActiveTab] = React.useState(virtual ? "demo" : "real");
-    const [show_logout_modal,updaetShowLogoutModal] = React.useState(false)
-    const {total_deriv, accounts} = useSelector(state=>state.client);
-    const {is_bot_running} = useSelector(state=>state.ui);
+    const [show_logout_modal, updaetShowLogoutModal] = React.useState(false)
+    const { total_deriv, accounts } = useSelector(state => state.client);
+    const { is_bot_running } = useSelector(state => state.ui);
     const container_ref = React.useRef();
 
     React.useEffect(() => {
@@ -32,7 +32,7 @@ const AccountDropdown = React.forwardRef(({setIsAccDropdownOpen,virtual }, dropd
         }
         window.addEventListener("click", handleClickOutside);
 
-        
+
         return () => window.removeEventListener("click", handleClickOutside);
     })
 
@@ -58,13 +58,13 @@ const AccountDropdown = React.forwardRef(({setIsAccDropdownOpen,virtual }, dropd
                         tab="real"
                         isActive={activeTab === "real"}
                         setIsAccDropdownOpen={setIsAccDropdownOpen}
-                        accounts= {accounts}
+                        accounts={accounts}
                     />
                     <TabContent
                         tab="demo"
                         isActive={activeTab === "demo"}
                         setIsAccDropdownOpen={setIsAccDropdownOpen}
-                        accounts= {accounts}
+                        accounts={accounts}
                     />
                 </div>
                 <Separator />
@@ -72,35 +72,35 @@ const AccountDropdown = React.forwardRef(({setIsAccDropdownOpen,virtual }, dropd
                     <div className="account__switcher-total-balance">
                         <span className="account__switcher-total-balance-text">{translate("Total assets")}</span>
                         <span className="account__switcher-total-balance-amount account__switcher-balance">
-                        {activeTab ==="demo" ? getTotalDemo(accounts): total_deriv.amount}
-                        <span className="symbols">&nbsp;{activeTab ==="demo"? "USD": total_deriv.currency}</span>
+                            {activeTab === "demo" ? getTotalDemo(accounts) : total_deriv.amount}
+                            <span className="symbols">&nbsp;{activeTab === "demo" ? "USD" : total_deriv.currency}</span>
                         </span>
                     </div>
-                <Separator />
-                <div
-                    id="deriv__logout-btn"
-                    className="account__switcher-logout logout"
-                    onClick={() => { updaetShowLogoutModal(true) }}
-                >
-                    <span className="account__switcher-logout-text">{translate("Log out")}</span>
-                    <img className="account__switcher-logout-icon logout-icon" src="image/deriv/ic-logout.svg" />
+                    <Separator />
+                    <div
+                        id="deriv__logout-btn"
+                        className="account__switcher-logout logout"
+                        onClick={() => { updaetShowLogoutModal(true) }}
+                    >
+                        <span className="account__switcher-logout-text">{translate("Log out")}</span>
+                        <img className="account__switcher-logout-icon logout-icon" src="image/deriv/ic-logout.svg" />
+                    </div>
                 </div>
             </div>
-        </div>
-        {show_logout_modal &&(
-            <Modal
-                title={translate('Are you sure?')}
-                class_name="logout"
-                onClose={()=>updaetShowLogoutModal(false)}
-            >
-                <AccountSwitchModal 
-                    is_bot_running={is_bot_running} 
-                    onClose={()=>updaetShowLogoutModal(false)}
-                    onAccept ={()=>{globalObserver.emit('ui.logout')}}  
-                />
-                
-            </Modal>   
-        )}
+            {show_logout_modal && (
+                <Modal
+                    title={translate('Are you sure?')}
+                    class_name="logout"
+                    onClose={() => updaetShowLogoutModal(false)}
+                >
+                    <AccountSwitchModal
+                        is_bot_running={is_bot_running}
+                        onClose={() => updaetShowLogoutModal(false)}
+                        onAccept={() => { globalObserver.emit('ui.logout') }}
+                    />
+
+                </Modal>
+            )}
         </div>
     )
 });
