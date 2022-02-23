@@ -25,7 +25,7 @@ const AccountActions = () => {
     const getBalance = () => {
         if (currency && Number(currency) !== 0) {
             return balance.toLocaleString(undefined, {
-                minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2,
+                minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2
             }) + ' ' + currency
         }
         return translate("No currency assigned")
