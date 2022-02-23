@@ -1,4 +1,5 @@
 import { translate } from '../../../common/utils/tools';
+import { getRelatedDeriveOrigin } from './utils';
 
 export const supportedLanguages = {
     en: 'English',
@@ -117,29 +118,31 @@ export const currencyNameMap = {
     // },
 };
 
+const origin = getRelatedDeriveOrigin()
+
 export const platforms = [
     {
         title: 'DTrader',
         description: translate('A whole new trading experience on a powerful yet easy to use platform.'),
-        link: 'https://app.deriv.com',
+        link: origin,
         logo: 'image/deriv/brand/ic-brand-dtrader.svg',
     },
     {
         title: 'DBot',
         description: translate('Automated trading at your fingertips. No coding needed.'),
-        link: 'https://app.deriv.com/bot',
+        link: `${origin}/bot`,
         logo: 'image/deriv/brand/ic-brand-dbot.svg',
     },
     {
         title: 'DMT5',
         description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-        link: 'https://app.deriv.com/mt5',
+        link: `${origin}/mt5`,
         logo: 'image/deriv/brand/ic-brand-dmt5.svg',
     },
     {
         title: 'Deriv X',
         description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-        link: 'https://app.deriv.com/derivx',
+        link: `${origin}/derivx`,
         logo: 'image/deriv/brand/ic-brand-dxtrade.svg',
     },
     {

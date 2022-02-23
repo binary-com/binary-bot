@@ -14,10 +14,9 @@ export const getRelatedDeriveOrigin = () => {
 };
 
 export const generateDerivLink = (path, ...queries) => {
-  const origin = getRelatedDeriveOrigin();
   const redirect_query = `ext_platform_url=${encodeURIComponent(
     window.location.origin
   )}`;
   queries.push(redirect_query);
-  return `${origin + path}?${queries.join("&")}`;
+  return `${getRelatedDeriveOrigin()}${path}?${queries.join("&")}`;
 };
