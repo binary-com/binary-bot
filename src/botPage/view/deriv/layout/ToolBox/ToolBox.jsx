@@ -37,13 +37,13 @@ const ToolBox = ({ blockly }) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {
         // Ctrl + -
         e.preventDefault();
-        blockly.zoomOnPlusMinus(false);
+        blockly?.zoomOnPlusMinus(false);
         return;
       }
       if (e.which === Keys.zoomIn && e.ctrlKey) {
         // Ctrl + +
         e.preventDefault();
-        blockly.zoomOnPlusMinus(true);
+        blockly?.zoomOnPlusMinus(true);
         return;
       }
     });

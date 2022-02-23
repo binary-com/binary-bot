@@ -77,38 +77,6 @@ body {
     content: 'X';
 }
 
-#header select,
-#topbar select {
-    color: #000;
-    font-size: 1em;
-}
-
-#header {
-    height: 81px;
-    width: 100%;
-    background-color: $brand-blue;
-    border-top: 2px solid $brand-dark-blue;
-    border-bottom: 4px solid $brand-orange;
-    font-size: 18px;
-    padding: 0 20px;
-    z-index: 0;
-}
-
-#topbar {
-    background-color: $brand-primary-dark;
-    width: 100%;
-    color: $white;
-    line-height: 1;
-    font-size: 70%;
-    text-align: right;
-    padding: 3px 20px;
-    display: table;
-}
-
-.left-header {
-    float: left;
-}
-
 .right-header {
     float: right;
 }

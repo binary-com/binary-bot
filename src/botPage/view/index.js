@@ -1,18 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import React from "react";
+import ReactDOM from 'react-dom';
 import "notifyjs-browser";
 import "jquery-ui/ui/widgets/dialog";
-import { TrackJS } from "trackjs";
-import { trackjs_config } from "../../botPage/view/trackJs_config";
-import GTM from '../../common/gtm';
-import renderComponents from "./render-components";
-import { symbolPromise } from "./shared";
+import store from "./deriv/store";
+import { Provider } from "react-redux";
+import App from './deriv/app'
 
-TrackJS.install(trackjs_config);
-
-GTM.init();
-
-$.ajaxSetup({
-  cache: false,
-});
-
-symbolPromise.then(() => renderComponents());
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("main")
+);

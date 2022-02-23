@@ -299,15 +299,7 @@ const addBindings = blockly => {
 
   globalObserver.register("ui.switch_account", token => {
     stopBlockly(blockly);
-    $(".barspinner").show();
     GTM.setVisitorId();
-    const activeToken = token;
-    const tokenList = getTokenList();
-    setStorage("tokenList", "");
-    addTokenIfValid(activeToken, tokenList).then(() => {
-      setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, activeToken);
-      window.location.reload();
-    });
   });
 };
 const stopBlockly = blockly => blockly.stop();

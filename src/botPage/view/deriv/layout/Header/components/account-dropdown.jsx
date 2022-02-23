@@ -2,10 +2,11 @@ import React from "react";
 import AccountSwitchModal from './account-switch-modal.jsx'
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { currencyNameMap } from "../../../config";
 import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
+import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
 
 
 
@@ -23,6 +24,7 @@ const AccountDropdown = React.forwardRef(({ setIsAccDropdownOpen, virtual }, dro
     const { total_deriv, accounts } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
     const container_ref = React.useRef();
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         function handleClickOutside(event) {
@@ -96,7 +98,10 @@ const AccountDropdown = React.forwardRef(({ setIsAccDropdownOpen, virtual }, dro
                     <AccountSwitchModal
                         is_bot_running={is_bot_running}
                         onClose={() => updaetShowLogoutModal(false)}
-                        onAccept={() => { globalObserver.emit('ui.logout') }}
+                        onAccept={() => {
+                            globalObserver.emit('ui.logout');
+                            dispatch(setShouldReloadWorkspace(true));
+                        }}
                     />
 
                 </Modal>

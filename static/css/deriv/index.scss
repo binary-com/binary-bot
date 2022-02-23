@@ -87,16 +87,36 @@ a:hover {
     }
 }
 
-.endpoint-form-container {
-    border: 1px solid #bababa;
-    padding: 1em;
-    border-radius: 0.5em;
-    #details {
-        tbody tr td {
-            border: none;
+.endpoint {
+    padding: 1rem;
+    &__form-container {
+        form {
+            border-radius: 0.5rem;
+            border: 1px solid #bababa;
+            padding: 1rem;
+            input {
+                padding: 0.5rem;
+                border: 1px solid #bababa;
+                min-width: 196px;
+            }
+            button {
+                padding: 0.7rem 1rem;
+            }
+        }
 
-            &:first-child {
-                text-align: right;
+        #details {
+            tbody tr td {
+                border: none;
+
+                &:first-child {
+                    text-align: right;
+                    min-width: 96px;
+                    p {
+                        margin: 0;
+                        margin-top: 0.5rem;
+                        font-weight: bold;
+                    }
+                }
             }
         }
     }

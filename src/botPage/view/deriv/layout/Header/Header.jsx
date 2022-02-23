@@ -12,13 +12,13 @@ import {
   syncWithDerivApp,
 } from "../../../../../common/utils/storageManager";
 import {
-  updateIsLooged,
+  updateIsLogged,
   resetClient,
   updateActiveAccount,
   updateBalance,
   updateActiveToken
 } from "../../store/client-slice";
-import { setAccountSwitcherLoader } from "../../store/ui-slice";
+import { setAccountSwitcherLoader, setShouldReloadWorkspace } from "../../store/ui-slice";
 import {
   DrawerMenu,
   AuthButtons,
@@ -61,7 +61,7 @@ const Header = () => {
   );
   const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
   const platformDropdownRef = React.useRef();
-  const { is_logged } = useSelector((state) => state.client);
+  const { is_logged, active_token } = useSelector((state) => state.client);
   const dispatch = useDispatch();
   const hideDropdown = (e) =>
     !platformDropdownRef.current.contains(e.target) &&
@@ -69,9 +69,8 @@ const Header = () => {
 
   React.useEffect(() => {
     api.onMessage().subscribe(({ data }) => {
-      if (data?.error?.code) {
-        return;
-      }
+      if (data?.error?.code) return;
+
       if (data?.msg_type === "balance") {
         dispatch(updateBalance(data.balance));
       }
@@ -94,6 +93,10 @@ const Header = () => {
         dispatch(updateActiveToken(active_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
+
+        dispatch(setShouldReloadWorkspace(true)); // to reload the workspace //
+        $(".barspinner").hide(); // disable the bar loader //
+
         api.send({ forget_all: "balance" }).then(() => {
           api.send({
             balance: 1,
@@ -108,10 +111,10 @@ const Header = () => {
       });
       syncWithDerivApp();
     }
-  }, []);
+  }, [active_token]);
 
   React.useEffect(() => {
-    dispatch(updateIsLooged(isLoggedIn()));
+    dispatch(updateIsLogged(isLoggedIn()));
   }, [is_logged]);
 
   return (

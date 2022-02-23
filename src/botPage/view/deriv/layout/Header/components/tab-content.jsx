@@ -15,7 +15,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const item_ref = React.useRef([]);
   const isReal = tab === "real";
   const token_list = getTokenList();
-
+  
   return (
     <div className={`account__switcher-tabs-content ${isActive ? "" : "hide"}`}>
       <div className="account__switcher-accordion">
@@ -46,7 +46,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     className={classNames('account__switcher-acc', { 'account__switcher-acc--active': index === 0 })}
                     key={acc}
                     onClick={() => {
-                      const account_token = token_list.find(token => token.accountName === acc)
+                      const account_token = token_list.find(token => token.accountName === acc);
                       if (account_token?.token && acc !== active_account_name) {
                         dispatch(setAccountSwitcherToken(account_token?.token));
                         setIsAccDropdownOpen(false);

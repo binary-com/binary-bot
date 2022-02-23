@@ -9,11 +9,28 @@ import Modal from "../../../components/modal";
 import AccountSwitchModal from "./account-switch-modal.jsx";
 import { observer as globalObserver } from "../../../../../../common/utils/observer";
 import { useDispatch } from "react-redux";
-import { setAccountSwitcherToken, setIsHeaderLoaded } from "../../../store/ui-slice";
+import {
+    setAccountSwitcherLoader,
+    setAccountSwitcherToken,
+    setIsHeaderLoaded,
+    setShouldReloadWorkspace
+} from "../../../store/ui-slice";
 import Tour, { TourTargets } from "../../../components/tour";
+import { addTokenIfValid, AppConstants } from "../../../../../../common/appId";
+import {
+    getTokenList,
+    set as setStorage
+} from "../../../../../../common/utils/storageManager";
+import { updateActiveToken } from "../../../store/client-slice";
 
 const AccountActions = () => {
-    const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state => state.client);
+    const {
+        currency,
+        is_virtual,
+        balance,
+        active_token,
+        active_account_name
+    } = useSelector(state => state.client);
     const { account_switcher_token, is_bot_running } = useSelector(state => state.ui);
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
@@ -22,6 +39,27 @@ const AccountActions = () => {
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
     }, []);
+
+    const onAccept = () => {
+        dispatch(setAccountSwitcherToken(''));
+        globalObserver.emit("ui.switch_account", account_switcher_token);
+        dispatch(setAccountSwitcherLoader(true));
+        $(".barspinner").show();
+        const tokenList = getTokenList();
+        setStorage('tokenList', '');
+        addTokenIfValid(account_switcher_token, tokenList).then(() => {
+            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, account_switcher_token);
+            const next_active_account = tokenList?.find(account => account.token === account_switcher_token);
+            if(next_active_account?.accountName) {
+                setStorage('active_loginid', next_active_account.accountName);
+                dispatch(updateActiveToken(next_active_account.token));
+            }
+        })
+    }
+
+    const onClose = () => {
+        dispatch(setAccountSwitcherToken(''));
+    }
 
     return (
         <React.Fragment>
@@ -65,17 +103,13 @@ const AccountActions = () => {
                 <Modal
                     title={translate('Are you sure?')}
                     class_name="account-switcher"
-                    onClose={() => { dispatch(setAccountSwitcherToken('')) }}
+                    onClose={onClose}
                 >
                     <AccountSwitchModal
                         is_bot_running={is_bot_running}
-                        onClose={() => { dispatch(setAccountSwitcherToken('')) }}
-                        onAccept={() => {
-                            dispatch(setAccountSwitcherToken(''));
-                            globalObserver.emit("ui.switch_account", account_switcher_token);
-                        }}
+                        onClose={onClose}
+                        onAccept={onAccept}
                     />
-
                 </Modal>
             )}
             <TourTargets />

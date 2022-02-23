@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    {{> ../partials/security }} {{> ../partials/head }}
-    <title>Binary Bot</title>
-    {{> bundle_css }}
-    <link rel="stylesheet" href="css/binary.css">
-    {{> bot_css }}
-</head>
+    <head>
+        {{> ../partials/security }} {{> ../partials/head }}
+        <title>Binary Bot</title>
+        {{> bundle_css }}
+        <link rel="stylesheet" href="css/binary.css">
+        {{> bot_css }}
+    </head>
 
-<body>
-    <span id="limits-dialog"></span>
-    <span id="integrations-dialog"></span>
-    <span id="chart-dialog"></span>
-    <span id="trading-view-dialog"></span>
-    {{> ../partials/loading }}
-    <div id="main"></div>
-    
-    <form id="fileUploadForm" style="display: none;">
-        <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
-            multiple />
-    </form>
+    <body>
+        <span id="limits-dialog"></span>
+        <span id="integrations-dialog"></span>
+        <span id="chart-dialog"></span>
+        <span id="trading-view-dialog"></span>
 
-    <audio id="announcement" src="sound/announcement.ogg" autostart="false"></audio>
-    <audio id="earned-money" src="sound/coins.ogg" autostart="false"></audio>
-    <audio id="job-done" src="sound/job-done.ogg" autostart="false"></audio>
-    <audio id="error" src="sound/out-of-bounds.ogg" autostart="false"></audio>
-    <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false"></audio>
-    
-    {{> bundle}} {{> bot}}
-    {{> gtm_iframe }}
-    <iframe id="localstorage-sync" sandbox="allow-same-origin allow-scripts" style="display: none; visibility: hidden;"></iframe>
-    <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
-    <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
-    <script>
-        document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
-    </script>
-</body>
+        {{> ../partials/loading }}
+        <div id="main"></div>
+
+        <form id="fileUploadForm" style="display: none;">
+            <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files"
+                accept=".xml" multiple />
+        </form>
+
+        <audio id="announcement" src="sound/announcement.ogg" autostart="false"></audio>
+        <audio id="earned-money" src="sound/coins.ogg" autostart="false"></audio>
+        <audio id="job-done" src="sound/job-done.ogg" autostart="false"></audio>
+        <audio id="error" src="sound/out-of-bounds.ogg" autostart="false"></audio>
+        <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false"></audio>
+
+        {{> bundle}} {{> bot}}
+        {{> gtm_iframe }}
+        <iframe id="localstorage-sync" sandbox="allow-same-origin allow-scripts"
+            style="display: none; visibility: hidden;"></iframe>
+        <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
+        <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
+        <script>
+            document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
+        </script>
+    </body>
 
 </html>

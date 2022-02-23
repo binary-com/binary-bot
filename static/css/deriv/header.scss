@@ -596,6 +596,7 @@
 
                 &--active {
                     background: var(--state-hover);
+                    cursor: auto;
                 }
                 &:hover {
                     background: var(--state-hover);
@@ -968,18 +969,6 @@
     }
 }
 
-#topbar {
-    display: none !important;
-
-    .notification {
-        &__messages {
-            position: absolute;
-            height: 100vh;
-            width: 100%;
-            top: 48px;
-        }
-    }
-}
 #toolbox {
     height: $TOOLBOX_HEIGHT;
     @include mobile {
