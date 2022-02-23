@@ -1,3 +1,5 @@
+import { getRelatedDeriveOrigin } from "../../botPage/view/deriv/utils";
+
 let store = {};
 let hasReadystateListener = false;
 
@@ -79,8 +81,8 @@ export const remove = varName => delete store[varName];
 
 export const syncWithDerivApp = () => {
   const iframe = document.getElementById("localstorage-sync");
-  const isStaging = window.location.hostname.includes("staging");
-  const origin = `https://${isStaging ? "staging-" : ""}app.deriv.com`;
+  const origin = getRelatedDeriveOrigin();
+  
   const postMessages = () => {
     iframe.contentWindow.postMessage(
       {
