@@ -28,7 +28,7 @@ const AccountActions = () => {
                 minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2,
             }) + ' ' + currency
         }
-        return "No currency assigned"
+        return translate("No currency assigned")
     }
 
     return (

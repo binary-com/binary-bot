@@ -67,7 +67,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     {accounts[acc].demo_account
                       ? translate("Demo")
                       : currencyNameMap[account.currency]?.name ||
-                      account.currency || "No currency assigned"}
+                      account.currency || translate("No currency assigned")}
                     <div className="account__switcher-loginid">
                       {acc}
                     </div>
