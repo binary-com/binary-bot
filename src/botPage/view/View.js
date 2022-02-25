@@ -43,6 +43,7 @@ const tradingView = new TradingView();
 
 const integrationsDialog = new IntegrationsDialog();
 
+
 const applyToolboxPermissions = () => {
   const fn = getTokenList().length ? "show" : "hide";
   $("#runButton, #showSummary, #logButton")
