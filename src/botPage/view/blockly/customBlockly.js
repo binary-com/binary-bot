@@ -26,6 +26,7 @@ Blockly.FieldDropdown.prototype.render_ = function() {
     this.borderRect_.setAttribute('height', this.size_.height - 8);
     this.borderRect_.setAttribute('width', this.size_.width + Blockly.BlockSvg.SEP_SPACE_X);
 };
+
 Blockly.FieldDropdown.prototype.renderSelectedText_ = function() {
     // Text option is selected.
     // Replace the text.
@@ -120,11 +121,11 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
     let hasDummy = false;
     let lastType;
     const isInline = this.getInputsInline() && !this.isCollapsed();
-    for (var i = 0, input; (input = inputList[i]); i++) {
+    for (let i = 0, input; (input = inputList[i]); i++) {
         if (!input.isVisible()) {
             continue;
         }
-        var row;
+        let row;
         if (!isInline || !lastType || lastType == Blockly.NEXT_STATEMENT || input.type == Blockly.NEXT_STATEMENT) {
             // Create new row.
             lastType = input.type;
@@ -177,17 +178,20 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
             input.fieldWidth += this.RTL ? -iconWidth : iconWidth;
         }
         let previousFieldEditable = false;
-        for (var j = 0, field; (field = input.fieldRow[j]); j++) {
-            if (j != 0) {
-                input.fieldWidth += Blockly.BlockSvg.SEP_SPACE_X;
+
+        if (input?.fieldRow?.length) {
+            for (let j = 0, field; (field = input.fieldRow[j]); j++) {
+                if (j != 0) {
+                    input.fieldWidth += Blockly.BlockSvg.SEP_SPACE_X;
+                }
+                // Get the dimensions of the field.
+                const fieldSize = field.getSize();
+                field.renderWidth = fieldSize.width;
+                field.renderSep = previousFieldEditable && field.EDITABLE ? Blockly.BlockSvg.SEP_SPACE_X : 0;
+                input.fieldWidth += field.renderWidth + field.renderSep;
+                row.height = Math.max(row.height, fieldSize.height) + 1;
+                previousFieldEditable = field.EDITABLE;
             }
-            // Get the dimensions of the field.
-            const fieldSize = field.getSize();
-            field.renderWidth = fieldSize.width;
-            field.renderSep = previousFieldEditable && field.EDITABLE ? Blockly.BlockSvg.SEP_SPACE_X : 0;
-            input.fieldWidth += field.renderWidth + field.renderSep;
-            row.height = Math.max(row.height, fieldSize.height) + 1;
-            previousFieldEditable = field.EDITABLE;
         }
 
         if (row.type != Blockly.BlockSvg.INLINE) {
@@ -206,10 +210,10 @@ Blockly.BlockSvg.prototype.renderCompute_ = function(iconWidth) {
     }
 
     // Make inline rows a bit thicker in order to enclose the values.
-    for (var y = 0, row; (row = inputRows[y]); y++) {
+    for (let y = 0, row; (row = inputRows[y]); y++) {
         row.thicker = false;
         if (row.type == Blockly.BlockSvg.INLINE) {
-            for (var z = 0, input; (input = row[z]); z++) {
+            for (let z = 0, input; (input = row[z]); z++) {
                 if (input.type == Blockly.INPUT_VALUE) {
                     row.height += 2 * Blockly.BlockSvg.INLINE_PADDING_Y;
                     row.thicker = true;
@@ -269,13 +273,13 @@ Blockly.FieldLabel.prototype.init = function() {
 // Override inline editor blockly
 Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
     Blockly.WidgetDiv.show(this, this.sourceBlock_.RTL, this.widgetDispose_());
-    var div = Blockly.WidgetDiv.DIV;
+    const div = Blockly.WidgetDiv.DIV;
     // Create the input.
-    var htmlInput = document.createElement('input');
+    const htmlInput = document.createElement('input');
     htmlInput.className = 'blocklyHtmlInput';
     htmlInput.setAttribute('spellcheck', this.spellcheck_);
     htmlInput.setAttribute('data-lpignore', 'true');
-    var fontSize = Blockly.FieldTextInput.FONTSIZE * this.workspace_.scale + 'pt';
+    const fontSize = Blockly.FieldTextInput.FONTSIZE * this.workspace_.scale + 'pt';
     div.style.fontSize = fontSize;
     htmlInput.style.fontSize = fontSize;
 
@@ -365,8 +369,8 @@ Blockly.Toolbox.TreeNode.prototype.onClick_ = function(_e) {
  * @package
  */
 Blockly.WorkspaceAudio.prototype.preload = function() {
-    for (var name in this.SOUNDS_) {
-        var sound = this.SOUNDS_[name];
+    for (const name in this.SOUNDS_) {
+        const sound = this.SOUNDS_[name];
         sound.volume = 0.01;
         sound.play().catch(function() {});
         sound.pause();

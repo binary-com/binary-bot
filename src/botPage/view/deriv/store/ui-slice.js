@@ -5,6 +5,7 @@ const initial_states = {
   is_gd_ready: false,
   is_bot_running: false,
   account_switcher_loader: true,
+  show_bot_unavailable_page: false,
   account_switcher_token: "",
   is_header_loaded: false,
 };
@@ -25,6 +26,9 @@ export const uiSlice = createSlice({
     setAccountSwitcherLoader: (state, action) => {
       state.account_switcher_loader = action.payload;
     },
+    updateShowMessagePage: (state, action) => {
+      state.show_bot_unavailable_page = action.payload;
+    },
     setAccountSwitcherToken: (state, action) => {
       state.account_switcher_token = action.payload;
     },
@@ -39,6 +43,7 @@ export const {
   setGdReady,
   setIsBotRunning,
   setAccountSwitcherLoader,
+  updateShowMessagePage,
   setAccountSwitcherToken,
   setIsHeaderLoaded,
 } = uiSlice.actions;
