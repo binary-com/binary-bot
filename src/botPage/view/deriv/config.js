@@ -130,19 +130,19 @@ export const platforms = [
     {
         title: 'DBot',
         description: translate('Automated trading at your fingertips. No coding needed.'),
-        link: `${related_deriv_origin.origin}/bot`,
+        link: `${related_deriv_origin.origin}bot`,
         logo: 'image/deriv/brand/ic-brand-dbot.svg',
     },
     {
         title: 'DMT5',
         description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-        link: `${related_deriv_origin.origin}/mt5`,
+        link: `${related_deriv_origin.origin}mt5`,
         logo: 'image/deriv/brand/ic-brand-dmt5.svg',
     },
     {
         title: 'Deriv X',
         description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-        link: `${related_deriv_origin.origin}/derivx`,
+        link: `${related_deriv_origin.origin}derivx`,
         logo: 'image/deriv/brand/ic-brand-dxtrade.svg',
     },
     {
