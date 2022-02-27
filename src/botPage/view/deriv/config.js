@@ -118,37 +118,37 @@ export const currencyNameMap = {
     // },
 };
 
-const origin = getRelatedDeriveOrigin()
+const related_deriv_origin = getRelatedDeriveOrigin()
 
 export const platforms = [
     {
         title: 'DTrader',
         description: translate('A whole new trading experience on a powerful yet easy to use platform.'),
-        link: origin,
+        link: related_deriv_origin.origin,
         logo: 'image/deriv/brand/ic-brand-dtrader.svg',
     },
     {
         title: 'DBot',
         description: translate('Automated trading at your fingertips. No coding needed.'),
-        link: `${origin}/bot`,
+        link: `${related_deriv_origin.origin}/bot`,
         logo: 'image/deriv/brand/ic-brand-dbot.svg',
     },
     {
         title: 'DMT5',
         description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-        link: `${origin}/mt5`,
+        link: `${related_deriv_origin.origin}/mt5`,
         logo: 'image/deriv/brand/ic-brand-dmt5.svg',
     },
     {
         title: 'Deriv X',
         description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-        link: `${origin}/derivx`,
+        link: `${related_deriv_origin.origin}/derivx`,
         logo: 'image/deriv/brand/ic-brand-dxtrade.svg',
     },
     {
         title: 'SmartTrader',
         description: translate('Trade the world\'s markets with our popular user-friendly platform.'),
-        link: 'https://smarttrader.deriv.com/',
+        link: `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension}/`,
         logo: 'image/deriv/brand/ic-brand-smarttrader.svg',
     },
     {
