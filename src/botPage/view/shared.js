@@ -1,10 +1,11 @@
 import filesaver from 'file-saver';
 import Observer from '../../common/utils/observer';
-import { generateLiveApiInstance } from '../../common/appId';
+import { generateDerivApiInstance, AppConstants } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
+import { get as getStorage } from '../../common/utils/storageManager';
 
-let tmpApi = generateLiveApiInstance();
+let tmpApi = generateDerivApiInstance();
 
 export const symbolApi = new _Symbol(tmpApi);
 
@@ -16,10 +17,10 @@ export const symbolPromise = new Promise(resolve => {
     });
 });
 
-export const ticksService = new TicksService(generateLiveApiInstance());
+export const ticksService = new TicksService(generateDerivApiInstance());
 
 export const createScope = () => {
-    const api = generateLiveApiInstance();
+    const api = generateDerivApiInstance();
     const observer = new Observer();
 
     return { observer, api, ticksService, symbolApi };
@@ -55,3 +56,10 @@ export const saveAs = ({ data, filename, type }) => {
 export const restrictInputCharacter = ({ whitelistRegEx, input }) => input.match(new RegExp(whitelistRegEx));
 
 export const isNumber = num => num !== '' && Number.isFinite(Number(num));
+
+export const getActiveToken = tokenList => {
+    const activeTokenObject = tokenList.filter(
+        tokenObject => tokenObject.token === getStorage(AppConstants.STORAGE_ACTIVE_TOKEN)
+    );
+    return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
+};

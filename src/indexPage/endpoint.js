@@ -1,5 +1,5 @@
 import { get as getStorage, set as setStorage } from '../common/utils/storageManager';
-import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
+import { generateWebSocketURL, getDefaultEndpoint, generateTestDerivApiInstance } from '../common/appId';
 import { translate } from '../common/utils/tools';
 
 if (document.location.href.endsWith('/endpoint')) {
@@ -9,7 +9,7 @@ if (document.location.href.endsWith('/endpoint')) {
 
 const MessageProperties = {
     connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
-    error    : () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
+    error: () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
 };
 
 export default function endpoint() {
@@ -31,7 +31,7 @@ async function checkConnection(appId, apiUrl) {
     if (api && api.disconnect) {
         api.disconnect();
     }
-    api = generateTestLiveApiInstance({
+    api = generateTestDerivApiInstance({
         appId,
         apiUrl: generateWebSocketURL(apiUrl),
     });

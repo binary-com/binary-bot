@@ -5,9 +5,10 @@
 @import 'panel';
 @import 'blockly-toolbox';
 @import 'toolbox';
-@import 'reality-check';
 @import 'tour';
+@import 'error';
 @import 'deriv/index';
+
 
 * {
     box-sizing: border-box;
@@ -58,14 +59,6 @@ body {
     }
 }
 
-#center, #workspace_center {
-    position: fixed;
-    width: 1em;
-    height: 1em;
-    top: 50%;
-    left: 50%;
-}
-
 .barspinner {
     position: fixed;
     left: 50%;
@@ -104,14 +97,6 @@ body {
     text-align: right;
     padding: 3px 20px;
     display: table;
-}
-
-#all-accounts.main-nav, #toolbox-all-accounts.main-nav {
-    >li {
-        >ul {
-            width: 165px;
-        }
-    }
 }
 
 .left-header {

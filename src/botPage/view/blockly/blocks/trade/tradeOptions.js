@@ -231,10 +231,12 @@ export default () => {
                             updateList(typeList, config.barrierTypes);
                         }
 
-                        if (barriers.values.length === 1) {
-                            typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
-                        } else {
-                            typeInput.fieldRow[0].setText(`${barrierLabels[index]}:`);
+                        if (typeInput?.fieldRow && Array.isArray(typeInput.fieldRow)) {
+                            if (barriers.values.length === 1) {
+                                typeInput.fieldRow[0].setText(`${translate('Barrier')}:`);
+                            } else {
+                                typeInput.fieldRow[0].setText(`${barrierLabels[index]}:`);
+                            }
                         }
                         revealBarrierBlock(barrierValue, barrierOffsetNames[index]);
                     });
@@ -250,7 +252,6 @@ export default () => {
                 const tradeType = getParentValue(tradeOptionsBlock, 'TRADETYPE_LIST');
                 const durationTypeList = tradeOptionsBlock.getField('DURATIONTYPE_LIST');
                 const selectedDuration = durationTypeList.getValue();
-
                 const durations = getDurationsForContracts(contracts, tradeType);
                 const durationOptions = durations.map(duration => [duration.label, duration.unit]);
 

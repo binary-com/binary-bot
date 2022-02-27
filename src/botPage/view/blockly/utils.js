@@ -173,16 +173,18 @@ export const deleteBlockIfExists = block => {
 export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = false;
     if (block.inputList instanceof Array) {
-        Array.from(block.inputList).forEach(inp =>
-            inp.fieldRow.forEach(field => {
-                if (field instanceof Blockly.FieldLabel) {
-                    const svgElement = field.getSvgRoot();
-                    if (svgElement) {
-                        svgElement.style.setProperty('fill', 'white', 'important');
+        Array.from(block.inputList).forEach(input => {
+            if (input?.fieldRow?.length) {
+                input.fieldRow.forEach(field => {
+                    if (field instanceof Blockly.FieldLabel) {
+                        const svgElement = field.getSvgRoot();
+                        if (svgElement) {
+                            svgElement.style.setProperty('fill', 'white', 'important');
+                        }
                     }
-                }
-            })
-        );
+                });
+            }
+        });
     }
     const field = block.getField();
     if (field) {
@@ -218,6 +220,7 @@ export const getMandatoryBlocks = () => config.mandatoryBlocks.map(type => getBl
 export const getMandatoryMainBlocks = () => config.mandatoryMainBlocks.map(type => getBlockByType(type)).filter(b => b);
 
 export const hasChildOfType = (block, childType) =>
+    // eslint-disable-next-line no-underscore-dangle
     block.childBlocks_.find(child => child.type === childType || hasChildOfType(child, childType));
 
 export const getMissingBlocksTypes = () => {

@@ -78,5 +78,25 @@
             }
         }
     }
+    &-logout, &-account-switcher{
+        background: #aaaaaa4d;
+        & .logout-dialog{
+            padding:0 10px;
+        }
+        & .modal__container{
+            width: 600px;
+        }
+        & .ui-widget-content{
+            border:unset;
+        }
+        & .ui-dialog-buttonset{
+            display: flex;
+            justify-content: flex-end;
+        }
+        & .button-primary{
+            height: 38px;
+            margin-left: 5px;
+        }
+    }
     
 }
