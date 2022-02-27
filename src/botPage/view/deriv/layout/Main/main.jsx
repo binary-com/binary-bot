@@ -10,6 +10,7 @@ import { updateShowTour, updateShowMessagePage } from "../../store/ui-slice";
 import Footer from "../Footer";
 import Header from "../Header";
 import ToolBox from "../ToolBox";
+import { getRelatedDeriveOrigin } from "../../utils";
 import SidebarToggle from "../../components/SidebarToggle";
 import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
 import { getActiveToken } from "../../../shared";
@@ -18,6 +19,10 @@ import { getActiveToken } from "../../../shared";
 const Main = ({blockly}) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
+    const local_storage_sync = document.getElementById("localstorage-sync")
+    if (local_storage_sync){
+      local_storage_sync.src = `${getRelatedDeriveOrigin().origin}/localstorage-sync.html`
+    }
     const activeToken = getActiveToken(getTokenList());
     const landing_company = activeToken?.loginInfo.landing_company_name;
 
