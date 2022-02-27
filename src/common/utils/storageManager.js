@@ -113,7 +113,7 @@ export const syncWithDerivApp = () => {
 };
 
 export const getActiveAccount = () => {
-  const client_accounts_storage = get("client.accounts");
+  const client_accounts_storage = get("tokenList");
   if (client_accounts_storage?.length) {
     const active_account = get("active_loginid");
     const client_accounts_info = JSON.parse(client_accounts_storage);
