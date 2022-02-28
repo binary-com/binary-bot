@@ -433,7 +433,7 @@ export default class _Blockly {
 
         if (currency_field && active_account) {
             currency_field.text_ = active_account?.currency;
-            currency_field?.render_();
+            currency_field.render_();
         }
     }
     /* eslint-disable class-methods-use-this */
