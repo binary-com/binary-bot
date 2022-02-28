@@ -11,6 +11,7 @@ import { parseQueryString, isProduction, getExtension } from '../common/utils/to
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 import GTM from './gtm';
+import { getRelatedDeriveOrigin } from '../botPage/view/deriv/utils';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -91,12 +92,15 @@ export const getDefaultEndpoint = () => ({
 });
 
 const generateOAuthDomain = () => {
+    const related_deriv_origin = getRelatedDeriveOrigin
     const endpointUrl = getCustomEndpoint().url;
     if (endpointUrl) {
         return endpointUrl;
-    } else if (isProduction()) {
-        return `oauth.deriv.${getExtension()}`;
+    } 
+    if(related_deriv_origin.is_offical){
+        return `oauth.deriv.${related_deriv_origin.extension}`;
     }
+    
     return 'oauth.deriv.com';
 };
 
