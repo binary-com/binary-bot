@@ -114,8 +114,8 @@ const Main = () => {
 					<div id="blocklyDiv" style={{ position: 'absolute' }}></div>
 					<SidebarToggle />
 				</div>
-				<LogTable />
-				<TradeInfoPanel />
+				{blockly && <LogTable />}
+				{blockly && <TradeInfoPanel />}
 			</div>
 		</div>
 	);
