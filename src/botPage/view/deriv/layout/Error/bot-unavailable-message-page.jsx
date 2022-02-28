@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import MessagePage from './message-page.jsx';
 import { translate } from '../../../../../common/i18n';
+import { getRelatedDeriveOrigin } from '../../utils/index.js';
 
 const BotUnavailableMessage = () => {
     const { show_bot_unavailable_page } = useSelector(state => state.ui);
@@ -15,11 +16,12 @@ const BotUnavailableMessage = () => {
                 )}
             >
                 <div className='bot-unavailable-message-page__container'>
-                    <a href='https://app.deriv.com/mt5#real' 
+                    
+                    <a href={`${getRelatedDeriveOrigin().origin}mt5#real` }
                         className='link_button bot-unavailable-message-page__container-button'>
                         {translate('Trade on DMT5')}
                     </a>
-                    <a href='https://app.deriv.com' className='link_button'>
+                    <a href={getRelatedDeriveOrigin().origin} className='link_button'>
                         {translate('Trade on DTrader')}
                     </a>
                 </div>
