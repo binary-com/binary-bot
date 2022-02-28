@@ -47,12 +47,16 @@ const AccountActions = () => {
         $(".barspinner").show();
         const tokenList = getTokenList();
         setStorage('tokenList', '');
+
         addTokenIfValid(account_switcher_token, tokenList).then(() => {
             setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, account_switcher_token);
             const next_active_account = tokenList?.find(account => account.token === account_switcher_token);
+            
             if(next_active_account?.accountName) {
                 setStorage('active_loginid', next_active_account.accountName);
                 dispatch(updateActiveToken(next_active_account.token));
+                dispatch(setShouldReloadWorkspace(true));
+                $('.barspinner').hide();
             }
         })
     }

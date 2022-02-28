@@ -31,6 +31,7 @@ import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
+import { getActiveAccount } from '../../../common/utils/storageManager';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -105,7 +106,8 @@ const addBlocklyTranslation = () => {
 
 const onresize = () => {
     // let element = document.getElementById('blocklyArea');
-    // if (!element) return;
+    // const blocklyArea = element;
+    // const blocklyDiv = document.getElementById('blocklyDiv');
     // let x = 0;
     // let y = 0;
     // do {
@@ -113,6 +115,11 @@ const onresize = () => {
     //     y += element.offsetTop;
     //     element = element.offsetParent;
     // } while (element);
+    // // Position blocklyDiv over blocklyArea.
+    // blocklyDiv.style.left = `${x}px`;
+    // blocklyDiv.style.top = `${y}px`;
+    // blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
+    // blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
 };
 
 const render = workspace => () => {
@@ -416,6 +423,18 @@ export default class _Blockly {
             Blockly.Events.setGroup(false);
             this.cleanUp();
         });
+    }
+
+    resetAccount() {
+        const all_blocks = Blockly?.mainWorkspace?.getAllBlocks();
+        const trade_option_block = all_blocks.find(block => block.type === 'tradeOptions');
+        const currency_field = trade_option_block.getField('CURRENCY_LIST');
+        const active_account = getActiveAccount();
+
+        if (currency_field && active_account) {
+            currency_field.text_ = active_account?.currency;
+            currency_field?.render_();
+        }
     }
     /* eslint-disable class-methods-use-this */
     cleanUp() {

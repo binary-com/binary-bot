@@ -87,15 +87,10 @@ const Header = () => {
     }
     if (active_token) {
       api.authorize(active_token.token).then((account) => {
-        if (account?.error?.code) {
-          return;
-        }
+        if (account?.error?.code) return;
         dispatch(updateActiveToken(active_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
-
-        dispatch(setShouldReloadWorkspace(true)); // to reload the workspace //
-        $(".barspinner").hide(); // disable the bar loader //
 
         api.send({ forget_all: "balance" }).then(() => {
           api.send({
@@ -112,6 +107,13 @@ const Header = () => {
       syncWithDerivApp();
     }
   }, [active_token]);
+
+  // React.useEffect(() => {
+  //   if(active_token) {
+  //     dispatch(setShouldReloadWorkspace(true));
+  //     $(".barspinner").hide();
+  //   }
+  // }, [active_token])
 
   React.useEffect(() => {
     dispatch(updateIsLogged(isLoggedIn()));

@@ -24,6 +24,7 @@ import {
 import GTM from "../../../common/gtm";
 import google_drive_util from "../../../common/integrations/GoogleDrive";
 import { load } from "../../view/blockly";
+import { duration, marketDropdown, payout } from "../blockly/blocks/trade/components";
 
 const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();
@@ -301,6 +302,14 @@ const addBindings = blockly => {
     stopBlockly(blockly);
     GTM.setVisitorId();
   });
+
+  globalObserver.register("bot.reload", () => {
+    blockly.initPromise.then(() => {
+      updateConfigCurrencies().then(() => {
+        blockly.resetAccount();
+      })
+    });
+  })
 };
 const stopBlockly = blockly => blockly.stop();
 

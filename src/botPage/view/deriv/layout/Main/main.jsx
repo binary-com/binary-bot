@@ -19,6 +19,7 @@ import { updateActiveAccount, updateActiveToken, updateIsLogged } from "../../st
 import api, { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
 import { parseQueryString } from "../../../../../common/utils/tools";
 import initialize from "../../blockly-worksace";
+import { observer as globalObserver } from "../../../../../common/utils/observer";
 
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
@@ -29,8 +30,8 @@ const Main = () => {
 
 	React.useEffect(() => {
 		if (should_reload_workspace) {
-			let blockly_div = document.getElementById('blocklyDiv');
-			blockly_div.innerHTML = '';
+			// let blockly_div = document.getElementById('blocklyDiv');
+			// blockly_div.innerHTML = '';
 			const _blockly = new _Blockly();
 			setBlockly(_blockly);
 			init(_blockly);
@@ -39,7 +40,14 @@ const Main = () => {
 			})
 			dispatch(setShouldReloadWorkspace(false));
 		}
-	}, [should_reload_workspace])
+	}, []);
+
+	React.useEffect(() => {
+		if (should_reload_workspace && blockly) {
+			globalObserver.emit("bot.reload")
+			dispatch(setShouldReloadWorkspace(false));
+		}
+	}, [should_reload_workspace]);
 
 	const init = (blockly) => {
 		blockly?.initPromise;
