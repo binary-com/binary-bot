@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { TrackJS } from "trackjs";
 import {
 	get as getStorage,
@@ -24,7 +24,7 @@ import { observer as globalObserver } from "../../../../../common/utils/observer
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
 
-	const navigate = useNavigate();
+	const history = useHistory();
 	const dispatch = useDispatch();
 	const { should_reload_workspace } = useSelector(state => state.ui);
 
@@ -72,7 +72,7 @@ const Main = () => {
 							dispatch(updateActiveAccount(accounts[0].loginInfo));
 						}
 						dispatch(updateIsLogged(isLoggedIn()));
-						navigate('/', { replace: true });
+						history.replace('/');
 						api.send({ balance: 1, account: 'all' });
 						resolve();
 					});
