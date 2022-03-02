@@ -34,7 +34,13 @@
     "camelcase": 0,
     "no-param-reassign": 0,
     "indent": 0,
-    "quotes": 0
+    "quotes": 0,
+    "prefer-destructuring": ["error", {
+      "array": false,
+      "object": false
+    }, {
+      "enforceForRenamedProperties": false
+    }]
   },
   "settings": {
     "react": {

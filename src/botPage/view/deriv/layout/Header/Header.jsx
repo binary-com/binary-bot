@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import classNames from "classnames";
 import { isMobile, isDesktop, parseQueryString } from "../../../../../common/utils/tools";
 import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
-import classNames from "classnames";
 import { isLoggedIn } from "../../utils";
 import { getActiveToken } from "../../utils";
 import {
@@ -101,8 +101,8 @@ const Header = () => {
         });
       }).catch(() => {
         removeAllTokens();
-        dispatch(resetClient())
-        dispatch(setAccountSwiitcherLoader(true))
+        dispatch(resetClient());
+        dispatch(setAccountSwitcherLoader(true));
       });
       syncWithDerivApp();
     }

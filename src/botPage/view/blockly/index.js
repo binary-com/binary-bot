@@ -32,6 +32,7 @@ import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
 import { getActiveAccount } from '../../../common/utils/storageManager';
+import { getRelatedDeriveOrigin } from '../deriv/utils';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -227,7 +228,7 @@ export const load = (blockStr, dropEvent = {}) => {
                     text: translate('Take me to DBot'),
                     class: 'button-primary',
                     click() {
-                        window.location.href = 'https://app.deriv.com/bot';
+                        window.location.href = `${getRelatedDeriveOrigin().origin}/bot`;
                     },
                 },
             ],

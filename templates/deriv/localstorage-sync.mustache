@@ -8,7 +8,11 @@
             window.addEventListener('message', function(message) {
                 var allowed_origins = [
                     'https://app.deriv.com', 
+                    'https://app.deriv.be', 
+                    'https://app.deriv.me', 
                     'https://staging-app.deriv.com',
+                    'https://staging-app.deriv.be',
+                    'https://staging-app.deriv.me',
                 ];
 
                 if (allowed_origins.includes(message.origin)) {

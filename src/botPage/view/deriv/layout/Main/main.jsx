@@ -8,7 +8,7 @@ import {
 	getTokenList,
 	isDone,
 } from "../../../../../common/utils/storageManager";
-import { setShouldReloadWorkspace, updateShowTour } from "../../store/ui-slice";
+import { setShouldReloadWorkspace, updateShowTour, updateShowMessagePage } from "../../store/ui-slice";
 import _Blockly from "../../../blockly";
 import ToolBox from "../ToolBox";
 import SidebarToggle from "../../components/SidebarToggle";
@@ -20,12 +20,14 @@ import api, { addTokenIfValid, AppConstants, queryToObjectArray } from "../../..
 import { parseQueryString } from "../../../../../common/utils/tools";
 import initialize from "../../blockly-worksace";
 import { observer as globalObserver } from "../../../../../common/utils/observer";
+import { getRelatedDeriveOrigin } from "../../utils";
+import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
+import { getActiveToken } from "../../../shared";
 
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
-
-	const history = useHistory();
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const { should_reload_workspace } = useSelector(state => state.ui);
 
 	React.useEffect(() => {
@@ -51,10 +53,20 @@ const Main = () => {
 
 	const init = (blockly) => {
 		blockly?.initPromise;
+
+		const local_storage_sync = document.getElementById("localstorage-sync");
+		if (local_storage_sync) {
+			local_storage_sync.src = `${getRelatedDeriveOrigin().origin}/localstorage-sync.html`
+		}
+
+		const activeToken = getActiveToken(getTokenList());
+		const landing_company = activeToken?.loginInfo.landing_company_name;
+
 		const days_passed =
 			Date.now() >
 			(parseInt(getStorage("closedTourPopup")) || 0) + 24 * 60 * 60 * 1000;
 		dispatch(updateShowTour(isDone("welcomeFinished") || days_passed));
+		dispatch(updateShowMessagePage(landing_company === "maltainvest"));
 	}
 
 	const loginCheck = async () => {
@@ -107,6 +119,7 @@ const Main = () => {
 
 	return (
 		<div className="main">
+			<BotUnavailableMessage />
 			<div id="bot-blockly">
 				{blockly && <ToolBox blockly={blockly} />}
 				{/* Blockly workspace will be injected here */}
@@ -118,7 +131,7 @@ const Main = () => {
 				{blockly && <TradeInfoPanel />}
 			</div>
 		</div>
-	);
-};
+	)
+}
 
 export default Main;

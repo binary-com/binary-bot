@@ -5,7 +5,7 @@ const Popover = ({ children , content })=>{
     const [is_hovered, updateIsHovered] = React.useState(false);
     
     return(
-        <div
+        <span
             onMouseEnter={()=>{updateIsHovered(true)}}
             onMouseLeave={()=>{updateIsHovered(false)}}
         >
@@ -16,7 +16,7 @@ const Popover = ({ children , content })=>{
             >
                 {children}
         </TinyPopover>
-       </div>
+       </span>
     )
     
 }

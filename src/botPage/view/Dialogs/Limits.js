@@ -108,7 +108,7 @@ class LimitsContent extends PureComponent {
 
   getDailyLossesLimit() {
     if (this.state.maxLosses) {
-      const token = document.getElementById("active-token").value;
+      const token = document.getElementById("active-token")?.value;
       const tokenObj = getToken(token);
       const currency = tokenObj && tokenObj.loginInfo.currency;
       return currency ? `${this.state.maxLosses} ${currency}` : `${this.state.maxLosses}`;

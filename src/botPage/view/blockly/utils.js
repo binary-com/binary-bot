@@ -173,16 +173,18 @@ export const deleteBlockIfExists = block => {
 export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = false;
     if (block.inputList instanceof Array) {
-        Array.from(block.inputList).forEach(inp =>
-            inp.fieldRow.forEach(field => {
-                if (field instanceof Blockly.FieldLabel) {
-                    const svgElement = field.getSvgRoot();
-                    if (svgElement) {
-                        svgElement.style.setProperty('fill', 'white', 'important');
+        Array.from(block.inputList).forEach(input => {
+            if (input?.fieldRow?.length) {
+                input.fieldRow.forEach(field => {
+                    if (field instanceof Blockly.FieldLabel) {
+                        const svgElement = field.getSvgRoot();
+                        if (svgElement) {
+                            svgElement.style.setProperty('fill', 'white', 'important');
+                        }
                     }
-                }
-            })
-        );
+                });
+            }
+        });
     }
     const field = block.getField();
     if (field) {

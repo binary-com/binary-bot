@@ -3,7 +3,7 @@ import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
 import { currencyNameMap } from "../../../config";
-import { generateDerivLink } from "../../../utils";
+import { generateDerivLink, getRelatedDeriveOrigin } from "../../../utils";
 import { useSelector } from "react-redux";
 import Modal from "../../../components/modal";
 import AccountSwitchModal from "./account-switch-modal.jsx";
@@ -51,8 +51,8 @@ const AccountActions = () => {
         addTokenIfValid(account_switcher_token, tokenList).then(() => {
             setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, account_switcher_token);
             const next_active_account = tokenList?.find(account => account.token === account_switcher_token);
-            
-            if(next_active_account?.accountName) {
+
+            if (next_active_account?.accountName) {
                 setStorage('active_loginid', next_active_account.accountName);
                 dispatch(updateActiveToken(next_active_account.token));
                 dispatch(setShouldReloadWorkspace(true));
@@ -102,7 +102,8 @@ const AccountActions = () => {
                     ref={dropdownRef}
                     setIsAccDropdownOpen={setIsAccDropdownOpen}
                 />}
-            <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href="https://app.deriv.com/cashier/deposit">{translate("Deposit")}</a>
+
+            <a className="url-cashier-deposit btn btn--primary header__deposit mobile-hide" href={`${getRelatedDeriveOrigin().origin}/cashier/deposit`}>{translate("Deposit")}</a>
             {account_switcher_token && (
                 <Modal
                     title={translate('Are you sure?')}

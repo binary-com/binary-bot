@@ -6,8 +6,10 @@
 @import 'blockly-toolbox';
 @import 'toolbox';
 @import 'tour';
+@import 'error';
 @import 'deriv/index';
 @import 'deriv/devices.scss';
+
 
 * {
     box-sizing: border-box;
