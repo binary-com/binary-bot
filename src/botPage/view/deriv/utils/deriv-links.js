@@ -1,6 +1,5 @@
 export const getRelatedDeriveOrigin = () => {
   let origin = "https://app.deriv.com";
-  let is_official = false
   const split_host_name = /^(staging-)?(bot.deriv.)([a-zA-Z]*)$/.exec(
     window.location.hostname
   );
@@ -10,11 +9,10 @@ export const getRelatedDeriveOrigin = () => {
      prefix = split_host_name[1];
      extension = split_host_name[3];
     if (["com", "me", "be"].includes(extension)) {
-      is_official = true
       origin = `https://${prefix}app.deriv.${extension}/`;
     }
   }
-  return {origin,extension,prefix, is_official};
+  return {origin,extension,prefix};
 };
 
 export const generateDerivLink = (path, ...queries) => {
