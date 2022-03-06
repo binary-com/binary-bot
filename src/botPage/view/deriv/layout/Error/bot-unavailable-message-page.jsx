@@ -17,7 +17,7 @@ const BotUnavailableMessage = () => {
             >
                 <div className='bot-unavailable-message-page__container'>
                     
-                    <a href={`${getRelatedDeriveOrigin().origin}mt5#real` }
+                    <a href={`${getRelatedDeriveOrigin().origin}/mt5#real` }
                         className='link_button bot-unavailable-message-page__container-button'>
                         {translate('Trade on DMT5')}
                     </a>

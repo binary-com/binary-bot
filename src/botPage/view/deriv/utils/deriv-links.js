@@ -11,7 +11,7 @@ export const getRelatedDeriveOrigin = () => {
      extension = split_host_name[3];
     if (["com", "me", "be"].includes(extension)) {
       is_official = true
-      origin = `https://${prefix}app.deriv.${extension}/`;
+      origin = `https://${prefix}app.deriv.${extension}`;
     }
   }
   return {origin,extension,prefix, is_official};
@@ -22,5 +22,5 @@ export const generateDerivLink = (path, ...queries) => {
     window.location.origin
   )}`;
   queries.push(redirect_query);
-  return `${getRelatedDeriveOrigin().origin}${path}?${queries.join("&")}`;
+  return `${getRelatedDeriveOrigin().origin}/${path}?${queries.join("&")}`;
 };
