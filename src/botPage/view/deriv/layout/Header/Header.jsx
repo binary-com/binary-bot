@@ -26,8 +26,8 @@ import {
   MenuLinks,
   AccountSwitcherLoader,
 } from "./components";
-import api from "../../../../../common/appId";
 import { queryToObjectArray } from "../../../../../common/appId";
+import api from "../../api";
 
 const AccountSwitcher = () => {
   const { account_switcher_loader } = useSelector((state) => state.ui);

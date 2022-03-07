@@ -49,7 +49,8 @@ function createReactNode(id, style, current_node, parent_node){
         ?? document.getElementsByClassName(current_node)[0];
     const parentDiv = document.getElementById(parent_node) 
         ?? document.getElementsByClassName(parent_node)[0];
-    parentDiv.insertBefore(new_account_position, current_account_position); 
+    
+    if(parentDiv) parentDiv.insertBefore(new_account_position, current_account_position);
     return renderHTML(new_account_position.outerHTML);
 }
 

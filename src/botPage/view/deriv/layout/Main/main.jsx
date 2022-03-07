@@ -7,6 +7,8 @@ import {
 	set as setStorage,
 	getTokenList,
 	isDone,
+	convertForDerivStore,
+	removeAllTokens,
 } from "../../../../../common/utils/storageManager";
 import { setShouldReloadWorkspace, updateShowTour, updateShowMessagePage } from "../../store/ui-slice";
 import _Blockly from "../../../blockly";
@@ -16,13 +18,14 @@ import LogTable from "../../../LogTable";
 import TradeInfoPanel from "../../../TradeInfoPanel";
 import { isLoggedIn } from "../../utils";
 import { updateActiveAccount, updateActiveToken, updateIsLogged } from "../../store/client-slice";
-import api, { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
+import { addTokenIfValid, AppConstants, queryToObjectArray } from "../../../../../common/appId";
 import { parseQueryString } from "../../../../../common/utils/tools";
 import initialize from "../../blockly-worksace";
 import { observer as globalObserver } from "../../../../../common/utils/observer";
 import { getRelatedDeriveOrigin } from "../../utils";
 import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
 import { getActiveToken } from "../../../shared";
+import api from "../../api";
 
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
@@ -32,8 +35,6 @@ const Main = () => {
 
 	React.useEffect(() => {
 		if (should_reload_workspace) {
-			// let blockly_div = document.getElementById('blocklyDiv');
-			// blockly_div.innerHTML = '';
 			const _blockly = new _Blockly();
 			setBlockly(_blockly);
 			init(_blockly);
@@ -73,6 +74,10 @@ const Main = () => {
 		return new Promise(resolve => {
 			const queryStr = parseQueryString();
 			const tokenObjectList = queryToObjectArray(queryStr);
+			
+			if (!Array.isArray(getTokenList())) {
+				removeAllTokens();
+			}
 
 			if (!getTokenList().length) {
 				if (tokenObjectList.length) {
@@ -100,6 +105,7 @@ const Main = () => {
 					resolve();
 				}
 				setStorage("tokenList", JSON.stringify(token_list));
+				setStorage("client.accounts", JSON.stringify(convertForDerivStore(token_list)));
 			}
 			resolve();
 		});

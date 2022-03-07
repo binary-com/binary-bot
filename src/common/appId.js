@@ -4,14 +4,18 @@ import {
   removeToken,
   getTokenList,
   removeAllTokens,
-  get as getStorage,
   set as setStorage,
 } from "../common/utils/storageManager";
-import { parseQueryString, isProduction, getExtension } from "../common/utils/tools";
+import { parseQueryString } from "../common/utils/tools";
 import { getLanguage } from "./lang";
 import AppIdMap from "./appIdResolver";
 import GTM from "./gtm";
 import { getRelatedDeriveOrigin } from '../botPage/view/deriv/utils';
+import api from "../botPage/view/deriv/api";
+
+function getStorage(label) {
+  return localStorage.getItem(label);
+}
 
 export const AppConstants = Object.freeze({
   STORAGE_ACTIVE_TOKEN: "activeToken",
@@ -106,24 +110,13 @@ const generateOAuthDomain = () => {
   return 'oauth.deriv.com';
 };
 
-export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
-
 export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
-
-export const getWebSocketURL = () => `wss://${getServerAddressFallback()}`;
 
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
 
 export const getOAuthURL = () =>
   `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
-const options = {
-  app_id: getAppIdFallback(),
-  lang: getLanguage().toUpperCase(),
-  endpoint: getWebSocketURL(),
-};
-const generateDerivApiInstance = () => new DerivAPIBasic(options);
-const api = generateDerivApiInstance();
 
 export const generateTestDerivApiInstance = overrideOptions =>
   new DerivAPIBasic(Object.assign({}, options, overrideOptions));
@@ -173,5 +166,3 @@ export const logoutAllTokens = () =>
         .catch(logout);
     }
   });
-
-export default api;

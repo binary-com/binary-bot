@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import  Popover from '../../../components/popover';
 import { translate} from "../../../../../../common/utils/tools";
-import api from "../../../../../../common/appId";
+import api from "../../../api";
 
 const NetworkStatus = () => {
     const [status, setStatus] = React.useState("offline");

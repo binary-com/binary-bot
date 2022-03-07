@@ -2,7 +2,6 @@ import { TrackJS } from "trackjs";
 import { oppositesToDropdown } from "../utils";
 import { symbolApi } from "../../shared";
 import config from "../../../common/const";
-import api from "../../../../common/appId";
 import { translate } from "../../../../common/i18n";
 import {
   get as getStorage,
@@ -12,6 +11,7 @@ import {
 } from "../../../../common/utils/storageManager";
 import { observer as globalObserver } from "../../../../common/utils/observer";
 import { isProduction } from "../../../../common/utils/tools";
+import api from "../../deriv/api";
 
 let purchaseChoices = [[translate("Click to select"), ""]];
 

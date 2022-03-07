@@ -10,7 +10,7 @@ import {
 } from "../../../common/utils/storageManager";
 import { observer as globalObserver } from "../../../common/utils/observer";
 import { translate } from "../../../common/i18n";
-import api, { logoutAllTokens, AppConstants } from "../../../common/appId";
+import { logoutAllTokens, AppConstants } from "../../../common/appId";
 import IntegrationsDialog from "../Dialogs/IntegrationsDialog";
 import Chart from "../Dialogs/Chart";
 import TradingView from "../Dialogs/TradingView";
@@ -24,6 +24,7 @@ import {
 import GTM from "../../../common/gtm";
 import google_drive_util from "../../../common/integrations/GoogleDrive";
 import { load } from "../../view/blockly";
+import api from "./api";
 
 const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();

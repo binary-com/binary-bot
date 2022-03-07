@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from "chai";
+import api from "../../../view/deriv/api";
 import _Symbol from "../index";
-import api from "../../../../common/appId";
 
 describe("symbol", () => {
   describe("Checking functions", () => {

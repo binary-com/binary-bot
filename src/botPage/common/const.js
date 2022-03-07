@@ -1,5 +1,5 @@
 import { translate } from "../../common/i18n";
-import api from "../../common/appId";
+import api from "../view/deriv/api";
 import { load as loadLang } from "../../common/lang";
 
 loadLang();
