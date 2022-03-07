@@ -1,5 +1,4 @@
 import filesaver from 'file-saver';
-import Observer from '../../common/utils/observer';
 import { AppConstants } from '../../common/appId';
 import _Symbol from '../common/symbolApi';
 import TicksService from '../common/TicksService';
@@ -15,12 +14,6 @@ export const symbolPromise = new Promise(resolve => {
 });
 
 export const ticksService = new TicksService(api);
-
-export const createScope = () => {
-  const observer = new Observer();
-
-  return { observer, api, ticksService, symbolApi };
-};
 
 export const appendRow = (trade, state) => ({
   id: state.id + 1,
