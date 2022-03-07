@@ -5,11 +5,11 @@ import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 
 const RouteWrapper = ({ path, component: component }) => (
-  <>
+  <React.Fragment>
     <Header />
     <Route path={path} component={component} />
     <Footer />
-  </>
+  </React.Fragment>
 );
 
 RouteWrapper.propTypes = {

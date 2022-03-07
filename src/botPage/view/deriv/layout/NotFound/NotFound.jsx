@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 const NotFound = () => {
   React.useEffect(() => {
+    // Todo: Remove jquery
     $(".barspinner").hide();
   }, [])
   return (
