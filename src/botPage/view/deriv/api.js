@@ -81,6 +81,9 @@ const options = {
 };
 const generateDerivApiInstance = () => new DerivAPIBasic(options);
 
+export const generateTestDerivApiInstance = overrideOptions =>
+  new DerivAPIBasic(Object.assign({}, options, overrideOptions));
+
 const api = generateDerivApiInstance();
 
 export default api;

@@ -117,10 +117,6 @@ export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/
 export const getOAuthURL = () =>
   `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
-
-export const generateTestDerivApiInstance = overrideOptions =>
-  new DerivAPIBasic(Object.assign({}, options, overrideOptions));
-
 export async function addTokenIfValid(token, tokenObjectList) {
   try {
     const { authorize } = await api.authorize(token);
