@@ -7,7 +7,7 @@ import Routes from "../routes";
 
 // Todo create symbol slice and update/add info from here;
 const App = () => {
-  const [has_symbols, setSymbol] = React.useState(false);
+  const [has_symbols, setHasSymbols] = React.useState(false);
   TrackJS.install(trackjs_config);
   GTM.init();
   $.ajaxSetup({
@@ -16,7 +16,7 @@ const App = () => {
 
   React.useEffect(() => {
     symbolPromise.then(() => {
-      setSymbol(true);
+      setHasSymbols(true);
     });
   }, [])
 

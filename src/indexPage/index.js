@@ -17,7 +17,6 @@ const renderElements = () => {
 
 const loginCheck = () => {
   if (getTokenList().length) {
-    // window.location.pathname = `${window.location.pathname.replace(/\/+$/, "")}/bot.html`;
   } else {
     loadLang();
     oauthLogin(() => {
