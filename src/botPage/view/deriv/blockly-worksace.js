@@ -67,7 +67,7 @@ const checkForRequiredBlocks = () => {
   return true;
 };
 
-const applyToolboxPermissions = () => {
+export function applyToolboxPermissions() {
   const fn = getTokenList().length ? "show" : "hide";
   $("#runButton, #showSummary, #logButton")
     [fn]()
