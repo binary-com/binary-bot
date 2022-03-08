@@ -60,14 +60,14 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     src={`image/deriv/currency/ic-currency-${
                       accounts[acc].demo_account
                         ? "virtual"
-                        : account.currency?.toLowerCase()
-                    }.svg`}
+                        : account.currency?.toLowerCase() 
+                        || "unknown"}.svg`}
                   />
                   <span>
                     {accounts[acc].demo_account
                       ? translate("Demo")
                       : currencyNameMap[account.currency]?.name ||
-                        account.currency}
+                      account.currency || translate("No currency assigned")}
                     <div className="account__switcher-loginid">
                       {acc}
                     </div>
