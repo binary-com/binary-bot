@@ -6,11 +6,13 @@ import { generateDerivLink } from "../../../utils";
 import { getTokenList } from "../../../../../../common/utils/storageManager";
 import { useDispatch } from "react-redux";
 import { setAccountSwitcherToken } from "../../../store/ui-slice";
+import { observer as globalObserver } from "../../../../../../common/utils/observer";
 
 const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
   const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
   const dispatch = useDispatch();
   const { accounts, active_account_name } = useSelector((state) => state.client);
+  const { show_bot_unavailable_page } = useSelector((state) => state.ui);
   const item_ref = React.useRef([]);
   const isReal = tab === "real";
   const token_list = getTokenList();
@@ -49,7 +51,14 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                   onClick={() => {
                     const account_token = token_list.find(token=> token.accountName === acc)
                     if(account_token?.token && acc !== active_account_name){
-                      dispatch(setAccountSwitcherToken(account_token?.token));
+                      if (show_bot_unavailable_page) {
+                        globalObserver.emit(
+                          "ui.switch_account",
+                          account_token.token
+                        );
+                      } else {
+                        dispatch(setAccountSwitcherToken(account_token?.token));
+                      }
                       setIsAccDropdownOpen(false);
                     }
                   }}
@@ -85,10 +94,10 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                         : account?.currency}
                     </span>
                   </span>
-                </div>
-              )
-            );
-          })}
+                  </div>
+                )
+              );
+            })}
           {isReal && (
             <a
               href={generateDerivLink("redirect", "action=add_account")}

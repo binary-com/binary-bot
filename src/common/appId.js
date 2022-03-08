@@ -7,10 +7,11 @@ import {
     get as getStorage,
     set as setStorage,
 } from '../common/utils/storageManager';
-import { parseQueryString, isProduction, getExtension } from '../common/utils/tools';
+import { parseQueryString } from '../common/utils/tools';
 import { getLanguage } from './lang';
 import AppIdMap from './appIdResolver';
 import GTM from './gtm';
+import { getRelatedDeriveOrigin } from '../botPage/view/deriv/utils';
 
 export const AppConstants = Object.freeze({
     STORAGE_ACTIVE_TOKEN: 'activeToken',
@@ -22,14 +23,17 @@ export const queryToObjectArray = queryStr => {
     const tokens = [];
     Object.keys(queryStr).forEach(o => {
         if (!/\d$/.test(o)) return;
-        const index = parseInt(o.slice(-1));
-        let key = o.slice(0, -1);
+        const splited_query = /^([a-zA-Z]*)([\d]*)?/.exec(o);
+        let key = splited_query[1];
+        const index = splited_query[2];
         key = key === 'acct' ? 'accountName' : key; // Make it consistent with storageManage naming
-        if (index <= tokens.length) {
-            tokens[index - 1][key] = queryStr[o];
-        } else {
-            tokens.push({});
-            tokens[index - 1][key] = queryStr[o];
+        if(index){
+            if (index <= tokens.length) {
+                tokens[index - 1][key] = queryStr[o];
+            } else {
+                tokens.push({});
+                tokens[index - 1][key] = queryStr[o];
+            }
         }
     });
     return tokens;
@@ -37,7 +41,6 @@ export const queryToObjectArray = queryStr => {
 
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
-
     const tokenObjectList = queryToObjectArray(queryStr);
 
     if (tokenObjectList.length) {
@@ -91,12 +94,15 @@ export const getDefaultEndpoint = () => ({
 });
 
 const generateOAuthDomain = () => {
+    const related_deriv_origin = getRelatedDeriveOrigin
     const endpointUrl = getCustomEndpoint().url;
     if (endpointUrl) {
         return endpointUrl;
-    } else if (isProduction()) {
-        return `oauth.deriv.${getExtension()}`;
+    } 
+    if(related_deriv_origin.is_offical){
+        return `oauth.deriv.${related_deriv_origin.extension}`;
     }
+    
     return 'oauth.deriv.com';
 };
 

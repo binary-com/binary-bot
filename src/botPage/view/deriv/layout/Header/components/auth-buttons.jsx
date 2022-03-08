@@ -5,6 +5,7 @@ import { getOAuthURL } from "../../../../../../common/appId";
 import { useDispatch } from "react-redux";
 import { setIsHeaderLoaded } from "../../../store/ui-slice";
 import Tour, { TourTargets } from "../../../components/tour";
+import { getRelatedDeriveOrigin } from "../../../utils";
 
 const AuthButtons = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const AuthButtons = () => {
         className="btn btn--primary header__btn-signup"
         target="_blank"
         rel="noopener noreferrer"
-        href="https://deriv.com/signup/"
+        href={`https://deriv.${getRelatedDeriveOrigin().extension}/signup/`}
       >
         {translate("Sign up")}
       </a>

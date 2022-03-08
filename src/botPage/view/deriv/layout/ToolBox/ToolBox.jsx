@@ -1,6 +1,10 @@
+/* eslint-disable no-useless-return */
+/* eslint-disable consistent-return */
+/* eslint-disable quotes */
+/* eslint-disable indent */
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Load from "./components/load";
 import Save from "./components/save";
 import Reset from "./components/reset";
@@ -8,7 +12,8 @@ import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
 import {setIsBotRunning} from '../../store/ui-slice';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { useDispatch } from "react-redux";
+import { isMobile } from "../../../../../common/utils/tools";
+import Popover from "../../components/popover/index";
 
 const ShowModal = ({ modal, onClose, class_name }) => {
   if (!modal) return;
@@ -27,6 +32,7 @@ const ToolBox = ({ blockly }) => {
   const dispatch = useDispatch();
   const { is_gd_ready } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
+
 
   React.useEffect(() => {
     globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
@@ -86,79 +92,110 @@ const ToolBox = ({ blockly }) => {
   };
   return (
     <div id="toolbox">
-      <button
-        id="resetButton"
-        className="toolbox-button icon-reset"
-        onClick={() => {
-          onShowModal("reset");
-        }}
-      />
-      <button
-        id="load-xml"
-        className="toolbox-button icon-browse"
-        onClick={() => {
-          onShowModal("load");
-        }}
-      />
-      <button
-        id="save-xml"
-        className="toolbox-button icon-save"
-        onClick={() => {
-          onShowModal("save");
-        }}
-      />
-      {is_gd_ready && (
+      <Popover  content={translate("Reset the blocks to their initial state")}
+        position="bottom"
+        >
         <button
-          id="integrations"
-          className="toolbox-button icon-integrations"
+          id="resetButton"
+          className="toolbox-button icon-reset"
+          onClick={() => {
+            onShowModal("reset");
+          }}
         />
+       
+      </Popover>
+      <Popover content={translate("Load new blocks (xml file)")} position="bottom">
+        <button
+          id="load-xml"
+          className="toolbox-button icon-browse"
+          onClick={() => {
+            onShowModal("load");
+          }}
+        />
+      </Popover>
+      <Popover content={translate("Save the existing blocks (xml file)")} position="bottom">
+        <button
+          id="save-xml"
+          className="toolbox-button icon-save"
+          onClick={() => {
+            onShowModal("save");
+          }}
+        />
+      </Popover>
+      {is_gd_ready && (
+        <Popover content={translate("Connect Binary Bot to your Google Drive to easily save and re-use your blocks")} position="bottom">
+          <button
+            id="integrations"
+            className="toolbox-button icon-integrations"
+          />
+        </Popover>
       )}
 
       <span className="toolbox-separator" />
-      <button
-        id="undo"
-        className="toolbox-button icon-undo"
-        onClick={() => blockly.undo()}
-      />
-      <button
-        id="redo"
-        className="toolbox-button icon-redo"
-        onClick={() => blockly.redo()}
-      />
-
+      <Popover content={translate("Undo the changes (Ctrl+Z)")} position="bottom">
+        <button
+          id="undo"
+          className="toolbox-button icon-undo"
+          onClick={() => blockly.undo()}
+        />
+      </Popover>
+      <Popover content={translate("Redo the changes (Ctrl+Shift+Z)")} position="bottom">
+        <button
+          id="redo"
+          className="toolbox-button icon-redo"
+          onClick={() => blockly.redo()}
+        />
+      </Popover>
       <span className="toolbox-separator" />
-      <button
-        id="zoomIn"
-        className="toolbox-button icon-zoom-in"
-        onClick={() => blockly.zoomOnPlusMinus(true)}
-      />
-      <button
-        id="zoomOut"
-        className="toolbox-button icon-zoom-out"
-        onClick={() => blockly.zoomOnPlusMinus(false)}
-      />
-      <button
-        id="rearrange"
-        className="toolbox-button icon-sort"
-        onClick={() => blockly.cleanUp()}
-      />
+      <Popover content={translate("Zoom In (Ctrl + +)")} position={isMobile() ? "left" : "bottom"}>
+        <button
+          id="zoomIn"
+          className="toolbox-button icon-zoom-in"
+          onClick={() => blockly.zoomOnPlusMinus(true)}
+        />
+      </Popover>
+      <Popover content={translate("Zoom Out (Ctrl + -)")} position={isMobile() ? "left" : "bottom"}>
+        <button
+          id="zoomOut"
+          className="toolbox-button icon-zoom-out"
+          onClick={() => blockly.zoomOnPlusMinus(false)}
+        />
+      </Popover>
+      <Popover content={translate("Rearrange Vertically")} position={isMobile() ? "left" : "bottom"}>
+        <button
+          id="rearrange"
+          className="toolbox-button icon-sort"
+          onClick={() => blockly.cleanUp()}
+        />
+      </Popover>
       {/* Needs Refactor ClientInfo Structure */}
       <span className="toolbox-separator" />
-      <button id="showSummary" className="toolbox-button icon-summary" />
-      <button id="runButton" className="toolbox-button icon-run" />
-      <button id="stopButton" className="toolbox-button icon-stop" />
-      <button id="logButton" className="toolbox-button icon-info" />
-
+      <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
+        <button id="showSummary" className="toolbox-button icon-summary" />
+      </Popover>
+      <Popover content={translate("Run the bot")} position="bottom">
+        <button id="runButton" className="toolbox-button icon-run" />
+      </Popover>
+      <Popover content={translate("Stop the bot")} position="bottom">
+        <button id="stopButton" className="toolbox-button icon-stop" />
+      </Popover>
+      <Popover content={translate("Show log")} position="bottom">
+        <button id="logButton" className="toolbox-button icon-info" />
+      </Popover>
       <span className="toolbox-separator" />
-      {/* Needs resizeable modal */}
-      <button
-        id="chartButton"
-        className="toolbox-button icon-chart-line"
-      />
-      <button
-        id="tradingViewButton"
-        className="toolbox-button icon-trading-view"
-      />
+       {/* Needs resizeable modal */}
+      <Popover content={translate("Show chart")} position="bottom">
+        <button
+          id="chartButton"
+          className="toolbox-button icon-chart-line"
+        />
+      </Popover>
+      <Popover content={translate("Show Trading View")} position="bottom">
+        <button
+          id="tradingViewButton"
+          className="toolbox-button icon-trading-view"
+        />
+      </Popover>
       {should_show_modal && (
         <ShowModal
           modal={MODALS[selected_modal]}
