@@ -25,7 +25,7 @@ const ShowModal = ({ modal, onClose, class_name }) => {
   );
 };
 
-const Button = ({ label, tooltip, classes, id, position = 'bottom' }) => {
+const ToolboxButton = ({ label, tooltip, classes, id, position = 'bottom' }) => {
   return <span id={id}>
     <Popover content={tooltip} position={position}>
       <button className={classes}>{label}</button>
@@ -181,12 +181,12 @@ const ToolBox = ({ blockly }) => {
       <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
         <button id="showSummary" className="toolbox-button icon-summary" />
       </Popover>
-      <Button
+      <ToolboxButton
         id="runButton"
         classes="toolbox-button icon-run"
         tooltip={translate("Run the bot")}
       />
-      <Button
+      <ToolboxButton
         id="stopButton"
         classes="toolbox-button icon-stop"
         tooltip={translate("Stop the bot") }
