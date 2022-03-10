@@ -40,7 +40,14 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
           {accounts && Object.keys(accounts)
             .sort((acc,acc1)=>{return acc === active_account_name ? -1 : (acc1 === active_account_name ? 1:0)})
             .map((acc, index) => {
-            const account = accounts[acc]
+              const account = accounts[acc];
+              const has_currency = !!account.currency;
+              const display_balance = account?.balance?.toLocaleString(undefined, {
+                minimumFractionDigits:
+                  currencyNameMap[account.currency]
+                    ?.fractional_digits ?? 2,
+              }) || 0;
+
             return (
               isReal !== Boolean(account.demo_account) && (
                 <div
@@ -82,18 +89,10 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     </div>
                   </span>
                   <span className="account__switcher-balance">
-                    {accounts[acc].demo_account ?
-                    account?.balance?.toLocaleString(undefined, {
-                      minimumFractionDigits:
-                        currencyNameMap[account.currency]
-                          ?.fractional_digits ?? 2,
-                    }) : ""
-                    } 
+                    {has_currency && display_balance}
                     <span className="symbols">
                       &nbsp;
-                      {account?.currency === "UST"
-                        ? "USDT"
-                        : account?.currency}
+                      {account?.currency === "UST" ? "USDT" : account?.currency}
                     </span>
                   </span>
                   </div>
