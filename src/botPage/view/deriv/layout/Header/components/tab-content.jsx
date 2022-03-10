@@ -82,11 +82,13 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     </div>
                   </span>
                   <span className="account__switcher-balance">
-                    {account?.balance?.toLocaleString(undefined, {
+                    {accounts[acc].demo_account ?
+                    account?.balance?.toLocaleString(undefined, {
                       minimumFractionDigits:
                         currencyNameMap[account.currency]
                           ?.fractional_digits ?? 2,
-                    })}
+                    }) : ""
+                    } 
                     <span className="symbols">
                       &nbsp;
                       {account?.currency === "UST"
