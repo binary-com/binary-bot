@@ -95,3 +95,32 @@ export const showSpinnerInButton = $buttonElement => {
 export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
 };
+
+export const loadExternalScript = (src, async = true, defer = true) =>
+    new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = async;
+        script.defer = defer;
+        script.onerror = reject;
+
+        function handleLoad() {
+            const loadState = this.readyState;
+            if (loadState && !/loaded|complete/.test(loadState)) return;
+
+            script.onload = null;
+            script.onreadystatechange = null;
+            resolve();
+        }
+
+        script.onload = handleLoad;
+        script.onreadystatechange = handleLoad;
+
+        document.head.appendChild(script);
+    });
+
+export const errLogger = (err, msg) => {
+    const errStr = JSON.stringify(err);
+    const errMsg = `${msg} - Error: ${errStr}`;
+    console.warn(errMsg);
+};
