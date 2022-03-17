@@ -3,7 +3,7 @@ export const MOBILE_TYPE = {
   WINDOWS_PHONE: 'Windows Phone',
   ANDROID: 'Android',
   IOS: 'iOS',
-  UNKNOWN: 'unknown'
+  UNKNOWN: 'unknown',
 }
 
 
@@ -27,6 +27,4 @@ export const mobileOSDetect = () => {
   return MOBILE_TYPE.UNKNOWN;
 };
 
-export const isIOS = () => {
-  return !!(mobileOSDetect() === MOBILE_TYPE.IOS)
-}
+export const isIOS = () => !!(mobileOSDetect() === MOBILE_TYPE.IOS);
