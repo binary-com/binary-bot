@@ -1,6 +1,7 @@
 import { observer as globalObserver } from '../../common/utils/observer';
 import { getToken } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
+import { isIOS } from './osDetect';
 
 const log = (type, ...args) => {
     if (type === 'warn') {
@@ -19,7 +20,7 @@ const notify = ({ className, message, position = 'left', sound = 'silent' }) => 
     log(className, message);
 
     $.notify(message.toString(), { position: `bottom ${position}`, className });
-    if (sound !== 'silent') {
+    if (sound !== 'silent' && !isIOS()) {
         const playPromise = $(`#${sound}`)
             .get(0)
             .play();
