@@ -19,11 +19,12 @@ const log = (type, ...args) => {
 const notify = ({ className, message, position = "left", sound = "silent" }) => {
   log(className, message);
 
+  //TODO: remove jquery dependency
   $.notify(message.toString(), { position: `bottom ${position}`, className });
+
   if (sound !== "silent" && !isIOS()) {
-    $(`#${sound}`)
-      .get(0)
-      .play();
+    let audio = document.getElementById(sound);
+    audio?.play?.().catch(() => {});
   }
 };
 
