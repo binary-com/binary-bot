@@ -180,11 +180,26 @@
             multiple />
     </form>
     <div id="footer"></div>
-    <audio id="announcement" src="sound/announcement.mp3" autostart="false"></audio>
-    <audio id="earned-money" src="sound/coins.mp3" autostart="false"></audio>
-    <audio id="job-done" src="sound/job-done.mp3" autostart="false"></audio>
-    <audio id="error" src="sound/out-of-bounds.mp3" autostart="false"></audio>
-    <audio id="severe-error" src="sound/i-am-being-serious.mp3" autostart="false"></audio>
+    <audio id="announcement" autostart="false" preload="auto">
+        <source src="sound/announcement.ogg" type="audio/ogg" />
+        <source src="sound/announcement.mp3" type="audio/mp3" />
+    </audio>
+    <audio id="earned-money" autostart="false" preload="auto">
+        <source src="sound/coins.ogg" type="audio/ogg" />
+        <source src="sound/coins.mp3" type="audio/mp3" />
+    </audio>
+    <audio id="job-done" autostart="false" preload="auto">
+        <source src="sound/job-done.ogg" type="audio/ogg" />
+        <source src="sound/job-done.mp3" type="audio/mp3" />
+    </audio>
+    <audio id="error" autostart="false" preload="auto">
+        <source src="sound/out-of-bounds.ogg" type="audio/ogg" />
+        <source src="sound/out-of-bounds.mp3" type="audio/mp3" />
+    </audio>
+    <audio id="severe-error" autostart="false" preload="auto">
+        <source src="sound/i-am-being-serious.ogg" type="audio/ogg" />
+        <source src="sound/i-am-being-serious.mp3" type="audio/mp3" />
+    </audio>
     {{> bundle}} {{> bot}}
     {{> ../templates/partials/elevio }}
     {{> gtm_iframe }}
