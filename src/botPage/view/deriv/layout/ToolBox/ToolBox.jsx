@@ -25,6 +25,14 @@ const ShowModal = ({ modal, onClose, class_name }) => {
   );
 };
 
+const ToolboxButton = ({ label, tooltip, classes, id, position = 'bottom' }) => {
+  return <span id={id}>
+    <Popover content={tooltip} position={position}>
+      <button className={classes}>{label}</button>
+    </Popover>
+  </span>
+}
+
 const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
@@ -173,12 +181,16 @@ const ToolBox = ({ blockly }) => {
       <Popover content={translate("Show/hide the summary pop-up")} position="bottom">
         <button id="showSummary" className="toolbox-button icon-summary" />
       </Popover>
-      <Popover content={translate("Run the bot")} position="bottom">
-        <button id="runButton" className="toolbox-button icon-run" />
-      </Popover>
-      <Popover content={translate("Stop the bot")} position="bottom">
-        <button id="stopButton" className="toolbox-button icon-stop" />
-      </Popover>
+      <ToolboxButton
+        id="runButton"
+        classes="toolbox-button icon-run"
+        tooltip={translate("Run the bot")}
+      />
+      <ToolboxButton
+        id="stopButton"
+        classes="toolbox-button icon-stop"
+        tooltip={translate("Stop the bot") }
+      />
       <Popover content={translate("Show log")} position="bottom">
         <button id="logButton" className="toolbox-button icon-info" />
       </Popover>
