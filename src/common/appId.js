@@ -1,4 +1,3 @@
-import DerivAPIBasic from "@deriv/deriv-api/dist/DerivAPIBasic";
 import {
   addToken,
   removeToken,

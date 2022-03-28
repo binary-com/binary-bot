@@ -16,8 +16,7 @@ const renderElements = () => {
 };
 
 const loginCheck = () => {
-  if (getTokenList().length) {
-  } else {
+  if (!getTokenList().length) {
     loadLang();
     oauthLogin(() => {
       $(".show-on-load").show();
