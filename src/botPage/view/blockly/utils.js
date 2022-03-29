@@ -255,7 +255,7 @@ export const findTopParentBlock = b => {
         return null;
     }
     while (pblock !== null) {
-        if (pblock.type === 'trade') {
+        if (pblock?.type === 'trade') {
             return pblock;
         }
         block = pblock;
