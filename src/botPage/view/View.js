@@ -444,6 +444,8 @@ export default class View {
                     this.stop();
                     Elevio.logoutUser();
                     googleDriveUtil.logout();
+
+                    /* eslint-disable-next-line no-unused-expressions */
                     GTM?.setVisitorId?.();
                     removeTokens();
                 })
@@ -688,6 +690,8 @@ export default class View {
                 .then(() => {
                     this.stop();
                     Elevio.logoutUser();
+
+                    /* eslint-disable-next-line no-unused-expressions */
                     GTM?.setVisitorId?.();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();

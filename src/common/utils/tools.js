@@ -122,5 +122,7 @@ export const loadExternalScript = (src, async = true, defer = true) =>
 export const errLogger = (err, msg) => {
     const errStr = JSON.stringify(err);
     const errMsg = `${msg} - Error: ${errStr}`;
+
+    /* eslint-disable-next-line */
     console.warn(errMsg);
 };

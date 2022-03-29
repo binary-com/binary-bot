@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { generateLiveApiInstance } from './appId';
 // import { getLanguage } from '../common/lang';
 import { getTokenList } from './utils/storageManager';
@@ -21,8 +22,8 @@ const Elevio = (() => {
     };
 
     const injectElevio = (isOpen = false) => {
-        window._elev = {}; // eslint-disable-line no-underscore-dangle
-        window._elev.account_id = accountId; // eslint-disable-line no-underscore-dangle
+        window._elev = {};
+        window._elev.account_id = accountId;
 
         const script = document.createElement('script');
         script.type = 'text/javascript';
@@ -31,30 +32,28 @@ const Elevio = (() => {
         script.id = 'loaded-elevio-script';
         document.body.appendChild(script);
 
-        window._elev.q = []; // eslint-disable-line no-underscore-dangle
+        window._elev.q = [];
         window._elev.on = (z, y) => {
-            // eslint-disable-line no-underscore-dangle
-            window._elev.q.push([z, y]); // eslint-disable-line no-underscore-dangle
+            window._elev.q.push([z, y]);
         };
 
         script.onload = () => loadElevio(isOpen);
     };
 
     const loadElevio = (isOpen = false) => {
-        if (!window._elev) return; // eslint-disable-line no-underscore-dangle
+        if (!window._elev) return;
 
-        // eslint-disable-next-line no-underscore-dangle
         window._elev.on('widget:opened', () => {
             if (localStorage.getItem('seenWhatsBinaryBot')) {
-                window._elev.open(); // eslint-disable-line no-underscore-dangle
+                window._elev.open();
             } else {
                 localStorage.setItem('seenWhatsBinaryBot', true);
-                window._elev.openArticle(90); // eslint-disable-line no-underscore-dangle
+                window._elev.openArticle(90);
             }
         });
 
-        // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
+            /* eslint-disable-next-line no-unused-expressions */
             GTM?.pushDataLayer?.({ event: 'elevio_widget_load' });
             const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage();
@@ -80,11 +79,11 @@ const Elevio = (() => {
 
     const addEventListenerGTM = () => {
         window._elev.on('widget:opened', () => {
-            // eslint-disable-line no-underscore-dangle
+            /* eslint-disable-next-line no-unused-expressions */
             GTM?.pushDataLayer?.({ event: 'elevio_widget_opened', is_elevio: true });
         });
         window._elev.on('page:view', () => {
-            // eslint-disable-line no-underscore-dangle
+            /* eslint-disable-next-line no-unused-expressions */
             GTM?.pushDataLayer?.({ event: 'elevio_page_views', is_elevio: true });
         });
     };
