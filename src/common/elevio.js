@@ -55,7 +55,7 @@ const Elevio = (() => {
 
         // eslint-disable-next-line no-underscore-dangle
         window._elev.on('load', elev => {
-            GTM.pushDataLayer({ event: 'elevio_widget_load' });
+            GTM?.pushDataLayer?.({ event: 'elevio_widget_load' });
             const availableLanguages = ['en', 'es', 'id', 'pt', 'ru'];
             const currentLanguage = getLanguage();
             if (availableLanguages.includes(currentLanguage)) {
@@ -81,11 +81,11 @@ const Elevio = (() => {
     const addEventListenerGTM = () => {
         window._elev.on('widget:opened', () => {
             // eslint-disable-line no-underscore-dangle
-            GTM.pushDataLayer({ event: 'elevio_widget_opened', is_elevio: true });
+            GTM?.pushDataLayer?.({ event: 'elevio_widget_opened', is_elevio: true });
         });
         window._elev.on('page:view', () => {
             // eslint-disable-line no-underscore-dangle
-            GTM.pushDataLayer({ event: 'elevio_page_views', is_elevio: true });
+            GTM?.pushDataLayer?.({ event: 'elevio_page_views', is_elevio: true });
         });
     };
 

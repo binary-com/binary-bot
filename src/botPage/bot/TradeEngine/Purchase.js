@@ -21,7 +21,7 @@ export default Engine =>
                 // Don't unnecessarily send a forget request for a purchased contract.
                 this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
                 const { buy } = response;
-                GTM.pushDataLayer({ event: 'bot_purchase', buy_price: proposal.ask_price });
+                GTM?.pushDataLayer?.({ event: 'bot_purchase', buy_price: proposal.ask_price });
 
                 contractStatus({
                     id  : 'contract.purchase_recieved',

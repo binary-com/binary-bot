@@ -444,7 +444,7 @@ export default class View {
                     this.stop();
                     Elevio.logoutUser();
                     googleDriveUtil.logout();
-                    GTM.setVisitorId();
+                    GTM?.setVisitorId?.();
                     removeTokens();
                 })
                 .catch(() => {});
@@ -688,7 +688,7 @@ export default class View {
                 .then(() => {
                     this.stop();
                     Elevio.logoutUser();
-                    GTM.setVisitorId();
+                    GTM?.setVisitorId?.();
                     const activeToken = $(e.currentTarget).attr('value');
                     const tokenList = getTokenList();
                     setStorage('tokenList', '');

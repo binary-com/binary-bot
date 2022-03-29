@@ -32,7 +32,7 @@ const loginCheck = () => {
             $('.show-on-load').show();
             $('.barspinner').hide();
             renderElements();
-            GTM.init();
+            GTM?.init?.();
         });
     }
 };

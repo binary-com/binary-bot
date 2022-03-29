@@ -134,7 +134,7 @@ export async function addTokenIfValid(token, tokenObjectList) {
     } catch (e) {
         removeToken(tokenObjectList[0].token);
         Elevio.logoutUser();
-        GTM.setVisitorId();
+        GTM?.setVisitorId?.();
         throw e;
     }
     return api.disconnect();
