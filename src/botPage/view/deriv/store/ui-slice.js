@@ -8,6 +8,7 @@ const initial_states = {
   show_bot_unavailable_page: false,
   account_switcher_token: "",
   is_header_loaded: false,
+  should_reload_workspace: true,
 };
 
 export const uiSlice = createSlice({
@@ -35,6 +36,9 @@ export const uiSlice = createSlice({
     setIsHeaderLoaded: (state, action) => {
       state.is_header_loaded = action.payload;
     },
+    setShouldReloadWorkspace: (state, action) => {
+      state.should_reload_workspace = action.payload;
+    },
   },
 });
 
@@ -46,6 +50,7 @@ export const {
   updateShowMessagePage,
   setAccountSwitcherToken,
   setIsHeaderLoaded,
+  setShouldReloadWorkspace,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

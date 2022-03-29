@@ -12,13 +12,13 @@ import {
   syncWithDerivApp,
 } from "../../../../../common/utils/storageManager";
 import {
-  updateIsLooged,
+  updateIsLogged,
   resetClient,
   updateActiveAccount,
   updateBalance,
   updateActiveToken
 } from "../../store/client-slice";
-import { setAccountSwitcherLoader } from "../../store/ui-slice";
+import { setAccountSwitcherLoader, setShouldReloadWorkspace } from "../../store/ui-slice";
 import {
   DrawerMenu,
   AuthButtons,
@@ -26,8 +26,8 @@ import {
   MenuLinks,
   AccountSwitcherLoader,
 } from "./components";
-import { api } from "../../../View";
 import { queryToObjectArray } from "../../../../../common/appId";
+import api from "../../api";
 
 const AccountSwitcher = () => {
   const { account_switcher_loader } = useSelector((state) => state.ui);
@@ -35,7 +35,7 @@ const AccountSwitcher = () => {
   const query_string = parseQueryString();
   const query_string_array = queryToObjectArray(query_string);
   // [Todo] We should remove this after update the structure of get token list on login
-  if(query_string_array[0]?.token){
+  if (query_string_array[0]?.token) {
     return (
       <div className="header__menu-right-loader">
         <AccountSwitcherLoader />
@@ -61,7 +61,7 @@ const Header = () => {
   );
   const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
   const platformDropdownRef = React.useRef();
-  const { is_logged} = useSelector((state) => state.client);
+  const { is_logged, active_token } = useSelector((state) => state.client);
   const dispatch = useDispatch();
   const hideDropdown = (e) =>
     !platformDropdownRef.current.contains(e.target) &&
@@ -69,9 +69,8 @@ const Header = () => {
 
   React.useEffect(() => {
     api.onMessage().subscribe(({ data }) => {
-      if (data?.error?.code) {
-        return;
-      }
+      if (data?.error?.code) return;
+
       if (data?.msg_type === "balance") {
         dispatch(updateBalance(data.balance));
       }
@@ -88,12 +87,11 @@ const Header = () => {
     }
     if (active_token) {
       api.authorize(active_token.token).then((account) => {
-        if(account?.error?.code){
-            return;
-        }
+        if (account?.error?.code) return;
         dispatch(updateActiveToken(active_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
+
         api.send({ forget_all: "balance" }).then(() => {
           api.send({
             balance: 1,
@@ -101,17 +99,24 @@ const Header = () => {
             subscribe: 1,
           });
         });
-      }).catch(()=>{
-          removeAllTokens();
-          dispatch(resetClient())
-          dispatch(setAccountSwitcherLoader(true))  
+      }).catch(() => {
+        removeAllTokens();
+        dispatch(resetClient());
+        dispatch(setAccountSwitcherLoader(true));
       });
       syncWithDerivApp();
     }
-  }, []);
+  }, [active_token]);
+
+  // React.useEffect(() => {
+  //   if(active_token) {
+  //     dispatch(setShouldReloadWorkspace(true));
+  //     $(".barspinner").hide();
+  //   }
+  // }, [active_token])
 
   React.useEffect(() => {
-    dispatch(updateIsLooged(isLoggedIn()));
+    dispatch(updateIsLogged(isLoggedIn()));
   }, [is_logged]);
 
   return (

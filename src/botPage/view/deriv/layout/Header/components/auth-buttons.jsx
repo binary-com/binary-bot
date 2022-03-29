@@ -1,4 +1,4 @@
-import React, { useEffect }  from "react";
+import React, { useEffect } from "react";
 import { translate } from "../../../../../../common/i18n";
 import { saveBeforeUnload } from "../../../../blockly/utils";
 import { getOAuthURL } from "../../../../../../common/appId";
@@ -9,15 +9,15 @@ import { getRelatedDeriveOrigin } from "../../../utils";
 
 const AuthButtons = () => {
   const dispatch = useDispatch();
-  
+
   const onLogin = () => {
     saveBeforeUnload();
     document.location = getOAuthURL();
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     dispatch(setIsHeaderLoaded(true));
-  },[]);
+  }, []);
 
   return (
     <div className="header__btn">

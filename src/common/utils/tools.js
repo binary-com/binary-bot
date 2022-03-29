@@ -18,6 +18,15 @@ export const parseQueryString = () => {
     return objURL;
 };
 
+export const getQueryParams = (qs = '') => {
+    if(!qs) return {};
+    const data = {};
+    qs.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+        data[a1] = a3;
+    });
+    return data;
+}
+
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 
 export const getUTCTime = date => {

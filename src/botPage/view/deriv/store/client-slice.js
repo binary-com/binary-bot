@@ -15,14 +15,14 @@ const initial_state = {
   is_eu: false,
   is_logged: false,
   is_gd_logged_in: false,
-  accounnts: {},
+  accounts: {},
 };
 
 export const clientSlice = createSlice({
   name: "client",
   initialState: initial_state,
   reducers: {
-    updateIsLooged: (state, action) => {
+    updateIsLogged: (state, action) => {
       state.is_logged = action.payload;
     },
     resetClient: () => initial_state,
@@ -64,7 +64,7 @@ export const clientSlice = createSlice({
 });
 
 export const {
-  updateIsLooged,
+  updateIsLogged,
   resetClient,
   updateActiveToken,
   updateActiveAccount,

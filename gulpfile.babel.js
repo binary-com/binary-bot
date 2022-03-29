@@ -3,6 +3,7 @@ const watch = require('gulp-watch');
 const ghpages = require('gh-pages');
 const connect = require('gulp-connect');
 const open = require('gulp-open');
+const path = require('path');
 require('./gulp/i18n');
 require('./gulp/build');
 require('./gulp/plato');
@@ -14,6 +15,7 @@ gulp.task(
             root: 'www',
             port: 80,
             livereload: true,
+            fallback: path.resolve('www/index.html')
         });
         done();
     })
