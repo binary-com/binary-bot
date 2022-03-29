@@ -57,6 +57,53 @@ body {
     #blocklyArea {
         height: 86%;
     }
+
+}
+
+    .notifyjs-bootstrap-base,
+    .notifyjs-bootstrap-success,
+    .notifyjs-bootstrap-warn,
+    .notifyjs-bootstrap-error {
+        @include mobile {
+        max-width: 40vw !important;
+        min-height: 30px;
+        padding: 2px;
+        word-break: break-word !important;
+        }
+    }
+    .notifyjs-corner{
+        @include mobile {
+            min-height: 30px;
+            font-size: 12px;
+            }
+    }
+
+    .notifyjs-bootstrap-base span{
+        @include mobile {
+        min-height: 30px;
+        max-width: 40vw;
+        padding: 2px;
+        word-break: break-word;
+        }
+
+    }
+    [data-notify-text], [data-notify-html] {
+        @include mobile {
+        white-space: break-spaces !important;
+        position: relative;
+        max-width: 40vw !important;
+        word-break: break-word;
+        }
+    }
+
+
+
+#center, #workspace_center {
+    position: fixed;
+    width: 1em;
+    height: 1em;
+    top: 50%;
+    left: 50%;
 }
 
 .barspinner {

@@ -18,10 +18,18 @@ const AccountActions = () => {
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
-
     useEffect(()=>{
         dispatch(setIsHeaderLoaded(true));
     },[]);
+
+    const getBalance = () => {
+        if (currency && Number(currency) !== 0) {
+            return balance.toLocaleString(undefined, {
+                minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2
+            }) + ' ' + currency
+        }
+        return translate("No currency assigned")
+    }
 
     return (
         <React.Fragment>
@@ -39,14 +47,14 @@ const AccountActions = () => {
                 onClick={() => setIsAccDropdownOpen(!is_acc_dropdown_open)}
             >
                 <div className="header__acc-info">
+                    
                     <img 
                         id="header__acc-icon" 
                         className="header__acc-icon" 
-                        src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency.toLowerCase()}.svg`} 
+                        src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency?.toLowerCase() || "unknown"}.svg`}
                     />
                     <div id="header__acc-balance" className="header__acc-balance">
-                        {balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2})}
-                        <span className="symbols">&nbsp;{currency}</span>
+                        <span className="symbols">&nbsp;{getBalance()}</span>
                     </div>
                     <img 
                         className={`header__icon header__expand ${is_acc_dropdown_open ? "open" : ""}`}
