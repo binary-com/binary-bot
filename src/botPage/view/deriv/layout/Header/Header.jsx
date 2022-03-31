@@ -18,7 +18,7 @@ import {
   updateBalance,
   updateActiveToken
 } from "../../store/client-slice";
-import { setAccountSwitcherLoader, setShouldReloadWorkspace } from "../../store/ui-slice";
+import { setAccountSwitcherLoader, setShouldReloadWorkspace, updateShowMessagePage } from "../../store/ui-slice";
 import {
   DrawerMenu,
   AuthButtons,
@@ -34,6 +34,7 @@ const AccountSwitcher = () => {
   const { is_logged } = useSelector((state) => state.client);
   const query_string = parseQueryString();
   const query_string_array = queryToObjectArray(query_string);
+
   // [Todo] We should remove this after update the structure of get token list on login
   if (query_string_array[0]?.token) {
     return (
@@ -80,6 +81,12 @@ const Header = () => {
   React.useEffect(() => {
     const token_list = getTokenList();
     const active_token = getActiveToken(token_list);
+    const landing_company = active_token?.loginInfo.landing_company_name;
+
+    dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
+    console.log('header updateShowMessagePage');
+
+
     if (!active_token) {
       removeAllTokens();
       dispatch(resetClient());
@@ -107,13 +114,6 @@ const Header = () => {
       syncWithDerivApp();
     }
   }, [active_token]);
-
-  // React.useEffect(() => {
-  //   if(active_token) {
-  //     dispatch(setShouldReloadWorkspace(true));
-  //     $(".barspinner").hide();
-  //   }
-  // }, [active_token])
 
   React.useEffect(() => {
     dispatch(updateIsLogged(isLoggedIn()));
