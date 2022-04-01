@@ -70,7 +70,7 @@ const Main = () => {
 		return new Promise(resolve => {
 			const queryStr = parseQueryString();
 			const tokenObjectList = queryToObjectArray(queryStr);
-			
+
 			if (!Array.isArray(getTokenList())) {
 				removeAllTokens();
 			}

@@ -55,7 +55,7 @@ const AccountSwitcher = () => {
   return <AuthButtons />;
 };
 
-const Header = () => {
+const Header = React.memo(() => {
   const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(
     false
   );
@@ -70,7 +70,6 @@ const Header = () => {
   React.useEffect(() => {
     api.onMessage().subscribe(({ data }) => {
       if (data?.error?.code) return;
-
       if (data?.msg_type === "balance") {
         dispatch(updateBalance(data.balance));
       }
@@ -174,6 +173,6 @@ const Header = () => {
       )}
     </div>
   );
-};
+});
 
 export default Header;

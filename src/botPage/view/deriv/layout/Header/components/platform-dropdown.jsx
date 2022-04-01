@@ -13,7 +13,6 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
     })
 
     const handleClick = (e, is_binary_bot) => {
-        console.log('is it coming here')
         if(e && is_binary_bot) {
             setIsPlatformSwitcherOpen(false);
             e.preventDefault();
