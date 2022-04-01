@@ -15,7 +15,7 @@ export default Engine =>
           const balance_str = `${rounded_balance} ${currency}`;
 
           globalObserver.setState({ balance, currency });
-          info({ accountID: this.accountInfo.loginid, balance: balance_str });
+          info({ accountID: this.accountInfo?.loginid, balance: balance_str });
         }
       });
     }

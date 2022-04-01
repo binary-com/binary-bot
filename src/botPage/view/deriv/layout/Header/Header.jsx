@@ -62,6 +62,7 @@ const Header = React.memo(() => {
   const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
   const platformDropdownRef = React.useRef();
   const { is_logged, active_token } = useSelector((state) => state.client);
+  const { is_bot_running } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   const hideDropdown = (e) =>
     !platformDropdownRef.current.contains(e.target) &&
@@ -114,6 +115,20 @@ const Header = React.memo(() => {
   React.useEffect(() => {
     dispatch(updateIsLogged(isLoggedIn()));
   }, [is_logged]);
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', onBeforeUnload, { capture: true });
+    return (() => {
+      window.removeEventListener('beforeunload', onBeforeUnload, { capture: true });
+    })
+  }, [is_bot_running])
+
+  const onBeforeUnload = (e) => {
+    if(is_bot_running) {
+      e.preventDefault();
+      e.returnValue = true;
+    }
+  }
 
   return (
     <div className="header">
