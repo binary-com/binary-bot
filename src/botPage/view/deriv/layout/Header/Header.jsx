@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
 import { isMobile, isDesktop, parseQueryString } from "../../../../../common/utils/tools";
-import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
 import { isLoggedIn } from "../../utils";
 import { getActiveToken } from "../../utils";
@@ -18,7 +17,7 @@ import {
   updateBalance,
   updateActiveToken
 } from "../../store/client-slice";
-import { setAccountSwitcherLoader, setShouldReloadWorkspace, updateShowMessagePage } from "../../store/ui-slice";
+import { setAccountSwitcherLoader, updateShowMessagePage } from "../../store/ui-slice";
 import {
   DrawerMenu,
   AuthButtons,
@@ -84,8 +83,6 @@ const Header = () => {
     const landing_company = active_token?.loginInfo.landing_company_name;
 
     dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
-    console.log('header updateShowMessagePage');
-
 
     if (!active_token) {
       removeAllTokens();
@@ -126,9 +123,9 @@ const Header = () => {
           <div className="header__menu-left">
             {isPlatformSwitcherOpen && (
               <PlatformDropdown
-                platforms={platforms}
                 hideDropdown={hideDropdown}
                 ref={platformDropdownRef}
+                setIsPlatformSwitcherOpen={setIsPlatformSwitcherOpen}
               />
             )}
             <div

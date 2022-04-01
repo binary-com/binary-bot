@@ -114,7 +114,7 @@ const generateOAuthDomain = () => {
 
 export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
-export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
+export const generateWebSocketURL = serverUrl => `wss://${serverUrl}`;
 
 export const getOAuthURL = () =>
   `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;

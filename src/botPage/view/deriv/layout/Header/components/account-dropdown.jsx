@@ -8,8 +8,6 @@ import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
 import { resetClient } from "../../../store/client-slice.js";
-import { getActiveToken } from "../../../../shared.js";
-import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { AppConstants, logoutAllTokens } from "../../../../../../common/appId.js";
 import { updateTokenList } from "../../../utils/account-methods.js";

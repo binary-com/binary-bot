@@ -1,8 +1,12 @@
 import React from 'react';
-import { get as getStorage, set as setStorage } from '../../../../../common/utils/storageManager';
-import { generateWebSocketURL } from '../../../../../common/appId';
+import DerivAPIBasic from "@deriv/deriv-api/dist/DerivAPIBasic";
+import { get as getStorage, set as setStorage, syncWithDerivApp } from '../../../../../common/utils/storageManager';
+import { AppConstants, logoutAllTokens } from '../../../../../common/appId';
 import { translate } from '../../../../../common/utils/tools';
-import { generateTestDerivApiInstance, getDefaultEndpoint } from '../../api';
+import { getDefaultEndpoint, getServerAddressFallback, getAppIdFallback, getLanguage } from '../../api';
+import { isLoggedIn, updateTokenList } from '../../utils';
+import { useDispatch } from 'react-redux';
+import { resetClient } from '../../store/client-slice';
 
 const MessageProperties = {
 	connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
@@ -12,7 +16,8 @@ const MessageProperties = {
 let api; // to close the error connection
 const Endpoint = () => {
 	const [server, setServer] = React.useState('frontend.binaryws.com');
-	const [app_id, setAppId] = React.useState('')
+	const [app_id, setAppId] = React.useState('');
+	const dispatch = useDispatch()
 
 	React.useEffect(() => {
 		$(".barspinner").hide();
@@ -22,18 +27,31 @@ const Endpoint = () => {
 	}, [])
 
 	const checkConnection = async (appId, apiUrl) => {
-		if (api && api.disconnect) {
-			api.disconnect();
-		}
-		api = generateTestDerivApiInstance({
-			appId,
-			apiUrl: generateWebSocketURL(apiUrl),
-		});
 		try {
-			await api.ping();
-			$('#connected')
-				.html(MessageProperties.connected())
-				.show();
+			if (api && api.disconnect) {
+				api.disconnect();
+			}
+
+			const socket_url = `wss://${apiUrl || getServerAddressFallback()}/websockets/v3?app_id=${appId || getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+			const deriv_socket = new WebSocket(socket_url);
+
+			const api = new DerivAPIBasic({
+				connection: deriv_socket,
+			});
+
+			api.onOpen().subscribe(() => {
+				$('#connected')
+					.html(MessageProperties.connected())
+					.show();
+			})
+
+			api.onClose().subscribe(() => {
+				$('#error')
+					.html(MessageProperties.error())
+					.show();
+				resetEndpoint();
+			})
+			
 		} catch (e) {
 			$('#error')
 				.html(MessageProperties.error())
@@ -68,10 +86,23 @@ const Endpoint = () => {
 		}
 
 		checkConnection(app_id, server);
+		if(isLoggedIn()) {
+			logout();
+		}
+	}
+
+	const logout = () => {
+		logoutAllTokens().then(() => {
+			updateTokenList();
+			setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+			setStorage('active_loginid', null);
+			syncWithDerivApp();
+			dispatch(resetClient());
+		})
 	}
 
 	const resetEndpoint = (e) => {
-		e.preventDefault();
+		e?.preventDefault?.();
 		setAppId(getDefaultEndpoint().appId);
 		setServer(getDefaultEndpoint().url);
 		setStorage('config.app_id', getDefaultEndpoint().appId);

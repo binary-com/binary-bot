@@ -74,16 +74,13 @@ export const getWebSocketURL = () => `wss://${getServerAddressFallback()}`;
 
 export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
-const options = {
-  app_id: getAppIdFallback(),
-  lang: getLanguage().toUpperCase(),
-  endpoint: getWebSocketURL(),
-};
-const generateDerivApiInstance = () => new DerivAPIBasic(options);
+const socket_url = `wss://${getServerAddressFallback()}/websockets/v3?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+const deriv_socket = new WebSocket(socket_url);
 
-export const generateTestDerivApiInstance = overrideOptions =>
-  new DerivAPIBasic(Object.assign({}, options, overrideOptions));
-
-const api = generateDerivApiInstance();
+// TODO: If network goes of then we should destroy the current api instance
+// and once the network is back we need to create a new api instance.
+const api = new DerivAPIBasic({
+  connection: deriv_socket,
+});
 
 export default api;
