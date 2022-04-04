@@ -8,6 +8,7 @@
 @import 'tour';
 @import 'error';
 @import 'deriv/index';
+@import 'deriv/devices.scss';
 
 
 * {
@@ -43,14 +44,21 @@ body {
     border-radius: 100%;
 }
 
+#bot-blockly {
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    @include mobile {
+        height: calc(100vh - 7.5rem);
+    }
+}
+
 #blocklyDiv {
     position: absolute;
     height: 100%;
     width: 100%;
-}
-
-#blocklyArea {
-    height: calc(100% - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+    @include mobile {
+        max-height: calc(100vh - 7.5rem);
+    }
 }
 
 @media only screen and (max-height: 723px) {
@@ -63,44 +71,12 @@ body {
     position: fixed;
     left: 50%;
     top: 50%;
-    margin-left: -5rem;
     z-index: 9999;
+    transform: translate(-50%, 50%);
 }
 
 .icon-remove:before {
     content: 'X';
-}
-
-#header select,
-#topbar select {
-    color: #000;
-    font-size: 1em;
-}
-
-#header {
-    height: 81px;
-    width: 100%;
-    background-color: $brand-blue;
-    border-top: 2px solid $brand-dark-blue;
-    border-bottom: 4px solid $brand-orange;
-    font-size: 18px;
-    padding: 0 20px;
-    z-index: 0;
-}
-
-#topbar {
-    background-color: $brand-primary-dark;
-    width: 100%;
-    color: $white;
-    line-height: 1;
-    font-size: 70%;
-    text-align: right;
-    padding: 3px 20px;
-    display: table;
-}
-
-.left-header {
-    float: left;
 }
 
 .right-header {

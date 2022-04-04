@@ -36,11 +36,11 @@ const ToolboxButton = ({ label, tooltip, classes, id, position = 'bottom' }) => 
 const ToolBox = ({ blockly }) => {
   const [should_show_modal, setShowModal] = React.useState(false);
   const [selected_modal, updateSelectedModal] = React.useState("");
+  const has_active_token = useSelector(state => !!state.client?.active_token);
 
   const dispatch = useDispatch();
   const { is_gd_ready } = useSelector(state => state.ui);
   const { is_gd_logged_in } = useSelector(state => state.client);
-
 
   React.useEffect(() => {
     globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
@@ -51,13 +51,13 @@ const ToolBox = ({ blockly }) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {
         // Ctrl + -
         e.preventDefault();
-        blockly.zoomOnPlusMinus(false);
+        blockly?.zoomOnPlusMinus(false);
         return;
       }
       if (e.which === Keys.zoomIn && e.ctrlKey) {
         // Ctrl + +
         e.preventDefault();
-        blockly.zoomOnPlusMinus(true);
+        blockly?.zoomOnPlusMinus(true);
         return;
       }
     });
@@ -194,7 +194,7 @@ const ToolBox = ({ blockly }) => {
       <Popover content={translate("Show log")} position="bottom">
         <button id="logButton" className="toolbox-button icon-info" />
       </Popover>
-      <span className="toolbox-separator" />
+      {has_active_token && <span className="toolbox-separator" />}
        {/* Needs resizeable modal */}
       <Popover content={translate("Show chart")} position="bottom">
         <button

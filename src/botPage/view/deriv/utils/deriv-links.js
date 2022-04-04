@@ -7,14 +7,14 @@ export const getRelatedDeriveOrigin = () => {
   let prefix = ""
   let extension = "com"
   if (split_host_name) {
-     prefix = split_host_name[1];
-     extension = split_host_name[3];
+    prefix = split_host_name[1] || "";
+    extension = split_host_name[3] || "com";
     if (["com", "me", "be"].includes(extension)) {
       is_official = true
       origin = `https://${prefix}app.deriv.${extension}`;
     }
   }
-  return {origin,extension,prefix, is_official};
+  return { origin, extension, prefix, is_official };
 };
 
 export const generateDerivLink = (path, ...queries) => {

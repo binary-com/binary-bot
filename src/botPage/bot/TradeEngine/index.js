@@ -119,7 +119,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
           // Only subscribe to balance in browser, not for tests.
           if (document) {
             // Get the balance before opening contract
-            this.api.send({ balance: 1, subscribe: 1 }).then(({ balance }) => {
+            this.api.send({ balance: 1 }).then(({ balance }) => {
               globalObserver.setState({
                 balance: Number(balance.balance),
                 currency: balance.currency,

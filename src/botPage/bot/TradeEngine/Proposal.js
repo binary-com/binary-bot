@@ -32,7 +32,7 @@ export default Engine =>
           // to here cause the opposite proposal may still be valid. Only once
           // they attempt to purchase the errored proposal we will intervene.
           if (proposal.error) {
-            const { error } = proposal.error.error;
+            const { error } = proposal.error;
             const { code, message } = error;
             throw new TrackJSError(code, message, error);
           }
