@@ -32,9 +32,11 @@ view.initPromise.then(() => {
     window.dispatchEvent(new Event('resize'));
     Elevio.init();
     GTM.init();
-    trackJs?.configure({
-        userId: $('.account-id')
-            .first()
-            .text(),
-    });
+    if (trackJs) {
+        trackJs.configure({
+            userId: $('.account-id')
+                .first()
+                .text(),
+        });
+    }
 });
