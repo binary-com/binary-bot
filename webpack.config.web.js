@@ -13,23 +13,64 @@ const plugins = [
     }),
 ];
 
-const productionPlugins = production
-    ? [
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production'),
-            },
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            include: /\.js$/,
-            minimize: true,
-            sourceMap: true,
-            compress: {
-                warnings: false,
-            },
-        }),
-    ]
-    : [];
+// const productionPlugins = production
+//     ? [
+//         new webpack.DefinePlugin({
+//             'process.env': {
+//                 NODE_ENV: JSON.stringify('production'),
+//             },
+//         }),
+//         new webpack.optimize.UglifyJsPlugin({
+//             include: /\.js$/,
+//             minimize: true,
+//             sourceMap: true,
+//             compress: {
+//                 warnings: false,
+//             },
+//         }),
+//     ]
+//     : [];
+
+const productionPlugins = () => {
+    if (process.env.NODE_ENV === 'production') {
+        return [
+            new webpack.DefinePlugin({
+                'process.env': {
+                    NODE_ENV: JSON.stringify('production'),
+                },
+            }),
+            new webpack.optimize.UglifyJsPlugin({
+                include: /\.js$/,
+                minimize: true,
+                sourceMap: true,
+                compress: {
+                    warnings: false,
+                },
+            }),
+        ]
+    }
+    if (process.env.NODE_ENV === 'test') {
+        return [
+            new webpack.DefinePlugin({
+                'process.env': {
+                    NODE_ENV: JSON.stringify('test'),
+                    BRANCH: JSON.stringify(process.env.BRANCH),
+                    PROJECT_NAME: JSON.stringify(process.env.PROJECT_NAME),
+                    ARGS: JSON.stringify(process.env.ARGS)
+                },
+            }),
+            new webpack.optimize.UglifyJsPlugin({
+                include: /\.js$/,
+                minimize: true,
+                sourceMap: true,
+                compress: {
+                    warnings: false,
+                },
+            }),
+        ]
+    }
+    return [];
+}
 
 module.exports = {
     entry: {
@@ -55,5 +96,5 @@ module.exports = {
             },
         ],
     },
-    plugins: plugins.concat(productionPlugins),
+    plugins: plugins.concat(productionPlugins()),
 };

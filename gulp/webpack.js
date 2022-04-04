@@ -9,6 +9,15 @@ const { addToManifest } = require('./revision');
 
 const gen = env => {
     process.env.NODE_ENV = env;
+    const is_test_link = process.argv.indexOf('--test');
+    if (is_test_link !== -1) {
+        const branch_index = process.argv.indexOf('--branch');
+        if (branch_index !== -1 && process.argv[branch_index + 1]) {
+            process.env.BRANCH = process.argv[branch_index + 1];
+            process.env.PROJECT_NAME = 'binary-bot';
+        }
+    }
+    process.env.ARGS = process.argv
     return webpackStream(require('../webpack.config.web'), webpack).pipe(gulp.dest('www/js'));
 };
 
