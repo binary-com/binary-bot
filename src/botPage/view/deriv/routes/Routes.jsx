@@ -5,13 +5,21 @@ import Endpoint from '../layout/Endpoint';
 import NotFound from '../layout/NotFound';
 import RouteWrapper from './RouteWrapper.jsx';
 
-const Routes = () => <BrowserRouter>
-  <Switch>
-    <RouteWrapper exact path="/" component={Main} />
-    <RouteWrapper path="/endpoint" component={Endpoint} />
-    <Redirect from="/endpoint.html" to="/endpoint" />
-    <Route path="*" component={NotFound} />
-  </Switch>
-</BrowserRouter>
+const Routes = () => {
+  const basename = [
+    process.env.PROJECT_NAME || '',
+    process.env.BRANCH || ''
+  ].join('/') || '/';
+  return (
+    <BrowserRouter basename={basename}>
+      <Switch>
+        <RouteWrapper exact path="/" component={Main} />
+        <RouteWrapper path="/endpoint" component={Endpoint} />
+        <Redirect from="/endpoint.html" to="/endpoint" />
+        <Route path="*" component={NotFound} />
+      </Switch>
+    </BrowserRouter>
+  )
+}
 
 export default Routes;
