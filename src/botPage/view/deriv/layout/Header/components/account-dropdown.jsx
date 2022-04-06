@@ -1,14 +1,14 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import AccountSwitchModal from "./account-switch-modal.jsx";
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
-import { useDispatch, useSelector } from "react-redux";
 import { currencyNameMap } from "../../../config";
 import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
 import { resetClient } from "../../../store/client-slice.js";
-import { useLocation } from "react-router-dom";
 import { AppConstants, logoutAllTokens } from "../../../../../../common/appId.js";
 import { updateTokenList } from "../../../utils/account-methods.js";
 import { set as setStorage, syncWithDerivApp } from "../../../../../../common/utils/storageManager.js";

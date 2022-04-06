@@ -55,7 +55,7 @@ const AccountSwitcher = () => {
   return <AuthButtons />;
 };
 
-const Header = React.memo(() => {
+const Header = () => {
   const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(
     false
   );
@@ -188,6 +188,6 @@ const Header = React.memo(() => {
       )}
     </div>
   );
-});
+};
 
 export default Header;

@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const del = require('del');
-const paths = require('vinyl-paths');
 const rev = require('gulp-rev');
 const through = require('through2');
 const webpackStream = require('webpack-stream');
@@ -25,14 +24,15 @@ const gen = env => {
 };
 
 function getProjectName() {
-    const git_config = path.resolve(process.cwd(), '.git/config');
-    const file = fs.readFileSync(git_config, 'utf8');
-    const input = injectInclude(file, process.cwd());
+    const config_dir = path.resolve(process.cwd(), '.git/config');
+    if (!config_dir) return ''
+    const config = fs.readFileSync(config_dir, 'utf8');
+    const input = injectInclude(config, process.cwd());
     const output = parseIni(input, { path: process.cwd() });
     const origin = output[getKey(output)];
     const url_arr = origin.url.split(path.sep);
     const url = url_arr.pop();
-    const name = path.basename(url, path.extname(url));
+    const name = path.basename(url, path.extname(url)) || '';
     console.log('Project Name: ', name);
     return name;
 }
