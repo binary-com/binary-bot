@@ -9,7 +9,7 @@ import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
 import { resetClient } from "../../../store/client-slice.js";
-import { AppConstants, logoutAllTokens } from "../../../../../../common/appId.js";
+import { AppConstants, logoutAllTokens, logoutAndReset } from "../../../../../../common/appId.js";
 import { updateTokenList } from "../../../utils/account-methods.js";
 import { set as setStorage, syncWithDerivApp } from "../../../../../../common/utils/storageManager.js";
 
@@ -52,11 +52,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
 
   const logout = () => {
     if(location.pathname.includes('endpoint')) {
-      logoutAllTokens().then(() => {
-        updateTokenList();
-        setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, "");
-        setStorage('active_loginid', null);
-        syncWithDerivApp();
+      logoutAndReset().then(() => {
         dispatch(resetClient());
       })
     } else {

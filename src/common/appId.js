@@ -4,12 +4,13 @@ import {
   getTokenList,
   removeAllTokens,
   set as setStorage,
+  syncWithDerivApp,
 } from "../common/utils/storageManager";
 import { parseQueryString } from "../common/utils/tools";
 import { getLanguage } from "./lang";
 import AppIdMap from "./appIdResolver";
 import GTM from "./gtm";
-import { getRelatedDeriveOrigin } from '../botPage/view/deriv/utils';
+import { getRelatedDeriveOrigin, updateTokenList } from '../botPage/view/deriv/utils';
 import api from "../botPage/view/deriv/api";
 
 function getStorage(label) {
@@ -164,3 +165,14 @@ export const logoutAllTokens = () =>
         .catch(logout);
     }
   });
+
+export const logoutAndReset = () =>
+  new Promise((resolve) => {
+    logoutAllTokens().then(() => {
+      updateTokenList();
+      setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, "");
+      setStorage('active_loginid', null)
+      syncWithDerivApp();
+      resolve();
+    })
+  })

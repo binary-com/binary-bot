@@ -1,7 +1,7 @@
 import React from 'react';
 import DerivAPIBasic from "@deriv/deriv-api/dist/DerivAPIBasic";
 import { get as getStorage, set as setStorage, syncWithDerivApp } from '../../../../../common/utils/storageManager';
-import { AppConstants, logoutAllTokens } from '../../../../../common/appId';
+import { AppConstants, logoutAllTokens, logoutAndReset } from '../../../../../common/appId';
 import { translate } from '../../../../../common/utils/tools';
 import { getDefaultEndpoint, getServerAddressFallback, getAppIdFallback, getLanguage } from '../../api';
 import { isLoggedIn, updateTokenList } from '../../utils';
@@ -81,11 +81,7 @@ const Endpoint = () => {
 	}
 
 	const logout = () => {
-		logoutAllTokens().then(() => {
-			updateTokenList();
-			setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-			setStorage('active_loginid', null);
-			syncWithDerivApp();
+		logoutAndReset().then(() => {
 			dispatch(resetClient());
 		})
 	}
