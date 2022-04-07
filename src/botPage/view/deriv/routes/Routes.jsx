@@ -7,7 +7,7 @@ import RouteWrapper from './RouteWrapper.jsx';
 
 const Routes = () => {
   const basename = [
-    process.env.PROJECT_NAME || '',
+    process.env.PROJECT_NAME || 'binary-bot',
     process.env.BRANCH || ''
   ].join('/') || '/';
   return (

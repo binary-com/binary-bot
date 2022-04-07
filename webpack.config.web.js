@@ -17,7 +17,6 @@ const productionPlugins = () => {
     const args = {};
     if (process.env.ARGS.indexOf('--test')) {
         args.BRANCH = JSON.stringify(process.env.BRANCH);
-        args.PROJECT_NAME = JSON.stringify(process.env.PROJECT_NAME);
         args.ARGS = JSON.stringify(process.env.ARGS);
     }
     if (process.env.NODE_ENV === 'production') {
