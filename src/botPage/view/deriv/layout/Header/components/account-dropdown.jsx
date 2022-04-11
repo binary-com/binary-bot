@@ -8,10 +8,7 @@ import { currencyNameMap } from "../../../config";
 import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
-import { resetClient } from "../../../store/client-slice.js";
-import { AppConstants, logoutAllTokens, logoutAndReset } from "../../../../../../common/appId.js";
-import { updateTokenList } from "../../../utils/account-methods.js";
-import { set as setStorage, syncWithDerivApp } from "../../../../../../common/utils/storageManager.js";
+import useLogout from "../../../../../../common/hooks/useLogout.js";
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 const getTotalDemo = (accounts) => {
@@ -34,6 +31,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
   const container_ref = React.useRef();
   const dispatch = useDispatch();
   const location = useLocation();
+  const logout = useLogout();
 
   React.useEffect(() => {
     function handleClickOutside(event) {
@@ -45,16 +43,12 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
       }
     }
     window.addEventListener("click", handleClickOutside);
-
-
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const logout = () => {
+  const onLogout = () => {
     if(location.pathname.includes('endpoint')) {
-      logoutAndReset().then(() => {
-        dispatch(resetClient());
-      })
+      logout();
     } else {
       globalObserver.emit('ui.logout');
     }
@@ -107,7 +101,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
             id="deriv__logout-btn"
             className="account__switcher-logout logout"
             onClick={() => {
-              if (show_bot_unavailable_page) logout()
+              if (show_bot_unavailable_page) onLogout()
               else updaetShowLogoutModal(true);
             }}
           >
@@ -125,7 +119,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
           <AccountSwitchModal
             is_bot_running={is_bot_running}
             onClose={() => updaetShowLogoutModal(false)}
-            onAccept={logout}
+            onAccept={onLogout}
           />
 
         </Modal>

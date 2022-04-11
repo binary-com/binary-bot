@@ -5,13 +5,18 @@ import Endpoint from '../layout/Endpoint';
 import NotFound from '../layout/NotFound';
 import RouteWrapper from './RouteWrapper.jsx';
 
+const generateBaseName = () => {
+  const branch = process.env.BRANCH;
+  if(branch) {
+    const project_name = process.env.PROJECT_NAME || 'binary-bot';
+    return [project_name, branch].join('/')
+  }
+  return '/';
+}
+
 const Routes = () => {
-  const basename = [
-    process.env.PROJECT_NAME || 'binary-bot',
-    process.env.BRANCH || ''
-  ].join('/') || '/';
   return (
-    <BrowserRouter basename={basename}>
+    <BrowserRouter basename={generateBaseName()}>
       <Switch>
         <RouteWrapper exact path="/" component={Main} />
         <RouteWrapper path="/endpoint" component={Endpoint} />

@@ -1,12 +1,10 @@
 import React from 'react';
 import DerivAPIBasic from "@deriv/deriv-api/dist/DerivAPIBasic";
-import { get as getStorage, set as setStorage, syncWithDerivApp } from '../../../../../common/utils/storageManager';
-import { AppConstants, logoutAllTokens, logoutAndReset } from '../../../../../common/appId';
+import { get as getStorage, set as setStorage } from '../../../../../common/utils/storageManager';
 import { translate } from '../../../../../common/utils/tools';
 import { getDefaultEndpoint, getServerAddressFallback, getAppIdFallback, getLanguage } from '../../api';
-import { isLoggedIn, updateTokenList } from '../../utils';
-import { useDispatch } from 'react-redux';
-import { resetClient } from '../../store/client-slice';
+import { isLoggedIn } from '../../utils';
+import useLogout from '../../../../../common/hooks/useLogout';
 
 const getError = (server) => {
 	return <>Unable to connect to <b>{server}</b>. Switching connection to default endpoint.</>
@@ -18,7 +16,7 @@ const Endpoint = () => {
 	const [app_id, setAppId] = React.useState('');
 	const [has_error, setError] = React.useState('');
 	const [is_connected, setConnected] = React.useState(false);
-	const dispatch = useDispatch();
+	const logout = useLogout();
 
 
 	React.useEffect(() => {
@@ -28,7 +26,6 @@ const Endpoint = () => {
 	}, [])
 
 	const checkConnection = async (appId, apiUrl) => {
-		console.log(apiUrl, 'apiUrl apiUrl')
 		try {
 			if (api?.disconnect) {
 				api.disconnect();
@@ -50,7 +47,6 @@ const Endpoint = () => {
 			})
 			
 		} catch (e) {
-			console.log(e, 'catch')
 			setError(getError(apiUrl));
 			resetEndpoint();
 			checkConnection(getDefaultEndpoint().appId, getDefaultEndpoint().url);
@@ -78,12 +74,6 @@ const Endpoint = () => {
 		if(isLoggedIn()) {
 			logout();
 		}
-	}
-
-	const logout = () => {
-		logoutAndReset().then(() => {
-			dispatch(resetClient());
-		})
 	}
 
 	const resetEndpoint = () => {

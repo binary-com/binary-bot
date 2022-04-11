@@ -86,7 +86,7 @@ const Main = () => {
 						}
 						dispatch(updateIsLogged(isLoggedIn()));
 						history.replace('/');
-						api.send({ balance: 1, account: 'all' });
+						api.send({ balance: 1, account: 'all' }).catch(() => {})
 						applyToolboxPermissions();
 						resolve();
 					});

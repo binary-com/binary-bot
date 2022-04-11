@@ -158,7 +158,7 @@ export const logoutAllTokens = () =>
       logout();
     } else {
       api
-        .authorize(tokenList[0].token)
+        .authorize(tokenList?.[0].token)
         .then(() => {
           api.send({ logout: 1 }).finally(logout);
         })
