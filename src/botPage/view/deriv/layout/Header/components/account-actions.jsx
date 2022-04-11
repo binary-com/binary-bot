@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
+import classNames from "classnames";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { translate } from "../../../../../../common/utils/tools";
 import Notifications from "./notifications.jsx";
 import AccountDropdown from "./account-dropdown.jsx";
 import { currencyNameMap } from "../../../config";
 import { generateDerivLink, getRelatedDeriveOrigin } from "../../../utils";
-import { useSelector } from "react-redux";
 import Modal from "../../../components/modal";
 import AccountSwitchModal from "./account-switch-modal.jsx";
 import { observer as globalObserver } from "../../../../../../common/utils/observer";
-import { useDispatch } from "react-redux";
 import {
     setAccountSwitcherLoader,
     setAccountSwitcherToken,
@@ -22,6 +23,7 @@ import {
     set as setStorage
 } from "../../../../../../common/utils/storageManager";
 import { updateActiveToken } from "../../../store/client-slice";
+import Popover from "../../../components/popover";
 
 const AccountActions = () => {
     const {
@@ -65,6 +67,27 @@ const AccountActions = () => {
         dispatch(setAccountSwitcherToken(''));
     }
 
+    const renderAccountMenu = () => {
+        const account_icon = is_bot_running ? 'image/deriv/ic-lock.svg' : 'image/deriv/ic-chevron-down-bold.svg';
+        return (
+            <div className={classNames('header__acc-info', { disabled: is_bot_running })}>
+                <img
+                    id="header__acc-icon"
+                    className="header__acc-icon"
+                    src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency.toLowerCase()}.svg`}
+                />
+                <div id="header__acc-balance" className="header__acc-balance">
+                    {balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2 })}
+                    <span className="symbols">&nbsp;{currency}</span>
+                </div>
+                <img
+                    className={`header__icon header__expand ${is_acc_dropdown_open ? "open" : ""}`}
+                    src={account_icon}
+                />
+            </div>
+        )
+    }
+
     return (
         <React.Fragment>
             <Notifications />
@@ -77,25 +100,14 @@ const AccountActions = () => {
             <div className="header__divider mobile-hide"></div>
             <div
                 id="acc_switcher"
-                className="header__menu-item header__menu-acc"
-                onClick={() => setIsAccDropdownOpen(!is_acc_dropdown_open)}
+                className={classNames('header__menu-item header__menu-acc', { disabled: is_bot_running })}
+                onClick={() => !is_bot_running && setIsAccDropdownOpen(!is_acc_dropdown_open)}
             >
-                <div className="header__acc-info">
-                    <img
-                        id="header__acc-icon"
-                        className="header__acc-icon"
-                        src={`image/deriv/currency/ic-currency-${is_virtual ? "virtual" : currency.toLowerCase()}.svg`}
-                    />
-                    <div id="header__acc-balance" className="header__acc-balance">
-                        {balance.toLocaleString(undefined, { minimumFractionDigits: currencyNameMap[currency]?.fractional_digits ?? 2 })}
-                        <span className="symbols">&nbsp;{currency}</span>
-                    </div>
-                    <img
-                        className={`header__icon header__expand ${is_acc_dropdown_open ? "open" : ""}`}
-                        src="image/deriv/ic-chevron-down-bold.svg"
-                    />
-                </div>
+                {is_bot_running ? <Popover content={translate("Account switching is disabled while your bot is running. Please stop your bot before switching accounts.")} position="bottom">
+                    {renderAccountMenu()}
+                </Popover> : renderAccountMenu()}
             </div>
+
             {is_acc_dropdown_open &&
                 <AccountDropdown
                     virtual={is_virtual}

@@ -10,7 +10,7 @@ import {
 	convertForDerivStore,
 	removeAllTokens,
 } from "../../../../../common/utils/storageManager";
-import { setShouldReloadWorkspace, updateShowTour, updateShowMessagePage } from "../../store/ui-slice";
+import { setShouldReloadWorkspace, updateShowTour } from "../../store/ui-slice";
 import _Blockly from "../../../blockly";
 import ToolBox from "../ToolBox";
 import SidebarToggle from "../../components/SidebarToggle";
@@ -24,7 +24,6 @@ import initialize, { applyToolboxPermissions } from "../../blockly-worksace";
 import { observer as globalObserver } from "../../../../../common/utils/observer";
 import { getRelatedDeriveOrigin } from "../../utils";
 import BotUnavailableMessage from "../Error/bot-unavailable-message-page.jsx";
-import { getActiveToken } from "../../../shared";
 import api from "../../api";
 
 const Main = () => {
@@ -61,21 +60,17 @@ const Main = () => {
 			local_storage_sync.src = `${getRelatedDeriveOrigin().origin}/localstorage-sync.html`
 		}
 
-		const activeToken = getActiveToken(getTokenList());
-		const landing_company = activeToken?.loginInfo.landing_company_name;
-
 		const days_passed =
 			Date.now() >
 			(parseInt(getStorage("closedTourPopup")) || 0) + 24 * 60 * 60 * 1000;
 		dispatch(updateShowTour(isDone("welcomeFinished") || days_passed));
-		dispatch(updateShowMessagePage(landing_company === "maltainvest"));
 	}
 
 	const loginCheck = async () => {
 		return new Promise(resolve => {
 			const queryStr = parseQueryString();
 			const tokenObjectList = queryToObjectArray(queryStr);
-			
+
 			if (!Array.isArray(getTokenList())) {
 				removeAllTokens();
 			}
@@ -91,7 +86,7 @@ const Main = () => {
 						}
 						dispatch(updateIsLogged(isLoggedIn()));
 						history.replace('/');
-						api.send({ balance: 1, account: 'all' });
+						api.send({ balance: 1, account: 'all' }).catch(() => {})
 						applyToolboxPermissions();
 						resolve();
 					});

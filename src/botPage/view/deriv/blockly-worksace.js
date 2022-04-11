@@ -160,6 +160,9 @@ const addBindings = blockly => {
       updateTokenList();
       globalObserver.emit("ui.log.info", translate("Logged you out!"));
       clearActiveTokens();
+
+      // Todo: Need to remove this reload, and add logic to clear redux state.
+      // Need to stop the barspinner once removed this
       window.location.reload();
     });
   };

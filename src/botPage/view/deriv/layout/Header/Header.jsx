@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
 import { isMobile, isDesktop, parseQueryString } from "../../../../../common/utils/tools";
-import { platforms } from "../../config.js";
 import PlatformDropdown from "./components/platform-dropdown.jsx";
 import { isLoggedIn } from "../../utils";
 import { getActiveToken } from "../../utils";
@@ -18,7 +17,7 @@ import {
   updateBalance,
   updateActiveToken
 } from "../../store/client-slice";
-import { setAccountSwitcherLoader, setShouldReloadWorkspace } from "../../store/ui-slice";
+import { setAccountSwitcherLoader, updateShowMessagePage } from "../../store/ui-slice";
 import {
   DrawerMenu,
   AuthButtons,
@@ -34,6 +33,7 @@ const AccountSwitcher = () => {
   const { is_logged } = useSelector((state) => state.client);
   const query_string = parseQueryString();
   const query_string_array = queryToObjectArray(query_string);
+
   // [Todo] We should remove this after update the structure of get token list on login
   if (query_string_array[0]?.token) {
     return (
@@ -62,6 +62,7 @@ const Header = () => {
   const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
   const platformDropdownRef = React.useRef();
   const { is_logged, active_token } = useSelector((state) => state.client);
+  const { is_bot_running } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   const hideDropdown = (e) =>
     !platformDropdownRef.current.contains(e.target) &&
@@ -70,7 +71,6 @@ const Header = () => {
   React.useEffect(() => {
     api.onMessage().subscribe(({ data }) => {
       if (data?.error?.code) return;
-
       if (data?.msg_type === "balance") {
         dispatch(updateBalance(data.balance));
       }
@@ -80,6 +80,10 @@ const Header = () => {
   React.useEffect(() => {
     const token_list = getTokenList();
     const active_token = getActiveToken(token_list);
+    const landing_company = active_token?.loginInfo.landing_company_name;
+
+    dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
+
     if (!active_token) {
       removeAllTokens();
       dispatch(resetClient());
@@ -108,16 +112,23 @@ const Header = () => {
     }
   }, [active_token]);
 
-  // React.useEffect(() => {
-  //   if(active_token) {
-  //     dispatch(setShouldReloadWorkspace(true));
-  //     $(".barspinner").hide();
-  //   }
-  // }, [active_token])
-
   React.useEffect(() => {
     dispatch(updateIsLogged(isLoggedIn()));
   }, [is_logged]);
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', onBeforeUnload, { capture: true });
+    return (() => {
+      window.removeEventListener('beforeunload', onBeforeUnload, { capture: true });
+    })
+  }, [is_bot_running])
+
+  const onBeforeUnload = (e) => {
+    if(is_bot_running) {
+      e.preventDefault();
+      e.returnValue = true;
+    }
+  }
 
   return (
     <div className="header">
@@ -126,9 +137,9 @@ const Header = () => {
           <div className="header__menu-left">
             {isPlatformSwitcherOpen && (
               <PlatformDropdown
-                platforms={platforms}
                 hideDropdown={hideDropdown}
                 ref={platformDropdownRef}
+                setIsPlatformSwitcherOpen={setIsPlatformSwitcherOpen}
               />
             )}
             <div

@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const del = require('del');
-const paths = require('vinyl-paths');
 const rev = require('gulp-rev');
 const through = require('through2');
 const webpackStream = require('webpack-stream');
@@ -9,6 +8,14 @@ const { addToManifest } = require('./revision');
 
 const gen = env => {
     process.env.NODE_ENV = env;
+    const is_test_link = process.argv.indexOf('--test');
+    if (is_test_link !== -1) {
+        const branch_index = process.argv.indexOf('--branch');
+        if (branch_index !== -1 && process.argv[branch_index + 1]) {
+            process.env.BRANCH = process.argv[branch_index + 1];
+        }
+    }
+    process.env.ARGS = process.argv
     return webpackStream(require('../webpack.config.web'), webpack).pipe(gulp.dest('www/js'));
 };
 
