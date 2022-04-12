@@ -1,13 +1,14 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import AccountSwitchModal from "./account-switch-modal.jsx";
 import { translate } from "../../../../../../common/utils/tools";
 import TabContent from "./tab-content.jsx";
-import { useDispatch, useSelector } from "react-redux";
 import { currencyNameMap } from "../../../config";
 import Modal from "../../../components/modal";
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { setShouldReloadWorkspace } from "../../../store/ui-slice.js";
-import { resetClient } from "../../../store/client-slice.js";
+import useLogout from "../../../../../../common/hooks/useLogout.js";
 
 const Separator = () => <div className="account__switcher-seperator"></div>;
 const getTotalDemo = (accounts) => {
@@ -29,6 +30,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
   const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
   const container_ref = React.useRef();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const logout = useLogout();
 
   React.useEffect(() => {
     function handleClickOutside(event) {
@@ -40,10 +43,17 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
       }
     }
     window.addEventListener("click", handleClickOutside);
-
-
     return () => window.removeEventListener("click", handleClickOutside);
-  })
+  }, []);
+
+  const onLogout = () => {
+    if(location.pathname.includes('endpoint')) {
+      logout();
+    } else {
+      globalObserver.emit('ui.logout');
+    }
+    dispatch(setShouldReloadWorkspace(true));
+  }
 
   return (
     <div className="account__switcher-dropdown-wrapper show" ref={dropdownRef}>
@@ -91,9 +101,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
             id="deriv__logout-btn"
             className="account__switcher-logout logout"
             onClick={() => {
-              if (show_bot_unavailable_page) {
-                globalObserver.emit("ui.logout");
-              } else updaetShowLogoutModal(true);
+              if (show_bot_unavailable_page) onLogout()
+              else updaetShowLogoutModal(true);
             }}
           >
             <span className="account__switcher-logout-text">{translate("Log out")}</span>
@@ -110,10 +119,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
           <AccountSwitchModal
             is_bot_running={is_bot_running}
             onClose={() => updaetShowLogoutModal(false)}
-            onAccept={() => {
-              globalObserver.emit('ui.logout');
-              dispatch(setShouldReloadWorkspace(true));
-            }}
+            onAccept={onLogout}
           />
 
         </Modal>

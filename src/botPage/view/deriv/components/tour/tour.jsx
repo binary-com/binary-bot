@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
-
+import { useLocation } from 'react-router-dom';
 import {
     set as setStorage,
     get as getStorage,
@@ -11,7 +11,8 @@ import { isMobile } from '../../../../../common/utils/tools';
 
 const getTourState = () => !getStorage('closedTourPopup')
 const Tour = () => {
-    const[run, setRun] = useState(() => getTourState());
+    const location = useLocation();
+    const [run, setRun] = useState(() => location?.pathname?.includes('endpoint') ? false : getTourState());
     const[step_index, setStepIndex] = useState(0);
 
     const closeTourPermanently = () => {

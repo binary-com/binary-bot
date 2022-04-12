@@ -156,7 +156,7 @@ export const platforms = [
         description: translate(
             'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'
         ),
-        link: '#',
+        link: '/',
         logo: 'image/deriv/brand/ic-brand-binarybot.svg',
     },
 ];

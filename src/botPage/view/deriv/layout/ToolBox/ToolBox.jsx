@@ -1,7 +1,3 @@
-/* eslint-disable no-useless-return */
-/* eslint-disable consistent-return */
-/* eslint-disable quotes */
-/* eslint-disable indent */
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +6,7 @@ import Save from "./components/save";
 import Reset from "./components/reset";
 import Modal from "../../components/modal";
 import { translate } from "../../../../../common/i18n";
-import {setIsBotRunning} from '../../store/ui-slice';
+import { setIsBotRunning } from '../../store/ui-slice';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { isMobile } from "../../../../../common/utils/tools";
 import Popover from "../../components/popover/index";
@@ -45,7 +41,7 @@ const ToolBox = ({ blockly }) => {
   React.useEffect(() => {
     globalObserver.register('bot.running', () => dispatch(setIsBotRunning(true)));
     globalObserver.register('bot.stop', () => dispatch(setIsBotRunning(false)));
-    
+
     const Keys = Object.freeze({ "zoomIn": 187, "zoomOut": 189 })
     document.body.addEventListener("keydown", (e) => {
       if (e.which === Keys.zoomOut && e.ctrlKey) {
@@ -100,9 +96,9 @@ const ToolBox = ({ blockly }) => {
   };
   return (
     <div id="toolbox">
-      <Popover  content={translate("Reset the blocks to their initial state")}
+      <Popover content={translate("Reset the blocks to their initial state")}
         position="bottom"
-        >
+      >
         <button
           id="resetButton"
           className="toolbox-button icon-reset"
@@ -110,7 +106,7 @@ const ToolBox = ({ blockly }) => {
             onShowModal("reset");
           }}
         />
-       
+
       </Popover>
       <Popover content={translate("Load new blocks (xml file)")} position="bottom">
         <button
@@ -189,13 +185,13 @@ const ToolBox = ({ blockly }) => {
       <ToolboxButton
         id="stopButton"
         classes="toolbox-button icon-stop"
-        tooltip={translate("Stop the bot") }
+        tooltip={translate("Stop the bot")}
       />
       <Popover content={translate("Show log")} position="bottom">
         <button id="logButton" className="toolbox-button icon-info" />
       </Popover>
       {has_active_token && <span className="toolbox-separator" />}
-       {/* Needs resizeable modal */}
+      {/* Needs resizeable modal */}
       <Popover content={translate("Show chart")} position="bottom">
         <button
           id="chartButton"
