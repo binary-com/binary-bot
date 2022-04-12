@@ -13,7 +13,7 @@ JSInterpreter.prototype.takeStateSnapshot = function() {
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
   this.state_stack = clone(snapshot, undefined, undefined, undefined, true);
   if (this.state_stack?.length) {
-    this.global_object = this.state_stack?.[0]?.scope?.object;
+    this.global_object = this.state_stack[0]?.scope?.object;
     this.initFunc_(this, this.global_object);
   }
 };
