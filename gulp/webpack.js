@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const del = require('del');
-const paths = require('vinyl-paths');
 const rev = require('gulp-rev');
 const through = require('through2');
 const webpackStream = require('webpack-stream');
@@ -14,7 +13,6 @@ const gen = env => {
         const branch_index = process.argv.indexOf('--branch');
         if (branch_index !== -1 && process.argv[branch_index + 1]) {
             process.env.BRANCH = process.argv[branch_index + 1];
-            process.env.PROJECT_NAME = 'binary-bot';
         }
     }
     process.env.ARGS = process.argv

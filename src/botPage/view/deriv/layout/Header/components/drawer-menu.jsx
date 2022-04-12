@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import { translate } from '../../../../../../common/utils/tools';
 import MenuLinks from './menu-links.jsx';
 import PlatformDropdown from './platform-dropdown.jsx';
-import { platforms } from '../../../config';
-
 
 const DrawerMenu = ({
     updateShowDrawerMenu,
@@ -51,7 +49,11 @@ const DrawerMenu = ({
                             src="image/deriv/ic-chevron-down-bold.svg"
                         />
                     </div>
-                    {isPlatformSwitcherOpen && <PlatformDropdown platforms={platforms} hideDropdown={hideDropdown} ref={platformDropdownRef} />}
+                    {isPlatformSwitcherOpen && <PlatformDropdown
+                        hideDropdown={hideDropdown}
+                        ref={platformDropdownRef}
+                        setIsPlatformSwitcherOpen={setIsPlatformSwitcherOpen}
+                    />}
                     {is_logged && <MenuLinks />}
                 </div>
 

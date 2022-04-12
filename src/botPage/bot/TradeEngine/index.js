@@ -125,7 +125,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                 currency: balance.currency,
               });
               resolve();
-            });
+            })
           } else {
             resolve();
           }
