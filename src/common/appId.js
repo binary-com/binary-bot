@@ -100,6 +100,9 @@ export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/
 export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
 
+export const getOAuthURLDeriv = () =>
+    `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+
 const options = {
     apiUrl  : getWebSocketURL(),
     language: getLanguage().toUpperCase(),

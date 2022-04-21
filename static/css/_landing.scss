@@ -1,0 +1,588 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Inconsolata&family=Montserrat:ital,wght@0,900;1,700&family=Poppins&family=Sura&display=swap');
+
+$font-IBM: 'IBM Plex Sans',
+sans-serif;
+
+.l-container {
+  padding: 0 2rem;
+
+  @media (min-width: 1440px) {
+    max-width: 1400px;
+  }
+}
+
+.hero {
+  background-color: #08223d;
+  background-image: url(../image/BG-1.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &-1 {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: calc(7rem + 5rem) 0px;
+
+    @media screen and (max-width: 1440px) {
+      padding: calc(7rem + 5rem) 2rem;
+    }
+
+    @media screen and (max-width: 991px) {
+      flex-direction: column-reverse;
+      padding: 4rem 2rem;
+
+      .btn-group {
+        text-align: left;
+      }
+    }
+
+    &__content {
+      flex: 1 1 50%;
+
+      h1 {
+        color: #FFF;
+        margin: 2rem 2rem 2rem 0;
+        font: 700 5rem $font-IBM;
+
+        @media screen and (max-width: 991px) {
+          font: 700 3rem "IBM Plex Sans", sans-serif;
+          margin: 0 0 2rem 0;
+        }
+      }
+
+      h2 {
+        color: #fff;
+        line-height: 40px;
+        margin-bottom: 2rem;
+        font: 400 2rem $font-IBM;
+
+        @media screen and (max-width: 991px) {
+          font: 400 1.5rem "IBM Plex Sans", sans-serif;
+          margin: 0 0 2.5rem 0;
+        }
+      }
+    }
+    
+    &__placeholder {
+      flex: 1 1 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @media screen and (max-width: 991px) {
+        flex-direction: column;
+      }
+      
+      img {
+        @media screen and (max-width: 991px) {
+          object-fit: contain;
+          width: 100%;
+        }
+      }
+    }
+    &__binary_logo {
+      display: none;
+      width: 14.75rem !important;
+      margin-bottom: 3rem;
+      @media screen and (max-width: 991px) {
+        display: block;
+      }
+    }
+  }
+
+
+
+}
+
+.l-btn {
+  height: 2.5rem;
+  border-radius: 0.25rem;
+  font: 700 0.875rem $font-IBM;
+  background-color: #C2C2C2;
+  color: #000;
+  outline: none;
+  border: none;
+  padding: 0 1rem;
+  cursor: pointer;
+
+  &.primary {
+    background-color: #2E8836;
+    color: #fff;
+
+    &:hover {
+      background-color: #246d2a;
+      color: #fff;
+    }
+  }
+
+  &.danger {
+    background: #FF444F;
+    color: #fff;
+
+    &:hover {
+      background-color: #cd353e;
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    background-color: #979797;
+    color: #000;
+  }
+}
+
+.btn-group {
+  button {
+    margin-right: 1rem;
+  }
+
+  @media screen and (max-width: 991px) {
+    text-align: center;
+    margin-bottom: 2.4rem;
+  }
+}
+
+.switch {
+  background-image: url(../image/sectionTwoLandingBackground.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &-inner {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 !important;
+
+    @media screen and (max-width: 1440px) {
+      padding: 0 2rem !important;
+    }
+
+    @media screen and (max-width: 991px) {
+      flex-direction: column;
+    }
+
+    &__placeholder {
+      img {
+        @media screen and (max-width: 991px) {
+          object-fit: contain;
+          width: 100%;
+        }
+      }
+    }
+
+    &__content {
+      h1 {
+        margin-bottom: 1.5rem;
+        font: 700 4rem $font-IBM;
+        line-height: 4rem;
+        color: #333333;
+
+        @media screen and (max-width: 991px) {
+          font: 700 1.5rem $font-IBM;
+          text-align: center;
+          padding: 0 2rem;
+        }
+      }
+
+      h2 {
+        margin-bottom: 1.5rem;
+        font: 400 2rem $font-IBM;
+        line-height: 2rem;
+        color: #333333;
+
+        @media screen and (max-width: 991px) {
+          font: 400 1.2rem $font-IBM;
+          text-align: center;
+          padding: 0 2rem;
+        }
+      }
+    }
+  }
+}
+
+.landing_carousel {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  display: flex !important;
+  margin: 0px auto;
+  padding: 5rem 0;
+
+  @media screen and (max-width: 1024px) {
+    display: flex !important;
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  &_content {
+    h1 {
+      font: 700 4rem $font-IBM;
+      line-height: 5rem;
+      margin-bottom: 2rem;
+      color: #333333;
+      @media screen and (max-width: 1024px) {
+        font: 700 2rem $font-IBM;
+      }
+    }
+
+    h2 {
+      font: 400 2rem $font-IBM;
+      line-height: 2rem;
+      margin-bottom: 2rem;
+      color: #333333;
+      @media screen and (max-width: 1024px) {
+        font: 400 1rem $font-IBM;
+      }
+    }
+  }
+
+  &_placeholder {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      /* align-items: center; */
+      justify-content: center;
+    }
+
+    img {
+      @media screen and (max-width: 1024px) {
+        object-fit: contain;
+        width: 100%;
+      }
+
+    }
+  }
+}
+
+.choose {
+
+  &-placeholder {
+    margin-right: 2rem;
+  }
+
+  &-inner {
+
+    &-right,
+    &-left {
+      width: 50%;
+
+      @media screen and (max-width: 1024px) {
+        width: 100%;
+      }
+
+    }
+
+    padding: 3rem 0;
+    margin: 0 auto;
+
+    &-title {
+      color: #333333;
+      text-align: center;
+      font: 700 2rem $font-IBM;
+      line-height: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    &-section-content {
+      display: flex;
+      color: #333333;
+      @media screen and (max-width: 1024px) {
+        flex-direction: column;
+        padding: 0 2rem;
+      }
+    }
+
+    &-left-content {
+      display: flex;
+      margin-right: 2rem;
+      min-height: 11.25rem;
+
+      @media screen and (max-width: 1024px) {
+        min-height: unset;
+        margin-bottom: 1.3rem;
+      }
+
+      h1 {
+        margin-top: 0;
+        font: 700 1.6rem $font-IBM;
+        color: #333333;
+        @media screen and (max-width: 1024px) {
+          font: 700 1.3rem "IBM Plex Sans", sans-serif;
+          margin-bottom: 0;
+        }
+      }
+
+      h2 {
+        font: 400 1.2rem $font-IBM;
+        color: #333333;
+        @media screen and (max-width: 1024px) {
+          font: 400 1rem "IBM Plex Sans", sans-serif;
+          margin-bottom: 0;
+        }
+      }
+
+    }
+
+    &-right-content {
+      display: flex;
+      min-height: 11.25rem;
+
+      @media screen and (max-width: 1024px) {
+        min-height: unset;
+        margin-bottom: 1.3rem;
+      }
+
+      .mb0 {
+        margin-bottom: 0 !important;
+      }
+
+      h1 {
+        margin-top: 0;
+        font: 700 1.6rem $font-IBM;
+        color: #333333;
+        @media screen and (max-width: 1024px) {
+          font: 700 1.3rem "IBM Plex Sans", sans-serif;
+          margin-bottom: 0;
+        }
+      }
+
+      h2 {
+        font: 400 1.2rem $font-IBM;
+        color: #333333;
+        @media screen and (max-width: 1024px) {
+          font: 400 1rem "IBM Plex Sans", sans-serif;
+          margin-bottom: 0;
+        }
+      }
+
+    }
+  }
+}
+
+.carousel-wrapper {
+  margin: 0 auto;
+
+  .slick-slider {
+    padding: 0 2rem;
+
+    .slick-arrow {
+      &.slick-next {
+        transform: rotate(180deg);
+        top: 56%;
+
+        @media screen and (max-width: 1024px) {
+          top: 54%;
+
+          .slick-next {
+            right: 0;
+          }
+
+          .slick-prev {
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .slick-dots {
+    bottom: 0;
+
+    @media screen and (max-width: 1024px) {
+      left: 0;
+    }
+
+  }
+  .placeholder-outer{
+        position: relative;
+        width: 100%;
+        height: 20rem;
+        @media screen and (max-width: 1024px) {
+          height: 15rem;
+        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    .caousel_laptop{
+      position: absolute;
+      top: 0;
+      z-index: 1;
+      &_holder{
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            width: 56%;
+            top: 45px;
+            height: 200px;
+            @media screen and (max-width: 1024px) {
+              top: -10px;
+              width: 72%;
+            }
+      }
+    }
+    
+  }
+}
+
+
+.arrow {
+  &.right {
+    transform: rotate(180deg);
+  }
+}
+
+.wait-wrapper {
+  background-image: url('../image/pattern.png');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: 65% 100%;
+  min-height: 18.75rem;
+  position: relative;
+
+  @media screen and (max-width: 991px) {
+    min-height: 43.75rem;
+    background-image: none;
+  }
+
+  &-inner {
+    display: flex;
+    margin: 0px auto;
+    justify-content: space-between;
+    padding: 0;
+
+    @media screen and (max-width: 991px) {
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+    }
+  }
+
+  .wait-content {
+    h1 {
+      font: 700 4rem $font-IBM;
+      color: #333333;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      margin-top: 0.5rem;
+      font: 400 1rem $font-IBM;
+      margin-bottom: 2rem;
+      color: #333333;
+    }
+  }
+
+  .wait-placeholder {
+    @media screen and (max-width: 991px) {
+      background-image: url('../image/pattern.png');
+      background-repeat: no-repeat;
+      background-position: right;
+      background-size: 65% 100%;
+      min-height: 28.125rem;
+    }
+
+    img {
+      position: absolute;
+      right: 20%;
+      top: -100px;
+      height: 25rem;
+
+      @media screen and (max-width: 991px) {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: unset;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+.about-trade-wrapper {
+  background-color: #F8FAFB;
+  
+  @media screen and (max-width: 1440px) {
+    padding: 0 2rem;
+  }
+
+  padding: 3rem 0;
+
+  &-inner {
+    
+    @media screen and (max-width: 991px) {
+      padding: 3rem 0;
+    }
+    &-social-icons-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 2.5rem;
+      @media screen and (max-width: 991px) {  
+          text-align: center;
+     
+      }
+          img{
+            margin-right: 1rem;
+          }
+      .social-media-icons-footer img{
+        margin-right: 1rem;
+      }
+    }
+    &-deriv-icons{
+      text-align: left;
+      padding-bottom: 2.4rem;
+      
+    }
+    @media screen and (max-width: 991px) {
+      text-align: left;
+    }
+    margin: 0 auto;
+    padding: 0;
+
+    .location-info {
+      font: 400 1rem $font-IBM;
+    }
+
+    .trade-info {
+      padding: 1rem;
+      background: rgba(87, 122, 146, 0.04);
+      font: 400 1rem $font-IBM;
+      box-shadow: inset 4px 0px 0px rgba(255, 68, 79, 0.64);
+      @media screen and (max-width: 991px) {
+        box-shadow: inset 0px 4px 0px rgba(255, 68, 79, 0.64);
+      }
+    }
+    
+  }
+}
+
+
+.bot-gif-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 50%;
+  height: 100%;
+  &__background {
+    width: 84%;
+    position: relative;
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+    &__overlay {
+      position: absolute;
+      top: 0;
+      width: 72%;
+      transform: translate(20.7%, 16%);
+      video {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}

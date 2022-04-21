@@ -104,6 +104,7 @@
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
+    "@deriv/deriv-charts": "0.3.16",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
     "commander": "^2.20.0",
@@ -116,7 +117,8 @@
     "mobx-react": "^5.4.4",
     "pako": "^1.0.11",
     "react-render-html": "^0.6.0",
+    "react-slick": "^0.28.1",
     "react-transition-group": "^4.0.1",
-    "@deriv/deriv-charts": "0.3.16"
+    "slick-carousel": "^1.8.1"
   }
 }
