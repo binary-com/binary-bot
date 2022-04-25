@@ -46,13 +46,13 @@ const Footer = () => (
                     <div className='gr-12'>
                         <p>
                             {translate('In the EU, financial products are offered by Binary Investments (Europe) Ltd., W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, regulated as a Category 3 Investment Services provider by the Malta Financial Services Authority ({$0}licence no. IS/70156{$1}).', 
-                            [`<a href="${createUrl({ path: 'download/WS-Binary-Investments-Europe-Limited.pdf', isNonBotPage: true })}" target="_blank">`, '</a>'])}
+                                [`<a href="${createUrl({ path: 'download/WS-Binary-Investments-Europe-Limited.pdf', isNonBotPage: true })}" target="_blank">`, '</a>'])}
                         </p>
                         <p>
                             {translate('Outside the EU, financial products are offered by Binary (SVG) Ltd, Hinds Building, Kingstown, St. Vincent and the Grenadines; Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, regulated by the Vanuatu Financial Services Commission ({$0}view licence{$1}); Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, British Virgin Islands, regulated by the British Virgin Islands Financial Services Commission ({$2}licence no. SIBA/L/18/1114{$3}); and Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Labuan, Malaysia, regulated by the Labuan Financial Services Authority to carry on a money-broking business ({$4}licence no. MB/18/0024{$5}).',
                                 ['<a href="https://www.vfsc.vu/wp-content/uploads/2015/12/List-of-Licensees-under-Dealers-in-Securities-Licensing-Act-CAP-70-18.11.2016.pdf" target="_blank" rel="noopener noreferrer">', '</a>',
-                                `<a href="${createUrl({ path: 'download/regulation/BVI_license.pdf', isNonBotPage: true })}" target="_blank">`, '</a>',
-                                `<a href="${createUrl({ path: 'download/regulation/Labuan-license.pdf', isNonBotPage: true })}" target="_blank">`, '</a>'])}
+                                    `<a href="${createUrl({ path: 'download/regulation/BVI_license.pdf', isNonBotPage: true })}" target="_blank">`, '</a>',
+                                    `<a href="${createUrl({ path: 'download/regulation/Labuan-license.pdf', isNonBotPage: true })}" target="_blank">`, '</a>'])}
                         </p>
                         <p>
                             {translate('This website\'s services are not made available in certain countries such as the USA, Canada, Hong Kong, Japan, or to persons under age 18.')}
@@ -106,11 +106,11 @@ const Footer = () => (
                         </p>
                         <p>
                             {translate('In the rest of the EU, Volatility Indices are offered by Binary (Europe) Ltd., W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta; licensed and regulated by (1) the Malta Gaming Authority in Malta (licence no. MGA/B2C/102/2000 issued on 01 August 2018), for UK clients by (2) the UK Gambling Commission (licence {$0}reference no: 39495{$1}), and for Irish clients by (3) the Revenue Commissioners in Ireland (Remote Bookmaker\'s Licence no. 1010285 issued on 1 July 2017). View complete {$2}Regulatory Information{$1}.', 
-                            ['<a href="https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495" target="_blank" rel="noopener noreferrer">',
-                             '</a>', 
-                             `<a href="${createUrl({ path: 'regulation', addLanguage: true, addHtmlExtension: true, isNonBotPage: true })}">`
-                             ]
-                             )}
+                                ['<a href="https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495" target="_blank" rel="noopener noreferrer">',
+                                    '</a>', 
+                                    `<a href="${createUrl({ path: 'regulation', addLanguage: true, addHtmlExtension: true, isNonBotPage: true })}">`
+                                ]
+                            )}
                         </p>
                     </div>
                 </div>
@@ -119,7 +119,7 @@ const Footer = () => (
                         <div className='about-binary'>
                             <p>
                                 {translate('Binary.com is an award-winning online trading provider that helps its clients to trade on financial markets through binary options and CFDs. Trading binary options and CFDs on Volatility Indices is classified as a gambling activity. Remember that gambling can be addictive – please play responsibly. Learn more about {$0}Responsible Trading{$1}. Some products are not available in all countries. This website\'s services are not made available in certain countries such as the USA, Canada, Hong Kong, or to persons under age 18.', 
-                                [`<a href="${createUrl({ path: 'responsible-trading', addLanguage: true, addHtmlExtension: true, isNonBotPage: true })}">`, '</a>']
+                                    [`<a href="${createUrl({ path: 'responsible-trading', addLanguage: true, addHtmlExtension: true, isNonBotPage: true })}">`, '</a>']
                                 )}
                             </p>
                         </div>

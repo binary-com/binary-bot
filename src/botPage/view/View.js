@@ -39,6 +39,7 @@ import {
     get as getStorage,
     set as setStorage,
     getToken,
+    remove,
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
@@ -89,7 +90,18 @@ api.events.on('balance', response => {
 
     globalObserver.setState({ balance: b, currency });
 });
-
+const removeTokens = () => {
+    logoutAllTokens().then(() => {
+        updateTokenList();
+        globalObserver.emit('ui.log.info', translate('Logged you out!'));
+        clearRealityCheck();
+        clearActiveTokens();
+        window.location.reload();
+    });
+};
+const clearActiveTokens = () => {
+    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+};
 const addBalanceForToken = token => {
     api.authorize(token).then(() => {
         api.send({ forget_all: 'balance' }).then(() => {
@@ -448,20 +460,6 @@ export default class View {
                     removeTokens();
                 })
                 .catch(() => {});
-        };
-
-        const removeTokens = () => {
-            logoutAllTokens().then(() => {
-                updateTokenList();
-                globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                clearRealityCheck();
-                clearActiveTokens();
-                window.location.reload();
-            });
-        };
-
-        const clearActiveTokens = () => {
-            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
         };
 
         $('.panelExitButton').click(function onClick() {
@@ -842,17 +840,28 @@ function renderErrorPage() {
 }
 
 function renderReactComponents() {
-    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
-    ReactDOM.render(<Tour />, $('#tour')[0]);
-    ReactDOM.render(
-        <OfficialVersionWarning
-            show={
-                !(typeof window.location !== 'undefined' && isProduction() && window.location.pathname === '/bot.html')
-            }
-        />,
-        $('#footer')[0]
-    );
-    document.getElementById('errorArea').remove();
-    ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
-    ReactDOM.render(<LogTable />, $('#logTable')[0]);
+    const temp = getStorage('setDueDateForBanner');
+    if (!temp) {
+        window.location.replace('/');
+        document.getElementById('errorArea').remove();
+    } else {
+        ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
+        ReactDOM.render(<Tour />, $('#tour')[0]);
+        ReactDOM.render(
+            <OfficialVersionWarning
+                show={
+                    !(
+                        typeof window.location !== 'undefined' &&
+                        isProduction() &&
+                        window.location.pathname === '/bot.html'
+                    )
+                }
+            />,
+            $('#footer')[0]
+        );
+        document.getElementById('errorArea').remove();
+        ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
+        ReactDOM.render(<LogTable />, $('#logTable')[0]);
+        document.getElementById('bot-main').style.display = 'block';
+    }
 }

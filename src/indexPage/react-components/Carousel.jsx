@@ -4,53 +4,54 @@ import { translate } from '../../common/i18n';
 
 const carouselContentArray = [
     {
-        title: 'Where to find Binary Bot on Deriv',
-        content: 'On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.',
+        title      : 'Where to find Binary Bot on Deriv',
+        content    : 'On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.',
         action_text: 'Try Binary Bot on Deriv',
-        img: 'image/1.webm',
+        img        : 'image/1a.webm',
     },
     {
-        title: 'Bring your bots across seamlessly',
-        content: 'Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.',
+        title      : 'Bring your bots across seamlessly',
+        content    : 'Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.',
         action_text: 'Try Binary Bot on Deriv',
-        img: 'image/2.webm',
+        img        : 'image/2a.webm',
     },
     {
-        title: 'Where to find Binary Bot on Deriv',
-        content: 'On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.',
+        title      : 'Where to find Binary Bot on Deriv',
+        content    : 'On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.',
         action_text: 'Try Binary Bot on Deriv',
-        img: 'image/3.webm',
+        img        : 'image/3a.webm',
     },
 ]
 
 const Carousel = () => {
 
     const settings = {
-        dots: true,
-        infinite: true,
-        speed: 3000,
-        slidesToShow: 1,
+        dots          : false,
+        infinite      : true,
+        speed         : 500,
+        slidesToShow  : 1,
         slidesToScroll: 1,
-        arrows: true,
-        autoplay: true,
-        nextArrow: <span className='arrow'><img src='./image/icon.svg' /></span>,
-        prevArrow: <span className='arrow right'><img src='./image/icon.svg' /></span>,
-        responsive: [
+        arrows        : true,
+        autoplay      : true,
+        autoplaySpeed : 5000,
+        nextArrow     : <span className='arrow'><img src='./image/icon.svg' /></span>,
+        prevArrow     : <span className='arrow right'><img src='./image/icon.svg' /></span>,
+        responsive    : [
             {
                 breakpoint: 1024,
-                settings: {
-                    slidesToShow: 1,
+                settings  : {
+                    slidesToShow  : 1,
                     slidesToScroll: 1,
                 },
             },
             {
                 breakpoint: 700,
-                settings: {
-                    slidesToShow: 1,
+                settings  : {
+                    slidesToShow  : 1,
                     slidesToScroll: 1,
                 },
             },
-        ],  
+        ],
     };
 
     return (
@@ -80,7 +81,7 @@ const Carousel = () => {
                                                 <source src={img} type="video/mp4" />
                                                 <source src={img} type="video/ogg" />
                                             </video>
-                                           
+
                                         </div>
                                     </div>
                                 </div>

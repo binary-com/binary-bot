@@ -1,5 +1,5 @@
 import React from 'react';
-import Carousel  from './Carousel.jsx';
+import Carousel from './Carousel.jsx';
 import { translate } from '../../common/i18n';
 import { getOAuthURLDeriv } from '../../common/appId';
 // eslint-disable-next-line arrow-body-style
@@ -24,7 +24,7 @@ export default BotLanding;
 const Hero = () => (
     <section className="hero">
         <div className="hero-1 l-container">
-           
+
             <div className="hero-1__content">
                 <h1>{translate('Binary Bot has a new home')}</h1>
                 <h2>
@@ -34,7 +34,7 @@ const Hero = () => (
                     <a href="https://bot.deriv.com" target="_blank">
                         <button className="l-btn primary">{translate('Take me to deriv')}</button>
                     </a>
-                    <a href="https://bot.binary.com/bot.html"  target="_blank">
+                    <a href="/bot.html">
                         <button className="l-btn">{translate('Maybe later')}</button>
                     </a>
                 </div>
@@ -61,10 +61,10 @@ const SectionOne = () => (
                     {translate('Just log in using your Binary.com credentials. No sign-up needed.')}
                 </h2>
                 <div className="btn-group">
-                    <a onClick={() => document.location = getOAuthURLDeriv}>
+                    <a href={getOAuthURLDeriv()}>
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href="https://bot.binary.com/bot.html" target="_blank">
+                    <a href="/bot.html">
                         <button className="l-btn">{translate('Maybe later')}</button>
                     </a>
                 </div>
@@ -159,7 +159,7 @@ const SectionThree = () => (
                 <img src="image/dont-wait-image.svg"></img>
             </div>
         </div>
-        
+
     </section>
 )
 
@@ -171,24 +171,28 @@ const Footer = () => (
                     <img src='image/derivLogo.png' />
                 </div>
                 <div className='about-trade-wrapper-inner-social-icons'>
-                    <img src='image/facebook.svg' />
-                    <img src='image/twitter.svg' />
-                    <img src='image/instagram.svg' />
-                    <img src='image/linkedin.svg' />
+                    <a href="https://www.facebook.com/derivdotcom" target="_blank"><img src='image/facebook.svg' /></a>
+                    <a href="https://twitter.com/derivdotcom/" target="_blank"><img src='image/twitter.svg' /></a>
+                    <a href="https://www.instagram.com/deriv_official/" target="_blank"><img src='image/instagram.svg' /></a>
+                    <a href="https://www.linkedin.com/company/derivdotcom/" target="_blank"><img src='image/linkedin.svg' /></a>
                 </div>
             </div>
+            <div className='about-trade-wrapper-inner-social-icons-mobile'>
+                <a href="https://www.facebook.com/derivdotcom" target="_blank"><img src='image/facebook.svg' /></a>
+                <a href="https://twitter.com/derivdotcom/" target="_blank"><img src='image/twitter.svg' /></a>
+                <a href="https://www.instagram.com/deriv_official/" target="_blank"><img src='image/instagram.svg' /></a>
+                <a href="https://www.linkedin.com/company/derivdotcom/" target="_blank"><img src='image/linkedin.svg' /></a>
+            </div>
             <div className='location-info'>
-                <p>{translate('Deriv Investments (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, is licensed in Malta (')}<b>{translate('licence no. IS/70156')}</b>{translate(') and regulated by the Malta Financial Services Authority under the Investments Services Act to provide investment services in the European Union. It is also authorised and subject to limited regulations by the Financial Conduct Authority in the UK. Details about the extent of our authorisation and regulation by the Financial Conduct Authority are available from us on request.')}</p>
-                <p>{translate('Deriv (MX) Ltd, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, is licensed and regulated in the United Kingdom by the UK Gambling Commission (')}<b>{translate('account no. 39172')}</b>{translate(').')}</p>
-                <p>{translate('Deriv (Europe) Ltd, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, is licensed and regulated for digital options based on synthetic indices by the Malta Gaming Authority (')}<b>{translate('licence no. MGA/B2C/102/2000')}</b>{translate(').')}</p>
-                <p>{translate('This website’s services are not available in certain countries, including the USA, Canada, and Hong Kong, or to persons below 18.')}</p>
+                <p>{translate('Deriv Investments (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, is licensed in Malta (')}<b>{translate('licence no. IS/70156')}</b>{translate(') and regulated by the Malta Financial Services Authority under the Investments Services Act to provide investment services in the European Union. Authorised by the Financial Conduct Authority and deemed with variation of permission. Subject to regulation by the Financial Conduct Authority.The nature and extent of consumer protections may differ from those for firms based in the UK. Details of the Financial Services Contracts Regime, which allows EEA-based firms to operate in the UK for a limited period to carry on activities that are necessary for the performance of pre-existing contracts, are available on the Financial Conduct Authority’s website.')}</p>
+                <p>{translate('Outside the EU, financial products are offered by the following companies: Deriv (FX) Ltd, F16, Level 1, Paragon Labuan, Jalan Tun Mustapha, 87000 Labuan, Malaysia, licensed by Labuan Financial Services Authority (')}<b>{translate('licence no. MB/18/0024')}</b>{translate(') Deriv (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, British Virgin Islands, licensed by the British Virgin Islands Financial Services Commission (')}<b>{translate('licence no. SIBA/L/18/1114')}</b>{translate(') Deriv (V) Ltd (')}<b>{translate('view licence')}</b>{translate('), 1276, Kumul Highway, Port Vila, Vanuatu, licensed and regulated by the Vanuatu Financial Services Commission; and Deriv (SVG) LLC, Hinds Buildings, Kingstown, St. Vincent and the Grenadines.')}</p>
+                <p>{translate('Deriv Limited — 13 Castle Street, St. Helier, JE2 3BT, Jersey — is the holding company for the above subsidiaries.')}</p>
+                <p>{translate('This websites services are not available in certain countries, including the USA, Canada, and Hong Kong, or to persons below 18.')}</p>
             </div>
             <div className='trade-info'>
-                <p>{translate('CFDs are considered complex derivatives and may not be suitable for retail clients.')}</p>
-                <p>{translate('CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 66% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.')}</p>
-                <p>{translate('The products mentioned here may be affected by changes in currency exchange rates. If you invest in these products, you may lose some or all of your investment, and the value of your investment may fluctuate. You should never invest money that you cannot afford to lose and never trade with borrowed money.')}</p>
-                <p>{translate('Gambling can be addictive, so please play responsibly. Visit ')}<b>{translate('Secure and responsible trading ')}</b>{translate('and ')}<b>{translate('begambleaware.org ')}</b>{translate('for more information.')}</p>   
+                <p>{translate('CFDs are considered complex derivatives and may not be suitable for retail clients. CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money. The products mentioned here may be affected by changes in currency exchange rates. If you invest in these products, you may lose some or all of your investment, and the value of your investment may fluctuate. You should never invest money that you cannot afford to lose and never trade with borrowed money.')}</p>
+                <p>{translate('Before trading in the complex financial products offered, please be sure to understand the risks involved and learn about ')}<b>{translate('Secure and responsible trading.')}</b></p>
             </div>
         </div>
-    </section>
+    </section >
 )
