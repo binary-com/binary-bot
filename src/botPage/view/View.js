@@ -39,7 +39,6 @@ import {
     get as getStorage,
     set as setStorage,
     getToken,
-    remove,
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
