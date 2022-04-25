@@ -36,6 +36,17 @@ export const appendRow = (trade, state) => ({
     ],
 });
 
+export const appendRowTop = (trade, state) => ({
+    id  : state.id + 1,
+    rows: [
+        {
+            ...trade,
+            id: state.id + 1,
+        },
+        ...state.rows,
+    ],
+});
+
 export const updateRow = (prevRowIndex, trade, state) => ({
     id  : state.id,
     rows: [
