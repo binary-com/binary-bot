@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactDataGrid from 'react-data-grid';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { translate } from '../../common/i18n';
-import { appendRowTop, saveAs } from './shared';
+import { appendRow, saveAs } from './shared';
 
 const minHeight = 550;
 
@@ -53,7 +53,7 @@ export default class LogTable extends Component {
                 if (!Object.keys(log).length) {
                     return;
                 }
-                this.setState(appendRowTop(log, this.state));
+                this.setState(appendRow(log, this.state, true));
             }
         });
     }

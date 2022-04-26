@@ -25,26 +25,23 @@ export const createScope = () => {
     return { observer, api, ticksService, symbolApi };
 };
 
-export const appendRow = (trade, state) => ({
+export const appendRow = (trade, state, isDesc = false) => ({
     id  : state.id + 1,
-    rows: [
-        ...state.rows,
-        {
-            ...trade,
-            id: state.id + 1,
-        },
-    ],
-});
-
-export const appendRowTop = (trade, state) => ({
-    id  : state.id + 1,
-    rows: [
-        {
-            ...trade,
-            id: state.id + 1,
-        },
-        ...state.rows,
-    ],
+    rows: isDesc
+        ? [
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+            ...state.rows,
+        ]
+        : [
+            ...state.rows,
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+        ],
 });
 
 export const updateRow = (prevRowIndex, trade, state) => ({
