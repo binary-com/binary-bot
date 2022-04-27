@@ -15,15 +15,23 @@ export const symbolPromise = new Promise(resolve => {
 
 export const ticksService = new TicksService(api);
 
-export const appendRow = (trade, state) => ({
+export const appendRow = (trade, state, isDesc=false) => ({
   id: state.id + 1,
-  rows: [
-    ...state.rows,
-    {
-      ...trade,
-      id: state.id + 1,
-    },
-  ],
+  rows: isDesc ?
+    [
+      {
+        ...trade,
+        id: state.id + 1,
+      },
+      ...state.rows,
+    ]
+    : [
+        ...state.rows,
+        {
+          ...trade,
+          id: state.id + 1,
+        },
+      ],
 });
 
 export const updateRow = (prevRowIndex, trade, state) => ({

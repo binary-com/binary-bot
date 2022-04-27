@@ -33,7 +33,7 @@ const LogTable = () => {
     const onGetNotification = log => {
         if (!log || !Object.keys(log).length) return;
 
-        const row = appendRow(log, { id, rows });
+        const row = appendRow(log, { id, rows }, true);
         setRows(row.rows);
         setId(row.id);
     };
