@@ -11,28 +11,29 @@ import { moveToDeriv } from '../common/utils/utility';
 import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
-import BotLanding from './react-components/BotLanding.jsx';
+import BotLanding from './react-components/bot-landing';
+
+const today = new Date().getTime();
+const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
+const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 
 const renderBanner = () => {
-    const today = new Date().getTime();
-    const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
-    const elements = document.querySelectorAll('#notification-banner,#main,#footer,#header,#topbar');
     ReactDOM.render(<BotLanding />, document.getElementById('bot-landing'));
     setStorage('setDueDateForBanner', expirationDate);
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'none';
+    for (const element of elements) {
+        document.querySelector(element).classList.add('hidden');
     }
-    document.getElementById('bot-landing').style.display = 'block';
-    document.getElementById('bot-main').style.display = 'block';
+    document.getElementById('bot-landing').classList.remove('hidden');
+    document.getElementById('bot-main').classList.remove('hidden');
+    $('.barspinner').hide();
 };
 
 const renderElements = () => {
+    $('.barspinner').show();
     const temp = getStorage('setDueDateForBanner');
     if (!temp) {
         renderBanner();
     } else {
-        const today = new Date().getTime();
-        const elements = document.querySelectorAll('#notification-banner,#main,#footer,#header,#topbar');
         if (today > getStorage('setDueDateForBanner')) {
             remove('setDueDateForBanner');
         }
@@ -40,15 +41,15 @@ const renderElements = () => {
         ReactDOM.render(<Footer />, document.getElementById('footer'));
         isEuCountry().then(isEu => showHideEuElements(isEu));
         showBanner();
-
         $('#shop-url').attr(
             'href',
             createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
         );
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].style.display = 'block';
+        for (const element of elements) {
+            document.querySelector(element).classList.remove('hidden');
         }
-        document.getElementById('bot-landing').style.display = 'none';
+        document.getElementById('bot-landing').classList.add('hidden');
+        $('.barspinner').hide();
     }
 };
 
@@ -59,7 +60,7 @@ const loginCheck = () => {
     if (temp) {
         if (getTokenList().length) {
             window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
-            document.getElementById('bot-main').style.display = 'block';
+            document.getElementById('bot-main').classList.remove('hidden');
         } else {
             loadLang();
             oauthLogin(() => {
@@ -70,7 +71,6 @@ const loginCheck = () => {
             });
         }
     } else {
-        $('.barspinner').hide();
         renderBanner();
     }
 };

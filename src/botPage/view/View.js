@@ -839,10 +839,12 @@ function renderErrorPage() {
 }
 
 function renderReactComponents() {
+    $('.barspinner').show();
     const temp = getStorage('setDueDateForBanner');
     if (!temp) {
         window.location.replace('/');
         document.getElementById('errorArea').remove();
+        $('.barspinner').hide();
     } else {
         ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
         ReactDOM.render(<Tour />, $('#tour')[0]);
@@ -861,6 +863,7 @@ function renderReactComponents() {
         document.getElementById('errorArea').remove();
         ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
         ReactDOM.render(<LogTable />, $('#logTable')[0]);
-        document.getElementById('bot-main').style.display = 'block';
+        document.getElementById('bot-main').classList.remove('hidden');
+        $('.barspinner').hide();
     }
 }

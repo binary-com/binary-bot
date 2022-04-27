@@ -2,32 +2,44 @@
 
 $font-IBM: 'IBM Plex Sans',
 sans-serif;
+$hero-BG : #08223d;
+$white :#fff;
+$header-color : #333333;
 
-.l-container {
-  padding: 0 2rem;
+//mixin setup
+@mixin for-size($size) {
+  @if $size==mobile {
+    @media (max-width: 1024px) {
+      @content;
+    }
+  }
 
-  @media (min-width: 1440px) {
-    max-width: 1400px;
+  @else if $size==desktop {
+    @media (max-width: 1080px) {
+      @content;
+    }
   }
 }
 
-.hero {
-  background-color: #08223d;
-  background-image: url(../image/BG-1.webp);
-  background-repeat: no-repeat;
-  background-size: cover;
+.section-container {
+  padding: 0 2rem;
+  margin: 0 auto;
+  max-width: 1400px;
+}
 
-  &-1 {
+.hero {
+  background: $hero-BG url(../image/BG-1.webp) no-repeat;
+  background-size: cover;
+  &-inner {
     display: flex;
     align-items: center;
-    margin: 0 auto;
     padding: calc(7rem + 5rem) 0px;
 
-    @media screen and (max-width: 1440px) {
+    @include for-size(desktop) {
       padding: calc(7rem + 5rem) 2rem;
     }
 
-    @media screen and (max-width: 991px) {
+    @include for-size(mobile) {
       flex-direction: column-reverse;
       padding: 4rem 2rem;
 
@@ -44,20 +56,20 @@ sans-serif;
         margin: 2rem 2rem 2rem 0;
         font: 700 5rem $font-IBM;
 
-        @media screen and (max-width: 991px) {
-          font: 700 3rem "IBM Plex Sans", sans-serif;
+        @include for-size(mobile) {
+          font: 700 3rem $font-IBM;
           margin: 0 0 2rem 0;
         }
       }
 
       h2 {
-        color: #fff;
+        color: $white;
         line-height: 40px;
         margin-bottom: 2rem;
         font: 400 2rem $font-IBM;
 
-        @media screen and (max-width: 991px) {
-          font: 400 1.5rem "IBM Plex Sans", sans-serif;
+        @include for-size(mobile) {
+          font: 400 1.5rem $font-IBM;
           margin: 0 0 2.5rem 0;
         }
       }
@@ -69,12 +81,12 @@ sans-serif;
       align-items: center;
       justify-content: center;
 
-      @media screen and (max-width: 991px) {
+      @include for-size(mobile) {
         flex-direction: column;
       }
 
       img {
-        @media screen and (max-width: 991px) {
+        @include for-size(mobile) {
           object-fit: contain;
           width: 100%;
         }
@@ -86,7 +98,7 @@ sans-serif;
       width: 14.75rem !important;
       margin-bottom: 3rem;
 
-      @media screen and (max-width: 991px) {
+      @include for-size(mobile) {
         display: block;
       }
     }
@@ -109,21 +121,21 @@ sans-serif;
 
   &.primary {
     background-color: #2E8836;
-    color: #fff;
+    color: $white;
 
     &:hover {
       background-color: #246d2a;
-      color: #fff;
+      color: $white;
     }
   }
 
   &.danger {
     background: #FF444F;
-    color: #fff;
+    color: $white;
 
     &:hover {
       background-color: #cd353e;
-      color: #fff;
+      color: $white;
     }
   }
 
@@ -138,34 +150,31 @@ sans-serif;
     margin-right: 1rem;
   }
 
-  @media screen and (max-width: 991px) {
+  @include for-size(mobile) {
     text-align: center;
     margin-bottom: 2.4rem;
   }
 }
 
 .switch {
-  background-image: url(../image/sectionTwoLandingBackground.png);
-  background-repeat: no-repeat;
+  background: url(../image/sectionTwoLandingBackground.png) no-repeat;
   background-size: cover;
-
   &-inner {
     display: flex;
     align-items: center;
-    margin: 0 auto;
     padding: 0 !important;
 
-    @media screen and (max-width: 1440px) {
+    @include for-size(desktop) {
       padding: 0 2rem !important;
     }
 
-    @media screen and (max-width: 991px) {
+    @include for-size(mobile) {
       flex-direction: column;
     }
 
     &__placeholder {
       img {
-        @media screen and (max-width: 991px) {
+        @include for-size(mobile) {
           object-fit: contain;
           width: 100%;
         }
@@ -177,9 +186,9 @@ sans-serif;
         margin-bottom: 1.5rem;
         font: 700 4rem $font-IBM;
         line-height: 4rem;
-        color: #333333;
+        color: $header-color;
 
-        @media screen and (max-width: 991px) {
+        @include for-size(mobile) {
           font: 700 1.5rem $font-IBM;
           text-align: center;
           padding: 0 2rem;
@@ -190,9 +199,9 @@ sans-serif;
         margin-bottom: 1.5rem;
         font: 400 2rem $font-IBM;
         line-height: 2rem;
-        color: #333333;
+        color: $header-color;
 
-        @media screen and (max-width: 991px) {
+        @include for-size(mobile) {
           font: 400 1.2rem $font-IBM;
           text-align: center;
           padding: 0 2rem;
@@ -210,7 +219,7 @@ sans-serif;
   margin: 0px auto;
   padding: 5rem 0;
 
-  @media screen and (max-width: 1024px) {
+  @include for-size(mobile) {
     display: flex !important;
     flex-direction: column-reverse;
     text-align: center;
@@ -221,9 +230,9 @@ sans-serif;
       font: 700 4rem $font-IBM;
       line-height: 5rem;
       margin-bottom: 2rem;
-      color: #333333;
+      color: $header-color;
 
-      @media screen and (max-width: 1024px) {
+      @include for-size(mobile) {
         font: 700 2rem $font-IBM;
       }
     }
@@ -232,9 +241,9 @@ sans-serif;
       font: 400 2rem $font-IBM;
       line-height: 2rem;
       margin-bottom: 2rem;
-      color: #333333;
+      color: $header-color;
 
-      @media screen and (max-width: 1024px) {
+      @include for-size(mobile) {
         font: 400 1rem $font-IBM;
       }
     }
@@ -246,14 +255,14 @@ sans-serif;
     justify-content: center;
     display: flex;
 
-    @media screen and (max-width: 1024px) {
+    @include for-size(mobile) {
       display: flex;
       /* align-items: center; */
       justify-content: center;
     }
 
     img {
-      @media screen and (max-width: 1024px) {
+      @include for-size(mobile) {
         object-fit: contain;
         width: 100%;
       }
@@ -262,29 +271,12 @@ sans-serif;
   }
 }
 
-.choose {
-
-  &-placeholder {
-    margin-right: 2rem;
-  }
-
+.choose-wrapper {
   &-inner {
-
-    &-right,
-    &-left {
-      width: 50%;
-
-      @media screen and (max-width: 1024px) {
-        width: 100%;
-      }
-
-    }
-
     padding: 3rem 0;
-    margin: 0 auto;
 
     &-title {
-      color: #333333;
+      color: $header-color;
       text-align: center;
       font: 700 2rem $font-IBM;
       line-height: 2rem;
@@ -293,81 +285,58 @@ sans-serif;
 
     &-section-content {
       display: flex;
-      color: #333333;
+      color: $header-color;
 
-      @media screen and (max-width: 1024px) {
+      @include for-size(mobile) {
         flex-direction: column;
         padding: 0 2rem;
       }
     }
 
-    &-left-content {
-      display: flex;
+    &-placeholder {
       margin-right: 2rem;
-      min-height: 11.25rem;
-
-      @media screen and (max-width: 1024px) {
-        min-height: unset;
-        margin-bottom: 1.3rem;
-      }
-
-      h1 {
-        margin-top: 0;
-        font: 700 1.6rem $font-IBM;
-        color: #333333;
-
-        @media screen and (max-width: 1024px) {
-          font: 700 1.3rem "IBM Plex Sans", sans-serif;
-          margin-bottom: 0;
-        }
-      }
-
-      h2 {
-        font: 400 1.2rem $font-IBM;
-        color: #333333;
-
-        @media screen and (max-width: 1024px) {
-          font: 400 1rem "IBM Plex Sans", sans-serif;
-          margin-bottom: 0;
-        }
-      }
-
     }
 
-    &-right-content {
-      display: flex;
-      min-height: 11.25rem;
+    &-right,
+    &-left {
+      width: 50%;
 
-      @media screen and (max-width: 1024px) {
-        min-height: unset;
-        margin-bottom: 1.3rem;
+      @include for-size(mobile) {
+        width: 100%;
       }
 
-      .mb0 {
-        margin-bottom: 0 !important;
-      }
+      &-content {
+        display: flex;
+        margin-right: 2rem;
+        min-height: 11.25rem;
 
-      h1 {
-        margin-top: 0;
-        font: 700 1.6rem $font-IBM;
-        color: #333333;
-
-        @media screen and (max-width: 1024px) {
-          font: 700 1.3rem "IBM Plex Sans", sans-serif;
-          margin-bottom: 0;
+        @include for-size(mobile) {
+          min-height: unset;
+          margin-bottom: 1.3rem;
         }
-      }
 
-      h2 {
-        font: 400 1.2rem $font-IBM;
-        color: #333333;
+        h1 {
+          margin-top: 0;
+          font: 700 1.6rem $font-IBM;
+          color: $header-color;
 
-        @media screen and (max-width: 1024px) {
-          font: 400 1rem "IBM Plex Sans", sans-serif;
-          margin-bottom: 0;
+          @include for-size(mobile) {
+            font: 700 1.3rem $font-IBM;
+            margin-bottom: 0;
+          }
         }
-      }
 
+        h2 {
+          font: 400 1.2rem $font-IBM;
+          color: $header-color;
+
+          @include for-size(mobile) {
+            font: 400 1rem $font-IBM;
+            margin-bottom: 0;
+          }
+        }
+
+      }
     }
   }
 }
@@ -383,7 +352,7 @@ sans-serif;
         transform: rotate(180deg);
         top: 56%;
 
-        @media screen and (max-width: 1024px) {
+        @include for-size(mobile) {
           top: 54%;
 
           .slick-next {
@@ -401,7 +370,7 @@ sans-serif;
   .slick-dots {
     bottom: 0;
 
-    @media screen and (max-width: 1024px) {
+    @include for-size(mobile) {
       left: 0;
     }
 
@@ -412,7 +381,7 @@ sans-serif;
     width: 100%;
     height: 20rem;
 
-    @media screen and (max-width: 1024px) {
+    @include for-size(mobile) {
       height: 15rem;
     }
 
@@ -433,7 +402,7 @@ sans-serif;
         top: 45px;
         height: 200px;
 
-        @media screen and (max-width: 1024px) {
+        @include for-size(mobile) {
           top: -10px;
           width: 72%;
         }
@@ -451,14 +420,12 @@ sans-serif;
 }
 
 .wait-wrapper {
-  background-image: url('../image/pattern.png');
-  background-repeat: no-repeat;
-  background-position: right;
+  background: url('../image/pattern.png') no-repeat right;
   background-size: 65% 100%;
   min-height: 18.75rem;
   position: relative;
 
-  @media screen and (max-width: 991px) {
+  @include for-size(mobile) {
     min-height: 43.75rem;
     background-image: none;
   }
@@ -469,49 +436,47 @@ sans-serif;
     justify-content: space-between;
     padding: 0;
 
-    @media screen and (max-width: 991px) {
+    @include for-size(mobile) {
       justify-content: center;
       text-align: center;
       flex-direction: column;
     }
-  }
 
-  .wait-content {
-    h1 {
-      font: 700 4rem $font-IBM;
-      color: #333333;
-      margin-bottom: 0.5rem;
+    &-content {
+      h1 {
+        font: 700 4rem $font-IBM;
+        color: $header-color;
+        margin-bottom: 0.5rem;
+      }
+
+      h2 {
+        margin-top: 0.5rem;
+        font: 400 1rem $font-IBM;
+        margin-bottom: 2rem;
+        color: $header-color;
+      }
     }
 
-    h2 {
-      margin-top: 0.5rem;
-      font: 400 1rem $font-IBM;
-      margin-bottom: 2rem;
-      color: #333333;
-    }
-  }
+    &-placeholder {
+      @include for-size(mobile) {
+        background: url('../image/pattern.png') no-repeat right;
+        background-size: 65% 100%;
+        min-height: 28.125rem;
+      }
 
-  .wait-placeholder {
-    @media screen and (max-width: 991px) {
-      background-image: url('../image/pattern.png');
-      background-repeat: no-repeat;
-      background-position: right;
-      background-size: 65% 100%;
-      min-height: 28.125rem;
-    }
+      img {
+        position: absolute;
+        right: 20%;
+        top: -100px;
+        height: 25rem;
 
-    img {
-      position: absolute;
-      right: 20%;
-      top: -100px;
-      height: 25rem;
-
-      @media screen and (max-width: 991px) {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: unset;
-        margin: 0 auto;
+        @include for-size(mobile) {
+          bottom: 0;
+          left: 0;
+          right: 0;
+          top: unset;
+          margin: 0 auto;
+        }
       }
     }
   }
@@ -519,87 +484,91 @@ sans-serif;
 
 .about-trade-wrapper {
   background-color: #F8FAFB;
-
-  @media screen and (max-width: 1440px) {
-    padding: 0 2rem;
-  }
-
-  padding: 3rem 0;
-
+  padding: 0;
   &-inner {
+    padding: 3rem 0;
 
-    @media screen and (max-width: 991px) {
-      padding: 3rem 0;
+    @include for-size(mobile) {
+      padding: 2rem;
     }
-    &-social-icons {
-      display: block;
-      @media screen and (max-width: 991px) {
-        display: none;
+
+    &-social-icons-wrapper {
+      display: flex;
+      justify-content: space-between;
+
+      @include for-size(mobile) {
+        text-align: center;
+        flex-direction: column;
       }
     }
-    &-social-icons-mobile{
+
+
+    img {
+      margin-right: 1rem;
+    }
+
+    .social-media-icons-footer img {
+      margin-right: 1rem;
+
+      @include for-size(mobile) {
+        margin-top: 1rem
+      }
+    }
+
+    &-social-icons-mobile {
       display: none;
-      @media screen and (max-width: 991px) {
+
+      @include for-size(mobile) {
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 1.4rem 0;
-        img{
-        margin-right: 1rem;
+
+        img {
+          margin-right: 1rem;
         }
       }
-    }
-    &-social-icons-wrapper {
-      display: flex;
-      justify-content: space-between;
-      @media screen and (max-width: 991px) {
-        text-align: center;
-        flex-direction: column;
-      }
 
-      img {
-        margin-right: 1rem;
-      }
-
-      .social-media-icons-footer img {
-        margin-right: 1rem;
-
-        @media screen and (max-width: 991px) {
-          margin-top: 1rem
-        }
-      }
     }
 
-    &-deriv-icons {
-      text-align: left;
-      padding-bottom: 2.4rem;
-      @media screen and (max-width: 991px) {
+  }
+
+
+
+  &-deriv-icons {
+    text-align: left;
+    padding-bottom: 2.4rem;
+
+    @include for-size(mobile) {
       box-shadow: inset 0px -2px 0px rgba(51, 51, 51, 0.08);
-      }
+    }
+  }
+
+  &-social-icons {
+    display: block;
+
+    @include for-size(mobile) {
+      display: none;
     }
 
-    @media screen and (max-width: 991px) {
+    @include for-size(mobile) {
       text-align: left;
     }
+  }
 
-    margin: 0 auto;
-    padding: 0;
+  &-location-info {
+    font: 400 1rem $font-IBM;
+  }
 
-    .location-info {
-      font: 400 1rem $font-IBM;
+  &-trade-info {
+    padding: 1rem;
+    background: rgba(87, 122, 146, 0.04);
+    font: 400 1rem $font-IBM;
+    box-shadow: inset 4px 0px 0px rgba(255, 68, 79, 0.64);
+
+    @include for-size(mobile) {
+      box-shadow: inset 0px 4px 0px rgba(255, 68, 79, 0.64);
     }
-
-    .trade-info {
-      padding: 1rem;
-      background: rgba(87, 122, 146, 0.04);
-      font: 400 1rem $font-IBM;
-      box-shadow: inset 4px 0px 0px rgba(255, 68, 79, 0.64);
-
-      @media screen and (max-width: 991px) {
-        box-shadow: inset 0px 4px 0px rgba(255, 68, 79, 0.64);
-      }
-    }
-
   }
 }
 
@@ -634,4 +603,8 @@ sans-serif;
       }
     }
   }
+}
+
+.hidden{
+  display: none !important;
 }

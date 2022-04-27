@@ -1,24 +1,24 @@
 import React from 'react';
 import Slider from 'react-slick';
-import { translate } from '../../common/i18n';
+import { translate } from '../../../common/i18n';
 
 const carouselContentArray = [
     {
-        title      : 'Where to find Binary Bot on Deriv',
-        content    : 'On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.',
-        action_text: 'Try Binary Bot on Deriv',
+        title      : translate('Where to find Binary Bot on Deriv'),
+        content    : translate('On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.'),
+        action_text: translate('Try Binary Bot on Deriv'),
         img        : 'image/1a.webm',
     },
     {
-        title      : 'Bring your bots across seamlessly',
-        content    : 'Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.',
-        action_text: 'Try Binary Bot on Deriv',
+        title      : translate('Bring your bots across seamlessly'),
+        content    : translate('Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.'),
+        action_text: translate('Try Binary Bot on Deriv'),
         img        : 'image/2a.webm',
     },
     {
-        title      : 'Where to find Binary Bot on Deriv',
-        content    : 'On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.',
-        action_text: 'Try Binary Bot on Deriv',
+        title      : translate('Where to find Binary Bot on Deriv'),
+        content    : translate('On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.'),
+        action_text: translate('Try Binary Bot on Deriv'),
         img        : 'image/3a.webm',
     },
 ]
@@ -28,7 +28,7 @@ const Carousel = () => {
     const settings = {
         dots          : false,
         infinite      : true,
-        speed         : 500,
+        speed         : 1000,
         slidesToShow  : 1,
         slidesToScroll: 1,
         arrows        : true,
@@ -55,7 +55,7 @@ const Carousel = () => {
     };
 
     return (
-        <div className="carousel-wrapper l-container">
+        <div className="carousel-wrapper section-container">
             <Slider {...settings}>
                 {carouselContentArray.map((slide, index) => {
                     const { title, content, action_text, img } = slide;
@@ -63,13 +63,13 @@ const Carousel = () => {
                         <section className='landing_carousel' key={index}>
                             <div className='landing_carousel_content'>
                                 <h1>
-                                    {translate(title)}
+                                    {title}
                                 </h1>
                                 <h2>
-                                    {translate(content)}
+                                    {content}
                                 </h2>
                                 <a href="https://bot.deriv.com" target="_blank">
-                                    <button className="l-btn danger">{translate(action_text)}</button>
+                                    <button className="l-btn danger">{action_text}</button>
                                 </a>
                             </div>
                             <div className='landing_carousel_placeholder'>
