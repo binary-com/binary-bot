@@ -20,8 +20,8 @@ const elements = ['#notification-banner', '#main', '#footer', '#header', '#topba
 const renderBanner = () => {
     ReactDOM.render(<BotLanding />, document.getElementById('bot-landing'));
     setStorage('setDueDateForBanner', expirationDate);
-    for (const element of elements) {
-        document.querySelector(element).classList.add('hidden');
+    for (let i = 0; i < elements.length; i++) {
+        document.querySelector(elements[i]).classList.add('hidden');
     }
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
@@ -45,8 +45,8 @@ const renderElements = () => {
             'href',
             createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
         );
-        for (const element of elements) {
-            document.querySelector(element).classList.remove('hidden');
+        for (let i = 0; i < elements.length; i++) {
+            document.querySelector(elements[i]).classList.add('hidden');
         }
         document.getElementById('bot-landing').classList.add('hidden');
         $('.barspinner').hide();
