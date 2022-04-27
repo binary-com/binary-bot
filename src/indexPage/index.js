@@ -46,9 +46,10 @@ const renderElements = () => {
             createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
         );
         for (let i = 0; i < elements.length; i++) {
-            document.querySelector(elements[i]).classList.add('hidden');
+            document.querySelector(elements[i]).classList.remove('hidden');
         }
         document.getElementById('bot-landing').classList.add('hidden');
+        document.getElementById('bot-main').classList.remove('hidden');
         $('.barspinner').hide();
     }
 };
