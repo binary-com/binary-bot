@@ -38,6 +38,8 @@ const renderElements = () => {
     } else {
         if (today > getStorage('setDueDateForBanner')) {
             remove('setDueDateForBanner');
+            renderBanner();
+            return false;
         }
         ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
         ReactDOM.render(<Footer />, document.getElementById('footer'));
