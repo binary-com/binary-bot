@@ -14,7 +14,9 @@ import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
 
 const today = new Date().getTime();
-const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
+// const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
+const expirationDate = today + 5 * 60000;
+
 const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 
 const renderBanner = () => {

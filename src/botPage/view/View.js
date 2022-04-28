@@ -842,7 +842,8 @@ function renderReactComponents() {
     $('.barspinner').show();
     const temp = getStorage('setDueDateForBanner');
     if (!temp) {
-        window.location.replace('/');
+        const getDefaultPath = window.location.href.replace('/bot.html', '');
+        window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();
         $('.barspinner').hide();
     } else {
