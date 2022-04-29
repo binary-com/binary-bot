@@ -45,6 +45,7 @@ export const translate = (input, params = []) => {
         let translatedString = i18nTranslate(stringToBeTranslated);
         params.forEach((replacement, index) => {
             if (translatedString && typeof translatedString === 'string') {
+                /* eslint-disable-next-line no-useless-escape */
                 translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
             }
         });

@@ -32,7 +32,8 @@ const loginCheck = () => {
             $('.show-on-load').show();
             $('.barspinner').hide();
             renderElements();
-            GTM.init();
+            /* eslint-disable-next-line no-unused-expressions */
+            GTM?.init?.();
         });
     }
 };

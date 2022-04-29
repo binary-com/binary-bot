@@ -31,7 +31,9 @@ view.initPromise.then(() => {
     $('.barspinner').hide();
     window.dispatchEvent(new Event('resize'));
     Elevio.init();
-    GTM.init();
+
+    /* eslint-disable-next-line no-unused-expressions */
+    GTM?.init?.();
     trackJs.configure({
         userId: $('.account-id')
             .first()

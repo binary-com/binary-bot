@@ -353,7 +353,8 @@ export default class _Blockly {
                         event.ids.forEach(id => {
                             const block = workspace.getBlockById(id);
                             if (block) {
-                                GTM.pushDataLayer({
+                                /* eslint-disable-next-line no-unused-expressions */
+                                GTM?.pushDataLayer?.({
                                     event     : 'Block Event',
                                     blockEvent: event.type,
                                     blockType : block.type,
@@ -364,7 +365,8 @@ export default class _Blockly {
                         const dom = Blockly.Xml.textToDom(`<xml>${event.oldXml.outerHTML}</xml>`);
                         const blockNodes = dom.getElementsByTagName('block');
                         Array.from(blockNodes).forEach(blockNode => {
-                            GTM.pushDataLayer({
+                            /* eslint-disable-next-line no-unused-expressions */
+                            GTM?.pushDataLayer?.({
                                 event     : 'Block Event',
                                 blockEvent: event.type,
                                 blockType : blockNode.getAttribute('type'),
