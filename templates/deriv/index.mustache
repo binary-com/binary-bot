@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
-
     <head>
-
         <link rel="apple-touch-icon" sizes="57x57" href="{{> binary_style_img }}/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="114x114" href="{{> binary_style_img }}/favicons/apple-touch-icon-114x114.png">
         <link rel="apple-touch-icon" sizes="72x72" href="{{> binary_style_img }}/favicons/apple-touch-icon-72x72.png">
@@ -56,11 +54,27 @@
                 accept=".xml" multiple />
         </form>
 
-        <audio id="announcement" src="sound/announcement.ogg" autostart="false"></audio>
-        <audio id="earned-money" src="sound/coins.ogg" autostart="false"></audio>
-        <audio id="job-done" src="sound/job-done.ogg" autostart="false"></audio>
-        <audio id="error" src="sound/out-of-bounds.ogg" autostart="false"></audio>
-        <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false"></audio>
+        <!-- TODO move to separate component after routes refacotr -->
+        <audio id="announcement" autostart="false" preload="auto">
+            <source src="sound/announcement.ogg" type="audio/ogg" />
+            <source src="sound/announcement.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="earned-money" autostart="false" preload="auto">
+            <source src="sound/coins.ogg" type="audio/ogg" />
+            <source src="sound/coins.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="job-done" autostart="false" preload="auto">
+            <source src="sound/job-done.ogg" type="audio/ogg" />
+            <source src="sound/job-done.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="error" autostart="false" preload="auto">
+            <source src="sound/out-of-bounds.ogg" type="audio/ogg" />
+            <source src="sound/out-of-bounds.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="severe-error" autostart="false" preload="auto">
+            <source src="sound/i-am-being-serious.ogg" type="audio/ogg" />
+            <source src="sound/i-am-being-serious.mp3" type="audio/mp3" />
+        </audio>
 
         {{> bundle}} {{> bot}}
         {{> gtm_iframe }}
@@ -72,4 +86,5 @@
             document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
         </script>
     </body>
+
 </html>
