@@ -16,15 +16,15 @@ import BotLanding from './react-components/bot-landing';
 const today = new Date().getTime();
 // const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
 const expirationDate = today + 5 * 60000;
-
 const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
-
+const temp = getStorage('setDueDateForBanner');
 const renderBanner = () => {
     ReactDOM.render(<BotLanding />, document.getElementById('bot-landing'));
     setStorage('setDueDateForBanner', expirationDate);
     for (let i = 0; i < elements.length; i++) {
         document.querySelector(elements[i]).classList.add('hidden');
     }
+    isEuCountry().then(isEu => showHideEuElements(isEu));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
     $('.barspinner').hide();
@@ -32,14 +32,12 @@ const renderBanner = () => {
 
 const renderElements = () => {
     $('.barspinner').show();
-    const temp = getStorage('setDueDateForBanner');
+
     if (!temp) {
         renderBanner();
     } else {
-        if (today > getStorage('setDueDateForBanner')) {
+        if (today > temp) {
             remove('setDueDateForBanner');
-            renderBanner();
-            return false;
         }
         ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
         ReactDOM.render(<Footer />, document.getElementById('footer'));
@@ -61,7 +59,6 @@ const renderElements = () => {
 const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
-    const temp = getStorage('setDueDateForBanner');
     if (temp) {
         if (getTokenList().length) {
             window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;

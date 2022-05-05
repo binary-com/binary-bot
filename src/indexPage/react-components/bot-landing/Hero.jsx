@@ -12,7 +12,7 @@ const Hero = () => (
                 </h2>
                 <div className="btn-group">
                     <a href="https://bot.deriv.com" target="_blank">
-                        <button className="l-btn primary">{translate('Take me to deriv')}</button>
+                        <button className="l-btn primary">{translate('Take me to Deriv')}</button>
                     </a>
                     <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
                         <button className="l-btn">{translate('Maybe later')}</button>

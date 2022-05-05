@@ -39,6 +39,7 @@ import {
     get as getStorage,
     set as setStorage,
     getToken,
+    remove,
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
@@ -841,7 +842,10 @@ function renderErrorPage() {
 function renderReactComponents() {
     $('.barspinner').show();
     const temp = getStorage('setDueDateForBanner');
-    if (!temp) {
+    if (new Date().getTime() > temp) {
+        remove('setDueDateForBanner');
+    }
+    if (temp === null || temp === undefined) {
         const getDefaultPath = window.location.href.replace('/bot.html', '');
         window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();

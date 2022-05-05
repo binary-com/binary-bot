@@ -10,14 +10,14 @@ const carouselContentArray = [
         img        : 'image/1a.webm',
     },
     {
-        title      : translate('Bring your bots across seamlessly'),
-        content    : translate('Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.'),
+        title      : translate('It’s the same Binary Bot you know and love'),
+        content    : translate('Everything is exactly the way you like it.'),
         action_text: translate('Try Binary Bot on Deriv'),
         img        : 'image/2a.webm',
     },
     {
-        title      : translate('Where to find Binary Bot on Deriv'),
-        content    : translate('On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.'),
+        title      : translate('Bring your bots across seamlessly'),
+        content    : translate('Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.'),
         action_text: translate('Try Binary Bot on Deriv'),
         img        : 'image/3a.webm',
     },

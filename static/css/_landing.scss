@@ -103,9 +103,6 @@ $header-color : #333333;
       }
     }
   }
-
-
-
 }
 
 .l-btn {
@@ -118,7 +115,7 @@ $header-color : #333333;
   border: none;
   padding: 0 1rem;
   cursor: pointer;
-
+  text-transform: none;
   &.primary {
     background-color: #2E8836;
     color: $white;
@@ -162,13 +159,14 @@ $header-color : #333333;
   &-inner {
     display: flex;
     align-items: center;
-    padding: 0 !important;
+    
 
     @include for-size(desktop) {
-      padding: 0 2rem !important;
+      padding: 0 2rem;
     }
 
     @include for-size(mobile) {
+      padding: 0;
       flex-direction: column;
     }
 
@@ -184,7 +182,7 @@ $header-color : #333333;
     &__content {
       h1 {
         margin-bottom: 1.5rem;
-        font: 700 4rem $font-IBM;
+        font: 700 3rem $font-IBM;
         line-height: 4rem;
         color: $header-color;
 
@@ -198,7 +196,7 @@ $header-color : #333333;
       h2 {
         margin-bottom: 1.5rem;
         font: 400 2rem $font-IBM;
-        line-height: 2rem;
+        line-height: 3rem;
         color: $header-color;
 
         @include for-size(mobile) {
@@ -207,8 +205,19 @@ $header-color : #333333;
           padding: 0 2rem;
         }
       }
+      .l-btn.transparent {
+        background-color: transparent;
+        border: solid 2px #999999;
+        text-transform: none;
+        &:hover {
+          background-color: #C2C2C2;
+        }
+      }
     }
   }
+
+   
+  
 }
 
 .landing_carousel {
@@ -227,8 +236,8 @@ $header-color : #333333;
 
   &_content {
     h1 {
-      font: 700 4rem $font-IBM;
-      line-height: 5rem;
+      font: 700 3rem $font-IBM;
+      line-height: 4rem;
       margin-bottom: 2rem;
       color: $header-color;
 
@@ -239,7 +248,7 @@ $header-color : #333333;
 
     h2 {
       font: 400 2rem $font-IBM;
-      line-height: 2rem;
+      line-height: 3rem;
       margin-bottom: 2rem;
       color: $header-color;
 
@@ -272,6 +281,7 @@ $header-color : #333333;
 }
 
 .choose-wrapper {
+      background: #F2F3F4;
   &-inner {
     padding: 3rem 0;
 
@@ -309,7 +319,7 @@ $header-color : #333333;
         display: flex;
         margin-right: 2rem;
         min-height: 11.25rem;
-
+        margin-bottom: 1rem;
         @include for-size(mobile) {
           min-height: unset;
           margin-bottom: 1.3rem;
@@ -319,7 +329,7 @@ $header-color : #333333;
           margin-top: 0;
           font: 700 1.6rem $font-IBM;
           color: $header-color;
-
+          line-height: 2.25rem;
           @include for-size(mobile) {
             font: 700 1.3rem $font-IBM;
             margin-bottom: 0;
@@ -444,7 +454,7 @@ $header-color : #333333;
 
     &-content {
       h1 {
-        font: 700 4rem $font-IBM;
+        font: 700 3rem $font-IBM;
         color: $header-color;
         margin-bottom: 0.5rem;
       }
@@ -465,10 +475,9 @@ $header-color : #333333;
       }
 
       img {
-        position: absolute;
-        right: 20%;
-        top: -100px;
-        height: 25rem;
+          position: absolute;
+          right: 20%;
+          bottom: 0;
 
         @include for-size(mobile) {
           bottom: 0;

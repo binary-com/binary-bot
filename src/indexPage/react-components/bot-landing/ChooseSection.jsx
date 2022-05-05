@@ -41,8 +41,7 @@ const ChooseSection = () => (
                             <img src="image/fiat-on-ramp.svg" />
                         </div>
                         <div className='choose-wrapper-inner-description'>
-                            <h1 className='mb0'>{translate('Cryptocurrency deposits via')}</h1>
-                            <h1>{translate('fiat on-ramp')}</h1>
+                            <h1 className='mb0'>{translate('Cryptocurrency deposits via fiat on-ramp')}</h1>
                             <h2>{translate('Make crypto deposits easily via exchange services such as Changelly, Banxa, and XanPool.')}</h2>
                         </div>
                     </div>

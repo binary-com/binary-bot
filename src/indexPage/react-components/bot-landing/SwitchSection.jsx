@@ -18,7 +18,7 @@ const SwitchSection = () => (
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
                     <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
-                        <button className="l-btn">{translate('Maybe later')}</button>
+                        <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
                 </div>
             </div>

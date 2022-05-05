@@ -12,8 +12,8 @@ const BotLanding = () => (
         <Hero />
         <SwitchSection />
         <Carousel />
-        <WaitSection />
         <ChooseSection />
+        <WaitSection />
         <Footer />
     </div>
 );
