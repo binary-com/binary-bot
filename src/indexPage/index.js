@@ -24,7 +24,6 @@ const renderBanner = () => {
     for (let i = 0; i < elements.length; i++) {
         document.querySelector(elements[i]).classList.add('hidden');
     }
-    isEuCountry().then(isEu => showHideEuElements(isEu));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
     $('.barspinner').hide();
