@@ -1,9 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const production = process.env.NODE_ENV === 'production';
 
 const plugins = [
+    new Dotenv(),
     new webpack.ProvidePlugin({
         $              : 'jquery',
         jQuery         : 'jquery',

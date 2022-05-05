@@ -49,6 +49,9 @@ body {
     margin-right: 3em;
     margin-top: 0.2em;
 }
+.blocklyWidgetDiv {
+    z-index: 100;
+}
 
 #blocklyDiv {
     position: absolute;
@@ -226,5 +229,5 @@ label {
 }
 
 .notifyjs-corner {
-    z-index: 10001 !important;
+    z-index: 998 !important;
 }

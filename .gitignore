@@ -11,3 +11,4 @@ www
 lib/
 old/
 CNAME
+*.env

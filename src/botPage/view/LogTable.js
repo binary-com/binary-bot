@@ -53,7 +53,7 @@ export default class LogTable extends Component {
                 if (!Object.keys(log).length) {
                     return;
                 }
-                this.setState(appendRow(log, this.state));
+                this.setState(appendRow(log, this.state, true));
             }
         });
     }

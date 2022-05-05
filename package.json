@@ -55,6 +55,7 @@
     "coveralls": "^3.0.3",
     "deep-diff": "^1.0.2",
     "del": "^4.1.1",
+    "dotenv-webpack": "^7.0.3",
     "es6-plato": "^1.2.2",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
@@ -104,7 +105,7 @@
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {
-    "@deriv/deriv-charts": "0.3.16",
+    "@deriv/deriv-charts": "0.3.43",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
     "commander": "^2.20.0",
