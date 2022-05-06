@@ -458,14 +458,14 @@ export default class _Blockly {
     }
     /* eslint-disable class-methods-use-this */
     save(arg) {
-        const { filename, collection } = arg;
+        const { fileName, collection } = arg;
 
         saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
 
-        save(filename, collection, xml);
+        save(fileName, collection, xml);
     }
     run(limitations = {}) {
         disableStrayBlocks();
