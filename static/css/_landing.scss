@@ -306,13 +306,14 @@ $header-color : #333333;
     &-placeholder {
       margin-right: 2rem;
     }
-
+   
     &-right,
     &-left {
       width: 50%;
-
+      padding: 0 5rem;
       @include for-size(mobile) {
         width: 100%;
+        padding: unset;
       }
 
       &-content {
@@ -347,6 +348,13 @@ $header-color : #333333;
         }
 
       }
+    }
+    &-right {
+      padding-left: 0;
+    }
+    
+    &-left {
+      padding-right: 0;
     }
   }
 }

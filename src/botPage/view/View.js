@@ -846,7 +846,8 @@ function renderReactComponents() {
         remove('setDueDateForBanner');
     }
     if (temp === null || temp === undefined) {
-        const getDefaultPath = window.location.href.replace('/bot.html', '');
+        const getqueryParameter = document.location.search;
+        const getDefaultPath = window.location.href.replace('/bot.html?', getqueryParameter);
         window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();
         $('.barspinner').hide();

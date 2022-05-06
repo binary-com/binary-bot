@@ -58,12 +58,12 @@ const renderElements = () => {
 const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
+    loadLang();
     if (temp) {
         if (getTokenList().length) {
             window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
             document.getElementById('bot-main').classList.remove('hidden');
         } else {
-            loadLang();
             oauthLogin(() => {
                 $('.show-on-load').show();
                 $('.barspinner').hide();

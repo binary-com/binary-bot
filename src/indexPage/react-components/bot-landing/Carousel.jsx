@@ -62,12 +62,8 @@ const Carousel = () => {
                     return (
                         <section className='landing_carousel' key={index}>
                             <div className='landing_carousel_content'>
-                                <h1>
-                                    {title}
-                                </h1>
-                                <h2>
-                                    {content}
-                                </h2>
+                                <h1>{title}</h1>
+                                <h2>{content}</h2>
                                 <a href="https://bot.deriv.com" target="_blank">
                                     <button className="l-btn danger">{action_text}</button>
                                 </a>
