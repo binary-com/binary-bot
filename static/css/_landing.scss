@@ -310,7 +310,7 @@ $header-color : #333333;
     &-right,
     &-left {
       width: 50%;
-      padding: 0 5rem;
+      padding: 0 10rem;
       @include for-size(mobile) {
         width: 100%;
         padding: unset;
@@ -330,7 +330,6 @@ $header-color : #333333;
           margin-top: 0;
           font: 700 1.6rem $font-IBM;
           color: $header-color;
-          line-height: 2.25rem;
           @include for-size(mobile) {
             font: 700 1.3rem $font-IBM;
             margin-bottom: 0;

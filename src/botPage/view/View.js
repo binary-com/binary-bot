@@ -844,6 +844,9 @@ function renderReactComponents() {
     const temp = getStorage('setDueDateForBanner');
     if (new Date().getTime() > temp) {
         remove('setDueDateForBanner');
+        const getqueryParameter = document.location.search;
+        const getDefaultPath = window.location.href.replace('/bot.html?', getqueryParameter);
+        window.location.replace(getDefaultPath);
     }
     if (temp === null || temp === undefined) {
         const getqueryParameter = document.location.search;

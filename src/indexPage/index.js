@@ -14,8 +14,8 @@ import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
 
 const today = new Date().getTime();
-// const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
-const expirationDate = today + 5 * 60000;
+const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
+
 const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 const temp = getStorage('setDueDateForBanner');
 const renderBanner = () => {
@@ -37,6 +37,8 @@ const renderElements = () => {
     } else {
         if (today > temp) {
             remove('setDueDateForBanner');
+            renderBanner();
+            return;
         }
         ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
         ReactDOM.render(<Footer />, document.getElementById('footer'));
