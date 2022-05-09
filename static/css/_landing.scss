@@ -30,6 +30,10 @@ $header-color : #333333;
 .hero {
   background: $hero-BG url(../image/BG-1.webp) no-repeat;
   background-size: cover;
+  @include for-size(mobile) {
+      background: $hero-BG url(../image/MBG1.png) no-repeat;
+      background-size: cover;
+  }
   &-inner {
     display: flex;
     align-items: center;
@@ -242,7 +246,8 @@ $header-color : #333333;
       color: $header-color;
 
       @include for-size(mobile) {
-        font: 700 2rem $font-IBM;
+        font: 700 1.5rem $font-IBM;
+        margin-bottom: 1rem;
       }
     }
 
@@ -254,6 +259,7 @@ $header-color : #333333;
 
       @include for-size(mobile) {
         font: 400 1rem $font-IBM;
+        margin-bottom: 1rem;
       }
     }
   }
@@ -363,7 +369,9 @@ $header-color : #333333;
 
   .slick-slider {
     padding: 0 2rem;
-
+    @include for-size(mobile) {
+      padding: 0 3rem;
+    }
     .slick-arrow {
       &.slick-next {
         transform: rotate(180deg);

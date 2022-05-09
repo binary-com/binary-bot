@@ -845,12 +845,13 @@ function renderReactComponents() {
     if (new Date().getTime() > temp) {
         remove('setDueDateForBanner');
         const getqueryParameter = document.location.search;
-        const getDefaultPath = window.location.href.replace('/bot.html?', getqueryParameter);
+        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
         window.location.replace(getDefaultPath);
+        return false;
     }
     if (temp === null || temp === undefined) {
         const getqueryParameter = document.location.search;
-        const getDefaultPath = window.location.href.replace('/bot.html?', getqueryParameter);
+        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
         window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();
         $('.barspinner').hide();
