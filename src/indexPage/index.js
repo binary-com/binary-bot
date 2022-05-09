@@ -38,7 +38,7 @@ const renderElements = () => {
         if (today > temp) {
             remove('setDueDateForBanner');
             renderBanner();
-            return;
+            return false;
         }
         ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
         ReactDOM.render(<Footer />, document.getElementById('footer'));
