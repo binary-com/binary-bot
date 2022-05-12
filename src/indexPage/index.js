@@ -8,9 +8,11 @@ import { isEuCountry, showHideEuElements } from '../common/footer-checks';
 import GTM from '../common/gtm';
 import { load as loadLang, showBanner } from '../common/lang';
 import { moveToDeriv } from '../common/utils/utility';
-import { getTokenList } from '../common/utils/storageManager';
+import { getTokenList, set as setStorage, get as getStorage } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
+
+const movetoderiv = getStorage('movetoDeriv');
 
 const renderElements = () => {
     ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
@@ -18,13 +20,23 @@ const renderElements = () => {
     isEuCountry().then(isEu => showHideEuElements(isEu));
     showBanner();
 
-    $('#shop-url').attr('href', createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true }));
+    $('#shop-url').attr(
+        'href',
+        createUrl({
+            subdomain   : 'shop',
+            path        : 'collections/strategies',
+            isNonBotPage: true,
+        })
+    );
 };
 
 const loginCheck = () => {
+    setStorage('movetoDeriv', 'move');
     if (endpoint()) return;
     moveToDeriv();
-    if (getTokenList().length) {
+    if (!movetoderiv) {
+        window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/movetoderiv.html`;
+    } else if (getTokenList().length) {
         window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
     } else {
         loadLang();

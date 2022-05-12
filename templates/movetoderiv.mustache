@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+{{> ../templates/partials/security }}
+
+{{> ../templates/partials/head }}
+	<title>Welcome to the Binary Bot</title>
+{{> index_css }}
+{{> bot_css }}
+<link rel="stylesheet" href="css/binary.css">
+<link rel="stylesheet" type="text/css" charset="UTF-8"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridle@2.0.48/css/grid-flex.css" integrity="sha256-J4p1c+K4tD3rnyfA0ztZpoQR0+mBhDTZ/J+YNOalc0k=" crossorigin="anonymous">
+</head>
+
+<body>
+	{{> ../templates/partials/loading }}
+    <div id="movetoderiv"></div>
+    {{> index}}
+    {{> gtm_iframe }}
+   </div>
+</body>
+</html>
