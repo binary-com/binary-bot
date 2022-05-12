@@ -81,7 +81,7 @@ export const remove = varName => delete store[varName];
 
 export const syncWithDerivApp = () => {
   const iframe = document.getElementById("localstorage-sync");
-  const origin = getRelatedDeriveOrigin();
+  const {origin} = getRelatedDeriveOrigin();
   
   const postMessages = () => {
     iframe.contentWindow.postMessage(
