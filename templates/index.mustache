@@ -6,12 +6,19 @@
 {{> ../templates/partials/head }}
 	<title>Welcome to the Binary Bot</title>
 {{> index_css }}
+{{> bot_css }}
 <link rel="stylesheet" href="css/binary.css">
+<link rel="stylesheet" type="text/css" charset="UTF-8"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridle@2.0.48/css/grid-flex.css" integrity="sha256-J4p1c+K4tD3rnyfA0ztZpoQR0+mBhDTZ/J+YNOalc0k=" crossorigin="anonymous">
 </head>
 
 <body>
+    <div id="bot-main" class="hidden" style="width: 100%; position: relative; height: 100%;">
 	{{> ../templates/partials/loading }}
+    <div id="movetoderiv"></div>
 	<div id="topbar">
     <div class="wrapper show-on-load">
 		  {{> ../templates/partials/language }}
@@ -37,7 +44,7 @@
                 </div>
                 <div class="half-width index-text">
                     <p data-i18n-text="Interested in automating your preferred strategies for trading binary options?"></p>
-    				<p data-i18n-text="Binary Bot is our leading-edge programming tool which allows you to build trading apps with a simple “jigsaw puzzle-like” drag-and-drop function."></p>
+    				<p data-i18n-text="Binary Bot is our leading-edge programming tool which allows you to build trading apps with a simple "jigsaw puzzle-like" drag-and-drop function."></p>
                     <p data-i18n-text="Dream up any number of binary options trading bots, from incredibly simple formulas to vastly complex algorithms. Then let them trade for you, even while you sleep."></p>
                 </div>
                 <div class="half-width bottom-image puzzle-logo">
@@ -54,5 +61,6 @@
     <div id="footer"></div>
     {{> index}}
     {{> gtm_iframe }}
+   </div>
 </body>
 </html>
