@@ -842,17 +842,40 @@ function renderErrorPage() {
 }
 
 function renderReactComponents() {
-    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
-    ReactDOM.render(<Tour />, $('#tour')[0]);
-    ReactDOM.render(
-        <OfficialVersionWarning
-            show={
-                !(typeof window.location !== 'undefined' && isProduction() && window.location.pathname === '/bot.html')
-            }
-        />,
-        $('#footer')[0]
-    );
-    document.getElementById('errorArea').remove();
-    ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
-    ReactDOM.render(<LogTable />, $('#logTable')[0]);
+    $('.barspinner').show();
+    const temp = getStorage('movetoderiv');
+    if (new Date().getTime() > temp) {
+        remove('movetoderiv');
+        const getqueryParameter = document.location.search;
+        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+        window.location.replace(getDefaultPath);
+        return false;
+    }
+    if (temp === null || temp === undefined) {
+        const getqueryParameter = document.location.search;
+        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+        window.location.replace(getDefaultPath);
+        document.getElementById('errorArea').remove();
+        $('.barspinner').hide();
+    } else {
+        ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
+        ReactDOM.render(<Tour />, $('#tour')[0]);
+        ReactDOM.render(
+            <OfficialVersionWarning
+                show={
+                    !(
+                        typeof window.location !== 'undefined' &&
+                        isProduction() &&
+                        window.location.pathname === '/bot.html'
+                    )
+                }
+            />,
+            $('#footer')[0]
+        );
+        document.getElementById('errorArea').remove();
+        ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
+        ReactDOM.render(<LogTable />, $('#logTable')[0]);
+        document.getElementById('bot-main').classList.remove('hidden');
+        $('.barspinner').hide();
+    }
 }
