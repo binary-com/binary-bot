@@ -58,11 +58,13 @@ export default Engine =>
             );
         }
         getLastDigit() {
-            return new Promise(resolve => this.getLastTick().then(tick => resolve(getLastDigit(tick))));
+            return new Promise(resolve => {
+                this.getLastTick().then(tick => resolve(getLastDigit(tick.toFixed(this.getPipSize()))));
+            });
         }
         getLastDigitList() {
             return new Promise(resolve =>
-                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick))))
+                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick.toFixed(this.getPipSize())))))
             );
         }
         checkDirection(dir) {
