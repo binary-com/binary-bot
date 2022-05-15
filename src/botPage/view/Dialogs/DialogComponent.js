@@ -8,9 +8,9 @@ const createDialog = (el, title, { height = 150, width = 300, resize, resizable 
         height,
         width,
         title,
-        autoOpen : false,
+        autoOpen: false,
         closeText: '',
-        classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+        classes: { 'ui-dialog-titlebar-close': 'icon-close' },
         resize,
     });
 };
@@ -24,9 +24,10 @@ export default class PanelComponent extends PureComponent {
             </div>
         );
     }
+
     static props = {
-        id     : PropTypes.string,
-        title  : PropTypes.string,
+        id: PropTypes.string,
+        title: PropTypes.string,
         content: PropTypes.object,
         options: PropTypes.object,
     };

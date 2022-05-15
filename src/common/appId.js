@@ -6,7 +6,7 @@ import {
   set as setStorage,
   syncWithDerivApp,
 } from "../common/utils/storageManager";
-import { parseQueryString } from "../common/utils/tools";
+import { parseQueryString } from './utils/tools';
 import { getLanguage } from "./lang";
 import AppIdMap from "./appIdResolver";
 import GTM from "./gtm";

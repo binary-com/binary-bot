@@ -83,7 +83,11 @@ export default Engine =>
                 delay_index++
             ).then(onSuccess);
         }
+
+        // eslint-disable-next-line class-methods-use-this
         getPurchaseReference = () => purchase_reference;
+
+        // eslint-disable-next-line class-methods-use-this
         regeneratePurchaseReference = () => {
             purchase_reference = getUUID();
         };

@@ -19,6 +19,7 @@ export default Engine =>
         }
       });
     }
+
     // eslint-disable-next-line class-methods-use-this
     getBalance(type) {
       const balance = globalObserver.getState("balance");

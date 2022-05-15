@@ -25,6 +25,7 @@ const findAccount = (accountName = "") => getTokenList().findIndex(tokenInfo => 
 
 export const findToken = (token = "") => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
 
+// eslint-disable-next-line default-param-last
 export const addToken = (token = "", loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
   const { loginid: accountName } = loginInfo;
   const tokenList = getTokenList();

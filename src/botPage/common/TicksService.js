@@ -51,6 +51,7 @@ export default class TicksService {
     this.active_symbols_promise = null;
     this.observe();
   }
+
   requestPipSizes() {
     if (this.pipSizes) {
       return Promise.resolve(this.pipSizes);
@@ -71,6 +72,7 @@ export default class TicksService {
     }
     return this.active_symbols_promise;
   }
+
   request(options) {
     const { symbol, granularity } = options;
 
@@ -86,6 +88,7 @@ export default class TicksService {
 
     return this.requestStream({ ...options, style });
   }
+
   monitor(options) {
     const { symbol, granularity, callback } = options;
 
@@ -103,6 +106,7 @@ export default class TicksService {
 
     return key;
   }
+
   stopMonitor(options) {
     const { symbol, granularity, key } = options;
     const type = getType(granularity);
@@ -117,6 +121,7 @@ export default class TicksService {
 
     this.unsubscribeIfEmptyListeners(options);
   }
+
   unsubscribeIfEmptyListeners(options) {
     const { symbol, granularity } = options;
 
@@ -142,6 +147,7 @@ export default class TicksService {
       this.unsubscribeAllAndSubscribeListeners(symbol);
     }
   }
+
   unsubscribeAllAndSubscribeListeners(symbol) {
     const ohlcSubscriptions = this.subscriptions.getIn(["ohlc", symbol]);
     const tickSubscription = this.subscriptions.getIn(["tick", symbol]);
@@ -155,6 +161,7 @@ export default class TicksService {
 
     this.subscriptions = new Map();
   }
+
   updateTicksAndCallListeners(symbol, ticks) {
     if (this.ticks.get(symbol) === ticks) {
       return;
@@ -167,6 +174,7 @@ export default class TicksService {
       listeners.forEach(callback => callback(this.ticks.get(symbol)));
     }
   }
+
   updateCandlesAndCallListeners(address, candles) {
     if (this.ticks.getIn(address) === candles) {
       return;
@@ -179,6 +187,7 @@ export default class TicksService {
       listeners.forEach(callback => callback(this.candles.getIn(address)));
     }
   }
+
   observe() {
     this.api.onMessage().subscribe(({ data }) => {
       if (data?.error?.code) {
@@ -208,6 +217,7 @@ export default class TicksService {
       }
     });
   }
+
   requestStream(options) {
     const { style } = options;
     const stringifiedOptions = JSON.stringify(options);
@@ -236,6 +246,7 @@ export default class TicksService {
 
     return [];
   }
+
   requestTicks(options) {
     const { symbol, granularity, style } = options;
     const request_object = {

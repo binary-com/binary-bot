@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import RenderHTML from 'react-render-html';
 import { TrackJS } from 'trackjs';
 import { translate as i18nTranslate } from '../../common/i18n';
@@ -12,7 +13,8 @@ export const parseQueryString = () => {
     }
     const str = window.location.search;
     const objURL = {};
-    str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+
+    str.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
         objURL[a1] = a3;
     });
     return objURL;

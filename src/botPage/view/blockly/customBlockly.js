@@ -390,7 +390,7 @@ const addDownloadOption = (callback, options, block) => {
         callback: () => {
             const xml = Blockly.Xml.textToDom('<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>');
             xml.appendChild(Blockly.Xml.blockToDom(block));
-            save('binary-bot-block', true, xml);
+            save(xml, 'binary-bot-block', true);
         },
     });
     callback(options);

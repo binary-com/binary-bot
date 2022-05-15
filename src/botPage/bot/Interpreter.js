@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import JSInterpreter from "js-interpreter";
 import { createScope } from "./CliTools";
 import Interface from "./Interface";

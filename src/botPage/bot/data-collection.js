@@ -16,14 +16,23 @@ export default class DataCollection {
     }
 
     IS_PENDING = false;
+
     IS_PROCESSED = true;
+
     endpoint = 'https://dbot-conf-dot-business-intelligence-240201.df.r.appspot.com/dbotconf';
+
     loginid;
+
     runId = '';
+
     runStart = 0;
+
     shouldPostXml = true;
+
     strategyContent = '';
+
     transactionIds = {};
+
     workspace;
 
     async trackRun() {
@@ -56,11 +65,11 @@ export default class DataCollection {
             const content = pako.gzip(this.strategyContent);
 
             return {
-                body   : content,
+                body: content,
                 headers: {
                     'Content-Encoding': 'gzip',
-                    'Content-Type'    : 'application/xml',
-                    Referer           : window.location.hostname,
+                    'Content-Type': 'application/xml',
+                    Referer: window.location.hostname,
                 },
             };
         };
@@ -70,7 +79,7 @@ export default class DataCollection {
             {
                 ...(this.shouldPostXml ? getPayload() : {}),
                 method: 'POST',
-                mode  : 'cors',
+                mode: 'cors',
             }
         )
             .then(() => {
@@ -94,6 +103,7 @@ export default class DataCollection {
         this.strategyContent = strategyContent;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     cleanXmlDom = xmlDom => {
         const uselessAttributes = ['x', 'y'];
         const updatedDom = xmlDom;
@@ -107,8 +117,10 @@ export default class DataCollection {
         return updatedDom;
     };
 
+    // eslint-disable-next-line class-methods-use-this
     getHash = string => btoa(crc32.str(string));
 
+    // eslint-disable-next-line class-methods-use-this
     getLoginId = () => {
         const tokenList = getTokenList();
 
@@ -119,6 +131,7 @@ export default class DataCollection {
         return null;
     };
 
+    // eslint-disable-next-line class-methods-use-this
     getUTCDate = () => {
         const date = new Date();
         const utcDate = Date.UTC(

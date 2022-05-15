@@ -5,6 +5,7 @@ export default class Observer {
         this.eam = new Map(); // event action map
         this.state = {};
     }
+
     register(event, _action, once, unregisterIfError, unregisterAllBefore) {
         if (unregisterAllBefore) {
             this.unregisterAll(event);
@@ -40,23 +41,32 @@ export default class Observer {
             ? this.eam.set(event, actionList.push({ action, searchBy: _action }))
             : this.eam.set(event, new List().push({ action, searchBy: _action }));
     }
+
     unregister(event, f) {
-        this.eam = this.eam.set(event, this.eam.get(event).filter(r => r.searchBy !== f));
+        this.eam = this.eam.set(
+            event,
+            this.eam.get(event).filter(r => r.searchBy !== f)
+        );
     }
+
     isRegistered(event) {
         return this.eam.has(event);
     }
+
     unregisterAll(event) {
         this.eam = this.eam.delete(event);
     }
+
     emit(event, data) {
         if (this.eam.has(event)) {
             this.eam.get(event).forEach(action => action.action(data));
         }
     }
+
     setState(state = {}) {
-        this.state = Object.assign({}, this.state, state);
+        this.state = { ...this.state, ...state };
     }
+
     getState(key) {
         return this.state[key];
     }

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { TrackJS } from "trackjs";
 import { oppositesToDropdown } from "../utils";
 import { symbolApi } from "../../shared";
@@ -355,8 +356,8 @@ export const getBarriersForContracts = (contracts, selectedContractType, selecte
   const barriers = { values: [] };
   const category = getContractCategory(selectedContractType);
   const contractsForContractCategory = filterContractsByCategory(contracts, category, selectedContractType);
-
-  const offsetRegex = new RegExp("^[-|+]([0-9]+.[0-9]+)$");
+  
+  const offsetRegex = /^[-|+]([0-9]+.[0-9]+)$/;
   const isOffset = input => input && offsetRegex.test(input.toString());
 
   if (contractsForContractCategory) {

@@ -16,13 +16,16 @@ export default class Dialog {
             document.getElementById(id)
         );
     }
+
     open() {
         $(`#${this.componentId}`).dialog('open');
         globalObserver.emit('dialog.opened', this.componentId);
     }
+
     close() {
         $(`#${this.componentId}`).dialog('close');
     }
+
     registerCloseOnOtherDialog() {
         globalObserver.register('dialog.opened', dialogId => {
             if (dialogId !== this.componentId) {

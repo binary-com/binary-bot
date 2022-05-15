@@ -10,6 +10,7 @@ export default Engine =>
     isSellAtMarketAvailable() {
       return this.contractId && !this.isSold && this.isSellAvailable && !this.isExpired;
     }
+
     sellAtMarket() {
       // Prevent calling sell twice
       if (this.store.getState().scope !== DURING_PURCHASE) {
