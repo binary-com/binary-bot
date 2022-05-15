@@ -33,14 +33,14 @@ const LogTable = () => {
     const onGetNotification = log => {
         if (!log || !Object.keys(log).length) return;
 
-        const row = appendRow(log, { id, rows });
+        const row = appendRow(log, { id, rows }, true);
         setRows(row.rows);
         setId(row.id);
     };
 
     const exportLogs = () => {
-        const json2csvParser = new Parser({ fields: 
-            ['timestamp', 'message'],
+        const json2csvParser = new Parser({
+            fields: ['timestamp', 'message'],
         });
         const data = json2csvParser.parse(rows);
 
@@ -50,21 +50,25 @@ const LogTable = () => {
     const rowGetter = i => rows[i];
 
     return (
-        <div className="content-row">
-            <div>
-                <div className="content-row-table">
-                    <div style={{ height: min_height }}>
-                        <ReactDataGrid
-                            columns={columns}
-                            rowGetter={rowGetter}
-                            rowsCount={rows.length}
-                            minHeight={min_height}
-                            rowRenderer={<ColorFormatter />}
-                        />
+        <span id="logPanel" className="draggable-dialog" title={translate("Log")}>
+            <div id="logTable" className="logTable-scroll">
+                <div className="content-row">
+                    <div>
+                        <div className="content-row-table">
+                            <div style={{ height: min_height }}>
+                                <ReactDataGrid
+                                    columns={columns}
+                                    rowGetter={rowGetter}
+                                    rowsCount={rows.length}
+                                    minHeight={min_height}
+                                    rowRenderer={<ColorFormatter />}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </span>
     );
 };
 

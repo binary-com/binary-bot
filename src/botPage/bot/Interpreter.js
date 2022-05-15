@@ -13,8 +13,10 @@ JSInterpreter.prototype.takeStateSnapshot = function() {
 
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
   this.state_stack = clone(snapshot, undefined, undefined, undefined, true);
-  this.global_object = this.state_stack[0].scope.object;
-  this.initFunc_(this, this.global_object);
+  if (this.state_stack?.length) {
+    this.global_object = this.state_stack[0]?.scope?.object;
+    this.initFunc_(this, this.global_object);
+  }
 };
 /* eslint-enable */
 
@@ -137,7 +139,8 @@ export default class Interpreter {
         }
 
         this.isErrorTriggered = true;
-        if (!shouldRestartOnError(this.bot, e.error.code) || !botStarted(this.bot)) {
+        const error = e?.error?.code || e;
+        if (!shouldRestartOnError(this.bot, error) || !botStarted(this.bot)) {
           reject(e);
           return;
         }
@@ -173,12 +176,6 @@ export default class Interpreter {
   }
 
   terminateSession() {
-    const { connection } = this.$scope.api;
-    if (connection.readyState === 0) {
-      connection.addEventListener("open", () => connection.close());
-    } else if (connection.readyState === 1) {
-      connection.close();
-    }
     this.stopped = true;
     this.isErrorTriggered = false;
 

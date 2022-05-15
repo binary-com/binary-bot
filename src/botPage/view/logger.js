@@ -1,6 +1,7 @@
 import { TrackJS } from "trackjs";
 import { observer as globalObserver } from "../../common/utils/observer";
 import { isProduction } from "../../common/utils/tools";
+import { isIOS } from "./osDetect";
 
 const log = (type, ...args) => {
   if (type === "warn") {
@@ -18,11 +19,13 @@ const log = (type, ...args) => {
 const notify = ({ className, message, position = "left", sound = "silent" }) => {
   log(className, message);
 
+  // TODO: remove jquery dependency
   $.notify(message.toString(), { position: `bottom ${position}`, className });
-  if (sound !== "silent") {
-    $(`#${sound}`)
-      .get(0)
-      .play();
+
+  if (sound !== "silent" && !isIOS()) {
+    const audio = document.getElementById(sound);
+    if(!audio && !audio.play) return;
+    audio.play().catch(() => { });
   }
 };
 

@@ -1,9 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isMobile, isDesktop, parseQueryString } from "../../../../../common/utils/tools";
-import { platforms } from "../../config.js";
-import PlatformDropdown from "./components/platform-dropdown.jsx";
 import classNames from "classnames";
+import { isMobile, isDesktop, parseQueryString } from "../../../../../common/utils/tools";
+import PlatformDropdown from "./components/platform-dropdown.jsx";
 import { isLoggedIn } from "../../utils";
 import { getActiveToken } from "../../utils";
 import {
@@ -12,13 +11,13 @@ import {
   syncWithDerivApp,
 } from "../../../../../common/utils/storageManager";
 import {
-  updateIsLooged,
+  updateIsLogged,
   resetClient,
   updateActiveAccount,
   updateBalance,
   updateActiveToken
 } from "../../store/client-slice";
-import { setAccountSwitcherLoader } from "../../store/ui-slice";
+import { setAccountSwitcherLoader, updateShowMessagePage } from "../../store/ui-slice";
 import {
   DrawerMenu,
   AuthButtons,
@@ -26,16 +25,17 @@ import {
   MenuLinks,
   AccountSwitcherLoader,
 } from "./components";
-import { api } from "../../../View";
 import { queryToObjectArray } from "../../../../../common/appId";
+import api from "../../api";
 
 const AccountSwitcher = () => {
   const { account_switcher_loader } = useSelector((state) => state.ui);
   const { is_logged } = useSelector((state) => state.client);
   const query_string = parseQueryString();
   const query_string_array = queryToObjectArray(query_string);
+
   // [Todo] We should remove this after update the structure of get token list on login
-  if(query_string_array[0]?.token){
+  if (query_string_array[0]?.token) {
     return (
       <div className="header__menu-right-loader">
         <AccountSwitcherLoader />
@@ -61,7 +61,8 @@ const Header = () => {
   );
   const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
   const platformDropdownRef = React.useRef();
-  const { is_logged} = useSelector((state) => state.client);
+  const { is_logged, active_token } = useSelector((state) => state.client);
+  const { is_bot_running } = useSelector(state => state.ui);
   const dispatch = useDispatch();
   const hideDropdown = (e) =>
     !platformDropdownRef.current.contains(e.target) &&
@@ -69,9 +70,7 @@ const Header = () => {
 
   React.useEffect(() => {
     api.onMessage().subscribe(({ data }) => {
-      if (data?.error?.code) {
-        return;
-      }
+      if (data?.error?.code) return;
       if (data?.msg_type === "balance") {
         dispatch(updateBalance(data.balance));
       }
@@ -81,6 +80,10 @@ const Header = () => {
   React.useEffect(() => {
     const token_list = getTokenList();
     const active_token = getActiveToken(token_list);
+    const landing_company = active_token?.loginInfo.landing_company_name;
+
+    dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
+
     if (!active_token) {
       removeAllTokens();
       dispatch(resetClient());
@@ -88,12 +91,11 @@ const Header = () => {
     }
     if (active_token) {
       api.authorize(active_token.token).then((account) => {
-        if(account?.error?.code){
-            return;
-        }
+        if (account?.error?.code) return;
         dispatch(updateActiveToken(active_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
+
         api.send({ forget_all: "balance" }).then(() => {
           api.send({
             balance: 1,
@@ -101,18 +103,32 @@ const Header = () => {
             subscribe: 1,
           });
         });
-      }).catch(()=>{
-          removeAllTokens();
-          dispatch(resetClient())
-          dispatch(setAccountSwiitcherLoader(true))  
+      }).catch(() => {
+        removeAllTokens();
+        dispatch(resetClient());
+        dispatch(setAccountSwitcherLoader(true));
       });
       syncWithDerivApp();
     }
-  }, []);
+  }, [active_token]);
 
   React.useEffect(() => {
-    dispatch(updateIsLooged(isLoggedIn()));
+    dispatch(updateIsLogged(isLoggedIn()));
   }, [is_logged]);
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', onBeforeUnload, { capture: true });
+    return (() => {
+      window.removeEventListener('beforeunload', onBeforeUnload, { capture: true });
+    })
+  }, [is_bot_running])
+
+  const onBeforeUnload = (e) => {
+    if(is_bot_running) {
+      e.preventDefault();
+      e.returnValue = true;
+    }
+  }
 
   return (
     <div className="header">
@@ -121,9 +137,9 @@ const Header = () => {
           <div className="header__menu-left">
             {isPlatformSwitcherOpen && (
               <PlatformDropdown
-                platforms={platforms}
                 hideDropdown={hideDropdown}
                 ref={platformDropdownRef}
+                setIsPlatformSwitcherOpen={setIsPlatformSwitcherOpen}
               />
             )}
             <div

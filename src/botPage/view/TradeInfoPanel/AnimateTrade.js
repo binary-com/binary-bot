@@ -49,7 +49,7 @@ const AnimateTrade = () => {
       setIndicatorMessage(INDICATOR_MESSAGES.starting);
       setContractStatus(CONTRACT_STATUS.not_running);
       globalObserver.emit("summary.disable_clear");
-      globalObserver.register("contract.status", contract => animateStage(contract));
+      globalObserver.register("contract.status", animateStage);
     });
     return () => {
       $("#stopButton").off("click");

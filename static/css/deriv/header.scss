@@ -35,6 +35,9 @@
             }
         }
         &-acc {
+            &.disabled {
+                cursor: not-allowed;
+            }
             position: relative;
             @include mobile {
                 position: unset;
@@ -59,6 +62,9 @@
         &-item {
             height: 100%;
             align-self: center;
+            &.disabled {
+                cursor: not-allowed;
+            }
         }
         &-links {
             display: flex;
@@ -144,6 +150,11 @@
             padding: 0 20px;
             margin-right: 8px;
             cursor: pointer;
+            user-select: none;
+            
+            &.disabled {
+                cursor: not-allowed;
+            }
 
             &:hover {
                 background: var(--state-hover);
@@ -539,7 +550,7 @@
                     }
                 }
                 position: absolute;
-                z-index: 2;
+                z-index: 201;
                 top: 50px;
                 background: var(--general-main-2);
                 border-radius: 4px;
@@ -596,6 +607,7 @@
 
                 &--active {
                     background: var(--state-hover);
+                    cursor: auto;
                 }
                 &:hover {
                     background: var(--state-hover);
@@ -968,18 +980,6 @@
     }
 }
 
-#topbar {
-    display: none !important;
-
-    .notification {
-        &__messages {
-            position: absolute;
-            height: 100vh;
-            width: 100%;
-            top: 48px;
-        }
-    }
-}
 #toolbox {
     height: $TOOLBOX_HEIGHT;
     @include mobile {

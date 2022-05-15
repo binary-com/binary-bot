@@ -87,8 +87,59 @@ a:hover {
     }
 }
 
-.barspinner {
-    @include mobile{
-        margin-left: -5% !important;
+.endpoint {
+    padding: 1rem;
+    &__form-container {
+        form {
+            border-radius: 0.5rem;
+            border: 1px solid #bababa;
+            padding: 1rem;
+            input {
+                padding: 0.5rem;
+                border: 1px solid #bababa;
+                min-width: 196px;
+            }
+            button {
+                padding: 0.7rem 1rem;
+            }
+        }
+
+        #details {
+            tbody tr td {
+                border: none;
+
+                &:first-child {
+                    text-align: right;
+                    min-width: 96px;
+                    p {
+                        margin: 0;
+                        margin-top: 0.5rem;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .error {
+            color: $COLOR_RED;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.page-not-found {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    &__inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        text-align: center;
+        p {
+            margin-bottom: 0;
+            margin-top: 0.5rem;
+        }
     }
 }

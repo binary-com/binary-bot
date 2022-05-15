@@ -12,7 +12,7 @@ const MenuLinks = () => (
         </a>
         <a className="url-cashier-deposit header__menu-links-item" href={generateDerivLink("cashier/deposit")}>
             <span>
-                <img id="cashier_icon" className="header__icon-text" src="image/deriv/ic-cashier.svg"/>
+                <img id="cashier_icon" className="header__icon-text" src="image/deriv/ic-cashier.svg" />
                 {translate("Cashier")}
             </span>
         </a>

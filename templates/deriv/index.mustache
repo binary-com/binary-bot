@@ -1,45 +1,90 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="apple-touch-icon" sizes="57x57" href="{{> binary_style_img }}/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{> binary_style_img }}/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{> binary_style_img }}/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="{{> binary_style_img }}/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="{{> binary_style_img }}/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="{{> binary_style_img }}/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="{{> binary_style_img }}/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="{{> binary_style_img }}/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{> binary_style_img }}/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="{{> binary_style_img }}/favicons/favicon-192x192.png">
+        <link rel="icon" type="image/png" sizes="160x160" href="{{> binary_style_img }}/favicons/favicon-160x160.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="{{> binary_style_img }}/favicons/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{> binary_style_img }}/favicons/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{> binary_style_img }}/favicons/favicon-32x32.png">
+        <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+        <meta http-equiv="pragma" content="no-cache">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="referrer" content="origin">
 
-<head>
-    {{> ../partials/security }} {{> ../partials/head }}
-    <title>Binary Bot</title>
-    {{> bundle_css }}
-    <link rel="stylesheet" href="css/binary.css">
-    {{> bot_css }}
-</head>
+        <style id="antiClickjack">
+            body {
+                display: none !important;
+            }
+        </style>
+        <script type="text/javascript">
+            if (self === top) {
+                var antiClickjack = document.getElementById("antiClickjack");
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            } else {
+                top.location = self.location;
+            }
+        </script>
 
-<body>
-    <span id="limits-dialog"></span>
-    <span id="integrations-dialog"></span>
-    <span id="chart-dialog"></span>
-    <span id="trading-view-dialog"></span>
-    <span id="logPanel" class="draggable-dialog" data-i18n-title="Log">
-      <div id="logTable" class="logTable-scroll"></div>
-    </span>
-    <span id="summaryPanel" class="draggable-dialog" data-i18n-title="Summary"></span>
-    {{> ../partials/loading }}
-    <div id="main"></div>
-    <div id="blocklyArea"></div>
-    <div id="blocklyDiv" style="position: absolute;"></div>
-    
-    <form id="fileUploadForm" style="display: none;">
-        <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files" accept=".xml"
-            multiple />
-    </form>
-    <audio id="announcement" src="sound/announcement.ogg" autostart="false"></audio>
-    <audio id="earned-money" src="sound/coins.ogg" autostart="false"></audio>
-    <audio id="job-done" src="sound/job-done.ogg" autostart="false"></audio>
-    <audio id="error" src="sound/out-of-bounds.ogg" autostart="false"></audio>
-    <audio id="severe-error" src="sound/i-am-being-serious.ogg" autostart="false"></audio>
-    {{> bundle}} {{> bot}}
-    {{> gtm_iframe }}
-    <iframe id="localstorage-sync" sandbox="allow-same-origin allow-scripts" style="display: none; visibility: hidden;"></iframe>
-    <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
-    <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
-    <script>
-        document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
-    </script>
-</body>
+        <title>Binary Bot</title>
+        {{> bundle_css }}
+        <link rel="stylesheet" href="css/binary.css">
+        {{> bot_css }}
+    </head>
+
+    <body>
+        <span id="limits-dialog"></span>
+        <span id="integrations-dialog"></span>
+        <span id="chart-dialog"></span>
+        <span id="trading-view-dialog"></span>
+
+        {{> ../partials/loading }}
+        <div id="main"></div>
+
+        <form id="fileUploadForm" style="display: none;">
+            <input data-i18n-title="Open an already saved XML file and retrieve its blocks" type="file" id="files"
+                accept=".xml" multiple />
+        </form>
+
+        <!-- TODO move to separate component after routes refacotr -->
+        <audio id="announcement" autostart="false" preload="auto">
+            <source src="sound/announcement.ogg" type="audio/ogg" />
+            <source src="sound/announcement.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="earned-money" autostart="false" preload="auto">
+            <source src="sound/coins.ogg" type="audio/ogg" />
+            <source src="sound/coins.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="job-done" autostart="false" preload="auto">
+            <source src="sound/job-done.ogg" type="audio/ogg" />
+            <source src="sound/job-done.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="error" autostart="false" preload="auto">
+            <source src="sound/out-of-bounds.ogg" type="audio/ogg" />
+            <source src="sound/out-of-bounds.mp3" type="audio/mp3" />
+        </audio>
+        <audio id="severe-error" autostart="false" preload="auto">
+            <source src="sound/i-am-being-serious.ogg" type="audio/ogg" />
+            <source src="sound/i-am-being-serious.mp3" type="audio/mp3" />
+        </audio>
+
+        {{> bundle}} {{> bot}}
+        {{> gtm_iframe }}
+        <iframe id="localstorage-sync" sandbox="allow-same-origin allow-scripts"
+            style="display: none; visibility: hidden;"></iframe>
+        <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
+        <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
+        <script>
+            document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
+        </script>
+    </body>
 
 </html>

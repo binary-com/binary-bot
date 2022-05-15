@@ -59,9 +59,11 @@ class GoogleDriveUtil {
                     .then(
                         () => {
                             this.auth = gapi.auth2.getAuthInstance();
-                            this.auth.isSignedIn.listen(is_logged_in => this.updateLoginStatus(is_logged_in));
-                            this.updateLoginStatus(this.auth.isSignedIn.get());
-                            store.dispatch(setGdReady(true));
+                            if(this.auth) {
+                                this.auth.isSignedIn.listen(is_logged_in => this.updateLoginStatus(is_logged_in));
+                                this.updateLoginStatus(this.auth.isSignedIn.get());
+                                store.dispatch(setGdReady(true));
+                            }
                         },
                         error => errLogger(error, translate('There was an error initialising Google Drive.'))
                     );

@@ -15,14 +15,14 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier-eslint --write",
+      "eslint",
       "git add"
     ]
   },
   "scripts": {
     "start": "gulp watch",
     "test": "eslint src/",
-    "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min; cp -r www/ branch/$1; gulp release-branch --branch $1;}; d",
+    "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min --test --branch $1; cp -r www/ branch/$1; cp www/index.html www/404.html; gulp release-branch --branch $1;}; d",
     "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
     "build": "webpack --config webpack.config.cli.js",
     "build-min": "gulp build-min"
@@ -108,7 +108,7 @@
   },
   "dependencies": {
     "@deriv/deriv-api": "^1.0.9",
-    "@deriv/deriv-charts": "^0.3.16",
+    "@deriv/deriv-charts": "^0.3.43",
     "@reduxjs/toolkit": "^1.7.1",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
@@ -125,6 +125,7 @@
     "react-content-loader": "^6.1.0",
     "react-redux": "^7.2.6",
     "react-render-html": "^0.6.0",
+    "react-router-dom": "^5.3.0",
     "react-tiny-popover": "^7.0.1",
     "react-transition-group": "^4.4.2"
   }

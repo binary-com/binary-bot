@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import  Popover from '../../../components/popover';
 import { translate} from "../../../../../../common/utils/tools";
-import { api } from "../../../../View";
+import api from "../../../api";
 
 const NetworkStatus = () => {
     const [status, setStatus] = React.useState("offline");
@@ -28,8 +28,8 @@ const NetworkStatus = () => {
         })
         
         if ("onLine" in navigator) {
-            window.addEventListener("online", () => updateStatus());
-            window.addEventListener("offline", () => updateStatus());
+            window.addEventListener("online", updateStatus);
+            window.addEventListener("offline", updateStatus);
         } else {
             navigator.onLine = true;
         }
@@ -38,8 +38,8 @@ const NetworkStatus = () => {
         updateStatus();
 
         return () => {
-            window.removeEventListener("online");
-            window.removeEventListener("offline");
+            window.removeEventListener("online", updateStatus);
+            window.removeEventListener("offline", updateStatus);
 
             clearInterval(updateInterval);
         }

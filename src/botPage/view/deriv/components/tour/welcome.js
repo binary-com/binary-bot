@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from "react-redux";
 import { translate } from '../../../../../common/i18n';
 import { isMobile } from '../../../../../common/utils/tools';
 
@@ -41,6 +42,8 @@ const SixthStep = () => (
 )
 
 function welcome (closeTourPermanently, continueTour) {
+    const { is_logged } = useSelector((state) => state.client);
+
     const steps = [
         {
             title: 'Take a quick tour',
@@ -67,8 +70,8 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Workspace'),
             content: <SecondStep />,
-            target: '#second-step-target',
-            placement: 'top',
+            target: isMobile() ? '.blocklyBlockCanvas' : '#second-step-target',
+            placement: isMobile() ? 'bottom' : 'top',
             styles:{
                 buttonClose:{
                     paddingTop: '27px',     
@@ -80,13 +83,14 @@ function welcome (closeTourPermanently, continueTour) {
         {
             title: translate('Blocks toolbox'),
             content: <ThirdStep />,
-            target: '#third-step-target',
+            target:  isMobile() ? '#sidebar-toggle-action' : '#third-step-target',
             placement: 'right-start',
         },
         {
             title: translate('Accounts'),
             content: <ForthStep />,
-            target:  '#forth-step-target',
+            // eslint-disable-next-line no-nested-ternary
+            target: isMobile() ? (is_logged ? '#acc_switcher' : '.header__btn') : '#forth-step-target',
             placement: 'left-start',
             styles:{
                 buttonClose:{
