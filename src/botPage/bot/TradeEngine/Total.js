@@ -6,11 +6,11 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 
 const skeleton = {
     totalProfit: 0,
-    totalWins: 0,
+    totalWins  : 0,
     totalLosses: 0,
-    totalStake: 0,
+    totalStake : 0,
     totalPayout: 0,
-    totalRuns: 0,
+    totalRuns  : 0,
 };
 
 const globalStat = {};
@@ -30,7 +30,6 @@ export default Engine =>
                 globalStat[accountID] = { ...skeleton };
             });
         }
-
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
@@ -62,11 +61,11 @@ export default Engine =>
             info({
                 profit,
                 contract,
-                accountID: this.accountInfo.loginid,
+                accountID  : this.accountInfo.loginid,
                 totalProfit: accountStat.totalProfit,
-                totalWins: accountStat.totalWins,
+                totalWins  : accountStat.totalWins,
                 totalLosses: accountStat.totalLosses,
-                totalStake: accountStat.totalStake,
+                totalStake : accountStat.totalStake,
                 totalPayout: accountStat.totalPayout,
             });
 
@@ -76,20 +75,17 @@ export default Engine =>
                 notify('warn', `${translate('Loss amount')}: ${profit}`);
             }
         }
-
         updateAndReturnTotalRuns() {
             this.sessionRuns++;
             const accountStat = this.getAccountStat();
 
             return ++accountStat.totalRuns;
         }
-
         /* eslint-disable class-methods-use-this */
         getTotalRuns() {
             const accountStat = this.getAccountStat();
             return accountStat.totalRuns;
         }
-
         getTotalProfit(toString, currency) {
             const accountStat = this.getAccountStat();
             return toString && accountStat.totalProfit !== 0
@@ -99,7 +95,6 @@ export default Engine =>
                 })
                 : +accountStat.totalProfit;
         }
-
         /* eslint-enable */
         checkLimits(tradeOption) {
             if (!tradeOption.limitations) {
@@ -119,7 +114,6 @@ export default Engine =>
                 }
             }
         }
-
         getAccountStat() {
             const { loginid: accountID } = this.accountInfo;
 

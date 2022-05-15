@@ -1,11 +1,10 @@
 {
-  "parser": "@babel/eslint-parser",
   "root": true,
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    },
-    "requireConfigFile": false
+    }
   },
   "extends": [
     "binary",

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import Observer from "../../common/utils/observer";
 import Interpreter from "./Interpreter";
 import TicksService from "../common/TicksService";
