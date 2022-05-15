@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import TradeEngine from '../TradeEngine';
 import { noop, createDetails } from '../tools';
 import TicksInterface from './TicksInterface';
@@ -17,7 +16,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         this.observer = $scope.observer;
         this.$scope = $scope;
     }
-
     getInterface(name = 'Global') {
         if (name === 'Bot') {
             return {
@@ -38,7 +36,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             },
         };
     }
-
     getBotInterface() {
         const getDetail = (i, pipSize) => createDetails(this.tradeEngine.data.contract, pipSize)[i];
 
@@ -57,7 +54,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             readDetails: i => getDetail(i - 1, this.tradeEngine.getPipSize()),
         };
     }
-
     sleep(arg = 1) {
         return new Promise(
             r =>
@@ -68,7 +64,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
             noop
         );
     }
-
     getProposal(contract_type) {
         return this.tradeEngine.data.proposals.find(
             proposal =>
@@ -76,7 +71,6 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
                 proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
         );
     }
-
     getSellPrice() {
         return this.tradeEngine.getSellPrice();
     }
