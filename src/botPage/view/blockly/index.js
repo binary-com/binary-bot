@@ -441,14 +441,14 @@ export default class _Blockly {
 
     /* eslint-disable class-methods-use-this */
     save(arg) {
-        const { filename, collection } = arg;
+        const { file_name, collection } = arg;
 
         saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
 
-        save(xml, filename, collection);
+        save(xml, file_name, collection);
     }
 
     run(limitations = {}) {

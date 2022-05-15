@@ -58,9 +58,9 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
                     title="Choose filename for your blocks"
                     type="text"
                     onChange={e => setFileName(e.target.value)}
-                    defaultValue="binary-bot"
                     data-lpignore="true"
                     autoComplete="false"
+                    value={file_name}
                 />
             </div>
             <div className="input-row center-text">
