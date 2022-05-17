@@ -89,13 +89,13 @@ const Header = () => {
       dispatch(resetClient());
       dispatch(setAccountSwitcherLoader(false));
     }
-    if (active_token) {
+    if (active_token && !is_logged) {
       api.authorize(active_token.token).then((account) => {
         if (account?.error?.code) return;
         dispatch(updateActiveToken(active_token.token))
         dispatch(updateActiveAccount(account.authorize));
         dispatch(setAccountSwitcherLoader(false));
-
+        
         api.send({ forget_all: "balance" }).then(() => {
           api.send({
             balance: 1,
@@ -110,7 +110,7 @@ const Header = () => {
       });
       syncWithDerivApp();
     }
-  }, [active_token]);
+  }, [active_token, is_logged]);
 
   React.useEffect(() => {
     dispatch(updateIsLogged(isLoggedIn()));
