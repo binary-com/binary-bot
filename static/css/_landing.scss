@@ -343,11 +343,11 @@ $header-color : #333333;
         }
 
         h2 {
-          font: 400 1.2rem $font-IBM;
+          font: 400 0.8rem $font-IBM;
           color: $header-color;
 
           @include for-size(mobile) {
-            font: 400 1rem $font-IBM;
+            font: 400 0.8rem $font-IBM;
             margin-bottom: 0;
           }
         }
