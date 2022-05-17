@@ -596,7 +596,6 @@ $header-color : #333333;
   }
 }
 
-
 .bot-gif-placeholder {
   display: flex;
   align-items: center;
@@ -631,4 +630,39 @@ $header-color : #333333;
 
 .hidden{
   display: none !important;
+}
+
+.slick-img {
+  width: 384px;
+}
+
+.slick-slide {
+	margin: 0 12.5px;
+}
+/* the parent */
+.slick-list {
+	margin: 0 -25px;
+}
+
+.arrow-btn {
+  text-transform: none;
+  padding: 10px 12px 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  width: 131px;
+  color: #FF444F;
+  background: #FFFFFF;
+  border-radius: 100px; 
+  filter: drop-shadow(0px 0px 24px rgba(0, 0, 0, 0.08)) drop-shadow(0px 24px 24px rgba(0, 0, 0, 0.08));
+  transform: translate(0px, -20px);
+}
+
+.slick-card {
+  display: flex;
+  text-align: center;
+}
+
+.btn_inner {
+  display: flex;
+  gap: 8px;
 }
