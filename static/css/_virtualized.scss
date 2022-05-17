@@ -1,0 +1,83 @@
+.ReactVirtualized {
+  &__Table {
+    &__rowColumn {
+      align-items: center;
+      border-right: 1px solid #F2F2F2;
+      display: flex;
+      flex: 1;
+      height: 100%;
+      min-width: 0;
+      font-size: 11px;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+    &__Grid {
+      border-bottom: 1px solid #F2F2F2;
+      border-right: 1px solid #F2F2F2;
+      border-left: 1px solid #F2F2F2;
+    }
+    &__headerRow {
+      border: 1px solid #F2F2F2;
+    }
+    &__row {
+      border-bottom: 1px solid #F2F2F2;
+      height: 35px;
+
+      &.warn {
+        background: #fbeed5;
+      }
+
+      &.success {
+        background: #dff0d8;
+      }
+
+      &.error {
+        background: #f2dede;
+      }
+
+      &.info {
+        background: #d9edf7;
+      }
+    }
+    &__headerColumn {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    &__headerTruncatedText {
+      flex: auto;
+    }
+  }
+}
+
+.DragHandle {
+  z-index: 2;
+  height: 25px;
+  position: relative;
+  &.log-table {
+    height: 35px;
+    &:before {
+      cursor: col-resize;
+    }
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    height: 100px;
+    border-right: 1px solid #f2f2f2;
+  }
+}
+
+.DragHandleActive,
+.DragHandleActive:hover {
+  color: #0b6fcc;
+  z-index: 3;
+}

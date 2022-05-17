@@ -26,9 +26,15 @@ gulp.task(
     )
 );
 
-gulp.task('static-css', gulp.series('sass', () => gulp.src('static/css/*.css*').pipe(gulp.dest('./www/css'))));
+gulp.task(
+    'static-css',
+    gulp.series('sass', () => gulp.src('static/css/*.css*').pipe(gulp.dest('./www/css')))
+);
 
-gulp.task('static', gulp.series('static-css', () => gulp.src(['static/**', '!static/css/*']).pipe(gulp.dest('./www'))));
+gulp.task(
+    'static',
+    gulp.series('static-css', () => gulp.src(['static/**', '!static/css/*']).pipe(gulp.dest('./www')))
+);
 
 gulp.task(
     'copy-jquery-img',
@@ -43,4 +49,9 @@ gulp.task(
 gulp.task(
     'copy-binary-style-img',
     gulp.series(() => gulp.src('node_modules/binary-style/src/images/**').pipe(gulp.dest('www/image/binary-style')))
+);
+
+gulp.task(
+    'copy-virtualized-style-css',
+    gulp.series(() => gulp.src('node_modules/react-virtualized/styles.css').pipe(gulp.dest('www/css')))
 );

@@ -8,6 +8,7 @@
 @import 'tour';
 @import 'error';
 @import 'deriv/index';
+@import 'virtualized';
 @import 'deriv/devices.scss';
 
 
@@ -46,6 +47,7 @@ body {
 
 #bot-blockly {
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+
     @include mobile {
         height: calc(100vh - 7.5rem);
     }
@@ -56,6 +58,7 @@ body {
     height: 100%;
     width: 100%;
     max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+
     @include mobile {
         max-height: calc(100vh - 7.5rem);
     }
@@ -127,7 +130,8 @@ body {
     background: black;
 }
 
-#stopButton, #summaryStopButton {
+#stopButton,
+#summaryStopButton {
     display: none;
 }
 
@@ -139,10 +143,12 @@ body {
 #select_language {
     top: -3px;
 }
+
 #display_language li {
     cursor: pointer;
     line-height: 0;
 }
+
 #container {
     position: fixed;
     height: calc(100% - 96px);

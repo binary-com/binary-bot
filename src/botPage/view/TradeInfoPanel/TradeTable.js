@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
 import { Parser } from 'json2csv';
 import React from 'react';
-import ReactDataGrid from 'react-data-grid';
+import Draggable from 'react-draggable';
+import { Table, Column } from 'react-virtualized';
 import { observer as global_observer } from '../../../common/utils/observer';
 import { appendRow, updateRow, saveAs, isNumber } from '../shared';
 import { translate } from '../../../common/i18n';
@@ -37,15 +38,19 @@ const TradeTable = ({ account_id, api }) => {
 
     const rows = account_id in account_state ? account_state[account_id].rows : [];
 
+    const total_width = 750;
+    const min_height = 290;
+    const row_height = 25;
+
     const columns = [
-        { key: 'timestamp', width: 182, resizable: true, name: translate('Timestamp') },
-        { key: 'reference', width: 100, resizable: true, name: translate('Reference') },
-        { key: 'contract_type', width: 70, resizable: true, name: translate('Trade type') },
-        { key: 'entry_tick', width: 82, resizable: true, name: translate('Entry spot') },
-        { key: 'exit_tick', width: 82, resizable: true, name: translate('Exit spot') },
-        { key: 'buy_price', width: 80, resizable: true, name: translate('Buy price') },
-        { key: 'profit', width: 80, resizable: true, name: translate('Profit/Loss'), formatter: ProfitColor },
-        { key: 'contract_status', width: 90, resizable: true, name: translate('Status'), formatter: StatusFormat },
+        { key: 'timestamp', label: translate('Timestamp'), width: 196 },
+        { key: 'reference', label: translate('Reference'), width: 88 },
+        { key: 'contract_type', label: translate('Trade type'), width: 70 },
+        { key: 'entry_tick', label: translate('Entry spot'), width: 71 },
+        { key: 'exit_tick', label: translate('Exit spot'), width: 71 },
+        { key: 'buy_price', label: translate('Buy price'), width: 84 },
+        { key: 'profit', label: translate('Profit/Loss'), width: 89 },
+        { key: 'contract_status', label: translate('Status'), width: 73 },
     ];
 
     const getTradeObject = contract => {
@@ -166,9 +171,9 @@ const TradeTable = ({ account_id, api }) => {
         };
     }, [account_state]);
 
-    const rowGetter = i => {
+    const rowGetter = ({ index }) => {
         const got_rows = account_state[account_id].rows;
-        return got_rows[got_rows.length - 1 - i];
+        return got_rows[got_rows.length - 1 - index];
     };
 
     const data_export = () => {
@@ -200,15 +205,59 @@ const TradeTable = ({ account_id, api }) => {
         return initial_state;
     };
 
+    const headerRenderer = ({ dataKey, label }) => {
+        const headerIndex = columns.findIndex(col => col.key === dataKey);
+        const isLastColumn = headerIndex + 1 === columns.length;
+
+        return (
+            <React.Fragment key={dataKey}>
+                <div className="ReactVirtualized__Table__headerTruncatedText">{label}</div>
+                {!isLastColumn && (
+                    <Draggable
+                        axis="x"
+                        defaultClassName="DragHandle"
+                        defaultClassNameDragging="DragHandleActive"
+                        position={{ x: 0 }}
+                        zIndex={999}
+                    >
+                        <span className="DragHandleIcon" />
+                    </Draggable>
+                )}
+            </React.Fragment>
+        );
+    };
+
+    const cellRenderer = ({ cellData, dataKey }) => {
+        if (dataKey === 'profit') return <ProfitColor value={cellData} />;
+        if (dataKey === 'contract_status') return <StatusFormat value={cellData} />;
+        return <div>{cellData}</div>;
+    };
+
     return (
         <div>
-            <ReactDataGrid
-                columns={columns}
+            <Table
+                width={total_width}
+                height={min_height}
+                headerHeight={row_height}
+                rowHeight={row_height}
+                rowCount={rows.length}
                 rowGetter={rowGetter}
-                rowsCount={rows.length}
-                minHeight={290}
-                rowHeight={25}
-            />
+                headerStyle={{
+                    fontSize: 11,
+                    textTransform: 'capitalize',
+                }}
+            >
+                {columns.map(({ label, key, width }, index) => (
+                    <Column
+                        headerRenderer={headerRenderer}
+                        cellRenderer={cellRenderer}
+                        width={width}
+                        key={index}
+                        label={label}
+                        dataKey={key}
+                    />
+                ))}
+            </Table>
         </div>
     );
 };
