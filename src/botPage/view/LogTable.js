@@ -1,4 +1,4 @@
-import json2csv from 'json2csv';
+import { Parser } from 'json2csv';
 import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column, CellMeasurerCache } from 'react-virtualized';
@@ -37,13 +37,17 @@ const Logtable = () => {
     }, [rows]);
 
     const exportLogs = () => {
-        const data = json2csv({ data: rows, fields: ['timestamp', 'message'] });
+        const json2csvParser = new Parser({
+            fields: ['timestamp', 'message'],
+        });
+        const data = json2csvParser.parse(rows);
+
         saveAs({ data, filename: 'logs.csv', type: 'text/csv;charset=utf-8' });
     };
 
     const notify = log => {
         if (!log) return;
-        const { id: updated_id, rows: updated_rows } = appendRow(log, { id, rows });
+        const { id: updated_id, rows: updated_rows } = appendRow(log, { id, rows }, true);
         setId(updated_id);
         setRows(updated_rows);
         logtable.current.scrollToRow(updated_id);

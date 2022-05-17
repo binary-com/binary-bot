@@ -159,7 +159,7 @@
             background: var(--text-prominent);
         }
         .ic-settings__icon {
-            @extend %inline-icon.active;
+            @extend %inline-icon, .active;
             pointer-events: none;
         }
     }
@@ -197,4 +197,7 @@
 }
 .react-tiny-popover-container{
     z-index: 10000;
+    @include mobile{
+        display: none;
+    }
 }

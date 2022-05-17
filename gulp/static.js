@@ -3,7 +3,7 @@ const del = require('del');
 const paths = require('vinyl-paths');
 const rev = require('gulp-rev');
 const through = require('through2');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
 const addToManifest = require('./revision').addToManifest;
 

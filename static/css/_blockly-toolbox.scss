@@ -1,5 +1,6 @@
 @import 'color';
 @import './deriv/devices.scss';
+@import './deriv/constants-deriv.scss';
 
 .blocklyTreeRow {
     box-shadow: inset 0 -0.063em 0 0 #dedede;
@@ -73,8 +74,8 @@
 .collapse-toolbox {
     position: absolute;
     left: 0;
-    top: 0;
-    height: 100%;
+    top: auto;
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
     width: 20px;
     background: $brand-gray;
     justify-content: center;
@@ -99,6 +100,7 @@
 
     @include mobile {
         display: flex;
+        height: calc(100vh - 7.5rem);
     }
 }
 

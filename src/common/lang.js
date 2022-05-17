@@ -4,8 +4,8 @@ import { setCookieLanguage } from '../common/utils/cookieManager';
 import { supportedLanguages, translate, init } from './i18n';
 
 export const getLanguage = () => {
-    const queryLang = parseQueryString().l;
-    const lang = queryLang in supportedLanguages ? queryLang : getStorage('lang') || 'en';
+    const queryLang = parseQueryString().l || getStorage('lang');
+    const lang = queryLang in supportedLanguages ? queryLang : 'en';
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;

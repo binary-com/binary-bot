@@ -1,4 +1,5 @@
 import { translate } from '../../../common/utils/tools';
+import { getRelatedDeriveOrigin } from './utils';
 
 export const supportedLanguages = {
     en: 'English',
@@ -117,35 +118,37 @@ export const currencyNameMap = {
     // },
 };
 
+const related_deriv_origin = getRelatedDeriveOrigin()
+
 export const platforms = [
     {
         title: 'DTrader',
         description: translate('A whole new trading experience on a powerful yet easy to use platform.'),
-        link: 'https://app.deriv.com',
+        link: related_deriv_origin.origin,
         logo: 'image/deriv/brand/ic-brand-dtrader.svg',
     },
     {
         title: 'DBot',
         description: translate('Automated trading at your fingertips. No coding needed.'),
-        link: 'https://app.deriv.com/bot',
+        link: `${related_deriv_origin.origin}/bot`,
         logo: 'image/deriv/brand/ic-brand-dbot.svg',
     },
     {
         title: 'DMT5',
         description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-        link: 'https://app.deriv.com/mt5',
+        link: `${related_deriv_origin.origin}/mt5`,
         logo: 'image/deriv/brand/ic-brand-dmt5.svg',
     },
     {
         title: 'Deriv X',
         description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-        link: 'https://app.deriv.com/derivx',
+        link: `${related_deriv_origin.origin}/derivx`,
         logo: 'image/deriv/brand/ic-brand-dxtrade.svg',
     },
     {
         title: 'SmartTrader',
         description: translate('Trade the world\'s markets with our popular user-friendly platform.'),
-        link: 'https://smarttrader.deriv.com/',
+        link: `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension}/`,
         logo: 'image/deriv/brand/ic-brand-smarttrader.svg',
     },
     {
@@ -153,7 +156,7 @@ export const platforms = [
         description: translate(
             'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'
         ),
-        link: '#',
+        link: '/',
         logo: 'image/deriv/brand/ic-brand-binarybot.svg',
     },
 ];

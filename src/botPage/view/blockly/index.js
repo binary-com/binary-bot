@@ -31,6 +31,8 @@ import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
+import { getActiveAccount } from '../../../common/utils/storageManager';
+import { getRelatedDeriveOrigin } from '../deriv/utils';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -103,26 +105,7 @@ const addBlocklyTranslation = () => {
     });
 };
 
-const onresize = () => {
-    let element = document.getElementById('blocklyArea');
-    const blocklyArea = element;
-    const blocklyDiv = document.getElementById('blocklyDiv');
-    let x = 0;
-    let y = 0;
-    do {
-        x += element.offsetLeft;
-        y += element.offsetTop;
-        element = element.offsetParent;
-    } while (element);
-    // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = `${x}px`;
-    blocklyDiv.style.top = `${y}px`;
-    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
-    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
-};
-
 const render = workspace => () => {
-    onresize();
     Blockly.svgResize(workspace);
 };
 
@@ -226,7 +209,7 @@ export const load = (blockStr, dropEvent = {}) => {
                     text: translate('Take me to DBot'),
                     class: 'button-primary',
                     click() {
-                        window.location.href = 'https://app.deriv.com/bot';
+                        window.location.href = `${getRelatedDeriveOrigin().origin}/bot`;
                     },
                 },
             ],
@@ -423,6 +406,18 @@ export default class _Blockly {
             this.cleanUp();
         });
     }
+
+    resetAccount() {
+        const all_blocks = Blockly?.mainWorkspace?.getAllBlocks();
+        const trade_option_block = all_blocks.find(block => block.type === 'tradeOptions');
+        const currency_field = trade_option_block.getField('CURRENCY_LIST');
+        const active_account = getActiveAccount();
+
+        if (currency_field && active_account) {
+            currency_field.text_ = active_account?.currency;
+            currency_field.render_();
+        }
+    }
     /* eslint-disable class-methods-use-this */
     cleanUp() {
         Blockly.Events.setGroup(true);
@@ -443,14 +438,14 @@ export default class _Blockly {
     }
     /* eslint-disable class-methods-use-this */
     save(arg) {
-        const { filename, collection } = arg;
+        const { file_name, collection } = arg;
 
         saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
 
-        save(filename, collection, xml);
+        save(file_name, collection, xml);
     }
     run(limitations = {}) {
         disableStrayBlocks();

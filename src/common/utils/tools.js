@@ -18,6 +18,15 @@ export const parseQueryString = () => {
     return objURL;
 };
 
+export const getQueryParams = (qs = '') => {
+    if(!qs) return {};
+    const data = {};
+    qs.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+        data[a1] = a3;
+    });
+    return data;
+}
+
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 
 export const getUTCTime = date => {
@@ -79,15 +88,18 @@ export const createUrl = options => {
 };
 
 export const translate = (input, params = []) => {
-    if (params.length) {
-        const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
-        let translatedString = i18nTranslate(stringToBeTranslated);
-        params.forEach((replacement, index) => {
+    if (!params.length) return i18nTranslate(input);
+
+    const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
+    let translatedString = i18nTranslate(stringToBeTranslated);
+
+    params.forEach((replacement, index) => {
+        if (translatedString && typeof translatedString === 'string') {
             translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
-        });
-        return RenderHTML(translatedString);
-    }
-    return i18nTranslate(input);
+        }
+    });
+
+    return RenderHTML(translatedString);
 };
 
 export const getExtension = () => {

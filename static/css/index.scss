@@ -13,28 +13,7 @@ body {
 .top-image {
     display: none;
 }
-#header {
-    height: 81px;
-    width: 100%;
-    background-color: #2a3052;
-    border-top: 2px solid #394171;
-    border-bottom: 4px solid #e98024;
-}
-#header .wrapper,
-#topbar .wrapper {
-    max-width: 960px;
-    margin: 0 auto;
-}
-#topbar {
-    background-color: #15212d;
-    width: 100%;
-    color: #fff;
-    line-height: 1;
-    font-size: 70%;
-    text-align: right;
-    padding: 3px 20px;
-    display: table;
-}
+
 #main {
     width: 100%;
     max-width: 960px;
@@ -64,8 +43,8 @@ ul.bullet {
     position: fixed;
     left: 50%;
     top: 50%;
-    margin-left: -5rem;
     z-index: 9999;
+    transform: translate(-50%, 50%);
 }
 .center {
     text-align: center;
