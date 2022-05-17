@@ -3,6 +3,15 @@ import { observer as globalObserver } from "../../common/utils/observer";
 import { isProduction } from "../../common/utils/tools";
 import { isIOS } from "./osDetect";
 
+const default_errors_to_ignore = [
+  'CallError',
+  'WrongResponse',
+  'GetProposalFailure',
+  'RateLimit',
+  'DisconnectError',
+  'MarketIsClosed',
+];
+
 const log = (type, ...args) => {
   if (type === "warn") {
     console.warn(...args); // eslint-disable-line no-console
@@ -71,7 +80,9 @@ const notifyError = error => {
   notify({ className: "error", message, position: "right" });
 
   if (isProduction()) {
-    TrackJS.track(code || error.error.code);
+    if(!default_errors_to_ignore.includes(code)){
+      TrackJS.track(code);
+    }
   }
 };
 
