@@ -1,5 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
+
+import "slick-carousel/slick/slick.css";
 import { translate } from '../../../common/i18n';
 // import arrow from '../../../../static/image/landing-carousel/arrow.svg'
 
@@ -38,37 +40,35 @@ const Carousel = () => {
 
     const settings = {
         dots: false,
-        infinite: false,
         speed: 300,
-        slidesToShow: 1,
-        centerMode: true,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        // centerMode: true,
         variableWidth: true,
+        // rows: 1,
         // dots: false,
-        // infinite: true,
-        // speed: 1000,
-        // slidesToShow: 1,
-        // slidesToScroll: 1,
+        infinite: true,
         // arrows: true,
         // autoplay: false,
         // autoplaySpeed: 5000,
         // nextArrow: <span className='arrow'><img src='./image/icon.svg' /></span>,
         // prevArrow: <span className='arrow right'><img src='./image/icon.svg' /></span>,
-        // responsive: [
-        //     {
-        //         breakpoint: 1024,
-        //         settings: {
-        //             slidesToShow: 4,
-        //             slidesToScroll: 1,
-        //         },
-        //     },
-        //     {
-        //         breakpoint: 700,
-        //         settings: {
-        //             slidesToShow: 4,
-        //             slidesToScroll: 1,
-        //         },
-        //     },
-        // ],
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 700,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                },
+            },
+        ],
     };
 
     return (

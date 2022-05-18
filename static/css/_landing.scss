@@ -657,6 +657,12 @@ $header-color : #333333;
   transform: translate(0px, -20px);
 }
 
+.arrow-btn:hover { 
+  background: #FFFFFF;
+  color: #FF444F;
+
+}
+
 .slick-card {
   display: flex;
   text-align: center;

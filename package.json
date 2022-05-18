@@ -120,6 +120,7 @@
     "react-render-html": "^0.6.0",
     "react-slick": "^0.29.0",
     "react-transition-group": "^4.0.1",
+    "slick-carousel": "^1.8.1",
     "slick-slider": "^1.8.2"
   }
 }
