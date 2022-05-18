@@ -35,14 +35,15 @@ export default Engine =>
             return new Promise(resolve => {
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
                     const pipSize = this.getPipSize();
-                    const ticksList = ticks.map(o => {
-                        if (toString) {
-                            return o.quote.toFixed(pipSize);
+                    const tickList = ticks.map(tick => {
+                        const tickString = tick.quote.toFixed(pipSize);
+                        if (!toString) {
+                            return parseFloat(tickString);
                         }
-                        return o.quote;
+                        return tickString;
                     });
 
-                    resolve(ticksList);
+                    resolve(tickList);
                 });
             });
         }
@@ -51,6 +52,9 @@ export default Engine =>
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
                     let lastTick = raw ? getLast(ticks) : getLast(ticks).quote;
                     if (toString && !raw) {
+                        if (!toString) {
+                            lastTick = parseFloat(lastTick);
+                        }
                         lastTick = lastTick.toFixed(this.getPipSize());
                     }
                     resolve(lastTick);
@@ -58,14 +62,16 @@ export default Engine =>
             );
         }
         getLastDigit() {
-            return new Promise(resolve => {
-                this.getLastTick().then(tick => resolve(getLastDigit(tick.toFixed(this.getPipSize()))));
-            });
+            return new Promise(resolve => this.getLastTick(false, true).then(tick => resolve(getLastDigit(tick))));
         }
+
         getLastDigitList() {
-            return new Promise(resolve =>
-                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick.toFixed(this.getPipSize())))))
-            );
+            return new Promise(resolve => this.getTicks().then(ticks => resolve(this.getLastDigitsFromList(ticks))));
+        }
+
+        getLastDigitsFromList(ticks) {
+            const digits = ticks.map(tick => getLastDigit(tick.toFixed(this.getPipSize())));
+            return digits;
         }
         checkDirection(dir) {
             return new Promise(resolve =>
