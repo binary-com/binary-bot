@@ -1,0 +1,145 @@
+@import "colors-binary";
+@import "constants-deriv";
+@import "constants";
+@import "theme";
+@import "mixins";
+@import "common";
+@import "inline-icons";
+@import "fonts";
+@import "settings-language";
+@import "devices";
+@import "header";
+@import "footer";
+@import "popover";
+@import "modal";
+
+.header {
+    font-size: $FONT_BASE;
+    font-family: $FONT_STACK;
+}
+.footer {
+    font-size: $FONT_SIZE_XXS;
+    font-family: $FONT_STACK;
+}
+a:hover {
+    text-decoration: none;
+}
+
+// Make summary panel to cover full viewport
+.ui-dialog[aria-describedby="summaryPanel"] {
+  @include mobile {
+    width: 100vw !important;
+    height: auto !important;
+    top: 0;
+    left: 0;
+  }
+}
+
+#summaryPanel {
+    & > div {
+        @include mobile {
+            overflow: scroll;
+        }
+    }
+}
+.ui-dialog {
+    @include mobile {
+        width: 90vw !important;
+    }
+}
+
+.content-row {
+    overflow-x: auto;
+    &-table{
+        overflow-x: auto;
+        @include mobile {
+            width: 760px;
+        }
+    }
+    & > div {
+        overflow: auto !important;
+    }
+    & table {
+        @include mobile {
+            min-width: 760px;
+        }
+        overflow: auto;
+    }
+}
+
+.notifyjs {
+    &-corner {
+        @include mobile {
+            max-width: 90vw;
+        }
+    }
+    &-bootstrap{
+        &-info{
+            @include mobile {
+                white-space: break-spaces !important;
+            }
+        }
+        &-base{
+            @include mobile {
+                background-position: left !important;
+            }
+        }
+    }
+}
+
+.endpoint {
+    padding: 1rem;
+    &__form-container {
+        form {
+            border-radius: 0.5rem;
+            border: 1px solid #bababa;
+            padding: 1rem;
+            input {
+                padding: 0.5rem;
+                border: 1px solid #bababa;
+                min-width: 196px;
+            }
+            button {
+                padding: 0.7rem 1rem;
+            }
+        }
+
+        #details {
+            tbody tr td {
+                border: none;
+
+                &:first-child {
+                    text-align: right;
+                    min-width: 96px;
+                    p {
+                        margin: 0;
+                        margin-top: 0.5rem;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .error {
+            color: $COLOR_RED;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.page-not-found {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    &__inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        text-align: center;
+        p {
+            margin-bottom: 0;
+            margin-top: 0.5rem;
+        }
+    }
+}

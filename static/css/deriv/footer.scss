@@ -1,0 +1,203 @@
+/** @define footer; weak */
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: $FOOTER_HEIGHT;
+    box-sizing: border-box;
+    z-index: 999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+    background: var(--general-main-1);
+    color: var(--text-prominent);
+    border-top: 1px solid var(--general-section-1);
+
+    &--is-disabled {
+        border-top: none;
+
+        &:after {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+    &__links {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: row;
+        height: 100%;
+
+        &--left {
+            margin-right: auto;
+        }
+        /* fix issue with rogue tiny-popover div generated in footer links */
+        div {
+            height: inherit;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+        }
+    }
+    &__link {
+        padding: 0 1.28em;
+        text-decoration: none;
+        height: 100%;
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+
+        &:hover {
+            background: var(--general-hover);
+
+            .footer__icon {
+                @extend %inline-icon;
+            }
+        }
+    }
+    &__icon {
+        width: 1.6em;
+        height: 1.6em;
+        @extend %inline-icon;
+    }
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+@keyframes blinking-network-status {
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/** @define network-status  */
+.network-status {
+    &__wrapper {
+        height: 1.4em;
+        position: relative;
+
+        &--is-mobile {
+            .network-status__circle {
+                margin: 0.2em 0 0.2em -0.2em;
+            }
+        }
+    }
+    &__tooltip {
+        left: unset;
+        text-decoration-line: none;
+    }
+    &__circle {
+        background: var(--general-section-1);
+        width: 1em;
+        height: 1em;
+        margin: 0.2em 1.6em;
+        border-radius: 50%;
+
+        &--online {
+            background: var(--text-profit-success);
+        }
+        &--offline {
+            background: var(--text-loss-danger);
+        }
+        &--blinker {
+            animation: blinking-network-status 0.4s alternate infinite;
+            background: var(--text-profit-success);
+        }
+    }
+}
+
+#language-select {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        background: var(--general-hover);
+    }
+    & img {
+        padding: 0 .8rem;
+    }
+}
+
+/** @define server-time */
+.server-time {
+    display: inline-flex;
+    align-self: center;
+    // margin-right: 1em;
+    padding: 0 1em;
+    // @include typeface(--small-left-normal-black);
+    @include typeface(--small-left-light-black); // normal looks bolder comparing to app.deriv.com
+    color: var(--text-general);
+
+    &--is-mobile {
+        padding: 0 1em 0 0;
+        margin-right: 0;
+    }
+}
+
+/** @define ic-settings */
+.ic-settings {
+    &--active {
+        position: relative;
+        background: var(--state-hover);
+
+        &:after {
+            content: '';
+            height: 0.2em;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: var(--text-prominent);
+        }
+        .ic-settings__icon {
+            @extend %inline-icon, .active;
+            pointer-events: none;
+        }
+    }
+}
+
+/** @define footer-regulatory-information */
+.footer-regulatory-information {
+    padding: 2em;
+
+    p {
+        @include typeface(--paragraph-left-normal-prominent);
+    }
+    &__link {
+        @include typeface(--paragraph-left-bold-prominent);
+        color: var(--brand-red-coral);
+        text-decoration: none;
+    }
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 2.4em;
+    }
+}
+
+/** @define footer-icon-separator */
+.footer-icon-separator {
+    width: 1px;
+    height: 1.6em !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--general-section-1);
+    margin: 0 0.1em;
+}
+.react-tiny-popover-container{
+    z-index: 10000;
+    @include mobile{
+        display: none;
+    }
+}

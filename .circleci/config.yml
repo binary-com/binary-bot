@@ -87,12 +87,12 @@ commands:
       - run:
           name: Building docker image for << parameters.docker_latest_image_tag >>
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/binary-static-bot:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/binary-static-bot:<< parameters.docker_latest_image_tag >> .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-static-bot:<< parameters.docker_image_tag >> -t ${DOCKHUB_ORGANISATION}/deriv-static-bot:<< parameters.docker_latest_image_tag >> .
       - run:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/binary-static-bot
+            docker push ${DOCKHUB_ORGANISATION}/deriv-static-bot
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
@@ -104,7 +104,7 @@ commands:
         default: ${CIRCLE_SHA1}
       k8s_namespace:
         type: string
-        default: "bot-binary-com-staging"
+        default: "bot-deriv-com-staging"
     steps:
       - k8s/install-kubectl
       - run:
@@ -114,7 +114,7 @@ commands:
             git clone https://github.com/binary-com/devops-ci-scripts
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
-            ./release.sh binary-static-bot << parameters.k8s_version >>
+            ./release.sh deriv-static-bot << parameters.k8s_version >>
   test:
     description: "Run test"
     steps:
@@ -127,8 +127,8 @@ commands:
     steps:
       - slack/status:
           include_project_field: false
-          failure_message: "Release failed for binary bot with version *$(cat www/version)*"
-          success_message: "Release succeeded for binary bot with version *$(cat www/version)*"
+          failure_message: "Release failed for deriv bot with version *$(cat www/version)*"
+          success_message: "Release succeeded for deriv bot with version *$(cat www/version)*"
           webhook: ${SLACK_WEBHOOK} 
 jobs:
   test:
@@ -167,7 +167,7 @@ jobs:
           target_branch: "production"
       - k8s_deploy:
           target: "production"
-          k8s_namespace: "bot-binary-com-production"
+          k8s_namespace: "bot-deriv-com-production"
           k8s_version: ${CIRCLE_TAG}
       - notify_slack
 
@@ -184,6 +184,7 @@ workflows:
           filters:
             branches:
               only: /^master$/
+          context: binary-frontend-artifact-upload
       - release_production:
           filters:
             branches:

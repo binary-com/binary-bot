@@ -7,9 +7,12 @@
 @import 'panel';
 @import 'blockly-toolbox';
 @import 'toolbox';
-@import 'reality-check';
 @import 'tour';
-@import 'elevio';
+@import 'error';
+@import 'deriv/index';
+@import 'virtualized';
+@import 'deriv/devices.scss';
+
 
 * {
     box-sizing: border-box;
@@ -44,9 +47,12 @@ body {
     border-radius: 100%;
 }
 
-#contact-us, #server-time, #server-status {
-    margin-right: 3em;
-    margin-top: 0.2em;
+#bot-blockly {
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
+
+    @include mobile {
+        height: calc(100vh - 7.5rem);
+    }
 }
 .blocklyWidgetDiv {
     z-index: 100;
@@ -56,10 +62,11 @@ body {
     position: absolute;
     height: 100%;
     width: 100%;
-}
+    max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$TOOLBOX_HEIGHT});
 
-#blocklyArea {
-    height: 88%;
+    @include mobile {
+        max-height: calc(100vh - 7.5rem);
+    }
 }
 
 #errorArea {
@@ -75,64 +82,16 @@ body {
     }
 }
 
-#center, #workspace_center {
-    position: fixed;
-    width: 1em;
-    height: 1em;
-    top: 50%;
-    left: 50%;
-}
-
 .barspinner {
     position: fixed;
     left: 50%;
     top: 50%;
-    margin-left: -5rem;
     z-index: 9999;
+    transform: translate(-50%, 50%);
 }
 
 .icon-remove:before {
     content: 'X';
-}
-
-#header select,
-#topbar select {
-    color: #000;
-    font-size: 1em;
-}
-
-#header {
-    height: 81px;
-    width: 100%;
-    background-color: $brand-blue;
-    border-top: 2px solid $brand-dark-blue;
-    border-bottom: 4px solid $brand-orange;
-    font-size: 18px;
-    padding: 0 20px;
-    z-index: 0;
-}
-
-#topbar {
-    background-color: $brand-primary-dark;
-    width: 100%;
-    color: $white;
-    line-height: 1;
-    font-size: 70%;
-    text-align: right;
-    padding: 3px 20px;
-    display: table;
-}
-
-#all-accounts.main-nav, #toolbox-all-accounts.main-nav {
-    >li {
-        >ul {
-            width: 165px;
-        }
-    }
-}
-
-.left-header {
-    float: left;
 }
 
 .right-header {
@@ -183,7 +142,8 @@ body {
     background: black;
 }
 
-#stopButton, #summaryStopButton {
+#stopButton,
+#summaryStopButton {
     display: none;
 }
 
@@ -195,10 +155,12 @@ body {
 #select_language {
     top: -3px;
 }
+
 #display_language li {
     cursor: pointer;
     line-height: 0;
 }
+
 #container {
     position: fixed;
     height: calc(100% - 96px);
@@ -228,5 +190,5 @@ label {
 }
 
 .notifyjs-corner {
-    z-index: 998 !important;
+    z-index: 10001 !important;
 }

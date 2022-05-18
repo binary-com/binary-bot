@@ -1,4 +1,5 @@
 {
+  "root": true,
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
@@ -29,7 +30,18 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "import/no-extraneous-dependencies": 0,
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "key-spacing" : 0,
+    "camelcase": 0,
+    "no-param-reassign": 0,
+    "indent": 0,
+    "quotes": 0,
+    "prefer-destructuring": ["error", {
+      "array": false,
+      "object": false
+    }, {
+      "enforceForRenamedProperties": false
+    }]
   },
   "settings": {
     "react": {

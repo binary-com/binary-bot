@@ -1,0 +1,48 @@
+/*
+    Constants
+*/
+$FONT_STACK: 'IBM Plex Sans', sans-serif;
+$BASE_FONT_SIZE: 10px;
+
+/*
+    Variables
+*/
+$FONT_SIZES: (
+    'xheading' 3.2em,
+    'heading' 3em,
+    'large' 2.8em,
+    'title' 1.6em,
+    'paragraph' 1.4em,
+    'small' 1.2em,
+    'xsmall' 1em,
+    'xxsmall' 0.8em,
+    'xxxsmall' 0.6em
+);
+
+$FONT_COLORS: (
+    'active' var(--text-colored-background),
+    'prominent' var(--text-prominent),
+    'black' var(--text-general),
+    'grey' var(--text-less-prominent),
+    'disabled' var(--text-disabled),
+    'green' var(--text-profit-success),
+    'red' var(--text-loss-danger)
+);
+
+$FONT_WEIGHTS: ('bold' 700, 'semibold' 500, 'normal' 400, 'light' 300);
+
+$TEXT_ALIGN: ('center' center, 'left' left, 'right' right);
+
+$LINEHEIGHTS: (
+    'large': 1.75,
+    'medium': 1.5,
+    'small': 1.25,
+    'xsmall': 1.4,
+);
+
+/*
+    List of all typefaces variables in the format: --$FONT_SIZES-$TEXT_ALIGN-$FONT_WEIGHTS-COLORS.
+    See $FONT_SIZES, $TEXT_ALIGN, $FONT_WEIGHTS, $COLORS maps above for references.
+    Variables name example: --title-center-semibold-red
+ */
+$TYPEFACES_LIST: generate-typefaces();

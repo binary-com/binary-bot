@@ -1,11 +1,13 @@
 /* global google,gapi */
 import { getLanguage } from '../lang';
 import { observer as globalObserver } from '../utils/observer';
-import { errLogger, loadExternalScript } from '../utils/tools';
+import { translate, errLogger, loadExternalScript } from '../utils/tools';
 import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import { TrackJSError } from '../../botPage/view/logger';
-import { translate } from '../i18n';
+import store from '../../botPage/view/deriv/store';
+import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
+import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
 
 const getPickerLanguage = () => {
     const language = getLanguage();
@@ -15,60 +17,53 @@ const getPickerLanguage = () => {
 
     return language;
 };
-
 // [TODO]: Refactor to a function or improve it by TS
 class GoogleDriveUtil {
     constructor(
-        clientId = GD_CONFIG.CLIENT_ID,
-        apiKey = GD_CONFIG.API_KEY,
-        appId = GD_CONFIG.APP_ID,
-        apiUrl = GD_CONFIG.API_URL,
-        authScope = GD_CONFIG.AUTH_SCOPE,
+        client_id = GD_CONFIG.CLIENT_ID,
+        api_key = GD_CONFIG.API_KEY,
+        app_id = GD_CONFIG.APP_ID,
+        api_url = GD_CONFIG.API_URL,
+        auth_scope = GD_CONFIG.AUTH_SCOPE,
         scope = GD_CONFIG.SCOPE,
-        discoveryDocs = GD_CONFIG.DISCOVERY_DOCS,
-        botFolder = `Binary Bot - ${translate('Strategies')}`
+        discovery_docs = GD_CONFIG.DISCOVERY_DOCS,
+        bot_folder = `Binary Bot - ${translate('Strategies')}`
     ) {
-        this.clientId = clientId;
-        this.apiKey = apiKey;
-        this.appId = appId;
-        this.apiUrl = apiUrl;
-        this.authScope = authScope;
+        this.client_id = client_id;
+        this.api_key = api_key;
+        this.app_id = app_id;
+        this.api_url = api_url;
+        this.auth_scope = auth_scope;
         this.scope = scope;
-        this.discoveryDocs = discoveryDocs;
-        this.botFolder = botFolder;
+        this.discovery_docs = discovery_docs;
+        this.bot_folder = bot_folder;
         this.auth = null;
-        this.isAuthorized = false;
+        this.is_authorized = false;
         this.profile = null;
         // Fetch Google API script and initialize class fields
-        loadExternalScript(this.apiUrl)
+        loadExternalScript(this.api_url)
             .then(this.init)
             .catch(err => errLogger(err, translate('There was an error loading Google API script.')));
     }
 
     init = () => {
-        gapi.load(this.authScope, {
+        gapi.load(this.auth_scope, {
             callback: () => {
                 gapi.client
                     .init({
-                        apiKey       : this.apiKey,
-                        clientId     : this.clientId,
-                        scope        : this.scope,
-                        discoveryDocs: this.discoveryDocs,
+                        apiKey: this.api_key,
+                        clientId: this.client_id,
+                        scope: this.scope,
+                        discoveryDocs: this.discovery_docs,
                     })
                     .then(
                         () => {
                             this.auth = gapi.auth2.getAuthInstance();
-                            this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
-                            this.updateLoginStatus(this.auth.isSignedIn.get());
-                            globalObserver.emit('googledrive.initialized', true);
-
-                            $('#integrations').removeClass('invisible');
-                            $('#save-google-drive')
-                                .parent()
-                                .removeClass('invisible');
-                            $('#load-google-drive')
-                                .parent()
-                                .removeClass('invisible');
+                            if(this.auth) {
+                                this.auth.isSignedIn.listen(is_logged_in => this.updateLoginStatus(is_logged_in));
+                                this.updateLoginStatus(this.auth.isSignedIn.get());
+                                store.dispatch(setGdReady(true));
+                            }
                         },
                         error => errLogger(error, translate('There was an error initialising Google Drive.'))
                     );
@@ -77,17 +72,17 @@ class GoogleDriveUtil {
         });
     };
 
-    updateLoginStatus(isLoggedIn) {
-        if (isLoggedIn) this.profile = this.auth.currentUser.get().getBasicProfile();
+    updateLoginStatus(is_logged_in) {
+        if (is_logged_in) this.profile = this.auth.currentUser.get().getBasicProfile();
         else this.profile = null;
 
-        globalObserver.emit('googledrive.authorised', isLoggedIn);
-        this.isAuthorized = isLoggedIn;
+        store.dispatch(setGdLoggedIn(is_logged_in));
+        this.is_authorized = is_logged_in;
     }
 
     authorise() {
         return new Promise((resolve, reject) => {
-            if (this.isAuthorized) {
+            if (this.is_authorized) {
                 resolve();
                 return;
             }
@@ -108,18 +103,17 @@ class GoogleDriveUtil {
     }
 
     logout() {
-        if (this.isAuthorized) this.auth.signOut();
+        if (this.is_authorized) this.auth.signOut();
     }
 
     createFilePickerView({
         title,
         afterAuthCallback,
-        mimeType,
+        mime_type,
         pickerCallback,
         generalCallback,
         rejectCallback,
         generalRejectCallback,
-        selectFolderEnabled = true,
     }) {
         this.authorise()
             .then(() => {
@@ -127,8 +121,8 @@ class GoogleDriveUtil {
                     .then(() => {
                         const view = new google.picker.DocsView();
                         view.setIncludeFolders(true)
-                            .setSelectFolderEnabled(selectFolderEnabled)
-                            .setMimeTypes(mimeType);
+                            .setSelectFolderEnabled(true)
+                            .setMimeTypes(mime_type);
 
                         const picker = new google.picker.PickerBuilder();
                         picker
@@ -136,9 +130,9 @@ class GoogleDriveUtil {
                             .setTitle(translate(title))
                             .addView(view)
                             .setLocale(getPickerLanguage())
-                            .setAppId(this.appId)
+                            .setAppId(this.app_id)
                             .setOAuthToken(gapi.auth.getToken().access_token)
-                            .setDeveloperKey(this.apiKey)
+                            .setDeveloperKey(this.api_key)
                             .setCallback(pickerCallback)
                             .build()
                             .setVisible(true);
@@ -154,12 +148,12 @@ class GoogleDriveUtil {
             // eslint-disable-next-line consistent-return
             const userPickedFile = data => {
                 if (data.action === google.picker.Action.PICKED) {
-                    const fileId = data.docs[0].id;
+                    const file_id = data.docs[0].id;
 
                     gapi.client.drive.files
                         .get({
-                            alt     : 'media',
-                            fileId,
+                            alt: 'media',
+                            fileId: file_id,
                             mimeType: 'text/plain',
                         })
                         .then(response => {
@@ -191,12 +185,12 @@ class GoogleDriveUtil {
             };
 
             this.createFilePickerView({
-                title            : translate('Select a Binary Bot strategy'),
+                title: translate('Select a Binary Bot strategy'),
                 afterAuthCallback: gapi.client.drive.files.list,
-                mimeType         : ['text/xml', 'application/xml'],
-                pickerCallback   : userPickedFile,
-                generalCallback  : resolve,
-                rejectCallback   : err => {
+                mime_type: ['text/xml', 'application/xml'],
+                pickerCallback: userPickedFile,
+                generalCallback: resolve,
+                rejectCallback: err => {
                     if (err.status && err.status === 401) this.logout();
 
                     const error = new TrackJSError(
@@ -208,7 +202,6 @@ class GoogleDriveUtil {
                     reject(error);
                 },
                 generalRejectCallback: reject,
-                selectFolderEnabled  : false,
             });
         });
     }
@@ -216,7 +209,7 @@ class GoogleDriveUtil {
     getDefaultFolderId() {
         return new Promise((resolve, reject) => {
             // Avoid duplicate auth flow by checking if user is already authed
-            Promise.all(!this.isAuthorized ? this.authorise : [])
+            Promise.all(!this.is_authorized ? this.authorise : [])
                 .then(() => {
                     // eslint-disable-next-line
                     gapi.client.drive.files.list({ q: 'trashed=false' }).then(response => {
@@ -229,9 +222,9 @@ class GoogleDriveUtil {
                         gapi.client.drive.files
                             .create({
                                 resource: {
-                                    name    : this.botFolder,
+                                    name: this.bot_folder,
                                     mimeType: 'application/vnd.google-apps.folder',
-                                    fields  : 'id',
+                                    fields: 'id',
                                 },
                             })
                             .then(resolve)
@@ -259,17 +252,17 @@ class GoogleDriveUtil {
             // eslint-disable-next-line consistent-return
             const savePickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {
-                    const folderId = data.docs[0].id;
-                    const strategyFile = new Blob([options.content], { type: options.mimeType });
-                    const strategyFileMetadata = JSON.stringify({
-                        name    : options.name,
+                    const folder_id = data.docs[0].id;
+                    const strategy_file = new Blob([options.content], { type: options.mimeType });
+                    const strategy_file_metadata = JSON.stringify({
+                        name: options.name,
                         mimeType: options.mimeType,
-                        parents : [folderId],
+                        parents: [folder_id],
                     });
 
-                    const formData = new FormData();
-                    formData.append('metadata', new Blob([strategyFileMetadata], { type: 'application/json' }));
-                    formData.append('file', strategyFile);
+                    const form_data = new FormData();
+                    form_data.append('metadata', new Blob([strategy_file_metadata], { type: 'application/json' }));
+                    form_data.append('file', strategy_file);
 
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = 'json';
@@ -289,24 +282,24 @@ class GoogleDriveUtil {
                         globalObserver.emit('Error', error);
                         reject(error);
                     };
-                    xhr.send(formData);
+                    xhr.send(form_data);
                     return;
                 }
                 if (data.action === google.picker.Action.CANCEL) reject();
             };
 
             this.createFilePickerView({
-                title                : translate('Select a folder'),
-                afterAuthCallback    : this.getDefaultFolderId.bind(this),
-                mimeType             : 'application/vnd.google-apps.folder',
-                pickerCallback       : savePickerCallback,
-                rejectCallback       : reject,
+                title: translate('Select a folder'),
+                afterAuthCallback: this.getDefaultFolderId.bind(this),
+                mime_type: 'application/vnd.google-apps.folder',
+                pickerCallback: savePickerCallback,
+                rejectCallback: reject,
                 generalRejectCallback: reject,
             });
         });
     }
 }
 
-const googleDriveUtil = new GoogleDriveUtil();
+const google_drive_util = new GoogleDriveUtil();
 
-export default googleDriveUtil;
+export default google_drive_util;

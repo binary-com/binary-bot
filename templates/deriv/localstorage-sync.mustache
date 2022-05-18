@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Deriv</title>
+        <meta charset='utf-8' />
+        <meta name='referrer' content='origin' />
+        <script>
+            window.addEventListener('message', function(message) {
+                var allowed_origins = [
+                    'https://app.deriv.com', 
+                    'https://app.deriv.be', 
+                    'https://app.deriv.me', 
+                    'https://staging-app.deriv.com',
+                    'https://staging-app.deriv.be',
+                    'https://staging-app.deriv.me',
+                ];
+
+                if (allowed_origins.includes(message.origin)) {
+                    switch (message.data.key) {
+                        case 'active_loginid': 
+                        case 'client.accounts': {
+                            if (localStorage.getItem(message.data.key) !== message.data.value) {
+                                localStorage.setItem(message.data.key, message.data.value);
+                            }
+                            break;
+                        }
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

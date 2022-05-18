@@ -1,3 +1,4 @@
+import { TrackJS } from 'trackjs';
 import './customBlockly';
 import blocks from './blocks';
 import {
@@ -30,7 +31,8 @@ import GTM from '../../../common/gtm';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
-import { createError } from '../../common/error';
+import { getActiveAccount } from '../../../common/utils/storageManager';
+import { getRelatedDeriveOrigin } from '../deriv/utils';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -58,15 +60,15 @@ const disposeBlocksWithLoaders = () => {
 
 const marketsWereRemoved = xml => {
     if (!Array.from(xml.children).every(block => !removeUnavailableMarkets(block))) {
-        if (window.trackJs && isProduction()) {
-            trackJs.track('Invalid financial market');
+        if (isProduction()) {
+            TrackJS.track('Invalid financial market');
         }
         showDialog({
-            title  : translate('Warning'),
-            text   : [translate('This strategy is not available in your country.')],
+            title: translate('Warning'),
+            text: [translate('This strategy is not available in your country.')],
             buttons: [
                 {
-                    text : translate('OK'),
+                    text: translate('OK'),
                     class: 'button-primary',
                     click() {
                         $(this).dialog('close');
@@ -103,40 +105,7 @@ const addBlocklyTranslation = () => {
     });
 };
 
-export const onresize = () => {
-    let element = document.getElementById('blocklyArea');
-    const blocklyArea = element;
-    const blocklyDiv = document.getElementById('blocklyDiv');
-    const notificationBanner = globalObserver.getState('showBanner');
-    const injectionDiv = blocklyDiv.firstChild;
-    const blocklyToolboxDiv = injectionDiv.firstChild;
-
-    injectionDiv.style.overflow = 'hidden';
-    blocklyToolboxDiv.style.top = '0';
-    if (notificationBanner && blocklyArea.offsetWidth > 768) {
-        injectionDiv.style.overflow = 'visible';
-        blocklyToolboxDiv.style.top = '-6.2rem';
-    }
-    if (notificationBanner && blocklyArea.offsetWidth < 768) {
-        blocklyToolboxDiv.style.top = '2.2rem';
-    }
-
-    let x = 0;
-    let y = 0;
-    do {
-        x += element.offsetLeft;
-        y += element.offsetTop;
-        element = element.offsetParent;
-    } while (element);
-    // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = `${x}px`;
-    blocklyDiv.style.top = notificationBanner ? `${y + 100}px` : `${y}px`;
-    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
-    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
-};
-
 const render = workspace => () => {
-    onresize();
     Blockly.svgResize(workspace);
 };
 
@@ -146,8 +115,8 @@ const overrideBlocklyDefaultShape = () => {
             // eslint-disable-next-line no-param-reassign, max-len
             block.customContextMenu = function customContextMenu(options) {
                 options.push({
-                    text    : translate('Download'),
-                    enabled : true,
+                    text: translate('Download'),
+                    enabled: true,
                     callback: () => {
                         const xml = Blockly.Xml.textToDom(
                             '<xml xmlns="http://www.w3.org/1999/xhtml" collection="false"></xml>'
@@ -222,11 +191,11 @@ export const load = (blockStr, dropEvent = {}) => {
 
     if (xml.hasAttribute('is_dbot')) {
         showDialog({
-            title  : translate('Unsupported strategy'),
-            text   : [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
+            title: translate('Unsupported strategy'),
+            text: [translate('Sorry, this strategy can’t be used with Binary Bot. You may only use it with DBot.')],
             buttons: [
                 {
-                    text : translate('Cancel'),
+                    text: translate('Cancel'),
                     class: 'button-secondary',
                     click() {
                         $(this).dialog('close');
@@ -234,10 +203,10 @@ export const load = (blockStr, dropEvent = {}) => {
                     },
                 },
                 {
-                    text : translate('Take me to DBot'),
+                    text: translate('Take me to DBot'),
                     class: 'button-primary',
                     click() {
-                        window.location.href = 'https://app.deriv.com/bot';
+                        window.location.href = `${getRelatedDeriveOrigin().origin}/bot`;
                     },
                 },
             ],
@@ -343,7 +312,7 @@ export default class _Blockly {
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
-                    zoom   : {
+                    zoom: {
                         wheel: false,
                     },
                     trashcan: false,
@@ -354,9 +323,9 @@ export default class _Blockly {
                             const block = workspace.getBlockById(id);
                             if (block) {
                                 GTM.pushDataLayer({
-                                    event     : 'Block Event',
+                                    event: 'Block Event',
                                     blockEvent: event.type,
-                                    blockType : block.type,
+                                    blockType: block.type,
                                 });
                             }
                         });
@@ -365,9 +334,9 @@ export default class _Blockly {
                         const blockNodes = dom.getElementsByTagName('block');
                         Array.from(blockNodes).forEach(blockNode => {
                             GTM.pushDataLayer({
-                                event     : 'Block Event',
+                                event: 'Block Event',
                                 blockEvent: event.type,
-                                blockType : blockNode.getAttribute('type'),
+                                blockType: blockNode.getAttribute('type'),
                             });
                         });
                     }
@@ -438,6 +407,18 @@ export default class _Blockly {
             this.cleanUp();
         });
     }
+
+    resetAccount() {
+        const all_blocks = Blockly?.mainWorkspace?.getAllBlocks();
+        const trade_option_block = all_blocks.find(block => block.type === 'tradeOptions');
+        const currency_field = trade_option_block.getField('CURRENCY_LIST');
+        const active_account = getActiveAccount();
+
+        if (currency_field && active_account) {
+            currency_field.text_ = active_account?.currency;
+            currency_field.render_();
+        }
+    }
     /* eslint-disable class-methods-use-this */
     cleanUp() {
         Blockly.Events.setGroup(true);
@@ -458,64 +439,67 @@ export default class _Blockly {
     }
     /* eslint-disable class-methods-use-this */
     save(arg) {
-        const { filename, collection } = arg;
+        const { file_name, collection } = arg;
 
         saveBeforeUnload();
 
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
 
-        save(filename, collection, xml);
+        save(file_name, collection, xml);
     }
     run(limitations = {}) {
         disableStrayBlocks();
         let code;
         try {
             code = `
-var BinaryBotPrivateInit, BinaryBotPrivateStart, BinaryBotPrivateBeforePurchase, BinaryBotPrivateDuringPurchase, BinaryBotPrivateAfterPurchase;
+                var BinaryBotPrivateInit;
+                var BinaryBotPrivateStart;
+                var BinaryBotPrivateBeforePurchase;
+                var BinaryBotPrivateDuringPurchase;
+                var BinaryBotPrivateAfterPurchase;
+                var BinaryBotPrivateLastTickTime;
+                var BinaryBotPrivateTickAnalysisList = [];
 
-var BinaryBotPrivateLastTickTime
-var BinaryBotPrivateTickAnalysisList = [];
+                function BinaryBotPrivateRun(f, arg) {
+                    if (f) return f(arg);
+                    return false;
+                }
 
-function BinaryBotPrivateRun(f, arg) {
- if (f) return f(arg);
- return false;
-}
+                function BinaryBotPrivateTickAnalysis() {
+                    var currentTickTime = Bot.getLastTick(true).epoch
+                    if (currentTickTime === BinaryBotPrivateLastTickTime) {
+                        return
+                    }
+                    BinaryBotPrivateLastTickTime = currentTickTime
+                    for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
+                        BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
+                    }
+                }
 
-function BinaryBotPrivateTickAnalysis() {
- var currentTickTime = Bot.getLastTick(true).epoch
- if (currentTickTime === BinaryBotPrivateLastTickTime) {
-   return
- }
- BinaryBotPrivateLastTickTime = currentTickTime
- for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
-   BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
- }
-}
+                var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
 
-var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
+                ${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
 
-${Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace)}
+                BinaryBotPrivateRun(BinaryBotPrivateInit);
 
-BinaryBotPrivateRun(BinaryBotPrivateInit);
-
-while(true) {
- BinaryBotPrivateTickAnalysis();
- BinaryBotPrivateRun(BinaryBotPrivateStart)
- while(watch('before')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
- }
- while(watch('during')) {
-   BinaryBotPrivateTickAnalysis();
-   BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
- }
- BinaryBotPrivateTickAnalysis();
- if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
-   break;
- }
-}
-       `;
+                while(true) {
+                    BinaryBotPrivateTickAnalysis();
+                    BinaryBotPrivateRun(BinaryBotPrivateStart)
+                    while(watch('before')) {
+                        BinaryBotPrivateTickAnalysis();
+                        BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
+                    }
+                    while(watch('during')) {
+                        BinaryBotPrivateTickAnalysis();
+                        BinaryBotPrivateRun(BinaryBotPrivateDuringPurchase);
+                    }
+                    BinaryBotPrivateTickAnalysis();
+                    if(!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
+                        break;
+                    }
+                }
+            `;
             this.generatedJs = code;
             if (code) {
                 this.stop(true);

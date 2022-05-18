@@ -3,7 +3,7 @@ import AppIdMap from './appIdResolver';
 import { getTokenList } from './utils/storageManager';
 
 const GTM = (() => {
-    const isGtmApplicable = () => Object.values(AppIdMap).includes(`${getAppIdFallback()}`);
+    const isGtmApplicable = () => Object.values(AppIdMap.production).includes(`${getAppIdFallback()}`);
 
     const init = () => {
         if (isGtmApplicable()) {
@@ -24,7 +24,7 @@ const GTM = (() => {
     };
 
     const pushDataLayer = data => {
-        if (isGtmApplicable() && (window?.dataLayer || data.is_elevio)) {
+        if (isGtmApplicable() && window?.dataLayer) {
             window.dataLayer.push({
                 ...data,
             });
