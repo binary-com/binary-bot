@@ -196,8 +196,7 @@ const config = {
       parentBlock: "before_purchase",
       childBlock: "purchase",
     },
-    quick_strategies : ['martingale', 'dalembert'],
-    blocked_countries: ['au'],
+  ]
 };
 
 export async function updateConfigCurrencies() {
