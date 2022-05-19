@@ -649,7 +649,6 @@ $header-color : #333333;
         color: $header-color;
         text-align: center;
         line-height: 2.3rem;
-
       }
       h2 {
         font: 400 1.4rem $font-IBM;
@@ -658,19 +657,28 @@ $header-color : #333333;
       @include for-size(mobile) {
       h1 {
         font: 700 2rem $font-IBM;
-        line-height: 3rem;
+        @include for-size(mobile) {
+          margin-bottom: 1rem;
+        }
       }
       h2 {
-        line-height: 1rem;
+        line-height: 1.625rem;
+        @include for-size(mobile) {
+          margin-bottom: 0.2rem;
+        }
+      }
+      h2:last-child{
+        @include for-size(mobile) {
+          margin-top: 0;
+        }
       }
     }
     }
     &-container{
       display: flex;
-      align-items: center;
       @include for-size(mobile) {
         flex-direction: column;
-
+        align-items: center;
       }
       &-content
       {
@@ -679,13 +687,14 @@ $header-color : #333333;
         margin: 0 1.5rem;
         max-width: 282px;
         max-height: 420px;
-        
+
         @include for-size(mobile) {
           margin-bottom: 1.5rem;
         }
         img{
           width: 100%;
         }  
+       
         h1 {
           font: 700 1.5rem $font-IBM;
           color: $header-color;
