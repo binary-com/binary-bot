@@ -1,16 +1,7 @@
-import { TrackJS } from "trackjs";
-import { observer as globalObserver } from "../../common/utils/observer";
-import { isProduction } from "../../common/utils/tools";
-import { isIOS } from "./osDetect";
-
-const default_errors_to_ignore = [
-  'CallError',
-  'WrongResponse',
-  'GetProposalFailure',
-  'RateLimit',
-  'DisconnectError',
-  'MarketIsClosed',
-];
+import { observer as globalObserver } from '../../common/utils/observer';
+import { getToken } from '../../common/utils/storageManager';
+import { isProduction } from '../../common/utils/tools';
+import { isIOS } from './osDetect';
 
 const log = (type, ...args) => {
   if (type === "warn") {
@@ -28,14 +19,19 @@ const log = (type, ...args) => {
 const notify = ({ className, message, position = "left", sound = "silent" }) => {
   log(className, message);
 
-  // TODO: remove jquery dependency
-  $.notify(message.toString(), { position: `bottom ${position}`, className });
-
-  if (sound !== "silent" && !isIOS()) {
-    const audio = document.getElementById(sound);
-    if(!audio && !audio.play) return;
-    audio.play().catch(() => { });
-  }
+    $.notify(message.toString(), { position: `bottom ${position}`, className });
+    if (sound !== 'silent' && !isIOS()) {
+        const playPromise = $(`#${sound}`)
+            .get(0)
+            .play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    sound.pause();
+                })
+                .catch(() => {});
+        }
+    }
 };
 
 export class TrackJSError extends Error {

@@ -1,5 +1,7 @@
 @import 'color';
 @import 'chart';
+@import 'notification-banner';
+@import 'moving-banner';
 @import 'dbot-banner';
 @import 'fontello';
 @import 'panel';
@@ -52,6 +54,9 @@ body {
         height: calc(100vh - 7.5rem);
     }
 }
+.blocklyWidgetDiv {
+    z-index: 100;
+}
 
 #blocklyDiv {
     position: absolute;
@@ -62,6 +67,13 @@ body {
     @include mobile {
         max-height: calc(100vh - 7.5rem);
     }
+}
+
+#errorArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 84px);
 }
 
 @media only screen and (max-height: 723px) {
@@ -178,5 +190,5 @@ label {
 }
 
 .notifyjs-corner {
-    z-index: 10001 !important;
+    z-index: 998 !important;
 }

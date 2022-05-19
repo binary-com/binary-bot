@@ -24,7 +24,7 @@ const GTM = (() => {
     };
 
     const pushDataLayer = data => {
-        if (isGtmApplicable() && window?.dataLayer) {
+        if (isGtmApplicable() && (window?.dataLayer || data.is_elevio)) {
             window.dataLayer.push({
                 ...data,
             });

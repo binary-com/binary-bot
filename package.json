@@ -53,9 +53,9 @@
     "chai": "^4.3.4",
     "coveralls": "^3.1.1",
     "deep-diff": "^1.0.2",
-    "del": "^6.0.0",
+    "del": "^4.1.1",
     "dotenv-webpack": "^7.0.3",
-    "es6-plato": "^1.2.3",
+    "es6-plato": "^1.2.2",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-binary": "^1.0.2",
@@ -125,8 +125,7 @@
     "react-content-loader": "^6.1.0",
     "react-redux": "^7.2.6",
     "react-render-html": "^0.6.0",
-    "react-router-dom": "^5.3.0",
-    "react-tiny-popover": "^7.0.1",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.0.1",
+    "@deriv/deriv-charts": "0.3.43"
   }
 }
