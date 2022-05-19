@@ -13,25 +13,32 @@ export const symbolPromise = new Promise(resolve => {
   });
 });
 
-export const ticksService = new TicksService(api);
+export const ticksService = new TicksService(generateLiveApiInstance());
 
-export const appendRow = (trade, state, isDesc=false) => ({
-  id: state.id + 1,
-  rows: isDesc ?
-    [
-      {
-        ...trade,
-        id: state.id + 1,
-      },
-      ...state.rows,
-    ]
-    : [
-        ...state.rows,
-        {
-          ...trade,
-          id: state.id + 1,
-        },
-      ],
+export const createScope = () => {
+    const api = generateLiveApiInstance();
+    const observer = new Observer();
+
+    return { observer, api, ticksService, symbolApi };
+};
+
+export const appendRow = (trade, state, isDesc = false) => ({
+    id  : state.id + 1,
+    rows: isDesc
+        ? [
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+            ...state.rows,
+        ]
+        : [
+            ...state.rows,
+            {
+                ...trade,
+                id: state.id + 1,
+            },
+        ],
 });
 
 export const updateRow = (prevRowIndex, trade, state) => ({

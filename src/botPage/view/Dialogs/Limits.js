@@ -1,11 +1,12 @@
-import DerivAPIBasic from "@deriv/deriv-api/dist/DerivAPIBasic";
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import Dialog from "./Dialog";
-import { restrictInputCharacter } from "../shared";
-import * as style from "../style";
-import { getToken } from "../../../common/utils/storageManager";
-import { showSpinnerInButton, removeSpinnerInButton, createUrl, translate } from "../../../common/utils/tools";
+import { LiveApi } from 'binary-live-api';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Dialog from './Dialog';
+import { restrictInputCharacter } from '../shared';
+import * as style from '../style';
+import { getToken } from '../../../common/utils/storageManager';
+import { showSpinnerInButton, removeSpinnerInButton, createUrl } from '../../../common/utils/tools';
+import { translate } from '../../../common/i18n';
 
 class LimitsContent extends PureComponent {
   constructor() {

@@ -2,6 +2,7 @@
 @import 'constants';
 @import 'dbot-banner';
 @import 'footer';
+@import 'notification-banner';
 
 html,
 body {
@@ -69,6 +70,9 @@ ul.bullet {
     .puzzle-logo {
         padding-left: 20px;
     }
+}
+#select_language {
+    z-index: 101;
 }
 
 /* Keep this below since css after this 

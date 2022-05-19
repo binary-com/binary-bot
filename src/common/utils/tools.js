@@ -1,6 +1,3 @@
-import RenderHTML from 'react-render-html';
-import { TrackJS } from 'trackjs';
-import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
 
@@ -87,21 +84,6 @@ export const createUrl = options => {
     return `https://${subdomain}binary.com${language}${path}${htmlExtension}`;
 };
 
-export const translate = (input, params = []) => {
-    if (!params.length) return i18nTranslate(input);
-
-    const stringToBeTranslated = input.replace(/\{\$({0-9])\}/gi, '%$1');
-    let translatedString = i18nTranslate(stringToBeTranslated);
-
-    params.forEach((replacement, index) => {
-        if (translatedString && typeof translatedString === 'string') {
-            translatedString = translatedString.replaceAll(`\{\$${index}\}`, replacement);
-        }
-    });
-
-    return RenderHTML(translatedString);
-};
-
 export const getExtension = () => {
     const host = document.location.hostname;
     const extension = host.split('.').slice(-1)[0];
@@ -125,10 +107,6 @@ export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
 };
 
-export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
-
-export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;
-
 export const loadExternalScript = (src, async = true, defer = true) =>
     new Promise((resolve, reject) => {
         const script = document.createElement('script');
@@ -138,8 +116,8 @@ export const loadExternalScript = (src, async = true, defer = true) =>
         script.onerror = reject;
 
         function handleLoad() {
-            const load_state = this.readyState;
-            if (load_state && !/loaded|complete/.test(load_state)) return;
+            const loadState = this.readyState;
+            if (loadState && !/loaded|complete/.test(loadState)) return;
 
             script.onload = null;
             script.onreadystatechange = null;
@@ -153,8 +131,7 @@ export const loadExternalScript = (src, async = true, defer = true) =>
     });
 
 export const errLogger = (err, msg) => {
-    const err_str = JSON.stringify(err);
-    const err_msg = `${msg} - Error: ${err_str}`;
-    console.warn(err_msg);
-    if (isProduction()) TrackJS.track(err_msg);
+    const errStr = JSON.stringify(err);
+    const errMsg = `${msg} - Error: ${errStr}`;
+    console.warn(errMsg);
 };

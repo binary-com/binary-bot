@@ -36,9 +36,13 @@ const Logtable = () => {
         };
     }, [rows]);
 
-    const exportLogs = () => {
-        const json2csvParser = new Parser({
-            fields: ['timestamp', 'message'],
+        globalObserver.register('bot.notify', log => {
+            if (log) {
+                if (!Object.keys(log).length) {
+                    return;
+                }
+                this.setState(appendRow(log, this.state, true));
+            }
         });
         const data = json2csvParser.parse(rows);
 

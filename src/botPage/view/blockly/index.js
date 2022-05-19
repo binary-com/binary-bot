@@ -23,16 +23,15 @@ import {
 } from './utils';
 import Interpreter from '../../bot/Interpreter';
 import { translate, xml as translateXml } from '../../../common/i18n';
+import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { getLanguage } from '../../../common/lang';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString, isProduction } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';
-import { getActiveAccount } from '../../../common/utils/storageManager';
-import { getRelatedDeriveOrigin } from '../deriv/utils';
+import { createError } from '../../common/error';
 
 const disableStrayBlocks = () => {
     const topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -103,6 +102,38 @@ const addBlocklyTranslation = () => {
     return new Promise(resolve => {
         $.getScript(`translations/${lang}.js`, resolve);
     });
+};
+
+export const onresize = () => {
+    let element = document.getElementById('blocklyArea');
+    const blocklyArea = element;
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    const notificationBanner = globalObserver.getState('showBanner');
+    const injectionDiv = blocklyDiv.firstChild;
+    const blocklyToolboxDiv = injectionDiv.firstChild;
+
+    injectionDiv.style.overflow = 'hidden';
+    blocklyToolboxDiv.style.top = '0';
+    if (notificationBanner && blocklyArea.offsetWidth > 768) {
+        injectionDiv.style.overflow = 'visible';
+        blocklyToolboxDiv.style.top = '-6.2rem';
+    }
+    if (notificationBanner && blocklyArea.offsetWidth < 768) {
+        blocklyToolboxDiv.style.top = '2.2rem';
+    }
+
+    let x = 0;
+    let y = 0;
+    do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+    } while (element);
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.left = `${x}px`;
+    blocklyDiv.style.top = notificationBanner ? `${y + 100}px` : `${y}px`;
+    blocklyDiv.style.width = `${blocklyArea.offsetWidth}px`;
+    blocklyDiv.style.height = `${blocklyArea.offsetHeight}px`;
 };
 
 const render = workspace => () => {
@@ -184,10 +215,7 @@ export const load = (blockStr, dropEvent = {}) => {
     const blocklyXml = xml.querySelectorAll('block');
 
     if (!blocklyXml.length) {
-        const error = new TrackJSError(
-            'FileLoad',
-            translate('XML file contains unsupported elements. Please check or modify file.')
-        );
+        const error = createError('EmptyXML', translate('XML file is empty. Please check or modify file.'));
         globalObserver.emit('Error', error);
         return;
     }
@@ -219,18 +247,22 @@ export const load = (blockStr, dropEvent = {}) => {
         return;
     }
 
-    blocklyXml.forEach(block => {
-        const blockType = block.getAttribute('type');
-
-        if (!Object.keys(Blockly.Blocks).includes(blockType)) {
-            const error = new TrackJSError(
-                'FileLoad',
-                translate('XML file contains unsupported elements. Please check or modify file.')
-            );
-            globalObserver.emit('Error', error);
-            throw error;
-        }
-    });
+    const blockWithError = Array.from(blocklyXml).find(
+        block => !Object.keys(Blockly.Blocks).includes(block.getAttribute('type'))
+    );
+    if (blockWithError) {
+        globalObserver.emit(
+            'Error',
+            createError(
+                'InvalidBlockInXML',
+                translate(
+                    'The file you’re trying to open contains unsupported elements in the following block: {$0} Please check your file and try again.',
+                    [blockWithError.getAttribute('id')]
+                )
+            )
+        );
+        return;
+    }
 
     removeParam('strategy');
 

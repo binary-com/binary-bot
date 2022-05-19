@@ -173,9 +173,9 @@ export const deleteBlockIfExists = block => {
 export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = false;
     if (block.inputList instanceof Array) {
-        Array.from(block.inputList).forEach(input => {
-            if (input?.fieldRow?.length) {
-                input.fieldRow.forEach(field => {
+        Array.from(block.inputList).forEach(inp => {
+            if (inp?.fieldRow?.length) {
+                inp.fieldRow.forEach(field => {
                     if (field instanceof Blockly.FieldLabel) {
                         const svgElement = field.getSvgRoot();
                         if (svgElement) {
@@ -251,12 +251,12 @@ export const getUnattachedMandatoryPairs = () => {
 export const findTopParentBlock = b => {
     let block = b;
     // eslint-disable-next-line no-underscore-dangle
-    let pblock = block.parentBlock_;
+    let pblock = block?.parentBlock_;
     if (pblock === null) {
         return null;
     }
     while (pblock !== null) {
-        if (pblock.type === 'trade') {
+        if (pblock?.type === 'trade') {
             return pblock;
         }
         block = pblock;
