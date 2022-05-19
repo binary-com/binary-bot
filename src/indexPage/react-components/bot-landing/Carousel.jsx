@@ -74,20 +74,19 @@ const Carousel = () => {
     };
 
     return (
-        <div className="">
+        <div className="carousel_section">
 
             <Slider {...settings}>
                 {carouselContentArray.map((slide, index) => {
                     const { url, action_text, img } = slide;
                     return (
-                        <div className="slide_card">
-                            <img className="slide_img" src={img} />
+                        <div className="carousel_section__slide_card">
+                            <img className="carousel_section__slide_img" src={img} />
                             <a href={url} target="_blank">
-                                <button className="arrow-btn">
-                                    <div className="btn_inner">
+                                <button className="carousel_section__arrow-btn">
+                                    <div className="carousel_section__btn_inner">
                                         {action_text}
                                         <img src={`image/landing-carousel/arrow.svg`} />
-
                                     </div>
                                 </button>
                             </a>
