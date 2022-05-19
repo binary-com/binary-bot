@@ -14,7 +14,7 @@ jobs:
               uses: binary-com/vercel-preview-url-action@v1.0.5
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - name: Generate Binary App ID for deployment Preview URL
+            - name: Generate Binary Bot App ID for deployment Preview URL
               id: generate_app_id
               uses: DerivFE/binary-app-id-action@master
               with:
@@ -34,11 +34,11 @@ jobs:
                   message: |
                       A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
 
-                      - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                      - **URLs**:
-                          - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}/en/logged_inws.html?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
-                          - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}/en/logged_inws.html
-                      - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+                        - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+                        - **URLs**:
+                            - **Redirect URL**: https://oauth.binary.com/oauth2/authorize?app_id=${{ steps.generate_app_id.outputs.app_id }}&l=EN
+                            - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+                        - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
 
                       <details>
                         <summary>Click here to copy & paste above information.</summary>
@@ -46,8 +46,8 @@ jobs:
                         ```
                         - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
                         - **URLs**:
-                            - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}/en/logged_inws.html?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
-                            - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}/en/logged_inws.html
+                            - **Redirect URL**: https://oauth.binary.com/oauth2/authorize?app_id=${{ steps.generate_app_id.outputs.app_id }}&l=EN
+                            - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
                         - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
                         ```
                       </details>
