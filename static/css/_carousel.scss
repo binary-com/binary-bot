@@ -1,8 +1,74 @@
+.carousel-title {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    &__content {
+        max-width: 992px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 80px;
+        margin-bottom: 40px;
+        font: 700 3rem $font-IBM;
+        line-height: 4rem;
+        color: $header-color;
+
+        @include for-size(mobile) {
+            font: 700 1.5rem $font-IBM;
+            text-align: center;
+            padding: 0 2rem;
+        }
+    }
+}
+
 .carousel_section {
 
-    
+    &__desktop {
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+
+    &__mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @media (min-width: 768px) {
+            display: none;
+        }
+    }
+
+    &__content {
+        max-width: 996px;
+        display: flex;
+        justify-content: center;
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font: 700 3rem $font-IBM;
+            line-height: 4rem;
+            color: $header-color;
+
+            @include for-size(mobile) {
+                font: 700 1.5rem $font-IBM;
+                text-align: center;
+                padding: 0 2rem;
+            }
+        }
+
+    }
+
     &__slide_img {
         max-width: 384px;
+
+        @include for-size(mobile) {
+            max-width: 318px;
+            
+        }
     }
 
     &__arrow-btn {
@@ -35,11 +101,17 @@
         display: flex;
         gap: 8px;
     }
-
-
 }
 
-    
+.carousel_section__mobile .carousel_section__slide_card {
+    flex-direction: column;
+    max-width: 328px;
+    max-height: 418px;
+    display: flex;
+    text-align: center;
+    outline: none;
+}
+
 .carousel_section .slick-slide {
     max-width: 384px;
 }

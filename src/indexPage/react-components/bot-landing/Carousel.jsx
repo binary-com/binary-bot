@@ -47,10 +47,12 @@ const Carousel = () => {
         dots: false,
         infinite: true,
         speed: 300,
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
         arrows: false,
-        initialSlide: 1,
+        variableWidth: true,
+
+        // initialSlide: 1,
         // autoplay: true,
         // autoplaySpeed: 5000,
         // nextArrow: <span className='arrow'><img src='./image/icon.svg' /></span>,
@@ -75,56 +77,46 @@ const Carousel = () => {
 
     return (
         <div className="carousel_section">
-
-            <Slider {...settings}>
-                {carouselContentArray.map((slide, index) => {
-                    const { url, action_text, img } = slide;
-                    return (
-                        <div className="carousel_section__slide_card">
-                            <img className="carousel_section__slide_img" src={img} />
-                            <a href={url} target="_blank">
-                                <button className="carousel_section__arrow-btn">
-                                    <div className="carousel_section__btn_inner">
-                                        {action_text}
-                                        <img src={`image/landing-carousel/arrow.svg`} />
-                                    </div>
-                                </button>
-                            </a>
-                        </div>
-                    )
-                }
-                )}
-            </Slider>
-            {/* <Slider {...settings}>
-                {carouselContentArray.map((slide, index) => {
-                    const { title, content, action_text, img } = slide;
-                    return (
-                        <section className='landing_carousel' key={index}>
-                            <div className='landing_carousel_content'>
-                                <h1>{title}</h1>
-                                <h2>{content}</h2>
-                                <a href="https://bot.deriv.com" target="_blank">
-                                    <button className="l-btn danger">{action_text}</button>
+            <div className="carousel_section__desktop">
+                <Slider {...settings}>
+                    {carouselContentArray.map((slide, index) => {
+                        const { url, action_text, img } = slide;
+                        return (
+                            <div className="carousel_section__slide_card">
+                                <img className="carousel_section__slide_img" src={img} />
+                                <a href={url} target="_blank">
+                                    <button className="carousel_section__arrow-btn">
+                                        <div className="carousel_section__btn_inner">
+                                            {action_text}
+                                            <img src={`image/landing-carousel/arrow.svg`} />
+                                        </div>
+                                    </button>
                                 </a>
                             </div>
-                            <div className='landing_carousel_placeholder'>
-                                <div className="bot-gif-placeholder">
-                                    <div className="bot-gif-placeholder__background">
-                                        <img src={img} />
-                                        <div className="bot-gif-placeholder__background__overlay">
-                                            <video autoPlay muted loop>
-                                                <source src={img} type="video/mp4" />
-                                                <source src={img} type="video/ogg" />
-                                            </video>
+                        )
+                    }
+                    )}
+                </Slider>
+            </div>
+            <div className="carousel_section__mobile">
+                    {carouselContentArray.map((slide, index) => {
+                        const { url, action_text, img } = slide;
+                        return (
+                            <div className="carousel_section__slide_card">
+                                <img className="carousel_section__slide_img" src={img} />
+                                <a href={url} target="_blank">
+                                    <button className="carousel_section__arrow-btn">
+                                        <div className="carousel_section__btn_inner">
+                                            {action_text}
+                                            <img src={`image/landing-carousel/arrow.svg`} />
                                         </div>
-                                    </div>
-                                </div>
+                                    </button>
+                                </a>
                             </div>
-                        </section>
-                    )
-                }
-                )}
-            </Slider> */}
+                        )
+                    }
+                    )}
+            </div>
         </div>
     );
 }
