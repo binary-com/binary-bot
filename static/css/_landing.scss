@@ -484,8 +484,8 @@ $header-color : #333333;
 
     &-placeholder {
       @include for-size(mobile) {
-        background: url('../image/pattern.png') no-repeat right;
-        background-size: 65% 100%;
+        background: url('../image/Dont_Wait_Mobile.png') no-repeat right;
+        background-size: 100% 100%;
         min-height: 28.125rem;
       }
 
