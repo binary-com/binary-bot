@@ -6,12 +6,14 @@ import CardSection from './Card.jsx';
 import WaitSection from './WaitSection.jsx';
 import ChooseSection from './ChooseSection.jsx';
 import Footer from './Footer.jsx';
+import CarouselTitle from './CarouselTitle.jsx';
 
 // eslint-disable-next-line arrow-body-style
 const BotLanding = () => (
     <div>
         <Hero />
         <SwitchSection />
+        <CarouselTitle />
         <Carousel />
         <ChooseSection />
         <CardSection />
