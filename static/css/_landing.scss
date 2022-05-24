@@ -462,7 +462,7 @@ $header-color : #333333;
 
 .wait-wrapper {
   background: url('../image/pattern.png') no-repeat right;
-  background-size: 65% 100%;
+  background-size: 60% 100%;
   min-height: 18.75rem;
   position: relative;
 
@@ -499,23 +499,50 @@ $header-color : #333333;
     }
 
     &-placeholder {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 300px;
+      height: 300px;
+      h1{
+        font: 700 2rem $font-IBM;
+        color:#fff
+      }
       @include for-size(mobile) {
-        background: url('../image/pattern.png') no-repeat right;
-        background-size: 65% 100%;
+        background: url('../image/Dont_Wait_Mobile.png') no-repeat right;
+        background-size: 100% 100%;
         min-height: 28.125rem;
+        width: unset;
+        height: unset;
+        padding: 1rem;
+        flex-direction: column;
       }
 
       img {
-          position: absolute;
-          right: 20%;
-          bottom: 0;
+        position: absolute;
+        right: 36%;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
 
         @include for-size(mobile) {
-          bottom: 0;
-          left: 0;
-          right: 0;
-          top: unset;
-          margin: 0 auto;
+          position: unset;
+          width: 100%;
+          height: unset;
+        }
+      }
+      &-desktop {
+        display: block;
+        padding-top: 2rem;
+        @include for-size(mobile) {
+          display: none;
+        }
+
+      }
+      &-mobile {
+        display: none;
+        @include for-size(mobile) {
+          display: block;
         }
       }
     }
