@@ -372,6 +372,11 @@ $header-color : #333333;
     &-left {
       padding-right: 0;
     }
+
+    &_btn {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 

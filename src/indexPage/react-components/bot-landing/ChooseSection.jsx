@@ -64,7 +64,11 @@ const ChooseSection = () => (
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div className="choose-wrapper-inner_btn">
+                    <a href="http://deriv.com/">
+                        <button className="l-btn danger">{translate('Explore Deriv now')}</button>
+                    </a>
             </div>
         </div>
     </section>
