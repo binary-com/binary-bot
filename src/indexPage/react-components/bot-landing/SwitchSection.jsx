@@ -14,7 +14,7 @@ const SwitchSection = () => (
                     {translate('Just log in using your Binary.com credentials. No sign-up needed.')}
                 </h2>
                 <div className="btn-group">
-                    <a href="http://deriv.com/">
+                    <a href="https://deriv.com/">
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
                     <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
