@@ -287,9 +287,13 @@ $header-color : #333333;
 }
 
 .choose-wrapper {
-      background: #F2F3F4;
+
   &-inner {
     padding: 3rem 0;
+
+    &-description {
+      max-width: 406px;
+    }
 
     &-title {
       color: $header-color;
@@ -297,6 +301,10 @@ $header-color : #333333;
       font: 700 2rem $font-IBM;
       line-height: 2rem;
       margin-bottom: 4rem;
+
+      @include for-size(mobile) {
+        margin-bottom: 1.5rem;
+      }
     }
 
     &-section-content {
@@ -325,9 +333,10 @@ $header-color : #333333;
       &-content {
         display: flex;
         margin-right: 2rem;
-        min-height: 11.25rem;
+        min-height: 108px;
         margin-bottom: 1rem;
         @include for-size(mobile) {
+          margin-right: 1rem;
           min-height: unset;
           margin-bottom: 1.3rem;
         }
@@ -336,14 +345,16 @@ $header-color : #333333;
           margin-top: 0;
           font: 700 1.6rem $font-IBM;
           color: $header-color;
+          margin-bottom: 8px;
           @include for-size(mobile) {
             font: 700 1.3rem $font-IBM;
-            margin-bottom: 0;
+            margin-bottom: 8px;
           }
         }
 
         h2 {
-          font: 400 1.2rem $font-IBM;
+          margin-top: 0;
+          font: 400 1rem $font-IBM;
           color: $header-color;
 
           @include for-size(mobile) {
@@ -360,6 +371,11 @@ $header-color : #333333;
     
     &-left {
       padding-right: 0;
+    }
+
+    &_btn {
+      display: flex;
+      justify-content: center;
     }
   }
 }
