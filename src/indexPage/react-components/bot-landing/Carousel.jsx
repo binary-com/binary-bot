@@ -51,12 +51,9 @@ const Carousel = () => {
         slidesToScroll: 1,
         arrows: false,
         variableWidth: true,
-
         // initialSlide: 1,
-        // autoplay: true,
-        // autoplaySpeed: 5000,
-        // nextArrow: <span className='arrow'><img src='./image/icon.svg' /></span>,
-        // prevArrow: <span className='arrow right'><img src='./image/icon.svg' /></span>,
+        autoplay: true,
+        autoplaySpeed: 1500,
         responsive: [
             {
                 breakpoint: 1024,
