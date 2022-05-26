@@ -16,7 +16,7 @@ import BotLanding from './react-components/bot-landing';
 const today = new Date().getTime();
 const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
 
-const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
+const elements = ['#notification-banner', '#main', '#footer', '#header'];
 const temp = getStorage('movetoderiv');
 const renderBanner = () => {
     ReactDOM.render(<BotLanding />, document.getElementById('movetoderiv'));
@@ -62,13 +62,13 @@ const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
     loadLang();
+    $('.show-on-load').show();
     if (temp) {
         if (getTokenList().length) {
             window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
             document.getElementById('bot-main').classList.remove('hidden');
         } else {
             oauthLogin(() => {
-                $('.show-on-load').show();
                 $('.barspinner').hide();
                 renderElements();
                 GTM.init();
