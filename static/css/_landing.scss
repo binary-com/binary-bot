@@ -21,6 +21,41 @@ $header-color : #333333;
   }
 }
 
+
+.navigation {
+  display: block;
+  @include for-size(mobile) {
+    display: none;
+  }
+  background: transparent;
+
+  &-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
+    max-width: 1440px;
+    margin: 0px auto;
+  }
+
+
+ 
+  &-logo {
+    width: 138px;
+
+    img{
+      width: 100%;
+    }
+
+  }
+  .r-btn{
+    padding: 10px 16px;
+    font: 700 0.9rem $font-IBM;
+    text-transform: none;
+    border-radius: 6px;
+  }
+}
+
 .section-container {
   padding: 0 2rem;
   margin: 0 auto;
@@ -28,10 +63,14 @@ $header-color : #333333;
 }
 
 .hero {
-  background: $hero-BG url(../image/BG-1.webp) no-repeat;
+  margin-top: -110px;
+  @include for-size(mobile) {
+    margin-top: unset;
+  }
+  background: $hero-BG url(../image/hero_desktop.png) no-repeat;
   background-size: cover;
   @include for-size(mobile) {
-      background: $hero-BG url(../image/MBG1.png) no-repeat;
+      background: $hero-BG url(../image/hero_mobile.png) no-repeat;
       background-size: cover;
   }
   &-inner {
@@ -77,6 +116,9 @@ $header-color : #333333;
           margin: 0 0 2.5rem 0;
         }
       }
+      &-subheader {
+        margin-top: 2.3rem;
+      }
     }
 
     &__placeholder {
@@ -93,6 +135,23 @@ $header-color : #333333;
         @include for-size(mobile) {
           object-fit: contain;
           width: 100%;
+        }
+      }
+      &-inner {
+        width: 600px !important;
+        @include for-size(mobile) {
+          width: 300px !important;
+        }
+
+      }
+      &-image-container {
+        width: 600px !important;
+        @include for-size(mobile) {
+          width: 300px !important;
+        }
+        img {
+            width    : 100% !important;
+            object-fit : 'cover' !important;
         }
       }
     }
