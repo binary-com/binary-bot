@@ -1,4 +1,5 @@
 import React from 'react';
+import MoveToDerivNav from './Navigation.jsx';
 import Hero from './Hero.jsx';
 import SwitchSection from './SwitchSection.jsx';
 import Carousel from './Carousel.jsx';
@@ -12,6 +13,7 @@ import TakeDeriv from './TakeDeriv.jsx';
 // eslint-disable-next-line arrow-body-style
 const BotLanding = () => (
     <div>
+        <MoveToDerivNav />
         <Hero />
         <SwitchSection />
         <CarouselTitle />

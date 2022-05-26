@@ -1,32 +1,92 @@
 import React from 'react'
+import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
 
-const Hero = () => (
-    <section className="hero">
-        <div className="hero-inner section-container">
+const carouselImageArray = [
+    {
+        img: 'image/hero-dmt5.png',
+    },
+    {
+        img: 'image/hero-dtrader.png',
+    },
+]
 
-            <div className="hero-inner__content">
-                <h1>{translate('Binary Bot has a new home')}</h1>
-                <h2>
-                    {translate('We’ve been Binary.com for 2 decades and it’s time for an exciting new chapter. Your favourite bot builder, Binary Bot, is now on Deriv, our new home. Come take a peek.')}
-                </h2>
-                <div className="btn-group">
-                    <a href="https://bot.deriv.com" target="_blank">
-                        <button className="l-btn primary">{translate('Take me to Deriv')}</button>
+const Hero = () => {
+    const settings = {
+        dots          : false,
+        infinite      : true,
+        speed         : 1000,
+        slidesToShow  : 1,
+        slidesToScroll: 1,
+        arrows        : false,
+        autoplay      : true,
+        autoplaySpeed : 3000,
+        responsive    : [
+            {
+                breakpoint: 1024,
+                settings  : {
+                    slidesToShow  : 1,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 700,
+                settings  : {
+                    slidesToShow  : 1,
+                    slidesToScroll: 1,
+                },
+            },
+        ],
+    };
+    return (
+        <section className="hero">
+            <div className="hero-inner section-container">
+
+                <div className="hero-inner__content">
+                    <h1>{translate('We’re moving!')}</h1>
+                    <h2>
+                        {translate('We’ve been Binary.com for 2 decades and it’s time for an exciting new chapter.')}
+                    </h2>
+                    <div className='hero-inner_content-subheader'>
+                        <h2>{translate('Say hello to our new home,')}<b>{translate(' Deriv.')}</b>
+                        </h2>
+                    </div>
+                    <div className="btn-group">
+                        <a href="https://deriv.com" target="_blank">
+                            <button className="l-btn primary">{translate('Hello Deriv!')}</button>
+                        </a>
+                        <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
+                            <button className="l-btn">{translate('Maybe later')}</button>
+                        </a>
+                    </div>
+                </div>
+                <div className="hero-inner__placeholder">
+                    <a href=''>
+                        <img className='hero-inner__binary_logo' src="image/binary.svg" />
                     </a>
-                    <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
-                        <button className="l-btn">{translate('Maybe later')}</button>
-                    </a>
+                    <div className="hero-inner__placeholder-inner">
+                        <Slider {...settings}>
+                            {carouselImageArray.map((slide, index) => {
+                                const { img } = slide;
+                                return (
+                                    <div>
+                                        <div className='hero-inner__placeholder-image-container'>
+                                            <img
+                                                className="hero-inner__slide_img"
+                                                key={index}
+                                                src={img}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            )}
+                        </Slider>
+                    </div>
                 </div>
             </div>
-            <div className="hero-inner__placeholder">
-                <a href=''>
-                    <img className='hero-inner__binary_logo' src="image/binary.svg" />
-                </a>
-                <img src="image/laptop-1.webp" />
-            </div>
-        </div>
-    </section>
-);
+        </section>
+    )
+};
 
 export default Hero
