@@ -24,6 +24,8 @@ $header-color : #333333;
 
 .navigation {
   display: block;
+  padding: 0 2rem;
+  background: #16212d; 
   @include for-size(mobile) {
     display: none;
   }
@@ -33,7 +35,7 @@ $header-color : #333333;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2rem 0;
+    padding: 2rem 3rem;
     max-width: 1440px;
     margin: 0px auto;
   }
@@ -63,7 +65,9 @@ $header-color : #333333;
 }
 
 .hero {
-  margin-top: -105px;
+  margin-top: -107px;
+  padding: 0px 20px;
+
   @include for-size(mobile) {
     margin-top: unset;
   }
@@ -76,7 +80,7 @@ $header-color : #333333;
   &-inner {
     display: flex;
     align-items: center;
-    padding: calc(7rem + 5rem) 0px;
+    padding: calc(7rem + 5rem) 1rem;
 
     @include for-size(desktop) {
       padding: calc(7rem + 5rem) 2rem;
