@@ -25,6 +25,7 @@ $header-color : #333333;
 .navigation {
   display: block;
   padding: 0 2rem;
+  background-color: #16212d; 
   @include for-size(mobile) {
     display: none;
   }
