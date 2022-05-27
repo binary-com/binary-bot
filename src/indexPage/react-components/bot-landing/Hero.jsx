@@ -45,7 +45,7 @@ const Hero = () => {
                 <div className="hero-inner__content">
                     <h1>{translate('We’re moving!')}</h1>
                     <h2>
-                        {translate('We’ve been Binary.com for 2 decades and it’s time for an exciting new chapter.')}
+                        {translate('We’ve been')}<b>{translate(' Binary.com')}</b>{translate(' for 2 decades and it’s time for an exciting new chapter.')}
                     </h2>
                     <div className='hero-inner_content-subheader'>
                         <h2>{translate('Say hello to our new home,')}<b>{translate(' Deriv.')}</b>
