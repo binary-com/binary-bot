@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Inconsolata&family=Montserrat:ital,wght@0,900;1,700&family=Poppins&family=Sura&display=swap');
 
 $font-IBM: 'IBM Plex Sans',
-sans-serif;
+  sans-serif;
 $hero-BG : #08223d;
 $white :#fff;
 $header-color : #333333;
@@ -21,6 +21,41 @@ $header-color : #333333;
   }
 }
 
+.navigation {
+  display: block;
+
+  @include for-size(mobile) {
+    display: none;
+  }
+
+  background: transparent;
+
+  &-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
+    max-width: 1440px;
+    margin: 0px auto;
+  }
+
+  &-logo {
+    width: 138px;
+
+    img {
+      width: 100%;
+    }
+
+  }
+
+  .r-btn {
+    padding: 10px 16px;
+    font: 700 0.9rem $font-IBM;
+    text-transform: none;
+    border-radius: 6px;
+  }
+}
+
 .section-container {
   padding: 0 2rem;
   margin: 0 auto;
@@ -28,12 +63,20 @@ $header-color : #333333;
 }
 
 .hero {
-  background: $hero-BG url(../image/BG-1.webp) no-repeat;
-  background-size: cover;
+  margin-top: -110px;
+
   @include for-size(mobile) {
-      background: $hero-BG url(../image/MBG1.png) no-repeat;
-      background-size: cover;
+    margin-top: unset;
   }
+
+  background: $hero-BG url(../image/hero_desktop.png) no-repeat;
+  background-size: cover;
+
+  @include for-size(mobile) {
+    background: $hero-BG url(../image/hero_mobile.png) no-repeat;
+    background-size: cover;
+  }
+
   &-inner {
     display: flex;
     align-items: center;
@@ -77,6 +120,10 @@ $header-color : #333333;
           margin: 0 0 2.5rem 0;
         }
       }
+
+      &-subheader {
+        margin-top: 2.3rem;
+      }
     }
 
     &__placeholder {
@@ -93,6 +140,28 @@ $header-color : #333333;
         @include for-size(mobile) {
           object-fit: contain;
           width: 100%;
+        }
+      }
+
+      &-inner {
+        width: 600px !important;
+
+        @include for-size(mobile) {
+          width: 300px !important;
+        }
+
+      }
+
+      &-image-container {
+        width: 600px !important;
+
+        @include for-size(mobile) {
+          width: 300px !important;
+        }
+
+        img {
+          width: 100% !important;
+          object-fit: 'cover' !important;
         }
       }
     }
@@ -120,6 +189,7 @@ $header-color : #333333;
   padding: 0 1rem;
   cursor: pointer;
   text-transform: none;
+
   &.primary {
     background-color: #2E8836;
     color: $white;
@@ -160,10 +230,11 @@ $header-color : #333333;
 .switch {
   background: url(../image/sectionTwoLandingBackground.png) no-repeat;
   background-size: cover;
+
   &-inner {
     display: flex;
     align-items: center;
-    
+
 
     @include for-size(desktop) {
       padding: 0 2rem;
@@ -209,19 +280,18 @@ $header-color : #333333;
           padding: 0 2rem;
         }
       }
+
       .l-btn.transparent {
         background-color: transparent;
         border: solid 2px #999999;
         text-transform: none;
+
         &:hover {
           background-color: #C2C2C2;
         }
       }
     }
   }
-
-   
-  
 }
 
 .landing_carousel {
@@ -287,9 +357,12 @@ $header-color : #333333;
 }
 
 .choose-wrapper {
-      background: #F2F3F4;
   &-inner {
     padding: 3rem 0;
+
+    &-description {
+      max-width: 406px;
+    }
 
     &-title {
       color: $header-color;
@@ -297,6 +370,10 @@ $header-color : #333333;
       font: 700 2rem $font-IBM;
       line-height: 2rem;
       margin-bottom: 4rem;
+
+      @include for-size(mobile) {
+        margin-bottom: 1.5rem;
+      }
     }
 
     &-section-content {
@@ -312,11 +389,12 @@ $header-color : #333333;
     &-placeholder {
       margin-right: 2rem;
     }
-   
+
     &-right,
     &-left {
       width: 50%;
       padding: 0 10rem;
+
       @include for-size(mobile) {
         width: 100%;
         padding: unset;
@@ -325,9 +403,11 @@ $header-color : #333333;
       &-content {
         display: flex;
         margin-right: 2rem;
-        min-height: 11.25rem;
+        min-height: 108px;
         margin-bottom: 1rem;
+
         @include for-size(mobile) {
+          margin-right: 1rem;
           min-height: unset;
           margin-bottom: 1.3rem;
         }
@@ -336,30 +416,38 @@ $header-color : #333333;
           margin-top: 0;
           font: 700 1.6rem $font-IBM;
           color: $header-color;
+          margin-bottom: 8px;
+
           @include for-size(mobile) {
             font: 700 1.3rem $font-IBM;
-            margin-bottom: 0;
+            margin-bottom: 8px;
           }
         }
 
         h2 {
-          font: 400 0.8rem $font-IBM;
+          margin-top: 0;
+          font: 400 1rem $font-IBM;
           color: $header-color;
 
           @include for-size(mobile) {
-            font: 400 0.8rem $font-IBM;
+            font: 400 1rem $font-IBM;
             margin-bottom: 0;
           }
         }
-
       }
     }
+
     &-right {
       padding-left: 0;
     }
-    
+
     &-left {
       padding-right: 0;
+    }
+
+    &_btn {
+      display: flex;
+      justify-content: center;
     }
   }
 }
@@ -369,9 +457,11 @@ $header-color : #333333;
 
   .slick-slider {
     padding: 0 2rem;
+
     @include for-size(mobile) {
       padding: 0 3rem;
     }
+
     .slick-arrow {
       &.slick-next {
         transform: rotate(180deg);
@@ -437,7 +527,6 @@ $header-color : #333333;
   }
 }
 
-
 .arrow {
   &.right {
     transform: rotate(180deg);
@@ -446,7 +535,7 @@ $header-color : #333333;
 
 .wait-wrapper {
   background: url('../image/pattern.png') no-repeat right;
-  background-size: 65% 100%;
+  background-size: 60% 100%;
   min-height: 18.75rem;
   position: relative;
 
@@ -483,23 +572,56 @@ $header-color : #333333;
     }
 
     &-placeholder {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 300px;
+      height: 300px;
+
+      h1 {
+        font: 700 2rem $font-IBM;
+        color: #fff
+      }
+
       @include for-size(mobile) {
-        background: url('../image/pattern.png') no-repeat right;
-        background-size: 65% 100%;
+        background: url('../image/Dont_Wait_Mobile.png') no-repeat right;
+        background-size: 100% 100%;
         min-height: 28.125rem;
+        width: unset;
+        height: unset;
+        padding: 1rem;
+        flex-direction: column;
       }
 
       img {
-          position: absolute;
-          right: 20%;
-          bottom: 0;
+        position: absolute;
+        right: 36%;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
 
         @include for-size(mobile) {
-          bottom: 0;
-          left: 0;
-          right: 0;
-          top: unset;
-          margin: 0 auto;
+          position: unset;
+          width: 100%;
+          height: unset;
+        }
+      }
+
+      &-desktop {
+        display: block;
+        padding-top: 2rem;
+
+        @include for-size(mobile) {
+          display: none;
+        }
+
+      }
+
+      &-mobile {
+        display: none;
+
+        @include for-size(mobile) {
+          display: block;
         }
       }
     }
@@ -509,6 +631,7 @@ $header-color : #333333;
 .about-trade-wrapper {
   background-color: #F8FAFB;
   padding: 0;
+
   &-inner {
     padding: 3rem 0;
 
@@ -629,6 +752,100 @@ $header-color : #333333;
   }
 }
 
-.hidden{
+.hidden {
   display: none !important;
+}
+
+
+.card-container {
+  padding: 2rem 0rem 3rem 0rem;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+.card-wrapper {
+  &-holder {
+
+    &-header {
+
+      h1,
+      h2 {
+        font: 700 3rem $font-IBM;
+        color: $header-color;
+        text-align: center;
+        line-height: 2.3rem;
+      }
+
+      h2 {
+        font: 400 1.4rem $font-IBM;
+        line-height: 0.8rem;
+      }
+
+      @include for-size(mobile) {
+        h1 {
+          font: 700 2rem $font-IBM;
+
+          @include for-size(mobile) {
+            margin-bottom: 1rem;
+          }
+        }
+
+        h2 {
+          line-height: 1.625rem;
+
+          @include for-size(mobile) {
+            margin-bottom: 0.2rem;
+          }
+        }
+
+        h2:last-child {
+          @include for-size(mobile) {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+
+    &-container {
+      display: flex;
+
+      @include for-size(mobile) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &-content {
+        box-shadow: 0 4px 8px rgba(14, 14, 14, 0.1);
+        border-radius: 0.5rem;
+        margin: 0 1.5rem;
+        max-width: 282px;
+        max-height: 420px;
+
+        @include for-size(mobile) {
+          margin-bottom: 1.5rem;
+        }
+
+        img {
+          width: 100%;
+        }
+
+        h1 {
+          font: 700 1.5rem $font-IBM;
+          color: $header-color;
+          padding: 24px 32px 0;
+          text-align: center;
+        }
+
+        h2 {
+          font: 400 1rem $font-IBM;
+          color: $header-color;
+          padding: 0 2rem;
+          margin-top: 0;
+          text-align: center;
+        }
+
+      }
+    }
+  }
+
 }
