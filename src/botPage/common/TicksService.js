@@ -58,19 +58,26 @@ export default class TicksService {
 
         if (!this.active_symbols_promise) {
             this.active_symbols_promise = new Promise(resolve => {
-                this.api.getActiveSymbolsBrief().then(r => {
-                    const { active_symbols: symbols } = r;
-                    this.pipSizes = symbols.reduce((accumulator, currSymbol) => {
-                        // eslint-disable-next-line no-param-reassign
-                        accumulator[currSymbol.symbol] = `${currSymbol.pip}`.length - 2;
-                        return accumulator;
-                    }, {});
+                this.getActiveSymbols().then(activeSymbols => {
+                    this.pipSizes = activeSymbols
+                        .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
+                        .toObject();
                     resolve(this.pipSizes);
                 });
             });
         }
         return this.active_symbols_promise;
     }
+    getActiveSymbols = () =>
+        new Promise(resolve => {
+            this.api.events.on('authorize', async () => {
+                // eslint-disable-next-line camelcase
+                this.api.send({ active_symbols: 'brief' }).then(({ active_symbols }) =>
+                    // eslint-disable-next-line camelcase
+                    resolve(active_symbols)
+                );
+            });
+        });
     request(options) {
         const { symbol, granularity } = options;
 
