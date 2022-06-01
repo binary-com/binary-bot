@@ -14,7 +14,11 @@ Blockly.Blocks.ticks = {
         mainScope(this, ev, 'Ticks List');
     },
 };
-Blockly.JavaScript.ticks = () => ['Bot.getTicks(false)', Blockly.JavaScript.ORDER_ATOMIC];
+Blockly.JavaScript.ticks = block => {
+    const parent = block.getParent();
+    const typeList = ['notify', 'text_print'];
+    return [`Bot.getTicks(${typeList.includes(parent?.type)})`, Blockly.JavaScript.ORDER_ATOMIC];
+};
 
 Blockly.Blocks.ticks_string = {
     init: function init() {
