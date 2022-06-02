@@ -112,7 +112,7 @@ fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
                 ...Object.keys(submarkets)
                     .map(e => [submarkets[e].name, e])
                     // Filter out markets we don't have contracts for
-                    .filter(submarket => !['energy'].includes(submarket[1]))
+                    .filter(submarket => !['energy', 'smart_fx'].includes(submarket[1]))
             );
         }
     }
@@ -335,7 +335,10 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
             contractsForStore
                 .filter(c => c.symbol === underlyingSymbol)
                 .forEach(() =>
-                    contractsForStore.splice(contractsForStore.findIndex(c => c.symbol === underlyingSymbol), 1)
+                    contractsForStore.splice(
+                        contractsForStore.findIndex(c => c.symbol === underlyingSymbol),
+                        1
+                    )
                 );
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));
