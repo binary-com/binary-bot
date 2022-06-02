@@ -2,6 +2,7 @@ import { Map } from 'immutable';
 import { historyToTicks, getLast } from 'binary-utils';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { doUntilDone, getUUID } from '../bot/tools';
+import { getTokenList } from '../../common/utils/storageManager';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,
@@ -68,16 +69,25 @@ export default class TicksService {
         }
         return this.active_symbols_promise;
     }
-    getActiveSymbols = () =>
-        new Promise(resolve => {
-            this.api.events.on('authorize', async () => {
+    getActiveSymbols = () => {
+        const getSymbols = resolve => {
+            // eslint-disable-next-line camelcase
+            this.api.send({ active_symbols: 'brief' }).then(({ active_symbols }) =>
                 // eslint-disable-next-line camelcase
-                this.api.send({ active_symbols: 'brief' }).then(({ active_symbols }) =>
-                    // eslint-disable-next-line camelcase
-                    resolve(active_symbols)
-                );
-            });
+                resolve(active_symbols)
+            );
+        };
+        return new Promise(async resolve => {
+            const tokenList = getTokenList();
+            if (tokenList.length) {
+                this.api.authorize(tokenList[0].token).then(() => {
+                    getSymbols(resolve);
+                });
+            } else {
+                getSymbols(resolve);
+            }
         });
+    };
     request(options) {
         const { symbol, granularity } = options;
 
