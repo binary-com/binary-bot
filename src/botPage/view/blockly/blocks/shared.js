@@ -80,13 +80,15 @@ const getActiveSubMarket = submarkets =>
     );
 
 const getActiveMarket = markets =>
-    Object.keys(markets).reduce(
-        (acc, market) =>
-            Object.keys(getActiveSubMarket(markets[market].submarkets)).length
-                ? { ...acc, [market]: markets[market] }
-                : { ...acc },
-        {}
-    );
+    Object.keys(markets)
+        .filter(m => m !== 'basket_index')
+        .reduce(
+            (acc, market) =>
+                Object.keys(getActiveSubMarket(markets[market].submarkets)).length
+                    ? { ...acc, [market]: markets[market] }
+                    : { ...acc },
+            {}
+        );
 
 fieldGeneratorMapping.MARKET_LIST = () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
@@ -112,7 +114,7 @@ fieldGeneratorMapping.SUBMARKET_LIST = block => () => {
                 ...Object.keys(submarkets)
                     .map(e => [submarkets[e].name, e])
                     // Filter out markets we don't have contracts for
-                    .filter(submarket => !['energy', 'smart_fx'].includes(submarket[1]))
+                    .filter(submarket => !['energy'].includes(submarket[1]))
             );
         }
     }
