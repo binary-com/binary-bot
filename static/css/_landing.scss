@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Inconsolata&family=Montserrat:ital,wght@0,900;1,700&family=Poppins&family=Sura&display=swap');
 
 $font-IBM: 'IBM Plex Sans',
-sans-serif;
+  sans-serif;
 $hero-BG : #08223d;
 $white :#fff;
 $header-color : #333333;
@@ -30,10 +30,12 @@ $header-color : #333333;
 .hero {
   background: $hero-BG url(../image/BG-1.webp) no-repeat;
   background-size: cover;
+
   @include for-size(mobile) {
-      background: $hero-BG url(../image/MBG1.png) no-repeat;
-      background-size: cover;
+    background: $hero-BG url(../image/MBG1.png) no-repeat;
+    background-size: cover;
   }
+
   &-inner {
     display: flex;
     align-items: center;
@@ -120,6 +122,7 @@ $header-color : #333333;
   padding: 0 1rem;
   cursor: pointer;
   text-transform: none;
+
   &.primary {
     background-color: #2E8836;
     color: $white;
@@ -160,10 +163,11 @@ $header-color : #333333;
 .switch {
   background: url(../image/sectionTwoLandingBackground.png) no-repeat;
   background-size: cover;
+
   &-inner {
     display: flex;
     align-items: center;
-    
+
 
     @include for-size(desktop) {
       padding: 0 2rem;
@@ -209,10 +213,12 @@ $header-color : #333333;
           padding: 0 2rem;
         }
       }
+
       .l-btn.transparent {
         background-color: transparent;
         border: solid 2px #999999;
         text-transform: none;
+
         &:hover {
           background-color: #C2C2C2;
         }
@@ -220,8 +226,8 @@ $header-color : #333333;
     }
   }
 
-   
-  
+
+
 }
 
 .landing_carousel {
@@ -287,7 +293,8 @@ $header-color : #333333;
 }
 
 .choose-wrapper {
-      background: #F2F3F4;
+  background: #F2F3F4;
+
   &-inner {
     padding: 3rem 0;
 
@@ -309,24 +316,32 @@ $header-color : #333333;
       }
     }
 
-    &-placeholder {
-      margin-right: 2rem;
-    }
-   
+
+
     &-right,
     &-left {
       width: 50%;
       padding: 0 10rem;
+
       @include for-size(mobile) {
         width: 100%;
         padding: unset;
       }
+
+      
 
       &-content {
         display: flex;
         margin-right: 2rem;
         min-height: 11.25rem;
         margin-bottom: 1rem;
+          &-placeholder {
+              margin-right: 2rem;
+            }
+
+            &-description {
+              margin-right: 2rem;
+            }
         @include for-size(mobile) {
           min-height: unset;
           margin-bottom: 1.3rem;
@@ -336,6 +351,7 @@ $header-color : #333333;
           margin-top: 0;
           font: 700 1.6rem $font-IBM;
           color: $header-color;
+
           @include for-size(mobile) {
             font: 700 1.3rem $font-IBM;
             margin-bottom: 0;
@@ -354,10 +370,11 @@ $header-color : #333333;
 
       }
     }
+
     &-right {
       padding-left: 0;
     }
-    
+
     &-left {
       padding-right: 0;
     }
@@ -369,9 +386,11 @@ $header-color : #333333;
 
   .slick-slider {
     padding: 0 2rem;
+
     @include for-size(mobile) {
       padding: 0 3rem;
     }
+
     .slick-arrow {
       &.slick-next {
         transform: rotate(180deg);
@@ -490,9 +509,9 @@ $header-color : #333333;
       }
 
       img {
-          position: absolute;
-          right: 20%;
-          bottom: 0;
+        position: absolute;
+        right: 20%;
+        bottom: 0;
 
         @include for-size(mobile) {
           bottom: 0;
@@ -509,6 +528,7 @@ $header-color : #333333;
 .about-trade-wrapper {
   background-color: #F8FAFB;
   padding: 0;
+
   &-inner {
     padding: 3rem 0;
 
@@ -629,48 +649,55 @@ $header-color : #333333;
   }
 }
 
-.hidden{
+.hidden {
   display: none !important;
 }
 
 .bot-landing-alert-popup {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.72);
-    top: 0;
-    z-index: 1000;
-  &.open{
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.72);
+  top: 0;
+  z-index: 1000;
+
+  &.open {
     display: block !important;
   }
+
   .draggable-dialog {
-      border-radius: 8px;
-      min-height: 250px;
-      background: #ffffff;
-      position: absolute;
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 1.5rem;
-      z-index: 1000;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      &.open {
-          display: block !important;
-        }
+    border-radius: 8px;
+    min-height: 250px;
+    background: #ffffff;
+    position: absolute;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &.open {
+      display: block !important;
+    }
   }
-  .bot-landing-alert-btn-group{
+
+  .bot-landing-alert-btn-group {
     text-align: end;
-    .default{
+
+    .default {
       background: #C2C2C2;
       margin-right: 1rem;
     }
   }
-  h1{
+
+  h1 {
     margin-top: 0;
   }
-  p{
+
+  p {
     margin-bottom: 2.2rem;
   }
 }

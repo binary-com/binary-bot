@@ -3,7 +3,6 @@ import { set as setStorage, remove } from '../../../common/utils/storageManager'
 import { expirationDate, setPopupToken, renderPopup, setTimeOutBanner, setTimeOutPopup } from '../../index';
 
 const setDueDateAgain = () => {
-    debugger;
     remove('setDueDateForBanner');
     remove('setPopupToken');
     setStorage('setDueDateForBanner', expirationDate());
@@ -16,7 +15,7 @@ const setDueDateAgain = () => {
 const ModalComponent = () => {
     return (
         <div>
-            <span className='bot-landing-alert-draggable-dialog draggable-dialog'  data-i18n-title='Summary'>
+            <span className='bot-landing-alert-draggable-dialog draggable-dialog'>
                 <h1>Use Binary Bot on Deriv, our new home</h1>
                 <p>In 5 minutes, we’ll show you the benefits of trading Binary Bot on Deriv.
                    If you ignore this message, we’ll remind you again in 3 weeks.

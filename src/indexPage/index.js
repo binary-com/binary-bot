@@ -42,13 +42,14 @@ export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime()
 export const renderPopup = type => {
     ReactDOM.render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
     // eslint-disable-next-line no-unused-vars
-    for (let i = 0; i < elementsPopup.length; i++) {
+    // eslint-disable-next-line array-callback-return
+    elementsPopup.map(elem => {
         if (type === 'open') {
-            document.querySelector(elementsPopup[i]).classList.add('open');
+            document.querySelector(elem).classList.add('open');
         } else {
-            document.querySelector(elementsPopup[i]).classList.remove('open');
+            document.querySelector(elem).classList.remove('open');
         }
-    }
+    });
 };
 let isRunning;
 const checkifBotRunning = () => {
@@ -106,9 +107,7 @@ const renderBanner = () => {
     ReactDOM.render(<BotLanding />, document.getElementById('bot-landing'));
     setStorage('setDueDateForBanner', expirationDate());
     setStorage('setPopupToken', setPopupToken());
-    for (let i = 0; i < elements.length; i++) {
-        document.querySelector(elements[i]).classList.add('hidden');
-    }
+    elements.map(elem => document.querySelector(elem).classList.add('hidden'));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
     $('.barspinner').hide();
@@ -138,9 +137,7 @@ const renderElements = () => {
                 'href',
                 createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
             );
-            for (let i = 0; i < elements.length; i++) {
-                document.querySelector(elements[i]).classList.remove('hidden');
-            }
+            elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
             document.getElementById('bot-landing').classList.add('hidden');
         }
         document.getElementById('bot-main').classList.remove('hidden');

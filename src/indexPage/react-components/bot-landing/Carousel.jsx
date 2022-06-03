@@ -1,27 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
-import { translate } from '../../../common/i18n';
-
-const carouselContentArray = [
-    {
-        title      : translate('Where to find Binary Bot on Deriv'),
-        content    : translate('On the Deriv homepage, hit Trade at the top of the page and choose Binary Bot.'),
-        action_text: translate('Try Binary Bot on Deriv'),
-        img        : 'image/1a.webm',
-    },
-    {
-        title      : translate('It’s the same Binary Bot you know and love'),
-        content    : translate('Everything is exactly the way you like it.'),
-        action_text: translate('Try Binary Bot on Deriv'),
-        img        : 'image/2a.webm',
-    },
-    {
-        title      : translate('Bring your bots across seamlessly'),
-        content    : translate('Your strategies from Binary.com can be used on Deriv. Just load your XML files and get trading.'),
-        action_text: translate('Try Binary Bot on Deriv'),
-        img        : 'image/3a.webm',
-    },
-]
+import Translations from './Translations';
 
 const Carousel = () => {
 
@@ -57,7 +36,7 @@ const Carousel = () => {
     return (
         <div className="carousel-wrapper section-container">
             <Slider {...settings}>
-                {carouselContentArray.map((slide, index) => {
+                {Translations.carouselContentArray.map((slide, index) => {
                     const { title, content, action_text, img } = slide;
                     return (
                         <section className='landing_carousel' key={index}>
