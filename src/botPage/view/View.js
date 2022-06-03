@@ -50,6 +50,7 @@ import {
     saveBeforeUnload,
 } from './blockly/utils';
 import { moveToDeriv } from '../../common/utils/utility';
+import { setTimeOutPopup, setTimeOutBanner } from '../../indexPage/index';
 
 let realityCheckTimeout;
 let chart;
@@ -622,7 +623,7 @@ export default class View {
                 setTimeout(() => $('#stopButton').triggerHandler('click'));
                 return;
             }
-
+            globalObserver.setState({ isRunning: true });
             const token = $('.account-id')
                 .first()
                 .attr('value');
@@ -758,6 +759,7 @@ export default class View {
                 elRunButton.style.display = 'none';
                 elRunButton.setAttributeNode(document.createAttribute('disabled'));
             });
+            globalObserver.setState({ isRunning: true });
             getStopButtonElements().forEach(el => {
                 const elStopButton = el;
                 elStopButton.style.display = 'inline-block';
@@ -773,6 +775,7 @@ export default class View {
                 elStopButton.style.display = null;
                 elStopButton.removeAttribute('disabled');
             });
+            globalObserver.setState({ isRunning: false });
             getRunButtonElements().forEach(el => {
                 const elRunButton = el;
                 elRunButton.style.display = null;
@@ -839,23 +842,27 @@ function renderErrorPage() {
     document.getElementById('blocklyArea').remove();
 }
 
+// eslint-disable-next-line consistent-return
 function renderReactComponents() {
     $('.barspinner').show();
-    const temp = getStorage('setDueDateForBanner');
-    if (new Date().getTime() > temp) {
+    const bannerToken = getStorage('setDueDateForBanner');
+    const popupToken = getStorage('setPopupToken');
+    if (new Date().getTime() > Number(popupToken)) {
         remove('setDueDateForBanner');
         const getqueryParameter = document.location.search;
         const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
         window.location.replace(getDefaultPath);
         return false;
     }
-    if (temp === null || temp === undefined) {
+    if (bannerToken === null || bannerToken === undefined) {
         const getqueryParameter = document.location.search;
         const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
         window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();
         $('.barspinner').hide();
     } else {
+        setTimeOutBanner('views');
+        setTimeOutPopup('views');
         ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
         ReactDOM.render(<Tour />, $('#tour')[0]);
         ReactDOM.render(
