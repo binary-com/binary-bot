@@ -66,6 +66,7 @@ export const setTimeOutBanner = route => {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
     }
     // eslint-disable-next-line import/no-mutable-exports
+    // eslint-disable-next-line consistent-return
     setTimeout(() => {
         checkifBotRunning();
         if ((route === 'index' && bannerDisplayed === false) || (route === 'views' && isRunning !== true)) {
@@ -87,6 +88,7 @@ export const setTimeOutPopup = route => {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
     }
     // render popup 5min before user see the page in 3 weeks
+    // eslint-disable-next-line consistent-return
     setTimeout(() => {
         checkifBotRunning();
         if ((route === 'index' && bannerDisplayed === false) || (route === 'views' && isRunning !== true)) {
@@ -112,6 +114,7 @@ const renderBanner = () => {
     $('.barspinner').hide();
 };
 
+// eslint-disable-next-line consistent-return
 const renderElements = () => {
     setTimeOutPopup('index');
     setTimeOutBanner('index');
