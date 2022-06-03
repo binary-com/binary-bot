@@ -13,8 +13,6 @@ import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
 import ModalComponent from './react-components/bot-landing/ModalComponent.jsx';
-import { observer as globalObserver } from '../../src/common/utils/observer';
-import { func } from 'prop-types';
 
 const today = new Date().getTime();
 const twentyOneDays = 21;
@@ -31,12 +29,11 @@ export const popupToken = getStorage('setPopupToken');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    // return today + 1000 * 60 * 60 * 24 * 21;
-    return today + 2 * 60 * 1000;
+    return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
 };
 // eslint-disable-next-line arrow-body-style
 export const setPopupToken = () => {
-    return expirationDate() - 60 * 1000;
+    return expirationDate() - fiveMinutes;
 };
 export const calcSetTimeoutValue = setPopupToken() - new Date().getTime();
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
