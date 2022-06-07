@@ -623,7 +623,6 @@ export default class View {
                 setTimeout(() => $('#stopButton').triggerHandler('click'));
                 return;
             }
-            globalObserver.setState({ isRunning: true });
             const token = $('.account-id')
                 .first()
                 .attr('value');
@@ -759,7 +758,6 @@ export default class View {
                 elRunButton.style.display = 'none';
                 elRunButton.setAttributeNode(document.createAttribute('disabled'));
             });
-            globalObserver.setState({ isRunning: true });
             getStopButtonElements().forEach(el => {
                 const elStopButton = el;
                 elStopButton.style.display = 'inline-block';
@@ -775,7 +773,6 @@ export default class View {
                 elStopButton.style.display = null;
                 elStopButton.removeAttribute('disabled');
             });
-            globalObserver.setState({ isRunning: false });
             getRunButtonElements().forEach(el => {
                 const elRunButton = el;
                 elRunButton.style.display = null;
