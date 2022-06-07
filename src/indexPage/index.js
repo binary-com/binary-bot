@@ -15,11 +15,12 @@ import BotLanding from './react-components/bot-landing';
 import ModalComponent from './react-components/bot-landing/ModalComponent.jsx';
 
 const today = new Date().getTime();
-const twentyOneDays = 21;
-const fiveMinutes = 300;
-const oneMilliSec = 1000;
-const oneMinute = 60;
-const oneDay = 24;
+// eslint-disable-next-line one-var
+const twentyOneDays = 21,
+    fiveMinutes = 300,
+    oneMilliSec = 1000,
+    oneMinute = 60,
+    oneDay = 24;
 
 const elementsPopup = ['.bot-landing-alert-draggable-dialog', '#bot-landing-alert-popup'];
 const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
@@ -70,12 +71,12 @@ export const setTimeOutBanner = route => {
     // eslint-disable-next-line consistent-return
     setTimeout(() => {
         checkifBotRunning();
-        if ((route === 'index' && bannerDisplayed === false) || (route === 'views' && isRunning !== true)) {
+        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && !isRunning)) {
             const getqueryParameter = document.location.search;
             const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
             window.location.replace(getDefaultPath);
             renderBanner();
-        } else if ((route === 'index' && bannerDisplayed === true) || (route === 'views' && isRunning === true)) {
+        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && isRunning)) {
             remove('setDueDateForBanner');
             setStorage('setDueDateForBanner', setPopupToken());
             return false;
@@ -92,9 +93,9 @@ export const setTimeOutPopup = route => {
     // eslint-disable-next-line consistent-return
     setTimeout(() => {
         checkifBotRunning();
-        if ((route === 'index' && bannerDisplayed === false) || (route === 'views' && isRunning !== true)) {
+        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && !isRunning)) {
             renderPopup('open');
-        } else if ((route === 'index' && bannerDisplayed === true) || (route === 'views' && isRunning === true)) {
+        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && isRunning)) {
             remove('setPopupToken');
             setStorage('setPopupToken', setPopupToken());
             return false;

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { render } from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
@@ -860,9 +860,9 @@ function renderReactComponents() {
     } else {
         setTimeOutBanner('views');
         setTimeOutPopup('views');
-        ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
-        ReactDOM.render(<Tour />, $('#tour')[0]);
-        ReactDOM.render(
+        render(<ServerTime api={api} />, $('#server-time')[0]);
+        render(<Tour />, $('#tour')[0]);
+        render(
             <OfficialVersionWarning
                 show={
                     !(
@@ -875,8 +875,8 @@ function renderReactComponents() {
             $('#footer')[0]
         );
         document.getElementById('errorArea').remove();
-        ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
-        ReactDOM.render(<LogTable />, $('#logTable')[0]);
+        render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
+        render(<LogTable />, $('#logTable')[0]);
         document.getElementById('bot-main').classList.remove('hidden');
         $('.barspinner').hide();
     }
