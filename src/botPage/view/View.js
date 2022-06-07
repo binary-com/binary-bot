@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM, { render } from 'react-dom';
+import { render } from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
@@ -823,7 +823,7 @@ function initRealityCheck(stopCallback) {
 }
 
 function renderErrorPage() {
-    ReactDOM.render(
+    render(
         <ErrorPage
             title={translate('Unfortunately, Binary Bot isn’t available in your country')}
             message={translate(

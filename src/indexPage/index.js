@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import endpoint from './endpoint';
 import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
@@ -41,7 +41,7 @@ export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime()
 
 // eslint-disable-next-line import/prefer-default-export
 export const renderPopup = type => {
-    ReactDOM.render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
+    render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
     // eslint-disable-next-line no-unused-vars
     // eslint-disable-next-line array-callback-return
     elementsPopup.map(elem => {
@@ -52,31 +52,28 @@ export const renderPopup = type => {
         }
     });
 };
-let isRunning;
+
 const checkifBotRunning = () => {
     if (document.getElementById('runButton').style.display === 'none') {
-        isRunning = true;
-    } else {
-        isRunning = false;
+        return true;
     }
-    return isRunning;
+    return false;
 };
-// eslint-disable-next-line import/no-mutable-exports
+
 export const setTimeOutBanner = route => {
     let bannerDisplayed;
     if (route === 'index') {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
     }
-    // eslint-disable-next-line import/no-mutable-exports
+
     // eslint-disable-next-line consistent-return
     setTimeout(() => {
-        checkifBotRunning();
-        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && !isRunning)) {
+        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
             const getqueryParameter = document.location.search;
             const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
             window.location.replace(getDefaultPath);
             renderBanner();
-        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && isRunning)) {
+        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
             remove('setDueDateForBanner');
             setStorage('setDueDateForBanner', setPopupToken());
             return false;
@@ -92,10 +89,9 @@ export const setTimeOutPopup = route => {
     // render popup 5min before user see the page in 3 weeks
     // eslint-disable-next-line consistent-return
     setTimeout(() => {
-        checkifBotRunning();
-        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && !isRunning)) {
+        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
             renderPopup('open');
-        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && isRunning)) {
+        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
             remove('setPopupToken');
             setStorage('setPopupToken', setPopupToken());
             return false;
@@ -104,8 +100,8 @@ export const setTimeOutPopup = route => {
 };
 
 const renderBanner = () => {
-    ReactDOM.render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
-    ReactDOM.render(<BotLanding />, document.getElementById('bot-landing'));
+    render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
+    render(<BotLanding />, document.getElementById('bot-landing'));
     setStorage('setDueDateForBanner', expirationDate());
     setStorage('setPopupToken', setPopupToken());
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
@@ -119,8 +115,8 @@ const renderElements = () => {
     setTimeOutPopup('index');
     setTimeOutBanner('index');
     $('.barspinner').show();
-    if (!bannerToken) {
-        if (window.location.href.indexOf('bot.html') === -1) {
+    if (window.location.href.indexOf('bot.html') === -1) {
+        if (!bannerToken) {
             renderBanner();
         }
     } else {
@@ -129,18 +125,17 @@ const renderElements = () => {
             renderBanner();
             return false;
         }
-        if (window.location.href.indexOf('bot.html') === -1) {
-            ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
-            ReactDOM.render(<Footer />, document.getElementById('footer'));
-            isEuCountry().then(isEu => showHideEuElements(isEu));
-            showBanner();
-            $('#shop-url').attr(
-                'href',
-                createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
-            );
-            elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
-            document.getElementById('bot-landing').classList.add('hidden');
-        }
+        render(<Logo />, document.getElementById('binary-logo'));
+        render(<Footer />, document.getElementById('footer'));
+        isEuCountry().then(isEu => showHideEuElements(isEu));
+        showBanner();
+        $('#shop-url').attr(
+            'href',
+            createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
+        );
+        elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
+        document.getElementById('bot-landing').classList.add('hidden');
+
         document.getElementById('bot-main').classList.remove('hidden');
         $('.barspinner').hide();
     }
