@@ -71,7 +71,6 @@ class AnimateTrade extends Component {
             globalObserver.setState({ isRunning: true });
             globalObserver.emit('summary.disable_clear');
             globalObserver.register('contract.status', contractStatus => this.animateStage(contractStatus));
-            console.log(this.indicatorMessages.starting);
         });
     }
     animateStage(contractStatus) {
