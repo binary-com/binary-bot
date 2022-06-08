@@ -115,30 +115,30 @@ const renderElements = () => {
     setTimeOutPopup('index');
     setTimeOutBanner('index');
     $('.barspinner').show();
-   
-        if (!bannerToken) {
-            if (window.location.href.indexOf('bot.html') === -1) {
+
+    if (!bannerToken) {
+        if (window.location.href.indexOf('bot.html') === -1) {
             renderBanner();
         }
     }
-     else {
+    else {
         if (today > bannerToken) {
             remove('setDueDateForBanner');
             renderBanner();
             return false;
         }
-            if (window.location.href.indexOf('bot.html') === -1) {
-        render(<Logo />, document.getElementById('binary-logo'));
-        render(<Footer />, document.getElementById('footer'));
-        isEuCountry().then(isEu => showHideEuElements(isEu));
-        showBanner();
-        $('#shop-url').attr(
-            'href',
-            createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
-        );
-        elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
-        document.getElementById('bot-landing').classList.add('hidden');
-            }
+        if (window.location.href.indexOf('bot.html') === -1) {
+            render(<Logo />, document.getElementById('binary-logo'));
+            render(<Footer />, document.getElementById('footer'));
+            isEuCountry().then(isEu => showHideEuElements(isEu));
+            showBanner();
+            $('#shop-url').attr(
+                'href',
+                createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
+            );
+            elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
+            document.getElementById('bot-landing').classList.add('hidden');
+        }
         document.getElementById('bot-main').classList.remove('hidden');
         $('.barspinner').hide();
     }
