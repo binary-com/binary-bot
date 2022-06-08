@@ -31,11 +31,12 @@ export const popupToken = getStorage('setPopupToken');
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
     // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
-    return today + fiveMinutes + fiveMinutes;
+    return today + oneMilliSec * 600;
 };
 // eslint-disable-next-line arrow-body-style
 export const setPopupToken = () => {
-    return expirationDate() - fiveMinutes;
+    // return expirationDate() - 300;
+    return today + oneMilliSec * 300;
 };
 export const calcSetTimeoutValue = setPopupToken() - new Date().getTime();
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
