@@ -30,7 +30,8 @@ export const popupToken = getStorage('setPopupToken');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
+    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
+    return today + fiveMinutes + fiveMinutes;
 };
 // eslint-disable-next-line arrow-body-style
 export const setPopupToken = () => {
@@ -120,8 +121,7 @@ const renderElements = () => {
         if (window.location.href.indexOf('bot.html') === -1) {
             renderBanner();
         }
-    }
-    else {
+    } else {
         if (today > bannerToken) {
             remove('setDueDateForBanner');
             renderBanner();
