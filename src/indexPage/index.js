@@ -23,7 +23,7 @@ const twentyOneDays = 21,
     oneDay = 24;
 
 const elementsPopup = ['.bot-landing-alert-draggable-dialog', '#bot-landing-alert-popup'];
-const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
+export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 export const popupToken = getStorage('setPopupToken');
@@ -55,6 +55,8 @@ export const renderPopup = type => {
     });
 };
 
+export let timerForBanner, timerForPopup;
+
 const checkifBotRunning = () => {
     if (document.getElementById('runButton').style.display === 'none') {
         return true;
@@ -63,19 +65,20 @@ const checkifBotRunning = () => {
 };
 
 export const setTimeOutBanner = route => {
+    render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
     let bannerDisplayed;
     if (route === 'index') {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
     }
 
     // eslint-disable-next-line consistent-return
-    setTimeout(() => {
-        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
+    timerForBanner = setTimeout(() => {
+        if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
             const getqueryParameter = document.location.search;
             const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
             window.location.replace(getDefaultPath);
             renderBanner();
-        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
+        } else if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === true)) {
             remove('setDueDateForBanner');
             setStorage('setDueDateForBanner', setPopupToken());
             return false;
@@ -87,13 +90,13 @@ export const setTimeOutPopup = route => {
     let bannerDisplayed;
     if (route === 'index') {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
-    }
+    } else bannerDisplayed = false;
     // render popup 5min before user see the page in 3 weeks
     // eslint-disable-next-line consistent-return
-    setTimeout(() => {
-        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
+    timerForPopup = setTimeout(() => {
+        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
             renderPopup('open');
-        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && checkifBotRunning())) {
+        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && checkifBotRunning() === true)) {
             remove('setPopupToken');
             setStorage('setPopupToken', setPopupToken());
             return false;
