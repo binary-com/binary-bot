@@ -71,12 +71,18 @@ export const setTimeOutBanner = route => {
     }
     // eslint-disable-next-line consistent-return
     timerForBanner = setTimeout(() => {
-        if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
+        if (
+            (route === 'index' && !!bannerDisplayed === false) ||
+            (route === 'views' && checkifBotRunning() === false)
+        ) {
             const getqueryParameter = document.location.search;
             const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
             window.location.replace(getDefaultPath);
             renderBanner();
-        } else if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === true)) {
+        } else if (
+            (route === 'index' && !!bannerDisplayed === true) ||
+            (route === 'views' && checkifBotRunning() === true)
+        ) {
             remove('setDueDateForBanner');
             setStorage('setDueDateForBanner', setPopupToken());
             return false;
@@ -93,9 +99,16 @@ export const setTimeOutPopup = route => {
     // render popup 5min before user see the page in 3 weeks
     // eslint-disable-next-line consistent-return
     timerForPopup = setTimeout(() => {
-        if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
+        
+        if (
+            (route === 'index' && !!bannerDisplayed === false) ||
+            (route === 'views' && checkifBotRunning() === false)
+        ) {
             renderPopup('open');
-        } else if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === true)) {
+        } else if (
+            (route === 'index' && !!bannerDisplayed === true) ||
+            (route === 'views' && checkifBotRunning() === true)
+        ) {
             remove('setPopupToken');
             setStorage('setPopupToken', setPopupToken());
             return false;
