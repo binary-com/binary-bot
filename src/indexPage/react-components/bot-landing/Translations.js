@@ -51,7 +51,7 @@ export default {
         {
             title  : translate('Cryptocurrency deposits via fiat on-ramp'),
             content: translate(
-                'You’ll find Binary Bot and SmartTrader alongside new platforms like DBot and DTrader. Whatever your trading style, we’ve got the platform for you.'
+                'Make crypto deposits easily via exchange services such as Changelly, Banxa, and XanPool.'
             ),
             img: 'image/fiat-on-ramp.svg',
         },

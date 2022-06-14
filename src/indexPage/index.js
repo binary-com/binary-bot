@@ -65,12 +65,10 @@ const checkifBotRunning = () => {
 };
 
 export const setTimeOutBanner = route => {
-    render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
     let bannerDisplayed;
     if (route === 'index') {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
     }
-
     // eslint-disable-next-line consistent-return
     timerForBanner = setTimeout(() => {
         if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
@@ -90,13 +88,14 @@ export const setTimeOutPopup = route => {
     let bannerDisplayed;
     if (route === 'index') {
         bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
-    } else bannerDisplayed = false;
+    }
+
     // render popup 5min before user see the page in 3 weeks
     // eslint-disable-next-line consistent-return
     timerForPopup = setTimeout(() => {
-        if ((route === 'index' && !bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
+        if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === false)) {
             renderPopup('open');
-        } else if ((route === 'index' && bannerDisplayed) || (route === 'views' && checkifBotRunning() === true)) {
+        } else if ((route === 'index' && !!bannerDisplayed) || (route === 'views' && checkifBotRunning() === true)) {
             remove('setPopupToken');
             setStorage('setPopupToken', setPopupToken());
             return false;
