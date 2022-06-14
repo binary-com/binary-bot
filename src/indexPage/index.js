@@ -31,12 +31,12 @@ export const popupToken = getStorage('setPopupToken');
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
     // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
-    return today + oneMilliSec * 600;
+    return today + oneMilliSec * 300;
 };
 // eslint-disable-next-line arrow-body-style
 export const setPopupToken = () => {
     // return expirationDate() - 300;
-    return today + oneMilliSec * 300;
+    return today + oneMilliSec * 120;
 };
 export const calcSetTimeoutValue = setPopupToken() - new Date().getTime();
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
@@ -99,7 +99,6 @@ export const setTimeOutPopup = route => {
     // render popup 5min before user see the page in 3 weeks
     // eslint-disable-next-line consistent-return
     timerForPopup = setTimeout(() => {
-        
         if (
             (route === 'index' && !!bannerDisplayed === false) ||
             (route === 'views' && checkifBotRunning() === false)
