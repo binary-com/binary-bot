@@ -576,6 +576,22 @@ $header-color : #333333;
       }
 
     }
+        &-info{
+          &-location {
+              font: 400 1rem $font-IBM;
+            }
+          
+            &-trade {
+              padding: 1rem;
+              background: rgba(87, 122, 146, 0.04);
+              font: 400 1rem $font-IBM;
+              box-shadow: inset 4px 0px 0px rgba(255, 68, 79, 0.64);
+          
+              @include for-size(mobile) {
+                box-shadow: inset 0px 4px 0px rgba(255, 68, 79, 0.64);
+              }
+            }
+        }
 
   }
 
@@ -602,20 +618,7 @@ $header-color : #333333;
     }
   }
 
-  &-location-info {
-    font: 400 1rem $font-IBM;
-  }
-
-  &-trade-info {
-    padding: 1rem;
-    background: rgba(87, 122, 146, 0.04);
-    font: 400 1rem $font-IBM;
-    box-shadow: inset 4px 0px 0px rgba(255, 68, 79, 0.64);
-
-    @include for-size(mobile) {
-      box-shadow: inset 0px 4px 0px rgba(255, 68, 79, 0.64);
-    }
-  }
+  
 }
 
 
