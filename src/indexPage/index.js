@@ -12,7 +12,6 @@ import { get as getStorage, set as setStorage, remove, getTokenList } from '../c
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
-import ModalComponent from './react-components/bot-landing/ModalComponent.jsx';
 
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
@@ -22,40 +21,19 @@ const twentyOneDays = 21,
     oneMinute = 60,
     oneDay = 24;
 
-const elementsPopup = ['.bot-landing-alert-draggable-dialog', '#bot-landing-alert-popup'];
 export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
-export const popupToken = getStorage('setPopupToken');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
     // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
-    return today + oneMilliSec * 300;
-};
-// eslint-disable-next-line arrow-body-style
-export const setPopupToken = () => {
-    // return expirationDate() - 300;
     return today + oneMilliSec * 120;
 };
-export const calcSetTimeoutValue = setPopupToken() - new Date().getTime();
+
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
 
-// eslint-disable-next-line import/prefer-default-export
-export const renderPopup = type => {
-    render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
-    // eslint-disable-next-line no-unused-vars
-    // eslint-disable-next-line array-callback-return
-    elementsPopup.map(elem => {
-        if (type === 'open') {
-            document.querySelector(elem).classList.add('open');
-        } else {
-            document.querySelector(elem).classList.remove('open');
-        }
-    });
-};
-
-export let timerForBanner, timerForPopup;
+export let timerForBanner;
 
 const checkifBotRunning = () => {
     if (document.getElementById('runButton').style.display === 'none') {
@@ -66,9 +44,6 @@ const checkifBotRunning = () => {
 
 export const setTimeOutBanner = route => {
     let bannerDisplayed;
-    if (route === 'index') {
-        bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
-    }
     // eslint-disable-next-line consistent-return
     timerForBanner = setTimeout(() => {
         if (
@@ -84,42 +59,15 @@ export const setTimeOutBanner = route => {
             (route === 'views' && checkifBotRunning() === true)
         ) {
             remove('setDueDateForBanner');
-            setStorage('setDueDateForBanner', setPopupToken());
+            setStorage('setDueDateForBanner', expirationDate());
             return false;
         }
     }, calcSetTimeoutValueBanner);
 };
 
-export const setTimeOutPopup = route => {
-    let bannerDisplayed;
-    if (route === 'index') {
-        bannerDisplayed = document.getElementById('bot-landing').classList.contains('hidden');
-    }
-
-    // render popup 5min before user see the page in 3 weeks
-    // eslint-disable-next-line consistent-return
-    timerForPopup = setTimeout(() => {
-        if (
-            (route === 'index' && !!bannerDisplayed === false) ||
-            (route === 'views' && checkifBotRunning() === false)
-        ) {
-            renderPopup('open');
-        } else if (
-            (route === 'index' && !!bannerDisplayed === true) ||
-            (route === 'views' && checkifBotRunning() === true)
-        ) {
-            remove('setPopupToken');
-            setStorage('setPopupToken', setPopupToken());
-            return false;
-        }
-    }, calcSetTimeoutValue);
-};
-
 const renderBanner = () => {
-    render(<ModalComponent />, document.getElementById('bot-landing-alert-popup'));
     render(<BotLanding />, document.getElementById('bot-landing'));
     setStorage('setDueDateForBanner', expirationDate());
-    setStorage('setPopupToken', setPopupToken());
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
@@ -128,7 +76,6 @@ const renderBanner = () => {
 
 // eslint-disable-next-line consistent-return
 const renderElements = () => {
-    setTimeOutPopup('index');
     setTimeOutBanner('index');
     $('.barspinner').show();
 

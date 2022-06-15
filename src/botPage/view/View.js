@@ -50,7 +50,7 @@ import {
     saveBeforeUnload,
 } from './blockly/utils';
 import { moveToDeriv } from '../../common/utils/utility';
-import { setTimeOutPopup, setTimeOutBanner } from '../../indexPage/index';
+import { setTimeOutBanner } from '../../indexPage/index';
 
 let realityCheckTimeout;
 let chart;
@@ -843,8 +843,7 @@ function renderErrorPage() {
 function renderReactComponents() {
     $('.barspinner').show();
     const bannerToken = getStorage('setDueDateForBanner');
-    const popupToken = getStorage('setPopupToken');
-    if (new Date().getTime() > Number(popupToken)) {
+    if (new Date().getTime() > Number(bannerToken)) {
         remove('setDueDateForBanner');
         const getqueryParameter = document.location.search;
         const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
@@ -859,7 +858,6 @@ function renderReactComponents() {
         $('.barspinner').hide();
     } else {
         setTimeOutBanner('views');
-        setTimeOutPopup('views');
         render(<ServerTime api={api} />, $('#server-time')[0]);
         render(<Tour />, $('#tour')[0]);
         render(

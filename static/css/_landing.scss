@@ -677,6 +677,9 @@ $header-color : #333333;
   &-header {
     text-align: end;
     margin-bottom: 1rem;
+    img{
+      cursor:pointer;
+    }
   }
 
   &-para{
