@@ -320,12 +320,24 @@ $header-color : #333333;
 
     &-right,
     &-left {
+      .mobilecontent{
+        display: none;
+      }
+            .desktopcontent {
+              display: block;
+            }
       width: 50%;
       padding: 0 10rem;
 
       @include for-size(mobile) {
         width: 100%;
         padding: unset;
+        .desktopcontent {
+            display: none;
+          }
+                     .mobilecontent {
+                       display: block;
+                     }
       }
 
 
@@ -580,6 +592,9 @@ $header-color : #333333;
           &-location {
               font: 400 1rem $font-IBM;
               color: #333;
+              a{
+                color: #333333 !important;
+              }
             }
           
             &-trade {
@@ -588,6 +603,9 @@ $header-color : #333333;
               font: 400 1rem $font-IBM;
               box-shadow: inset 4px 0px 0px rgba(255, 68, 79, 0.64);
               color: #333;
+              a {
+                  color: #333333
+                }
               @include for-size(mobile) {
                 box-shadow: inset 0px 4px 0px rgba(255, 68, 79, 0.64);
               }
@@ -721,4 +739,23 @@ $header-color : #333333;
     }
   }
 
+}
+
+.mobilecontent {
+  display: none;
+}
+
+.desktopcontent {
+  display: block;
+}
+
+
+@include for-size(mobile) {
+  .desktopcontent {
+    display: none;
+  }
+
+  .mobilecontent {
+    display: block;
+  }
 }
