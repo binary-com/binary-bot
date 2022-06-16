@@ -15,11 +15,11 @@ import BotLanding from './react-components/bot-landing';
 
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
-const twentyOneDays = 21,
-    fiveMinutes = 300,
-    oneMilliSec = 1000,
-    oneMinute = 60,
-    oneDay = 24;
+const oneMilliSec = 1000;
+// twentyOneDays = 21,
+// fiveMinutes = 300,
+// oneMinute = 60,
+// oneDay = 24;
 
 export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
@@ -33,6 +33,7 @@ export const expirationDate = () => {
 
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
 
+// eslint-disable-next-line import/no-mutable-exports
 export let timerForBanner;
 
 const checkifBotRunning = () => {
