@@ -21,7 +21,7 @@ const oneMilliSec = 1000;
 // oneMinute = 60,
 // oneDay = 24;
 
-export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
+export const elements = ['#notification-banner', '#main', '#footer', '#header'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 
@@ -111,6 +111,7 @@ const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
     loadLang();
+    $('.show-on-load').show();
     if (bannerToken) {
         if (getTokenList().length) {
             if (!window.location.pathname.includes('/bot.html')) {
@@ -119,7 +120,6 @@ const loginCheck = () => {
             document.getElementById('bot-main').classList.remove('hidden');
         } else {
             oauthLogin(() => {
-                $('.show-on-load').show();
                 $('.barspinner').hide();
                 renderElements();
                 GTM.init();
