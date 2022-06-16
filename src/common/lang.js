@@ -1,9 +1,13 @@
+import React from 'react';
+import { render } from 'react-dom';
 import { parseQueryString } from '../common/utils/tools';
-import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
+import { set as setStorage, get as getStorage, remove } from '../common/utils/storageManager';
 import { setCookieLanguage } from '../common/utils/cookieManager';
 import { supportedLanguages, translate, init } from './i18n';
 import { getClientsCountryByIP } from './utils/utility';
+import BotLanding from '../indexPage/react-components/bot-landing';
 
+const elements = ['#notification-banner', '#main', '#footer', '#header'];
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
     const lang = queryLang in supportedLanguages ? queryLang : getStorage('lang') || 'en';
@@ -30,7 +34,17 @@ export const load = () => {
 
     $('#select_language li:not(:first)').click(function click() {
         const newLang = $(this).attr('class');
-        document.location.search = `l=${newLang}`;
+        if (document.getElementById('bot-landing').classList.contains('hidden') === false) {
+            remove('setDueDateForBanner');
+            render(<BotLanding />, document.getElementById('bot-landing'));
+            elements.map(elem => document.querySelector(elem).classList.add('hidden'));
+            document.getElementById('bot-landing').classList.remove('hidden');
+            document.getElementById('bot-main').classList.remove('hidden');
+            $('.barspinner').hide();
+            document.location.search = `l=${newLang}`;
+        } else {
+            document.location.search = `l=${newLang}`;
+        }
     });
 
     $('.language').text(
