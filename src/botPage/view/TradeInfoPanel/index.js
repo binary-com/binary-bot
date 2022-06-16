@@ -68,6 +68,7 @@ class AnimateTrade extends Component {
             resetAnimation();
             $('.stage-tooltip.top:eq(0)').addClass('running');
             this.setState({ indicatorMessage: this.indicatorMessages.starting });
+            globalObserver.setState({ isRunning: true });
             globalObserver.emit('summary.disable_clear');
             globalObserver.register('contract.status', contractStatus => this.animateStage(contractStatus));
         });

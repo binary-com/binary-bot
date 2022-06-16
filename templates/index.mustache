@@ -6,17 +6,25 @@
 {{> ../templates/partials/head }}
 	<title>Welcome to the Binary Bot</title>
 {{> index_css }}
+{{> bot_css }}
 <link rel="stylesheet" href="css/binary.css">
+<link rel="stylesheet" type="text/css" charset="UTF-8"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+<link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridle@2.0.48/css/grid-flex.css" integrity="sha256-J4p1c+K4tD3rnyfA0ztZpoQR0+mBhDTZ/J+YNOalc0k=" crossorigin="anonymous">
 </head>
 
 <body>
+    <div id="bot-main" class="hidden" style="width: 100%; position: relative; height: 100%;">
 	{{> ../templates/partials/loading }}
-	<div id="topbar">
-    <div class="wrapper show-on-load">
-		  {{> ../templates/partials/language }}
+    <div id="topbar">
+        <div class="wrapper show-on-load">
+            {{> ../templates/partials/language }}
+        </div>
     </div>
-	</div>
+    <div id="bot-landing"></div>
+	
 	<div id="header">
 		<div class="wrapper">
             <div class="logo-wrapper">
@@ -26,6 +34,7 @@
     </div>
 	</div>
     <div id="notification-banner"></div>
+    <div id="bot-landing-alert-popup" class="bot-landing-alert bot-landing-alert-popup"></div>
 	<div id="main">
 		<div>
 			<div class="content show-on-load">
@@ -54,5 +63,6 @@
     <div id="footer"></div>
     {{> index}}
     {{> gtm_iframe }}
+   </div>
 </body>
 </html>

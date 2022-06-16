@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import 'jquery-ui/ui/widgets/dialog';
 import _Blockly, { load } from './blockly';
 import Chart from './Dialogs/Chart';
@@ -39,6 +39,7 @@ import {
     get as getStorage,
     set as setStorage,
     getToken,
+    remove,
 } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
@@ -49,6 +50,7 @@ import {
     saveBeforeUnload,
 } from './blockly/utils';
 import { moveToDeriv } from '../../common/utils/utility';
+import { setTimeOutBanner } from '../../indexPage/index';
 
 let realityCheckTimeout;
 let chart;
@@ -89,7 +91,18 @@ api.events.on('balance', response => {
 
     globalObserver.setState({ balance: b, currency });
 });
-
+const removeTokens = () => {
+    logoutAllTokens().then(() => {
+        updateTokenList();
+        globalObserver.emit('ui.log.info', translate('Logged you out!'));
+        clearRealityCheck();
+        clearActiveTokens();
+        window.location.reload();
+    });
+};
+const clearActiveTokens = () => {
+    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+};
 const addBalanceForToken = token => {
     api.authorize(token).then(() => {
         api.send({ forget_all: 'balance' }).then(() => {
@@ -450,20 +463,6 @@ export default class View {
                 .catch(() => {});
         };
 
-        const removeTokens = () => {
-            logoutAllTokens().then(() => {
-                updateTokenList();
-                globalObserver.emit('ui.log.info', translate('Logged you out!'));
-                clearRealityCheck();
-                clearActiveTokens();
-                window.location.reload();
-            });
-        };
-
-        const clearActiveTokens = () => {
-            setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-        };
-
         $('.panelExitButton').click(function onClick() {
             $(this)
                 .parent()
@@ -624,7 +623,6 @@ export default class View {
                 setTimeout(() => $('#stopButton').triggerHandler('click'));
                 return;
             }
-
             const token = $('.account-id')
                 .first()
                 .attr('value');
@@ -825,7 +823,7 @@ function initRealityCheck(stopCallback) {
 }
 
 function renderErrorPage() {
-    ReactDOM.render(
+    render(
         <ErrorPage
             title={translate('Unfortunately, Binary Bot isn’t available in your country')}
             message={translate(
@@ -841,18 +839,43 @@ function renderErrorPage() {
     document.getElementById('blocklyArea').remove();
 }
 
+// eslint-disable-next-line consistent-return
 function renderReactComponents() {
-    ReactDOM.render(<ServerTime api={api} />, $('#server-time')[0]);
-    ReactDOM.render(<Tour />, $('#tour')[0]);
-    ReactDOM.render(
-        <OfficialVersionWarning
-            show={
-                !(typeof window.location !== 'undefined' && isProduction() && window.location.pathname === '/bot.html')
-            }
-        />,
-        $('#footer')[0]
-    );
-    document.getElementById('errorArea').remove();
-    ReactDOM.render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
-    ReactDOM.render(<LogTable />, $('#logTable')[0]);
+    $('.barspinner').show();
+    const bannerToken = getStorage('setDueDateForBanner');
+    if (new Date().getTime() > Number(bannerToken)) {
+        remove('setDueDateForBanner');
+        const getqueryParameter = document.location.search;
+        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+        window.location.replace(getDefaultPath);
+        return false;
+    }
+    if (bannerToken === null || bannerToken === undefined) {
+        const getqueryParameter = document.location.search;
+        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+        window.location.replace(getDefaultPath);
+        document.getElementById('errorArea').remove();
+        $('.barspinner').hide();
+    } else {
+        setTimeOutBanner('views');
+        render(<ServerTime api={api} />, $('#server-time')[0]);
+        render(<Tour />, $('#tour')[0]);
+        render(
+            <OfficialVersionWarning
+                show={
+                    !(
+                        typeof window.location !== 'undefined' &&
+                        isProduction() &&
+                        window.location.pathname === '/bot.html'
+                    )
+                }
+            />,
+            $('#footer')[0]
+        );
+        document.getElementById('errorArea').remove();
+        render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
+        render(<LogTable />, $('#logTable')[0]);
+        document.getElementById('bot-main').classList.remove('hidden');
+        $('.barspinner').hide();
+    }
 }

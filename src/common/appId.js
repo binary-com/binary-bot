@@ -38,9 +38,7 @@ const queryToObjectArray = queryStr => {
 
 export const oauthLogin = (done = () => 0) => {
     const queryStr = parseQueryString();
-
     const tokenObjectList = queryToObjectArray(queryStr);
-
     if (tokenObjectList.length) {
         $('#main').hide();
         addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
@@ -99,6 +97,11 @@ export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/
 
 export const getOAuthURL = () =>
     `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
+
+export const getOAuthURLDeriv = () =>
+    `https://oauth.deriv.com/oauth2/authorize?app_id=31665&l=${getLanguage().toUpperCase()}`;
+
+// 19111
 
 const options = {
     apiUrl  : getWebSocketURL(),

@@ -12,3 +12,4 @@ lib/
 old/
 CNAME
 *.env
+.DS_Store
