@@ -17,8 +17,8 @@ const ChooseSection = () => (
                                     <img src={img} />
                                 </div>
                                 <div className='choose-wrapper-inner-left-content-description'>
-                                    <h1>{title}</h1>
-                                    <h2>{content}</h2>
+                                    <h1>{translate(title)}</h1>
+                                    <h2>{translate(content)}</h2>
                                 </div>
                             </div>
                         )
@@ -34,8 +34,8 @@ const ChooseSection = () => (
                                     <img src={img} />
                                 </div>
                                 <div className='choose-wrapper-inner-right-content-description'>
-                                    <h1>{title}</h1>
-                                    <h2>{content}</h2>
+                                    <h1>{translate(title)}</h1>
+                                    <h2>{translate(content)}</h2>
                                 </div>
                             </div>
                         )
@@ -51,8 +51,8 @@ const ChooseSection = () => (
                                     <img src={img} />
                                 </div>
                                 <div className='choose-wrapper-inner-right-content-description'>
-                                    <h1>{title}</h1>
-                                    <h2>{content}</h2>
+                                    <h1>{translate(title)}</h1>
+                                    <h2>{translate(content)}</h2>
                                 </div>
                             </div>
                         )
