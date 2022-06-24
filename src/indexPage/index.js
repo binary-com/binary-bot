@@ -11,7 +11,7 @@ import { moveToDeriv } from '../common/utils/utility';
 import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
-import BotLanding from './react-components/bot-landing';
+import BotLanding from './react-components/binary-landing';
 
 const today = new Date().getTime();
 const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
@@ -47,7 +47,11 @@ const renderElements = () => {
         showBanner();
         $('#shop-url').attr(
             'href',
-            createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
+            createUrl({
+                subdomain   : 'shop',
+                path        : 'collections/strategies',
+                isNonBotPage: true,
+            })
         );
         for (let i = 0; i < elements.length; i++) {
             document.querySelector(elements[i]).classList.remove('hidden');
