@@ -126,7 +126,9 @@ $header-color : #333333;
   &.primary {
     background-color: #2E8836;
     color: $white;
-
+    @media screen and (max-width: 385px) {
+          margin-bottom: 1rem;
+    }
     &:hover {
       background-color: #246d2a;
       color: $white;
