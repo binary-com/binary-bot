@@ -300,6 +300,9 @@ $header-color : #333333;
 
   &-inner {
     padding: 7.5rem 0;
+    @include for-size(mobile) {
+      padding: 2.5rem 0;
+    }
     &-title {
         font: 700 2rem $font-IBM;
         color: #333;
