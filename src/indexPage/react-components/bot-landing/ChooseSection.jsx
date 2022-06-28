@@ -8,15 +8,15 @@ const ChooseSection = () => (
         <div className='choose-wrapper-inner section-container'>
             <h1 className='choose-wrapper-inner-title'>{translate('6 reasons you’ll love Deriv')}</h1>
             <div className='choose-wrapper-inner-section-content'>
-                <div className='choose-wrapper-inner-left desktopcontent'>
-                    {Translations.carouselContentLeftArray.map((slide, index) => {
+                <div className='choose-wrapper-inner-section-content-row'>
+                    {Translations.carouselContentArrayOne.map((slide, index) => {
                         const { title, content, img } = slide;
                         return (
-                            <div className='choose-wrapper-inner-left-content' key={index}>
-                                <div className='choose-wrapper-inner-left-content-placeholder'>
+                            <div className='choose-wrapper-inner-section-content-row-inner' key={index}>
+                                <div className='choose-wrapper-inner-section-content-row-inner-placeholder'>
                                     <img src={img} />
                                 </div>
-                                <div className='choose-wrapper-inner-left-content-description'>
+                                <div className='choose-wrapper-inner-section-content-row-inner-description'>
                                     <h1>{translate(title)}</h1>
                                     <h2>{translate(content)}</h2>
                                 </div>
@@ -25,15 +25,15 @@ const ChooseSection = () => (
                     })
                     }
                 </div>
-                <div className='choose-wrapper-inner-right desktopcontent'>
-                    {Translations.carouselContentRightArray.map((slide, index) => {
+                <div className='choose-wrapper-inner-section-content-row'>
+                    {Translations.carouselContentArrayTwo.map((slide, index) => {
                         const { title, content, img } = slide;
                         return (
-                            <div className='choose-wrapper-inner-right-content' key={index}>
-                                <div className='choose-wrapper-inner-right-content-placeholder'>
+                            <div className='choose-wrapper-inner-section-content-row-inner' key={index}>
+                                <div className='choose-wrapper-inner-section-content-row-inner-placeholder'>
                                     <img src={img} />
                                 </div>
-                                <div className='choose-wrapper-inner-right-content-description'>
+                                <div className='choose-wrapper-inner-section-content-row-inner-description'>
                                     <h1>{translate(title)}</h1>
                                     <h2>{translate(content)}</h2>
                                 </div>
@@ -42,15 +42,15 @@ const ChooseSection = () => (
                     })
                     }
                 </div>
-                <div className='choose-wrapper-inner-right mobilecontent'>
-                    {Translations.carouselContentMobileArray.map((slide, index) => {
+                <div className='choose-wrapper-inner-section-content-row'>
+                    {Translations.carouselContentArrayThree.map((slide, index) => {
                         const { title, content, img } = slide;
                         return (
-                            <div className='choose-wrapper-inner-right-content' key={index}>
-                                <div className='choose-wrapper-inner-right-content-placeholder'>
+                            <div className='choose-wrapper-inner-section-content-row-inner' key={index}>
+                                <div className='choose-wrapper-inner-section-content-row-inner-placeholder'>
                                     <img src={img} />
                                 </div>
-                                <div className='choose-wrapper-inner-right-content-description'>
+                                <div className='choose-wrapper-inner-section-content-row-inner-description'>
                                     <h1>{translate(title)}</h1>
                                     <h2>{translate(content)}</h2>
                                 </div>
