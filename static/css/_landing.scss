@@ -63,7 +63,7 @@ $header-color : #333333;
 }
 
 .hero {
-  margin-top: -105px;
+  margin-top: -110px;
   @include for-size(mobile) {
     margin-top: unset;
   }

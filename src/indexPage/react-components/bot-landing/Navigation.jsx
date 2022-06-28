@@ -7,7 +7,7 @@ const MoveToDerivNav = () => (
         <div className='navigation-container'>
             <div class="navigation-logo">
                 <a href="#">
-                    <img src="image/binary.png"/>
+                    <img src="image/binary.png" />
                 </a>
             </div>
             <div>
@@ -17,6 +17,6 @@ const MoveToDerivNav = () => (
             </div>
         </div>
     </div>
-    
+
 )
 export default MoveToDerivNav;
