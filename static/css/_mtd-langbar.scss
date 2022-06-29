@@ -2,6 +2,10 @@
     position: absolute!important;
     top: 65px;
     right: 114px;
+
+    @media (min-width: 768px) {
+        
+    }
 }
 
 .movetoderiv_topbar_hide {
@@ -57,6 +61,11 @@
     width: 144px !important;
 }
 
+.language_flag {
+    max-width: 24px;
+    height: 16px;
+}
+
 .language_text {
     text-align: left;
     box-sizing: border-box;
@@ -85,17 +94,21 @@
 }
 
 .en_flag_mtd {
+    background-size: cover;
     background-image: url(../image/english-flag.png);
 }
 
 .id_flag_mtd {
+    background-size: cover;
     background-image: url(../image/indonesia-flag.png);
 }
 
 .es_flag_mtd {
+    background-size: cover;
     background-image: url(../image/spain-flag.png);
 }
 
 .pt_flag_mtd {
+    background-size: cover;
     background-image: url(../image/portugal-flag.png);
 }
