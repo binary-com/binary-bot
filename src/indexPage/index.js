@@ -27,7 +27,6 @@ export const bannerToken = getStorage('setDueDateForBanner');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
     return today + oneMilliSec * 600;
 };
 
