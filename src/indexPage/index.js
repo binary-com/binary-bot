@@ -28,7 +28,7 @@ export const bannerToken = getStorage('setDueDateForBanner');
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
     // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
-    return today + oneMilliSec * 120;
+    return today + oneMilliSec * 600;
 };
 
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
