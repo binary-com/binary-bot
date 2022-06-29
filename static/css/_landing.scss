@@ -30,7 +30,7 @@ $header-color : #333333;
 .hero {
   background: $hero-BG url(../image/BG-1.webp) no-repeat;
   background-size: cover;
-
+  padding: 0 2rem;
   @include for-size(mobile) {
     background: $hero-BG url(../image/MBG1.png) no-repeat;
     background-size: cover;

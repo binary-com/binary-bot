@@ -12,9 +12,9 @@ const Hero = () => (
                 </h2>
                 <div className="btn-group">
                     <a href="https://bot.deriv.com">
-                        <button className="l-btn primary">{translate('Take me to Deriv')}</button>
+                        <button className="l-btn primary">{translate('Take me to Binary Bot on Deriv')}</button>
                     </a>
-                    <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
+                    <a href={`${window.location.origin}/bot.html${document.location.search}`}>
                         <button className="l-btn">{translate('Maybe later')}</button>
                     </a>
                 </div>

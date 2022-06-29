@@ -16,7 +16,7 @@ import BotLanding from './react-components/bot-landing';
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
 const oneMilliSec = 1000;
-// twentyOneDays = 21,
+// sevenDays = 7,
 // fiveMinutes = 300,
 // oneMinute = 60,
 // oneDay = 24;
@@ -27,8 +27,8 @@ export const bannerToken = getStorage('setDueDateForBanner');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
-    return today + oneMilliSec * 120;
+    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
+    return today + oneMilliSec * 600;
 };
 
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
@@ -52,9 +52,12 @@ export const setTimeOutBanner = route => {
             (route === 'views' && checkifBotRunning() === false)
         ) {
             const getqueryParameter = document.location.search;
-            const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
-            window.location.replace(getDefaultPath);
-            renderBanner();
+            if (getqueryParameter.split('?')[1].length !== undefined) {
+                const getqueryParameterFinal = getqueryParameter.split('?')[1];
+                const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameterFinal);
+                window.location.replace(getDefaultPath);
+                renderBanner();
+            }
         } else if (
             (route === 'index' && !!bannerDisplayed === true) ||
             (route === 'views' && checkifBotRunning() === true)
