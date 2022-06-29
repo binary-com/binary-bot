@@ -14,7 +14,7 @@ const Hero = () => (
                     <a href="https://bot.deriv.com">
                         <button className="l-btn primary">{translate('Take me to Binary Bot on Deriv')}</button>
                     </a>
-                    <a href={`${window.location.origin}/bot.html${document.location.search}`}>
+                    <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
                         <button className="l-btn">{translate('Maybe later')}</button>
                     </a>
                 </div>
