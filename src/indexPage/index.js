@@ -53,7 +53,7 @@ export const setTimeOutBanner = route => {
         ) {
             const getqueryParameter = document.location.search;
             if (getqueryParameter.split('?')[1].length !== undefined) {
-                const getqueryParameterFinal = getqueryParameter.split('?')[1];
+                const getqueryParameterFinal = getqueryParameter.split('?').pop();
                 const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameterFinal);
                 window.location.replace(getDefaultPath);
                 renderBanner();
