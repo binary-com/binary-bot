@@ -9,7 +9,7 @@ import GTM from '../common/gtm';
 import { load as loadLang, showBanner } from '../common/lang';
 import { moveToDeriv } from '../common/utils/utility';
 import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
-import { createUrl } from '../common/utils/tools';
+import { createUrl, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
 
@@ -45,19 +45,16 @@ const checkifBotRunning = () => {
 
 export const setTimeOutBanner = route => {
     let bannerDisplayed;
+    const qs = parseQueryString();
     // eslint-disable-next-line consistent-return
     timerForBanner = setTimeout(() => {
         if (
             (route === 'index' && !!bannerDisplayed === false) ||
             (route === 'views' && checkifBotRunning() === false)
         ) {
-            const getqueryParameter = document.location.search;
-            if (getqueryParameter.split('?')[1].length !== undefined) {
-                const getqueryParameterFinal = getqueryParameter.split('?').pop();
-                const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameterFinal);
-                window.location.replace(getDefaultPath);
-                renderBanner();
-            }
+            const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
+            window.location.replace(getDefaultPath);
+            renderBanner();
         } else if (
             (route === 'index' && !!bannerDisplayed === true) ||
             (route === 'views' && checkifBotRunning() === true)

@@ -13,6 +13,18 @@ export const parseQueryString = () => {
     return objURL;
 };
 
+export const serialize = obj => {
+    const str = [];
+    Object.keys(obj).forEach(key => {
+        // eslint-disable-next-line no-prototype-builtins
+        if (obj.hasOwnProperty(obj[key])) {
+            // eslint-disable-next-line prefer-template
+            str.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+        }
+    });
+    return str?.join('&');
+};
+
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 
 export const getUTCTime = date => {
