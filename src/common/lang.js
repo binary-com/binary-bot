@@ -40,6 +40,9 @@ export const load = () => {
             .text()
     );
 
+    $('.actual_flag').text(`${lang}`);
+    $('.language_background_flag').addClass(`${lang}_flag_mtd`);
+
     if (lang === 'ach') {
         // eslint-disable-next-line no-underscore-dangle
         window._jipt = [['project', 'binary-bot']];
