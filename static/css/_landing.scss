@@ -126,7 +126,7 @@ $header-color : #333333;
   &.primary {
     background-color: #2E8836;
     color: $white;
-    @media screen and (max-width: 385px) {
+    @include for-size(mobile) {
           margin-bottom: 1rem;
     }
     &:hover {
@@ -138,9 +138,9 @@ $header-color : #333333;
   &.danger {
     background: #FF444F;
     color: $white;
-      @media screen and (max-width: 385px) {
-          margin-bottom: 1rem;
-        }
+    @include for-size(mobile) {
+        margin-bottom: 1rem;
+      }
     &:hover {
       background-color: #cd353e;
       color: $white;
