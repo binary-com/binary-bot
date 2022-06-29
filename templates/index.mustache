@@ -16,14 +16,17 @@
 </head>
 
 <body>
-    <div id="bot-main" class="hidden" style="width: 100%; position: relative; height: 100%;">
+    <div id="bot-main" class="hidden" style="width: 100%; position: relative;">
 	{{> ../templates/partials/loading }}
-	<div id="topbar">
-    <div class="wrapper show-on-load">
-		  {{> ../templates/partials/language }}
+    <div id="topbar">
+        <div class="wrapper show-on-load">
+            {{> ../templates/partials/language }}
+        </div>
     </div>
 	</div>
     <div id="movetoderiv"></div>
+    <div id="bot-landing"></div>
+	
 	<div id="header">
 		<div class="wrapper">
             <div class="logo-wrapper">
@@ -33,6 +36,7 @@
     </div>
 	</div>
     <div id="notification-banner"></div>
+    <div id="bot-landing-alert-popup" class="bot-landing-alert bot-landing-alert-popup"></div>
 	<div id="main">
 		<div>
 			<div class="content show-on-load">

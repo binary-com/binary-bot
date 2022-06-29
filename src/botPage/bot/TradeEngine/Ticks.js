@@ -34,15 +34,13 @@ export default Engine =>
         getTicks(toString = false) {
             return new Promise(resolve => {
                 this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
-                    const pipSize = this.getPipSize();
-                    const ticksList = ticks.map(o => {
+                    const tickList = ticks.map(tick => {
                         if (toString) {
-                            return o.quote.toFixed(pipSize);
+                            return tick.quote.toFixed(this.getPipSize());
                         }
-                        return o.quote;
+                        return tick.quote;
                     });
-
-                    resolve(ticksList);
+                    resolve(tickList);
                 });
             });
         }
@@ -58,12 +56,16 @@ export default Engine =>
             );
         }
         getLastDigit() {
-            return new Promise(resolve => this.getLastTick().then(tick => resolve(getLastDigit(tick))));
+            return new Promise(resolve => this.getLastTick(false, true).then(tick => resolve(getLastDigit(tick))));
         }
+
         getLastDigitList() {
-            return new Promise(resolve =>
-                this.getTicks().then(ticks => resolve(ticks.map(tick => getLastDigit(tick))))
-            );
+            return new Promise(resolve => this.getTicks().then(ticks => resolve(this.getLastDigitsFromList(ticks))));
+        }
+
+        getLastDigitsFromList(ticks) {
+            const digits = ticks.map(tick => getLastDigit(tick.toFixed(this.getPipSize())));
+            return digits;
         }
         checkDirection(dir) {
             return new Promise(resolve =>

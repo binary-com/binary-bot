@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import endpoint from './endpoint';
 import Logo from './react-components/logo.jsx';
 import Footer from './react-components/footer.jsx';
@@ -11,52 +11,115 @@ import { moveToDeriv } from '../common/utils/utility';
 import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
-import BotLanding from './react-components/binary-landing';
+import BotLanding from './react-components/bot-landing';
+import BinaryLanding from './react-components/binary-landing';
 
 const today = new Date().getTime();
-const expirationDate = today + 1000 * 60 * 60 * 24 * 21;
+// eslint-disable-next-line one-var
+const oneMilliSec = 1000;
+// twentyOneDays = 21,
+// fiveMinutes = 300,
+// oneMinute = 60,
+// oneDay = 24;
 
-const elements = ['#notification-banner', '#main', '#footer', '#header'];
-const temp = getStorage('movetoderiv');
-const renderBanner = () => {
-    ReactDOM.render(<BotLanding />, document.getElementById('movetoderiv'));
-    // mitra-deriv routing to be handled later
-    // setStorage('movetoderiv', expirationDate);
-    for (let i = 0; i < elements.length; i++) {
-        document.querySelector(elements[i]).classList.add('hidden');
+export const elements = ['#notification-banner', '#main', '#footer', '#header'];
+// eslint-disable-next-line one-var
+export const bannerToken = getStorage('setDueDateForBanner');
+
+// eslint-disable-next-line arrow-body-style
+export const expirationDate = () => {
+    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
+    return today + oneMilliSec * 120;
+};
+
+export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
+
+// eslint-disable-next-line import/no-mutable-exports
+export let timerForBanner;
+
+const checkifBotRunning = () => {
+    if (document.getElementById('runButton').style.display === 'none') {
+        return true;
     }
-    document.getElementById('movetoderiv').classList.remove('hidden');
+    return false;
+};
+
+export const setTimeOutBanner = route => {
+    let bannerDisplayed;
+    // eslint-disable-next-line consistent-return
+    timerForBanner = setTimeout(() => {
+        if (
+            (route === 'index' && !!bannerDisplayed === false) ||
+            (route === 'views' && checkifBotRunning() === false)
+        ) {
+            const getqueryParameter = document.location.search;
+            const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+            window.location.replace(getDefaultPath);
+            renderBanner();
+        } else if (
+            (route === 'index' && !!bannerDisplayed === true) ||
+            (route === 'views' && checkifBotRunning() === true)
+        ) {
+            remove('setDueDateForBanner');
+            setStorage('setDueDateForBanner', expirationDate());
+            return false;
+        }
+    }, calcSetTimeoutValueBanner);
+};
+
+const renderBanner = () => {
+    let Component, dynamicVar;
+    if (window.location.pathname === '/movetoderiv.html') {
+        Component = <BinaryLanding />;
+        dynamicVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynamicVar = 'bot-landing';
+    }
+    console.log(Component, dynamicVar);
+    render(Component, document.getElementById(dynamicVar));
+    // setStorage('setDueDateForBanner', expirationDate());
+    elements.map(elem => document.querySelector(elem).classList.add('hidden'));
+    document.getElementById(dynamicVar).classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
     $('.barspinner').hide();
 };
 
+// eslint-disable-next-line consistent-return
 const renderElements = () => {
+    let Component, dynamicVar;
+    if (window.location.pathname === '/movetoderiv.html') {
+        Component = <BinaryLanding />;
+        dynamicVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynamicVar = 'bot-landing';
+    }
+    setTimeOutBanner('index');
     $('.barspinner').show();
 
-    if (!temp) {
-        renderBanner();
+    if (!bannerToken) {
+        if (window.location.href.indexOf('bot.html') === -1) {
+            renderBanner();
+        }
     } else {
-        if (today > temp) {
-            remove('movetoderiv');
+        if (today > bannerToken) {
+            remove('setDueDateForBanner');
             renderBanner();
             return false;
         }
-        ReactDOM.render(<Logo />, document.getElementById('binary-logo'));
-        ReactDOM.render(<Footer />, document.getElementById('footer'));
-        isEuCountry().then(isEu => showHideEuElements(isEu));
-        showBanner();
-        $('#shop-url').attr(
-            'href',
-            createUrl({
-                subdomain   : 'shop',
-                path        : 'collections/strategies',
-                isNonBotPage: true,
-            })
-        );
-        for (let i = 0; i < elements.length; i++) {
-            document.querySelector(elements[i]).classList.remove('hidden');
+        if (window.location.href.indexOf('bot.html') === -1) {
+            render(<Logo />, document.getElementById('binary-logo'));
+            render(<Footer />, document.getElementById('footer'));
+            isEuCountry().then(isEu => showHideEuElements(isEu));
+            showBanner();
+            $('#shop-url').attr(
+                'href',
+                createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
+            );
+            elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
+            document.getElementById(dynamicVar).classList.add('hidden');
         }
-        document.getElementById('movetoderiv').classList.add('hidden');
         document.getElementById('bot-main').classList.remove('hidden');
         $('.barspinner').hide();
     }
@@ -67,9 +130,11 @@ const loginCheck = () => {
     moveToDeriv();
     loadLang();
     $('.show-on-load').show();
-    if (temp) {
+    if (bannerToken) {
         if (getTokenList().length) {
-            window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
+            if (!window.location.pathname.includes('/bot.html')) {
+                window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
+            }
             document.getElementById('bot-main').classList.remove('hidden');
         } else {
             oauthLogin(() => {
@@ -79,7 +144,9 @@ const loginCheck = () => {
             });
         }
     } else {
-        renderBanner();
+        setTimeout(() => {
+            renderBanner();
+        }, 2000);
     }
 };
 

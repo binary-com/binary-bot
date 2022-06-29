@@ -80,13 +80,15 @@ const getActiveSubMarket = submarkets =>
     );
 
 const getActiveMarket = markets =>
-    Object.keys(markets).reduce(
-        (acc, market) =>
-            Object.keys(getActiveSubMarket(markets[market].submarkets)).length
-                ? { ...acc, [market]: markets[market] }
-                : { ...acc },
-        {}
-    );
+    Object.keys(markets)
+        .filter(m => m !== 'basket_index')
+        .reduce(
+            (acc, market) =>
+                Object.keys(getActiveSubMarket(markets[market].submarkets)).length
+                    ? { ...acc, [market]: markets[market] }
+                    : { ...acc },
+            {}
+        );
 
 fieldGeneratorMapping.MARKET_LIST = () => {
     const markets = getActiveMarket(symbolApi.activeSymbols.getMarkets());
@@ -335,7 +337,10 @@ export const getContractsAvailableForSymbolFromApi = async underlyingSymbol => {
             contractsForStore
                 .filter(c => c.symbol === underlyingSymbol)
                 .forEach(() =>
-                    contractsForStore.splice(contractsForStore.findIndex(c => c.symbol === underlyingSymbol), 1)
+                    contractsForStore.splice(
+                        contractsForStore.findIndex(c => c.symbol === underlyingSymbol),
+                        1
+                    )
                 );
             contractsForStore.push(contractsForSymbol);
             setStorage('contractsForStore', JSON.stringify(contractsForStore));

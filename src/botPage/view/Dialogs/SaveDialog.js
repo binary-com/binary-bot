@@ -60,9 +60,9 @@ const Save = React.memo(({ closeDialog, onSave }) => {
                     title="Choose filename for your blocks"
                     type="text"
                     onChange={e => setFileName(e.target.value)}
-                    defaultValue="binary-bot"
                     data-lpignore="true"
                     autoComplete="false"
+                    value={fileName}
                 />
             </div>
             <div className="input-row center-text">
