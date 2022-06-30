@@ -21,7 +21,7 @@ const oneMilliSec = 1000;
 // oneMinute = 60,
 // oneDay = 24;
 
-export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar', '#toolbox'];
+export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 
@@ -72,7 +72,6 @@ const renderBanner = () => {
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
-    document.getElementById('toolbox').classList.remove('hidden');
     $('.barspinner').hide();
 };
 
