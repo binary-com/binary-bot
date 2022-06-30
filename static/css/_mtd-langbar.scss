@@ -6,7 +6,18 @@
     @media (max-width: 1024px) {
         top: 1px;
         right: -38px;
+        
+    }
+    @media (min-width: 1534px) {
+        right: 18%;
+    }
+    
+    @media (min-width: 1800px) {
+        right: 25%;
+    }
 
+    @media (min-width: 2270px) {
+        right: 28%;
     }
 }
 
