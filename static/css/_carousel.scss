@@ -92,6 +92,7 @@
 
     &__slide_card {
         max-width: 384px;
+        max-height: 585px;
         display: flex;
         text-align: center;
         outline: none;
@@ -119,3 +120,50 @@
 .carousel_section .slick-slide {
     margin: 0 12.5px;
 }
+
+
+.carousel_slide_info_wrapper {
+    max-height: 92px;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    position: relative;
+    top: 190px;
+
+    @include for-size(mobile) {
+        top: 158px;
+      }
+
+}
+
+.platform_title {
+    margin-top: 0;
+    font: 700 1.6rem $font-IBM;
+    color: $header-color; 
+    margin-bottom: 8px;
+    @include for-size(mobile) {
+      font: 700 1.3rem $font-IBM;
+      margin-bottom: 8px;
+    }
+
+  }
+
+.platform_description {
+    min-height: 42px; 
+    max-width: 336px;
+    margin-top: 0;
+    font: 400 1rem $font-IBM;
+    color: $header-color;
+
+    @include for-size(mobile) {
+      font: 400 1rem $font-IBM;
+      margin-bottom: 0;
+      max-width: 280px;
+
+    }
+
+    @media (max-width: 768px) {
+    }
+  }
