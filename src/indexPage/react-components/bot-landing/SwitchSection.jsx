@@ -1,18 +1,8 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
 import { getOAuthURLDeriv } from '../../../common/appId';
+import { generateURL } from '../../../common/utils/tools'
 
-const getnerateURL = (url) => {
-    if (url.split('?').length !== null
-        && url.split('?').length !== undefined) {
-        const baseUrl = url.split('?')[0];
-        const queryParams = url.split('?')[1];
-        return `${baseUrl}bot.html?${queryParams}`
-    }else{
-        return `${url.replace(/\/+$/, '')}/bot.html`
-    }
-    
-}
 
 const SwitchSection = () => (
     <section className="switch">
@@ -29,7 +19,7 @@ const SwitchSection = () => (
                     <a href={getOAuthURLDeriv()}>
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href={getnerateURL(window.location.href)}>
+                    <a href={generateURL(window.location.href)}>
                         <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
                 </div>
