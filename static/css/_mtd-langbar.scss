@@ -3,8 +3,10 @@
     top: 65px;
     right: 114px;
 
-    @media (min-width: 768px) {
-        
+    @media (max-width: 1024px) {
+        top: 52px;
+        right: -38px;
+
     }
 }
 
