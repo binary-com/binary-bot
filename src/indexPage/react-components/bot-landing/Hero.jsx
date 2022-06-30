@@ -1,6 +1,18 @@
 import React from 'react'
 import { translate } from '../../../common/i18n';
 
+const getnerateURL = (url) => {
+    if (url.split('?').length !== null 
+        && url.split('?').length !== undefined){
+        const baseUrl = url.split('?')[0];
+        const queryParams = url.split('?')[1];
+        return `${baseUrl}bot.html?${queryParams}`
+    }else{
+        return `${url.replace(/\/+$/, '')}/bot.html`
+    }
+    
+}
+
 const Hero = () => (
     <section className="hero">
         <div className="hero-inner section-container">
@@ -14,7 +26,7 @@ const Hero = () => (
                     <a href="https://bot.deriv.com">
                         <button className="l-btn primary">{translate('Take me to Binary Bot on Deriv')}</button>
                     </a>
-                    <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
+                    <a href={getnerateURL(window.location.href)}>
                         <button className="l-btn">{translate('Maybe later')}</button>
                     </a>
                 </div>

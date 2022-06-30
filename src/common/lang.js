@@ -17,6 +17,7 @@ export const getLanguage = () => {
 };
 
 const addUiLang = () => {
+    console.log('how many times is it running');
     $('[data-i18n-text]').each(function each() {
         const el = $(this);
         const contents = el.contents();
@@ -36,17 +37,15 @@ export const load = () => {
         const newLang = $(this).attr('class');
         if (document.getElementById('bot-landing') !== null && document.getElementById('bot-landing') !== undefined) {
             if (document.getElementById('bot-landing').classList.contains('hidden') === false) {
-                if (window.location.href.indexOf('bot.html') === -1) {
-                    remove('setDueDateForBanner');
-                    render(<BotLanding />, document.getElementById('bot-landing'));
-                    elements.map(elem => document.querySelector(elem).classList.add('hidden'));
-                    document.getElementById('bot-landing').classList.remove('hidden');
-                    document.getElementById('bot-main').classList.remove('hidden');
-                    document.location.search = `l=${newLang}`;
-                    $('.barspinner').hide();
-                } else {
-                    document.location.search = `l=${newLang}`;
-                }
+                remove('setDueDateForBanner');
+                render(<BotLanding />, document.getElementById('bot-landing'));
+                elements.map(elem => document.querySelector(elem).classList.add('hidden'));
+                document.getElementById('bot-landing').classList.remove('hidden');
+                document.getElementById('bot-main').classList.remove('hidden');
+                document.location.search = `l=${newLang}`;
+                $('.barspinner').hide();
+            } else {
+                document.location.search = `l=${newLang}`;
             }
         } else {
             document.location.search = `l=${newLang}`;

@@ -875,6 +875,7 @@ function renderReactComponents() {
         render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
         render(<LogTable />, $('#logTable')[0]);
         document.getElementById('bot-main').classList.remove('hidden');
+        document.getElementById('toolbox').classList.remove('hidden');
         $('.barspinner').hide();
     }
 }
