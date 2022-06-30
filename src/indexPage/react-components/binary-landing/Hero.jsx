@@ -7,6 +7,12 @@ const carouselImageArray = [
         img: 'image/hero-dmt5.png',
     },
     {
+        img: 'image/hero-derivgo.png',
+    },
+    {
+        img: 'image/hero-derivx.png',
+    },
+    {
         img: 'image/hero-dtrader.png',
     },
 ]

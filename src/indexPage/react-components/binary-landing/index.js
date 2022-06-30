@@ -11,7 +11,7 @@ import CarouselTitle from './CarouselTitle.jsx';
 import TakeDeriv from './TakeDeriv.jsx';
 
 // eslint-disable-next-line arrow-body-style
-const BotLanding = () => (
+const BinaryLanding = () => (
     <div>
         <MoveToDerivNav />
         <Hero />
@@ -26,4 +26,4 @@ const BotLanding = () => (
     </div>
 );
 
-export default BotLanding;
+export default BinaryLanding;
