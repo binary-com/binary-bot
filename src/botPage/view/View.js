@@ -41,7 +41,7 @@ import {
     getToken,
     remove,
 } from '../../common/utils/storageManager';
-import { isProduction } from '../../common/utils/tools';
+import { isProduction, parseQueryString, serialize } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
 import {
     getMissingBlocksTypes,
@@ -843,16 +843,15 @@ function renderErrorPage() {
 function renderReactComponents() {
     $('.barspinner').show();
     const bannerToken = getStorage('setDueDateForBanner');
+    const qs = parseQueryString();
     if (new Date().getTime() > Number(bannerToken)) {
         remove('setDueDateForBanner');
-        const getqueryParameter = document.location.search;
-        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+        const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
         window.location.replace(getDefaultPath);
         return false;
     }
     if (bannerToken === null || bannerToken === undefined) {
-        const getqueryParameter = document.location.search;
-        const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+        const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
         window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();
         $('.barspinner').hide();
@@ -876,6 +875,7 @@ function renderReactComponents() {
         render(<TradeInfoPanel api={api} />, $('#summaryPanel')[0]);
         render(<LogTable />, $('#logTable')[0]);
         document.getElementById('bot-main').classList.remove('hidden');
+        document.getElementById('toolbox').classList.remove('hidden');
         $('.barspinner').hide();
     }
 }

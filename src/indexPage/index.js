@@ -9,25 +9,25 @@ import GTM from '../common/gtm';
 import { load as loadLang, showBanner } from '../common/lang';
 import { moveToDeriv } from '../common/utils/utility';
 import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
-import { createUrl } from '../common/utils/tools';
+import { createUrl, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
 
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
 const oneMilliSec = 1000;
-// twentyOneDays = 21,
+// sevenDays = 7,
 // fiveMinutes = 300,
 // oneMinute = 60,
 // oneDay = 24;
 
-export const elements = ['#notification-banner', '#main', '#footer', '#header'];
+export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * twentyOneDays;
+    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
     return today + oneMilliSec * 600;
 };
 
@@ -45,14 +45,14 @@ const checkifBotRunning = () => {
 
 export const setTimeOutBanner = route => {
     let bannerDisplayed;
+    const qs = parseQueryString();
     // eslint-disable-next-line consistent-return
     timerForBanner = setTimeout(() => {
         if (
             (route === 'index' && !!bannerDisplayed === false) ||
             (route === 'views' && checkifBotRunning() === false)
         ) {
-            const getqueryParameter = document.location.search;
-            const getDefaultPath = window.location.href.replace('/bot.html', getqueryParameter);
+            const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
             window.location.replace(getDefaultPath);
             renderBanner();
         } else if (
@@ -72,6 +72,7 @@ const renderBanner = () => {
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
+    document.getElementById('topbar').classList.remove('hidden');
     $('.barspinner').hide();
 };
 
@@ -103,14 +104,18 @@ const renderElements = () => {
             document.getElementById('bot-landing').classList.add('hidden');
         }
         document.getElementById('bot-main').classList.remove('hidden');
-        $('.barspinner').hide();
+        setTimeout(() => {
+            $('.barspinner').hide();
+        }, 2000);
     }
 };
 
 const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
-    loadLang();
+    if (window.location.href.indexOf('bot.html') === -1) {
+        loadLang();
+    }
     $('.show-on-load').show();
     if (bannerToken) {
         if (getTokenList().length) {
@@ -128,7 +133,7 @@ const loginCheck = () => {
     } else {
         setTimeout(() => {
             renderBanner();
-        }, 2000);
+        }, 0);
     }
 };
 

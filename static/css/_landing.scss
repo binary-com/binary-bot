@@ -30,7 +30,10 @@ $header-color : #333333;
 .hero {
   background: $hero-BG url(../image/BG-1.webp) no-repeat;
   background-size: cover;
-
+  padding: 0 2rem;
+  @include for-size(mobile) {
+      padding: 0;
+    }
   @include for-size(mobile) {
     background: $hero-BG url(../image/MBG1.png) no-repeat;
     background-size: cover;
@@ -530,7 +533,10 @@ $header-color : #333333;
   background-size: 65% 100%;
   min-height: 18.75rem;
   position: relative;
-
+  padding: 0 2rem;
+  @include for-size(mobile) {
+      padding: 0;
+    }
   @include for-size(mobile) {
     min-height: 43.75rem;
     background-image: none;
@@ -590,7 +596,10 @@ $header-color : #333333;
 .about-trade-wrapper {
   background-color: #F8FAFB;
   padding: 0;
-
+  padding: 0 2rem;
+  @include for-size(mobile) {
+    padding: 0;
+  }
   &-inner {
     padding: 3rem 0;
 
