@@ -1,6 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import Translations from './Translations';
+import { translate } from '../../../common/i18n';
 
 const Carousel = () => {
 
@@ -41,8 +42,8 @@ const Carousel = () => {
                     return (
                         <section className='landing_carousel' key={index}>
                             <div className='landing_carousel_content'>
-                                <h1>{title}</h1>
-                                <h2>{content}</h2>
+                                <h1>{translate(title)}</h1>
+                                <h2>{translate(content)}</h2>
                                 <a href="https://bot.deriv.com">
                                     <button className="l-btn danger">{action_text}</button>
                                 </a>

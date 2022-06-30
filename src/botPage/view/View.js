@@ -50,7 +50,7 @@ import {
     saveBeforeUnload,
 } from './blockly/utils';
 import { moveToDeriv } from '../../common/utils/utility';
-import { setTimeOutBanner } from '../../indexPage/index';
+import { setTimeOutBanner } from '../../indexPage';
 
 let realityCheckTimeout;
 let chart;
@@ -841,6 +841,14 @@ function renderErrorPage() {
 
 // eslint-disable-next-line consistent-return
 function renderReactComponents() {
+    let Component, dynVar;
+    if (window.location.pathname === '/movetoderv.html') {
+        Component = <BinaryLanding />;
+        dynVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynVar = 'bot-landing';
+    }
     $('.barspinner').show();
     const bannerToken = getStorage('setDueDateForBanner');
     if (new Date().getTime() > Number(bannerToken)) {

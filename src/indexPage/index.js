@@ -12,6 +12,7 @@ import { get as getStorage, set as setStorage, remove, getTokenList } from '../c
 import { createUrl } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
+import BinaryLanding from './react-components/binary-landing';
 
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
@@ -67,16 +68,33 @@ export const setTimeOutBanner = route => {
 };
 
 const renderBanner = () => {
-    render(<BotLanding />, document.getElementById('bot-landing'));
-    setStorage('setDueDateForBanner', expirationDate());
+    let Component, dynamicVar;
+    if (window.location.pathname === '/movetoderiv.html') {
+        Component = <BinaryLanding />;
+        dynamicVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynamicVar = 'bot-landing';
+    }
+    console.log(Component, dynamicVar);
+    render(Component, document.getElementById(dynamicVar));
+    // setStorage('setDueDateForBanner', expirationDate());
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
-    document.getElementById('bot-landing').classList.remove('hidden');
+    document.getElementById(dynamicVar).classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
     $('.barspinner').hide();
 };
 
 // eslint-disable-next-line consistent-return
 const renderElements = () => {
+    let Component, dynamicVar;
+    if (window.location.pathname === '/movetoderiv.html') {
+        Component = <BinaryLanding />;
+        dynamicVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynamicVar = 'bot-landing';
+    }
     setTimeOutBanner('index');
     $('.barspinner').show();
 
@@ -100,7 +118,7 @@ const renderElements = () => {
                 createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
             );
             elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
-            document.getElementById('bot-landing').classList.add('hidden');
+            document.getElementById(dynamicVar).classList.add('hidden');
         }
         document.getElementById('bot-main').classList.remove('hidden');
         $('.barspinner').hide();
