@@ -72,6 +72,7 @@ const renderBanner = () => {
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
     document.getElementById('bot-landing').classList.remove('hidden');
     document.getElementById('bot-main').classList.remove('hidden');
+    document.getElementById('topbar').classList.remove('hidden');
     $('.barspinner').hide();
 };
 
