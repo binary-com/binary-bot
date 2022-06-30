@@ -45,15 +45,15 @@ const Hero = () => {
         ],
     };
     return (
-        <section className="hero">
-            <div className="hero-inner section-container">
+        <section className="binary-hero">
+            <div className="binary-hero-inner section-container">
 
-                <div className="hero-inner__content">
+                <div className="binary-hero-inner__content">
                     <h1>{translate('We’re moving!')}</h1>
                     <h2>
                         {translate('We’ve been')}<b>{translate(' Binary.com')}</b>{translate(' for 2 decades and it’s time for an exciting new chapter.')}
                     </h2>
-                    <div className='hero-inner_content-subheader'>
+                    <div className='binary-hero-inner_content-subheader'>
                         <h2>{translate('Say hello to our new home,')}<b>{translate(' Deriv.')}</b>
                         </h2>
                     </div>
@@ -66,19 +66,19 @@ const Hero = () => {
                         </a>
                     </div>
                 </div>
-                <div className="hero-inner__placeholder">
+                <div className="binary-hero-inner__placeholder">
                     <a href=''>
-                        <img className='hero-inner__binary_logo' src="image/binary.svg" />
+                        <img className='binary-hero-inner__binary_logo' src="image/binary.svg" />
                     </a>
-                    <div className="hero-inner__placeholder-inner">
+                    <div className="binary-hero-inner__placeholder-inner">
                         <Slider {...settings}>
                             {carouselImageArray.map((slide, index) => {
                                 const { img } = slide;
                                 return (
                                     <div>
-                                        <div className='hero-inner__placeholder-image-container'>
+                                        <div className='binary-hero-inner__placeholder-image-container'>
                                             <img
-                                                className="hero-inner__slide_img"
+                                                className="binary-hero-inner__slide_img"
                                                 key={index}
                                                 src={img}
                                             />

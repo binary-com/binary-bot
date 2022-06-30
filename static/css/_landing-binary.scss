@@ -63,9 +63,11 @@ $header-color : #333333;
   max-width: 1400px;
 }
 
-.hero {
+.binary-hero {
   margin-top: -107px;
   padding: 0px 20px;
+  height: 100vh;
+  display: flex;
 
   @include for-size(mobile) {
     margin-top: unset;
