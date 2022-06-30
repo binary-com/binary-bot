@@ -32,6 +32,9 @@ $header-color : #333333;
   background-size: cover;
   padding: 0 2rem;
   @include for-size(mobile) {
+      padding: 0;
+    }
+  @include for-size(mobile) {
     background: $hero-BG url(../image/MBG1.png) no-repeat;
     background-size: cover;
   }
@@ -532,6 +535,9 @@ $header-color : #333333;
   position: relative;
   padding: 0 2rem;
   @include for-size(mobile) {
+      padding: 0;
+    }
+  @include for-size(mobile) {
     min-height: 43.75rem;
     background-image: none;
   }
@@ -591,6 +597,9 @@ $header-color : #333333;
   background-color: #F8FAFB;
   padding: 0;
   padding: 0 2rem;
+  @include for-size(mobile) {
+    padding: 0;
+  }
   &-inner {
     padding: 3rem 0;
 

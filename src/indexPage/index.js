@@ -112,6 +112,9 @@ const renderElements = () => {
 const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
+    if (window.location.href.indexOf('bot.html') === -1) {
+        loadLang();
+    }
     $('.show-on-load').show();
     if (bannerToken) {
         if (getTokenList().length) {
@@ -128,7 +131,6 @@ const loginCheck = () => {
         }
     } else {
         setTimeout(() => {
-            loadLang();
             renderBanner();
         }, 0);
     }
