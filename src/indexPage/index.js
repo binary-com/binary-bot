@@ -104,6 +104,9 @@ const renderElements = () => {
             document.getElementById('bot-landing').classList.add('hidden');
         }
         document.getElementById('bot-main').classList.remove('hidden');
+        setTimeout(() => {
+            $('.barspinner').hide();
+        }, 2000);
     }
 };
 
