@@ -44,8 +44,14 @@ $white :#fff;
     &_qr-code{
         padding-top: 33px;
         max-width: 424px;
+        
+
+        @media (max-width: 1113px) {
+            padding-top: 15px;
+        }
 
         @include for-size(mobile) {
+            padding-top: 24px;
             display: flex;
             flex-direction: column;
             text-align: center;
