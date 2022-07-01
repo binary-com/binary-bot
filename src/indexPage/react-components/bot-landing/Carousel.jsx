@@ -2,7 +2,6 @@ import React from 'react';
 import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
 import Translations from './Translations';
-import { translate } from '../../../common/i18n';
 
 const Carousel = () => {
 
