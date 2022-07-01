@@ -16,10 +16,9 @@ import BotLanding from './react-components/bot-landing';
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
 const oneMilliSec = 1000;
-// sevenDays = 7,
-// fiveMinutes = 300,
-// oneMinute = 60,
-// oneDay = 24;
+const sevenDays = 7;
+const oneMinute = 60;
+const oneDay = 24;
 
 export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
@@ -27,8 +26,7 @@ export const bannerToken = getStorage('setDueDateForBanner');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    // return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
-    return today + oneMilliSec * 600;
+    return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
 };
 
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
