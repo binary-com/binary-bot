@@ -1,6 +1,8 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
 import { getOAuthURLDeriv } from '../../../common/appId';
+import { generateURL } from '../../../common/utils/tools'
+
 
 const SwitchSection = () => (
     <section className="switch">
@@ -17,7 +19,7 @@ const SwitchSection = () => (
                     <a href={getOAuthURLDeriv()}>
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href={`${window.location.href.replace(/\/+$/, '')}/bot.html`}>
+                    <a href={generateURL(window.location.href)}>
                         <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
                 </div>

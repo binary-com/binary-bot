@@ -34,14 +34,18 @@ export const load = () => {
 
     $('#select_language li:not(:first)').click(function click() {
         const newLang = $(this).attr('class');
-        if (document.getElementById('bot-landing').classList.contains('hidden') === false) {
+        if (
+            document.getElementById('bot-landing') !== null &&
+            document.getElementById('bot-landing') !== undefined &&
+            document.getElementById('bot-landing').classList.contains('hidden') === false
+        ) {
             remove('setDueDateForBanner');
             render(<BotLanding />, document.getElementById('bot-landing'));
             elements.map(elem => document.querySelector(elem).classList.add('hidden'));
             document.getElementById('bot-landing').classList.remove('hidden');
             document.getElementById('bot-main').classList.remove('hidden');
-            $('.barspinner').hide();
             document.location.search = `l=${newLang}`;
+            $('.barspinner').hide();
         } else {
             document.location.search = `l=${newLang}`;
         }
