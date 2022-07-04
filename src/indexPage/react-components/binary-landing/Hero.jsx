@@ -65,10 +65,15 @@ const Hero = () => {
 
 
     return (
-        <section className="container-x">
-            {renderContent()}
-            {renderCarousel()}
-        </section>
+        <div className='background-x'>
+            <section className="container-x">
+                {renderContent()}
+                {renderCarousel()}
+                <div class="logo-x">
+                    <img src="image/binary.png"/>
+                </div>
+            </section>
+        </div>
     )
 };
 

@@ -711,20 +711,29 @@ $header-color : #333333;
 
 }
 
-.container-x {
-  height: 100vh;
-  width: 100%;
+.background-x {
   display: flex;
-  flex: 1;
-  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background: $hero-BG url(../image/hero_desktop.png) no-repeat;
   background-size: cover;
-  padding: 0px 5rem;
-  gap: 2.4rem;
 
   @include for-size(mobile) {
     background: $hero-BG url(../image/hero_mobile.png) no-repeat;
-    background-size: cover;
+  }
+}
+
+.container-x {
+  height: 100vh;
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  padding: 0px 3rem;
+  gap: 2.4rem;
+
+  @include for-size(mobile) {
     flex-direction: column-reverse;
     padding: 1rem 1.4rem 0px 1.4rem;
   }
@@ -765,13 +774,29 @@ $header-color : #333333;
   
   @include for-size(mobile) {
     flex: 0;
-
   }
 }
 
 .right-x {
   align-items: end;
   min-width: 0px;
+
+  @include for-size(mobile) {
+    margin: 0 10%;
+  }
+}
+
+.logo-x {
+  display: none;
+  justify-content: center;
+  
+  img {
+    width: 50%;
+  }
+  
+  @include for-size(mobile) {
+    display: flex;
+  }
 }
 
 .slick-slider {
