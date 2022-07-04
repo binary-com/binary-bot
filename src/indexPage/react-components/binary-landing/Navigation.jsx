@@ -7,16 +7,19 @@ const MoveToDerivNav = () => (
         <div className='navigation-container'>
             <div class="navigation-logo">
                 <a href="#">
-                    <img src="image/binary.png"/>
+                    <img src="image/binary.png" />
                 </a>
             </div>
             <div>
-                <button className='btn-group r-btn'>
-                    {translate('Take me to deriv')}
-                </button>
+                
+                <a href="https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=en&brand=deriv" rel="noopener noreferrer">
+                    <button className='btn-group r-btn'>
+                        {translate('Take me to deriv')}
+                    </button>
+                </a>
             </div>
         </div>
     </div>
-    
+
 )
 export default MoveToDerivNav;
