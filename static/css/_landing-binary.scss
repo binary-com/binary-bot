@@ -28,6 +28,11 @@ $header-color : #333333;
   display: block;
   padding: 0 2rem;
   background: #16212d; 
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
   @include for-size(mobile) {
     display: none;
   }
@@ -42,8 +47,6 @@ $header-color : #333333;
     margin: 0px auto;
   }
 
-
- 
   &-logo {
     width: 138px;
 
@@ -65,116 +68,6 @@ $header-color : #333333;
   margin: 0 auto;
   max-width: 1400px;
 
-}
-
-.binary-hero {
-  margin-top: -107px;
-  padding: 0px 20px;
-  height: 100vh;
-  display: flex;
-
-  @include for-size(mobile) {
-    margin-top: unset;
-  }
-  background: $hero-BG url(../image/hero_desktop.png) no-repeat;
-  background-size: cover;
-  @include for-size(mobile) {
-      background: $hero-BG url(../image/hero_mobile.png) no-repeat;
-      background-size: cover;
-  }
-  &-inner {
-    display: flex;
-    align-items: center;
-    padding: calc(7rem + 5rem) 1rem;
-
-    @include for-size(desktop) {
-      padding: calc(7rem + 5rem) 2rem;
-    }
-
-    @include for-size(mobile) {
-      flex-direction: column-reverse;
-      padding: 4rem 2rem;
-
-      .btn-group {
-        text-align: left;
-      }
-    }
-
-    &__content {
-      flex: 1 1 50%;
-
-      h1 {
-        color: #FFF;
-        margin: 2rem 2rem 2rem 0;
-        font: 700 5rem $font-IBM;
-
-        @include for-size(mobile) {
-          font: 700 3rem $font-IBM;
-          margin: 0 0 2rem 0;
-        }
-      }
-
-      h2 {
-        color: $white;
-        line-height: 40px;
-        margin-bottom: 2rem;
-        font: 400 2rem $font-IBM;
-
-        @include for-size(mobile) {
-          font: 400 1.5rem $font-IBM;
-          margin: 0 0 2.5rem 0;
-        }
-      }
-      &-subheader {
-        margin-top: 2.3rem;
-      }
-    }
-
-    &__placeholder {
-      flex: 1 1 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      @include for-size(mobile) {
-        flex-direction: column;
-      }
-
-      img {
-        @include for-size(mobile) {
-          object-fit: contain;
-          width: 100%;
-        }
-      }
-      &-inner {
-        width: 600px !important;
-        @include for-size(mobile) {
-          width: 300px !important;
-        }
-
-      }
-      &-image-container {
-        width: 600px !important;
-        @include for-size(mobile) {
-          width: 300px !important;
-        }
-        img {
-            width    : 100% !important;
-            object-fit : 'cover' !important;
-        }
-      }
-    }
-
-    &__binary_logo {
-      display: none;
-      width: 14.75rem !important;
-      margin-bottom: 3rem;
-
-      @include for-size(mobile) {
-        display: block;
-      }
-    }
-  }
 }
 
 .l-btn {
@@ -525,7 +418,6 @@ $header-color : #333333;
   }
 }
 
-
 .arrow {
   &.right {
     transform: rotate(180deg);
@@ -716,7 +608,6 @@ $header-color : #333333;
   }
 }
 
-
 .bot-gif-placeholder {
   display: flex;
   align-items: center;
@@ -752,7 +643,6 @@ $header-color : #333333;
 .hidden{
   display: none !important;
 }
-
 
 .card-container{
   padding: 2rem 0rem 3rem 0rem;
@@ -840,4 +730,102 @@ $header-color : #333333;
 
 }
 
+.background-x {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $hero-BG url(../image/hero_desktop.png) no-repeat;
+  background-size: cover;
 
+  @include for-size(mobile) {
+    background: $hero-BG url(../image/hero_mobile.png) no-repeat;
+    background-size: cover;
+  }
+}
+
+.container-x {
+  height: 100vh;
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  padding: 0px 3rem;
+  gap: 2.4rem;
+
+  @include for-size(mobile) {
+    flex-direction: column-reverse;
+    padding: 1rem 1.4rem 0px 1.4rem;
+  }
+
+  &_box-x {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1 {
+    color: #FFF;
+    margin: 2rem 2rem 2rem 0;
+    font: 700 5rem $font-IBM;
+
+    @include for-size(mobile) {
+      font: 700 2rem $font-IBM;
+      margin: 0 0 1rem 0;
+    }
+  }
+
+  h2 {
+    color: $white;
+    line-height: 40px;
+    margin-bottom: 2rem;
+    font: 400 2rem $font-IBM;
+
+    @include for-size(mobile) {
+      font: 400 1rem $font-IBM;
+      margin: 0 0 1.5rem 0;
+    }
+  }
+}
+
+.left-x {
+  align-items: start;
+  
+  @include for-size(mobile) {
+    flex: 0;
+  }
+}
+
+.right-x {
+  align-items: end;
+  min-width: 0px;
+
+  @include for-size(mobile) {
+    margin: 0 10%;
+  }
+}
+
+.logo-x {
+  display: none;
+  justify-content: center;
+  
+  img {
+    width: 50%;
+  }
+  
+  @include for-size(mobile) {
+    display: flex;
+  }
+}
+
+// To make the slider responsive, we need to override the default slider style.
+.slick-slider {
+  width: 100%;
+}
+
+.slick-track {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
