@@ -720,6 +720,7 @@ $header-color : #333333;
 
   @include for-size(mobile) {
     background: $hero-BG url(../image/hero_mobile.png) no-repeat;
+    background-size: cover;
   }
 }
 
