@@ -23,6 +23,14 @@
     }
 }
 
+.carousel_section .slick-list {
+    margin: 0 0 0 120px;
+
+    @media (max-width: 1024px) {
+        margin: 0 0 0 2em; 
+    }
+  }
+
 .carousel_section {
 
     &__desktop {
@@ -96,6 +104,7 @@
         display: flex;
         text-align: center;
         outline: none;
+
     }
 
     &__btn_inner {

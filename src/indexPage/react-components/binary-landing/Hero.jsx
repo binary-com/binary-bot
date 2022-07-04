@@ -48,7 +48,7 @@ const Hero = () => {
                 <a href="https://deriv.com" target="_blank">
                     <button className="l-btn primary">{translate('Hello Deriv!')}</button>
                 </a>
-                <a href="https://www.binary.com" target="blank" id="logo">
+                <a href="https://www.binary.com?binary-bot-lp" target="blank" id="logo">
                     <button className="l-btn">{translate('Maybe later')}</button>
                 </a>
             </div>

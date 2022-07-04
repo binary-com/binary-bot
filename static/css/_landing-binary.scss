@@ -20,6 +20,10 @@ $header-color : #333333;
   }
 }
 
+.navigation-to-deriv {
+  z-index: 100;
+}
+
 .navigation {
   display: block;
   padding: 0 2rem;
@@ -63,6 +67,7 @@ $header-color : #333333;
   padding: 0 2rem;
   margin: 0 auto;
   max-width: 1400px;
+
 }
 
 .l-btn {
@@ -243,6 +248,10 @@ $header-color : #333333;
 }
 
 .binary-choose-wrapper {
+
+  @media (max-width: 800px) {
+    padding-top: 40px;
+  }
 
   &-inner {
     padding: 3rem 0;
@@ -443,6 +452,11 @@ $header-color : #333333;
         font: 700 3rem $font-IBM;
         color: $header-color;
         margin-bottom: 0.5rem;
+
+        @media (max-width: 400px) {
+          font-size: 2rem;
+        }
+
       }
 
       h2 {
@@ -634,6 +648,11 @@ $header-color : #333333;
   padding: 2rem 0rem 3rem 0rem;
   margin: 0 auto;
   max-width: 1400px;
+
+  @media (max-width: 700px) {
+    padding: 2rem 0rem 0rem 0rem;
+
+  }
 }
 
 .card-wrapper {
