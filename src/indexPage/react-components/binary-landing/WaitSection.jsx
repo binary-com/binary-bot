@@ -8,7 +8,7 @@ const WaitSection = () => (
                 <h1>{translate('Don’t wait')}</h1>
                 <h2>{translate('Future-proof your trading. Come over to Deriv now.')}</h2>
                 <div className="btn-group">
-                    <a href="https://deriv.com" target="_blank">
+                    <a href="https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=en&brand=deriv">
                         <button className="l-btn danger">{translate('Enter the Deriv experience')}</button>
                     </a>
                 </div>
