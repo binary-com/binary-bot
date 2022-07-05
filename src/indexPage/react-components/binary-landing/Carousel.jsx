@@ -99,7 +99,7 @@ const Carousel = () => {
                                     <h2 className="platform_description" >{platform_description}</h2>
                                 </div>
                                 <img className="carousel_section__slide_img" src={img} />
-                                <a href={url} target="_blank">
+                                <a href={url}>
                                     <button className="carousel_section__arrow-btn">
                                         <div className="carousel_section__btn_inner">
                                             {action_text}
@@ -123,7 +123,7 @@ const Carousel = () => {
                                 <h2 className="platform_description" >{platform_description}</h2>
                             </div>
                             <img className="carousel_section__slide_img" src={img} />
-                            <a href={url} target="_blank">
+                            <a href={url}>
                                 <button className="carousel_section__arrow-btn">
                                     <div className="carousel_section__btn_inner">
                                         {action_text}

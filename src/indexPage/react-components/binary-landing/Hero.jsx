@@ -45,10 +45,10 @@ const Hero = () => {
             </h2>
             <h2>{translate('Say hello to our new home,')}<b>{translate(' Deriv.')}</b></h2>
             <div className="btn-group">
-                <a href="https://deriv.com" target="_blank">
+                <a href="https://deriv.com">
                     <button className="l-btn primary">{translate('Hello Deriv!')}</button>
                 </a>
-                <a href="https://www.binary.com?binary-bot-lp" target="blank" id="logo">
+                <a href="https://www.binary.com?binary-bot-lp"id="logo">
                     <button className="l-btn">{translate('Maybe later')}</button>
                 </a>
             </div>
