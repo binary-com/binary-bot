@@ -65,13 +65,15 @@ export const setTimeOutBanner = route => {
 };
 
 const renderBanner = () => {
-    render(<BotLanding />, document.getElementById('bot-landing'));
-    setStorage('setDueDateForBanner', expirationDate());
-    elements.map(elem => document.querySelector(elem).classList.add('hidden'));
-    document.getElementById('bot-landing').classList.remove('hidden');
-    document.getElementById('bot-main').classList.remove('hidden');
-    document.getElementById('topbar').classList.remove('hidden');
-    $('.barspinner').hide();
+    if (window.location.href.indexOf('bot.html') === -1) {
+        render(<BotLanding />, document.getElementById('bot-landing'));
+        setStorage('setDueDateForBanner', expirationDate());
+        elements.map(elem => document.querySelector(elem).classList.add('hidden'));
+        document.getElementById('bot-landing').classList.remove('hidden');
+        document.getElementById('bot-main').classList.remove('hidden');
+        document.getElementById('topbar').classList.remove('hidden');
+        $('.barspinner').hide();
+    }
 };
 
 // eslint-disable-next-line consistent-return
