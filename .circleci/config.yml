@@ -138,6 +138,7 @@ commands:
       - run:
           name: "Publish to cloudflare pages (staging)"
           command: |
+            npm i wrangler@2.0.19
             npx wrangler pages publish www/ --project-name=binary-bot-pages --branch=staging
             echo "New staging website - http://staging.cf-pages-binary-bot.deriv.com"
 
@@ -147,6 +148,7 @@ commands:
       - run:
           name: "Publish to cloudflare pages (production)"
           command: |
+            npm i wrangler@2.0.19
             npx wrangler pages publish www/ --project-name=binary-bot-pages --branch=main
             echo "New website - http://cf-pages-binary-bot.deriv.com"
 
