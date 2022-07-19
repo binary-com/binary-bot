@@ -16,10 +16,10 @@ const SwitchSection = () => (
                     {translate('Just log in using your Binary.com credentials. No sign-up needed.')}
                 </h2>
                 <div className="btn-group">
-                    <a href={getOAuthURLDeriv()} target="_blank">
+                    <a href={getOAuthURLDeriv()}>
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href={generateURL(window.location.href)} target="_blank">
+                    <a href={generateURL(window.location.href)}>
                         <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
                 </div>

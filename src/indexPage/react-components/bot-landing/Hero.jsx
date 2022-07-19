@@ -12,10 +12,10 @@ const Hero = () => (
                     {translate('We’ve been Binary.com for 2 decades and it’s time for an exciting new chapter. Your favourite bot builder, Binary Bot, is now on Deriv, our new home. Come take a peek.')}
                 </h2>
                 <div className="btn-group">
-                    <a href="https://bot.deriv.com" target="_blank">
+                    <a href="https://bot.deriv.com">
                         <button className="l-btn primary">{translate('Take me to Binary Bot on Deriv')}</button>
                     </a>
-                    <a href={generateURL(window.location.href)} target="_blank">
+                    <a href={generateURL(window.location.href)}>
                         <button className="l-btn">{translate('Maybe later')}</button>
                     </a>
                 </div>

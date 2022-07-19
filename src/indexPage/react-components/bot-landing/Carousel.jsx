@@ -43,7 +43,7 @@ const Carousel = () => {
                             <div className='landing_carousel_content'>
                                 <h1>{translate(title)}</h1>
                                 <h2>{translate(content)}</h2>
-                                <a href="https://bot.deriv.com" target="_blank">
+                                <a href="https://bot.deriv.com">
                                     <button className="l-btn danger">{translate(action_text)}</button>
                                 </a>
                             </div>
