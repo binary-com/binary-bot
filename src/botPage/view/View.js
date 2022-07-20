@@ -841,6 +841,7 @@ function renderErrorPage() {
 
 // eslint-disable-next-line consistent-return
 function renderReactComponents() {
+    // eslint-disable-next-line no-unused-vars
     let Component, dynVar;
     if (window.location.pathname === '/movetoderv.html') {
         Component = <BinaryLanding />;
