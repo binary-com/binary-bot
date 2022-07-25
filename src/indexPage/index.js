@@ -17,9 +17,10 @@ import BinaryLanding from './react-components/binary-landing';
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
 const oneMilliSec = 1000;
-const sevenDays = 7;
-const oneMinute = 60;
-const oneDay = 24;
+// will uncomment before production release
+// const sevenDays = 7;
+// const oneMinute = 60;
+// const oneDay = 24;
 
 export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
@@ -27,7 +28,7 @@ export const bannerToken = getStorage('setDueDateForBanner');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
+    return today + oneMilliSec * 600;
 };
 
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
