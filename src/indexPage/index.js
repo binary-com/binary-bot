@@ -86,6 +86,7 @@ const renderBanner = () => {
 
 // eslint-disable-next-line consistent-return
 const renderElements = () => {
+    // eslint-disable-next-line one-var, no-unused-vars
     let Component, dynamicVar;
     if (window.location.pathname === '/movetoderiv.html') {
         Component = <BinaryLanding />;
