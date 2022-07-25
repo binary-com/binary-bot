@@ -74,7 +74,6 @@ const renderBanner = () => {
         Component = <BotLanding />;
         dynamicVar = 'bot-landing';
     }
-    console.log(Component, dynamicVar);
     render(Component, document.getElementById(dynamicVar));
     // setStorage('setDueDateForBanner', expirationDate());
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
