@@ -42,7 +42,16 @@ const checkifBotRunning = () => {
     }
     return false;
 };
-
+let Component, dynamicVar;
+export const getComponent = () => {
+    if (window.location.pathname === '/movetoderiv.html') {
+        Component = <BinaryLanding />;
+        dynamicVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynamicVar = 'bot-landing';
+    }
+};
 export const setTimeOutBanner = route => {
     let bannerDisplayed;
     const qs = parseQueryString();
@@ -67,14 +76,7 @@ export const setTimeOutBanner = route => {
 };
 
 const renderBanner = () => {
-    let Component, dynamicVar;
-    if (window.location.pathname === '/movetoderiv.html') {
-        Component = <BinaryLanding />;
-        dynamicVar = 'movetoderiv';
-    } else {
-        Component = <BotLanding />;
-        dynamicVar = 'bot-landing';
-    }
+    getComponent();
     render(Component, document.getElementById(dynamicVar));
     // setStorage('setDueDateForBanner', expirationDate());
     elements.map(elem => document.querySelector(elem).classList.add('hidden'));
@@ -87,14 +89,7 @@ const renderBanner = () => {
 // eslint-disable-next-line consistent-return
 const renderElements = () => {
     // eslint-disable-next-line one-var, no-unused-vars
-    let Component, dynamicVar;
-    if (window.location.pathname === '/movetoderiv.html') {
-        Component = <BinaryLanding />;
-        dynamicVar = 'movetoderiv';
-    } else {
-        Component = <BotLanding />;
-        dynamicVar = 'bot-landing';
-    }
+    getComponent();
     setTimeOutBanner('index');
     $('.barspinner').show();
 
