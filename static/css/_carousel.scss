@@ -4,13 +4,13 @@
     flex-direction: column;
 
     &__content {
-        max-width: 992px;
+        max-width: 62rem;
     }
 
     h1 {
         text-align: center;
-        margin-top: 80px;
-        margin-bottom: 40px;
+        margin-top: 5rem;
+        margin-bottom: 2.5rem;
         font: 700 3rem $font-IBM;
         line-height: 4rem;
         color: $header-color;
@@ -24,7 +24,7 @@
 }
 
 .carousel_section .slick-list {
-    margin: 0 0 0 120px;
+    margin: 0 0 0 7.5rem;
 
     @media (max-width: 1024px) {
         margin: 0 0 0 2em; 
@@ -43,7 +43,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: -74px;
+        margin-top: -4.625rem;
 
 
         @media (min-width: 768px) {
@@ -52,7 +52,7 @@
     }
 
     &__content {
-        max-width: 996px;
+        max-width: 62.25rem;
         display: flex;
         justify-content: center;
 
@@ -73,25 +73,25 @@
     }
 
     &__slide_img {
-        max-width: 384px;
+        max-width: 24rem;
 
         @include for-size(mobile) {
-            max-width: 318px;
+            max-width: 19.875rem;
             
         }
     }
 
     &__arrow-btn {
         text-transform: none;
-        padding: 10px 12px 10px 16px;
-        font-size: 14px;
+        padding: 0.625rem 0.75rem 0.625rem 1rem;
+        font-size: 0.875rem;
         font-weight: 700;
-        width: 131px;
+        width: 8.18rem;
         color: #FF444F;
         background: #FFFFFF;
-        border-radius: 100px;
-        filter: drop-shadow(0px 0px 24px rgba(0, 0, 0, 0.08)) drop-shadow(0px 24px 24px rgba(0, 0, 0, 0.08));
-        transform: translate(0px, -20px);
+        border-radius: 6.25rem;
+        filter: drop-shadow(0px 0px 1.5rem rgba(0, 0, 0, 0.08)) drop-shadow(0px 1.5rem 1.5rem rgba(0, 0, 0, 0.08));
+        transform: translate(0px, -1.25rem);
     }
 
     &__arrow-btn:hover {
@@ -101,8 +101,8 @@
     }
 
     &__slide_card {
-        max-width: 384px;
-        max-height: 585px;
+        max-width: 24rem;
+        max-height: 36.563rem;
         display: flex;
         text-align: center;
         outline: none;
@@ -111,40 +111,40 @@
 
     &__btn_inner {
         display: flex;
-        gap: 8px;
+        gap: 0.5rem;
     }
 }
 
 .carousel_section__mobile .carousel_section__slide_card {
     flex-direction: column;
-    max-width: 328px;
-    max-height: 418px;
+    max-width: 20.5rem;
+    max-height: 26.125rem;
     display: flex;
     text-align: center;
     outline: none;
 }
 
 .carousel_section .slick-slide {
-    max-width: 384px;
+    max-width: 24rem;
 }
 
 .carousel_section .slick-slide {
-    margin: 0 12.5px;
+    margin: 0 0.781rem;
 }
 
 
 .carousel_slide_info_wrapper {
-    max-height: 92px;
+    max-height: 5.75rem;
     display: flex; 
     flex-direction: column;
     justify-content: center;
     align-items: center;
     
     position: relative;
-    top: 198px;
+    top: 12.375rem;
 
     @include for-size(mobile) {
-        top: 166px;
+        top: 10.375rem;
       }
 
 }
@@ -153,17 +153,17 @@
     margin-top: 0;
     font: 700 1.6rem $font-IBM;
     color: $header-color; 
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     @include for-size(mobile) {
       font: 700 1.3rem $font-IBM;
-      margin-bottom: 8px;
+      margin-bottom: 0.5rem;
     }
 
   }
 
 .platform_description {
-    min-height: 42px; 
-    max-width: 336px;
+    min-height: 2.62rem; 
+    max-width: 21rem;
     margin-top: 0;
     font: 400 1rem $font-IBM;
     color: $header-color;
@@ -171,7 +171,7 @@
     @include for-size(mobile) {
       font: 400 1rem $font-IBM;
       margin-bottom: 0;
-      max-width: 280px;
+      max-width: 17.5rem;
 
     }
 
