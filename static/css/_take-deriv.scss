@@ -1,0 +1,102 @@
+
+$font-IBM: 'IBM Plex Sans',
+sans-serif;
+$white :#fff;
+
+@mixin for-size($size) {
+    @if $size==mobile {
+      @media (max-width: 1024px) {
+        @content;
+      }
+    }
+  
+    @else if $size==desktop {
+      @media (max-width: 1080px) {
+        @content;
+      }
+    }
+  }
+
+.take-deriv {
+    display: flex;
+    justify-content: center;
+
+    &_background {
+        padding: 0 110px 0 110px;
+        display: flex;
+        justify-content: space-between;
+        width: 1200px;
+        height: 330px;
+        background-image: url('../image/bg-take-deriv.png');
+        border-radius: 20px;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        @include for-size(mobile) {
+            padding: 0 24px 0 24px;
+            align-items: center;
+            height: 487px;
+            flex-direction: column-reverse;
+            border-radius: 0;
+        }
+    }
+
+    &_qr-code{
+        padding-top: 33px;
+        max-width: 424px;
+
+        @media (max-width: 1113px) {
+            padding-top: 15px;
+        }
+
+        @include for-size(mobile) {
+            padding-top: 24px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        img {
+            width: 96px;
+        }
+
+        h1 {
+            margin: 0;
+            color: $white;
+            font: 700 2rem $font-IBM;
+
+            @include for-size(mobile) {
+                font: 700 24px $font-IBM;
+            }
+
+        }
+        h2 {
+            color: $white;
+            font: 400 1.25rem $font-IBM;
+
+            @include for-size(mobile) {
+                font: 400 16px $font-IBM;
+            }
+        }
+        h3 {
+            color: $white;
+            font: 400 1rem $font-IBM;
+
+            @include for-size(mobile) {
+                font: 400 14px $font-IBM;
+            }
+        }
+    }
+    
+    &_iphone {
+        padding-top: 33px;
+        img {
+            height: 297px;
+
+            @include for-size(mobile) {
+                height: 200px;
+
+            }
+        }
+    }
+}
