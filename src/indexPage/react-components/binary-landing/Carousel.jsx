@@ -5,52 +5,52 @@ import { translate } from '../../../common/i18n';
 const carouselContentArray = [
     {
         url: 'https://smarttrader.deriv.com/',
-        action_text: translate('Check it out'),
+        action_text: 'Check it out',
         img: 'image/landing-carousel/smart-trader.png',
-        platform_title: translate('SmartTrader'),
-        platform_description: translate('Our classic options trading platform'),
+        platform_title: 'SmartTrader',
+        platform_description: 'Our classic options trading platform',
     },
     {
         url: 'https://bot.deriv.com/',
-        action_text: translate('Check it out'),
+        action_text: 'Check it out',
         img: 'image/landing-carousel/binary-bot.png',
-        platform_title: translate('Binary Bot'),
-        platform_description: translate('Our classic automated trading platform'),
+        platform_title: 'Binary Bot',
+        platform_description: 'Our classic automated trading platform',
     },
     {
         url: 'https://deriv.com/dmt5/',
-        action_text: translate('Learn more'),
+        action_text: 'Learn more',
         img: 'image/landing-carousel/mt5.png',
-        platform_title: translate('Deriv MT5'),
-        platform_description: translate('The world-famous CFD trading platform'),
+        platform_title: 'Deriv MT5',
+        platform_description: 'The world-famous CFD trading platform',
     },
     {
         url: 'https://deriv.com/dtrader/',
-        action_text: translate('Learn more'),
+        action_text: 'Learn more',
         img: 'image/landing-carousel/dtrader.png',
-        platform_title: translate('DTrader'),
-        platform_description: translate('Our flagship options and multipliers trading platform'),
+        platform_title: 'DTrader',
+        platform_description: 'Our flagship options and multipliers trading platform',
     },
     {
         url: 'https://deriv.com/dbot/',
-        action_text: translate('Learn more'),
+        action_text: 'Learn more',
         img: 'image/landing-carousel/dbot.png',
-        platform_title: translate('DBot'),
-        platform_description: translate('Our next generation automated trading platform'),
+        platform_title: 'DBot',
+        platform_description: 'Our next generation automated trading platform',
     },
     {
         url: 'https://deriv.com/landing/deriv-go/',
-        action_text: translate('Learn more'),
+        action_text: 'Learn more',
         img: 'image/landing-carousel/deriv-go.png',
-        platform_title: translate('Deriv GO'),
-        platform_description: translate('Trade on-the-go with our mobile trading platform'),
+        platform_title: 'Deriv GO',
+        platform_description: 'Trade on-the-go with our mobile trading platform',
     },
     {
         url: 'https://deriv.com/derivx/',
-        action_text: translate('Learn more'),
+        action_text: 'Learn more',
         img: 'image/landing-carousel/derivX.png',
-        platform_title: translate('Deriv X'),
-        platform_description: translate('Our customisable CFD trading platform'),
+        platform_title: 'Deriv X',
+        platform_description: 'Our customisable CFD trading platform',
     },
 ]
 
@@ -95,14 +95,14 @@ const Carousel = () => {
                         return (
                             <div className="carousel_section__slide_card">
                                 <div className="carousel_slide_info_wrapper">
-                                    <h1 className="platform_title" >{platform_title}</h1>
-                                    <h2 className="platform_description" >{platform_description}</h2>
+                                    <h1 className="platform_title" >{translate(platform_title)}</h1>
+                                    <h2 className="platform_description" >{translate(platform_description)}</h2>
                                 </div>
                                 <img className="carousel_section__slide_img" src={img} />
                                 <a href={url}>
                                     <button className="carousel_section__arrow-btn">
                                         <div className="carousel_section__btn_inner">
-                                            {action_text}
+                                            {translate(action_text)}
                                             <img src={`image/landing-carousel/arrow.svg`} />
                                         </div>
                                     </button>
@@ -119,14 +119,14 @@ const Carousel = () => {
                     return (
                         <div className="carousel_section__slide_card">
                             <div className="carousel_slide_info_wrapper">
-                                <h1 className="platform_title" >{platform_title}</h1>
-                                <h2 className="platform_description" >{platform_description}</h2>
+                                <h1 className="platform_title" >{translate(platform_title)}</h1>
+                                <h2 className="platform_description" >{translate(platform_description)}</h2>
                             </div>
                             <img className="carousel_section__slide_img" src={img} />
                             <a href={url}>
                                 <button className="carousel_section__arrow-btn">
                                     <div className="carousel_section__btn_inner">
-                                        {action_text}
+                                        {translate(action_text)}
                                         <img src={`image/landing-carousel/arrow.svg`} />
                                     </div>
                                 </button>

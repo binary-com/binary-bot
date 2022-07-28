@@ -4,23 +4,23 @@ import { translate } from '../../../common/i18n';
 const CardSection = () => {
     const cardContentArray = [
         {
-            title  : translate('Trade multipliers'),
-            content: translate('Amplify your potential profit without risking more than your stake.'),
+            title  : 'Trade multipliers',
+            content: 'Amplify your potential profit without risking more than your stake.',
             img    : 'image/multiplier.png',
         },
         {
-            title  : translate('Peer-to-peer payments'),
-            content: translate('Exchange your local currency with fellow traders to get funds in and out of your account with Deriv P2P.'),
+            title  : 'Peer-to-peer payments',
+            content: 'Exchange your local currency with fellow traders to get funds in and out of your account with Deriv P2P.',
             img    : 'image/p2p.png',
         },
         {
-            title  : translate('Learn with Deriv Academy'),
-            content: translate('Enjoy complimentary articles and videos to help you learn the ropes of online trading.'),
+            title  : 'Learn with Deriv Academy',
+            content: 'Enjoy complimentary articles and videos to help you learn the ropes of online trading.',
             img    : 'image/academy.png',
         },
         {
-            title  : translate('Crash/Boom indices'),
-            content: translate('Predict and potentially gain from exciting spikes and dips. Only available with multipliers on DTrader.'),
+            title  : 'Crash/Boom indices',
+            content: 'Predict and potentially gain from exciting spikes and dips. Only available with multipliers on DTrader.',
             img    : 'image/crashboom.png',
         },
     ]
@@ -42,8 +42,8 @@ const CardSection = () => {
                             <div>
                                 <img src={img} />
                             </div>
-                            <h1>{title}</h1>
-                            <h2>{content}</h2>
+                            <h1>{translate(title)}</h1>
+                            <h2>{translate(content)}</h2>
                         </div>
                     )
                 })
