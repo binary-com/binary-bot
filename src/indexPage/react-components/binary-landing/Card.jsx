@@ -29,9 +29,9 @@ const CardSection = () => {
         <div className='card-container card-wrapper'>
             <div className='section-container-holder card-wrapper-holder'>
                 <div className="container-header  card-wrapper-holder-header">
-                    <h1>{translate ('Exclusively on Deriv')}</h1>
+                    <h1>{translate('Exclusively on Deriv')}</h1>
                     <h2>{translate('There’s a bright future ahead.')}</h2>
-                    <h2>{translate ('Find these bonus features and more on Deriv:')}</h2>
+                    <h2>{translate('Find these bonus features and more on Deriv:')}</h2>
                 </div>
             </div>
             <div className="card-container card-wrapper-holder-container">
