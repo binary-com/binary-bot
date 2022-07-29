@@ -16,7 +16,7 @@ const WaitSection = () => (
             <img src="../image/dont-wait-image.png" className='binary-wait-wrapper-inner-placeholder-binary-desktop'/>
             <div className='binary-wait-wrapper-inner-placeholder-binary'>
                 <img src="../image/dtrader-mobile.png"  className='binary-wait-wrapper-inner-placeholder-binary-mobile'/>
-                <h1>{translate ('Come over to Deriv and future-proof your trading now.')}</h1>
+                <h1>{translate('Come over to Deriv and future-proof your trading now.')}</h1>
             </div>
         </div>
 
