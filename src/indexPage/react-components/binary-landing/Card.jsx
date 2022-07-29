@@ -4,23 +4,23 @@ import { translate } from '../../../common/i18n';
 const CardSection = () => {
     const cardContentArray = [
         {
-            title  : 'Trade multipliers',
-            content: 'Amplify your potential profit without risking more than your stake.',
+            title  : translate('Trade multipliers'),
+            content: translate('Amplify your potential profit without risking more than your stake.'),
             img    : 'image/multiplier.png',
         },
         {
-            title  : 'Peer-to-peer payments',
-            content: 'Exchange your local currency with fellow traders to get funds in and out of your account with Deriv P2P.',
+            title  : translate('Peer-to-peer payments'),
+            content: translate('Exchange your local currency with fellow traders to get funds in and out of your account with Deriv P2P.'),
             img    : 'image/p2p.png',
         },
         {
-            title  : 'Learn with Deriv Academy',
-            content: 'Enjoy complimentary articles and videos to help you learn the ropes of online trading.',
+            title  : translate('Learn with Deriv Academy'),
+            content: translate('Enjoy complimentary articles and videos to help you learn the ropes of online trading.'),
             img    : 'image/academy.png',
         },
         {
-            title  : 'Crash/Boom indices',
-            content: 'Predict and potentially gain from exciting spikes and dips. Only available with multipliers on DTrader.',
+            title  : translate('Crash/Boom indices'),
+            content: translate('Predict and potentially gain from exciting spikes and dips. Only available with multipliers on DTrader.'),
             img    : 'image/crashboom.png',
         },
     ]
