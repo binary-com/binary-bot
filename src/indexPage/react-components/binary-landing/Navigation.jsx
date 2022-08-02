@@ -5,7 +5,7 @@ import { translate } from '../../../common/i18n';
 const MoveToDerivNav = () => (
     <div className='navigation'>
         <div className='navigation-container'>
-            <div class="navigation-logo">
+            <div className="navigation-logo">
                 <a href="#">
                     <img src="image/binary.png" />
                 </a>
