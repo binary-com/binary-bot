@@ -11,7 +11,7 @@ const TakeDeriv = () => (
                 <h1>{translate('Take Deriv with you')}</h1>
                 <h2>{translate('Get the Deriv GO mobile app and trade on the go. Never miss golden opportunities again.')}</h2>
                 <div>
-                <img src="../image/qr-code.png" />
+                    <img src="../image/qr-code.png" />
                 </div>
                 <h3>{translate('Scan this QR code to download Deriv GO')}</h3>
             </div>

@@ -127,6 +127,9 @@ body {
     text-align: right;
     padding: 3px 20px;
     display: table;
+    @media (max-width: 400px) {
+        min-height: 25px !important;
+    }    
 }
 
 #all-accounts.main-nav, #toolbox-all-accounts.main-nav {
