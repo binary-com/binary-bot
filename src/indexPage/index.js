@@ -12,13 +12,15 @@ import { get as getStorage, set as setStorage, remove, getTokenList } from '../c
 import { createUrl, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
+import BinaryLanding from './react-components/binary-landing';
 
 const today = new Date().getTime();
 // eslint-disable-next-line one-var
 const oneMilliSec = 1000;
-const sevenDays = 7;
-const oneMinute = 60;
-const oneDay = 24;
+// will uncomment before production release
+// const sevenDays = 7;
+// const oneMinute = 60;
+// const oneDay = 24;
 
 export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
@@ -26,7 +28,7 @@ export const bannerToken = getStorage('setDueDateForBanner');
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
-    return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
+    return today + oneMilliSec * 600;
 };
 
 export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
@@ -40,7 +42,16 @@ const checkifBotRunning = () => {
     }
     return false;
 };
-
+let Component, dynamicVar;
+export const getComponent = () => {
+    if (window.location.pathname === '/movetoderiv.html') {
+        Component = <BinaryLanding />;
+        dynamicVar = 'movetoderiv';
+    } else {
+        Component = <BotLanding />;
+        dynamicVar = 'bot-landing';
+    }
+};
 export const setTimeOutBanner = route => {
     let bannerDisplayed;
     const qs = parseQueryString();
@@ -66,10 +77,11 @@ export const setTimeOutBanner = route => {
 
 const renderBanner = () => {
     if (window.location.href.indexOf('bot.html') === -1) {
-        render(<BotLanding />, document.getElementById('bot-landing'));
+        getComponent();
+        render(Component, document.getElementById(dynamicVar));
         setStorage('setDueDateForBanner', expirationDate());
         elements.map(elem => document.querySelector(elem).classList.add('hidden'));
-        document.getElementById('bot-landing').classList.remove('hidden');
+        document.getElementById(dynamicVar).classList.remove('hidden');
         document.getElementById('bot-main').classList.remove('hidden');
         document.getElementById('topbar').classList.remove('hidden');
         $('.barspinner').hide();
@@ -78,6 +90,8 @@ const renderBanner = () => {
 
 // eslint-disable-next-line consistent-return
 const renderElements = () => {
+    // eslint-disable-next-line one-var, no-unused-vars
+    getComponent();
     setTimeOutBanner('index');
     $('.barspinner').show();
 
@@ -101,7 +115,7 @@ const renderElements = () => {
                 createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
             );
             elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
-            document.getElementById('bot-landing').classList.add('hidden');
+            document.getElementById(dynamicVar).classList.add('hidden');
         }
         document.getElementById('bot-main').classList.remove('hidden');
         setTimeout(() => {

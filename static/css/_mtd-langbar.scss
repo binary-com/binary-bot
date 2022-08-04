@@ -1,0 +1,133 @@
+#movetoderiv_language_switcher {
+    position: absolute!important;
+    top: 60px;
+    right: 190px;
+
+    @media (max-width: 1024px) {
+        top: 1px;
+        right: -38px;
+        
+    }
+    @media (min-width: 1534px) {
+        right: 20%;
+    }
+    
+    @media (min-width: 1800px) {
+        right: 25%;
+    }
+
+    @media (min-width: 2270px) {
+        right: 28%;
+    }
+}
+
+.movetoderiv_topbar_hide {
+    position: absolute;
+    top: -20px;
+
+    
+    @media (max-width: 1024px) {
+        position: relative;
+        top: 0;
+    }
+}
+
+
+.border_hide_mtd {
+    border: none !important;
+}
+
+
+.language_list {
+    padding-top: 26px !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    width: 176px !important;
+    height: 216px;
+    margin-top: 36px !important;
+    border-radius: 8px;
+
+    @media (max-width: 1024px) {
+        margin-top: 30px !important;
+        margin-right: 52px!important;
+    }
+}
+
+.language_list::before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 91px;
+    top: 2px;
+    border: 12px solid #f2f2f2;
+    transform: rotate(45deg);
+
+    @media (max-width: 1024px) {
+        left: 133px;
+    }
+}
+
+.hide_lang {
+    display: none !important;
+}
+
+#show_lang {
+    padding-bottom: 18px !important;
+    display: inline-block !important;
+    width: 144px !important;
+}
+
+.language_flag {
+    max-width: 24px;
+    height: 16px;
+}
+
+.language_text {
+    text-align: left;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    font-size: 14px !important;
+    width: 80px !important;
+    padding-left: 8px;
+
+}
+
+.actual_flag {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.displaying_language_mtd {
+    display: flex !important;
+    align-items: center;
+    max-width: 76px;
+}
+.language_background_flag {
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+}
+
+.en_flag_mtd {
+    background-size: cover;
+    background-image: url(../image/english-flag.png);
+}
+
+.id_flag_mtd {
+    background-size: cover;
+    background-image: url(../image/indonesia-flag.png);
+}
+
+.es_flag_mtd {
+    background-size: cover;
+    background-image: url(../image/spain-flag.png);
+}
+
+.pt_flag_mtd {
+    background-size: cover;
+    background-image: url(../image/portugal-flag.png);
+}

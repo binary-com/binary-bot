@@ -50,7 +50,7 @@ import {
     saveBeforeUnload,
 } from './blockly/utils';
 import { moveToDeriv } from '../../common/utils/utility';
-import { setTimeOutBanner } from '../../indexPage/index';
+import { setTimeOutBanner, getComponent } from '../../indexPage';
 
 let realityCheckTimeout;
 let chart;
@@ -841,6 +841,8 @@ function renderErrorPage() {
 
 // eslint-disable-next-line consistent-return
 function renderReactComponents() {
+    // eslint-disable-next-line no-unused-vars
+    getComponent();
     $('.barspinner').show();
     const bannerToken = getStorage('setDueDateForBanner');
     const qs = parseQueryString();

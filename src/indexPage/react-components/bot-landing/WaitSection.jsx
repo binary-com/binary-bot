@@ -14,7 +14,7 @@ const WaitSection = () => (
                 </div>
             </div>
             <div className='wait-wrapper-inner-placeholder'>
-                <img src="image/dont-wait-image.png "></img>
+                <img src="image/dont-wait-image.svg "></img>
             </div>
         </div>
 
