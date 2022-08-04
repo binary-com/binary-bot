@@ -1,6 +1,6 @@
 #movetoderiv_language_switcher {
     position: absolute!important;
-    top: 65px;
+    top: 60px;
     right: 190px;
 
     @media (max-width: 1024px) {
@@ -9,7 +9,7 @@
         
     }
     @media (min-width: 1534px) {
-        right: 18%;
+        right: 20%;
     }
     
     @media (min-width: 1800px) {
@@ -97,18 +97,19 @@
 
 .actual_flag {
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 .displaying_language_mtd {
     display: flex !important;
     align-items: center;
-    max-width: 68px;
+    max-width: 76px;
 }
 .language_background_flag {
     display: inline-block;
-    width: 24px;
-    height: 16px;
+    width: 30px;
+    height: 20px;
 }
 
 .en_flag_mtd {

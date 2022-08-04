@@ -48,7 +48,7 @@ const Hero = () => {
                 <a href="https://deriv.com">
                     <button className="l-btn primary">{translate('Hello Deriv!')}</button>
                 </a>
-                <a href="https://www.binary.com?binary-bot-lp"id="logo">
+                <a href="https://www.binary.com?binary-bot-lp" id="logo">
                     <button className="l-btn">{translate('Maybe later')}</button>
                 </a>
             </div>
@@ -58,7 +58,7 @@ const Hero = () => {
     const renderCarousel = () => (
         <div className='container-x_box-x right-x'>
             <Slider {...carouselSettings}>
-                {carouselImages.map((slide, index) => <img key={index} src={slide}/>)}
+                {carouselImages.map((slide, index) => <img key={index} src={slide} />)}
             </Slider>
         </div>
     )
@@ -69,8 +69,8 @@ const Hero = () => {
             <section className="container-x">
                 {renderContent()}
                 {renderCarousel()}
-                <div class="logo-x">
-                    <img src="image/binary.png"/>
+                <div className="logo-x">
+                    <img src="image/binary.png" />
                 </div>
             </section>
         </div>
