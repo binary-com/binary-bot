@@ -4,7 +4,6 @@ import { translate } from '../../../common/i18n';
 import Translations from './Translations';
 
 const Carousel = () => {
-
     const settings = {
         dots          : false,
         infinite      : true,
@@ -14,8 +13,8 @@ const Carousel = () => {
         arrows        : true,
         autoplay      : true,
         autoplaySpeed : 5000,
-        nextArrow     : <span className='arrow'><img src='./image/icon.svg' /></span>,
-        prevArrow     : <span className='arrow right'><img src='./image/icon.svg' /></span>,
+        nextArrow     : <span className='arrow right'><img src='./image/icon.svg' /></span>,
+        prevArrow     : <span className='arrow'><img src='./image/icon.svg' /></span>,
         responsive    : [
             {
                 breakpoint: 1024,
@@ -33,7 +32,7 @@ const Carousel = () => {
             },
         ],
     };
-
+    
     return (
         <div className="carousel-wrapper section-container">
             <Slider {...settings}>

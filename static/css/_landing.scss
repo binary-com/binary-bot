@@ -53,7 +53,7 @@ $header-color : #333333;
       padding: 4rem 2rem;
 
       .btn-group {
-        text-align: left;
+        text-align: center;
       }
     }
 
@@ -453,7 +453,7 @@ $header-color : #333333;
     padding: 0 2rem;
 
     @include for-size(mobile) {
-      padding: 0 3rem;
+      padding: 0;
     }
 
     .slick-arrow {

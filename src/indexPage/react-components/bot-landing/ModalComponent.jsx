@@ -35,7 +35,7 @@ const ModalComponent = () => (
         <p className='bot-landing-alert-para'>{translate('In 5 minutes, we’ll show you the benefits of trading Binary Bot on Deriv.If you ignore this message, we’ll remind you again in 3 weeks.')}</p>
         <div className='bot-landing-alert-button bot-landing-alert-btn-group'>
             <button className='default' onClick={renderBanner}>{translate('Show me the benefits now')}</button>
-            <a href="https://bot.deriv.com">
+            <a href="https://bot.deriv.com" target="_blank">
                 <button className='primary'>{translate('Take me to Binary Bot on Deriv')}</button>
             </a>
         </div>
