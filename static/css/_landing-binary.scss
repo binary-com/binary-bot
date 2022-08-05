@@ -730,7 +730,7 @@ $header-color : #333333;
 
 }
 
-.background-x {
+.hero-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -741,81 +741,75 @@ $header-color : #333333;
     background: $hero-BG url(../image/hero_mobile.png) no-repeat;
     background-size: cover;
   }
-}
-
-.container-x {
-  height: 100vh;
-  width: 100%;
-  max-width: 1440px;
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  padding: 0px 3rem;
-  gap: 2.4rem;
-
-  @include for-size(mobile) {
-    flex-direction: column-reverse;
-    padding: 1rem 1.4rem 0px 1.4rem;
-  }
-
-  &_box-x {
+  &-container{
+    height: 100vh;
+    width: 100%;
+    max-width: 1440px;
     display: flex;
     flex: 1;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  h1 {
-    color: #FFF;
-    margin: 2rem 2rem 2rem 0;
-    font: 700 5rem $font-IBM;
-
+    flex-direction: row;
+    padding: 0px 3rem;
+    gap: 2.4rem;
     @include for-size(mobile) {
-      font: 700 2rem $font-IBM;
-      margin: 0 0 1rem 0;
+      flex-direction: column-reverse;
+      padding: 1rem 1.4rem 0px 1.4rem;
     }
-  }
-
-  h2 {
-    color: $white;
-    line-height: 40px;
-    margin-bottom: 2rem;
-    font: 400 2rem $font-IBM;
-
-    @include for-size(mobile) {
-      font: 400 1rem $font-IBM;
-      margin: 0 0 1.5rem 0;
+    &_box-binary {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      h1 {
+        color: #FFF;
+        margin: 2rem 2rem 2rem 0;
+        font: 700 5rem $font-IBM;
+    
+        @include for-size(mobile) {
+          font: 700 2rem $font-IBM;
+          margin: 0 0 1rem 0;
+        }
+      }
+    
+      h2 {
+        color: $white;
+        line-height: 40px;
+        margin-bottom: 2rem;
+        font: 400 2rem $font-IBM;
+    
+        @include for-size(mobile) {
+          font: 400 1rem $font-IBM;
+          margin: 0 0 1.5rem 0;
+        }
+      }
     }
-  }
-}
-
-.left-x {
-  align-items: start;
-  
-  @include for-size(mobile) {
-    flex: 0;
-  }
-}
-
-.right-x {
-  align-items: end;
-  min-width: 0px;
-
-  @include for-size(mobile) {
-    margin: 0 10%;
-  }
-}
-
-.logo-x {
-  display: none;
-  justify-content: center;
-  
-  img {
-    width: 50%;
-  }
-  
-  @include for-size(mobile) {
-    display: flex;
+    &-left-binary {
+      align-items: start;
+      
+      @include for-size(mobile) {
+        flex: 0;
+      }
+    }
+    
+    &-right-binary {
+      align-items: end;
+      min-width: 0px;
+    
+      @include for-size(mobile) {
+        margin: 0 10%;
+      }
+    }
+    &-logo-binary {
+      display: none;
+      justify-content: center;
+      
+      img {
+        width: 50%;
+      }
+      
+      @include for-size(mobile) {
+        display: flex;
+      }
+    }
   }
 }
 
