@@ -86,7 +86,7 @@
         padding: 0.625rem 0.75rem 0.625rem 1rem;
         font-size: 0.875rem;
         font-weight: 700;
-        width: 8.18rem;
+        min-width: 8.18rem;
         color: #FF444F;
         background: #FFFFFF;
         border-radius: 6.25rem;
@@ -111,14 +111,19 @@
 
     &__btn_inner {
         display: flex;
-        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+        img {
+            margin-left: 0.5rem;
+        }
     }
 }
 
 .carousel_section__mobile .carousel_section__slide_card {
     flex-direction: column;
     max-width: 20.5rem;
-    max-height: 26.125rem;
+    max-height: 27rem;
     display: flex;
     text-align: center;
     outline: none;
