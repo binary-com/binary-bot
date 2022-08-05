@@ -145,6 +145,7 @@
 
     @include for-size(mobile) {
         top: 10.375rem;
+        margin-bottom: 0.2rem;
       }
 
 }
@@ -156,7 +157,7 @@
     margin-bottom: 0.5rem;
     @include for-size(mobile) {
       font: 700 1.3rem $font-IBM;
-      margin-bottom: 0.5rem;
+      margin: 0.5rem;
     }
 
   }
