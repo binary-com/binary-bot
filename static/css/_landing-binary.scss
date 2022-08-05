@@ -755,6 +755,7 @@ $header-color : #333333;
     @include for-size(mobile) {
       flex-direction: column-reverse;
       padding: 1rem 1.4rem 0px 1.4rem;
+      gap: unset;
     }
     &_box-binary {
       display: flex;
@@ -811,6 +812,12 @@ $header-color : #333333;
       @include for-size(mobile) {
         display: flex;
       }
+
+      @media only screen
+
+and (max-device-width: 375px) {
+    
+}
     }
   }
 }
