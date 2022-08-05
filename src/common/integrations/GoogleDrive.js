@@ -58,6 +58,8 @@ class GoogleDriveUtil {
                     .then(
                         () => {
                             this.auth = gapi.auth2.getAuthInstance();
+                            console.log(this.auth);
+                            console.log(this.auth.isSignedIn);
                             this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
                             this.updateLoginStatus(this.auth.isSignedIn.get());
                             globalObserver.emit('googledrive.initialized', true);
