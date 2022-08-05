@@ -445,6 +445,8 @@ $header-color : #333333;
       justify-content: center;
       text-align: center;
       flex-direction: column;
+      box-shadow: inset 0px 1px 0px #f2f3f4;
+      margin-top: 2rem;
     }
 
     &-content {

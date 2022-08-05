@@ -1,6 +1,5 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
-import { getOAuthURLDeriv } from '../../../common/appId';
 
 const SwitchSection = () => (
     <section className="switch">
