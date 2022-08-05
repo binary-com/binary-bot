@@ -106,7 +106,6 @@
   },
   "dependencies": {
     "@deriv/deriv-charts": "0.3.43",
-    "babel-polyfill": "^6.26.0",
     "binary-style": "^0.2.4",
     "blockly": "github:binary-com/blockly#fix-blockly",
     "commander": "^2.20.0",
