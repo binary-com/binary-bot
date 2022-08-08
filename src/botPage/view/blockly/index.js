@@ -99,7 +99,7 @@ const addBlocklyTranslation = () => {
         lang = 'zh-hant';
     }
     return new Promise(resolve => {
-        $.getScript(`translations/${lang}.js`, resolve);
+        $.getScript(`/translations/${lang}.js`, resolve);
     });
 };
 
@@ -339,7 +339,7 @@ export default class _Blockly {
         // eslint-disable-next-line no-underscore-dangle
         Blockly.WorkspaceSvg.prototype.preloadAudio_ = () => {}; // https://github.com/google/blockly/issues/299
         this.initPromise = new Promise(resolve => {
-            $.get('xml/toolbox.xml', toolboxXml => {
+            $.get('/xml/toolbox.xml', toolboxXml => {
                 blocks();
                 const workspace = Blockly.inject('blocklyDiv', {
                     toolbox: xmlToStr(translateXml(toolboxXml.getElementsByTagName('xml')[0])),
