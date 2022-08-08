@@ -57,18 +57,20 @@ class GoogleDriveUtil {
                     })
                     .then(
                         () => {
-                            this.auth = gapi.auth2.getAuthInstance();
-                            this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
-                            this.updateLoginStatus(this.auth.isSignedIn.get());
-                            globalObserver.emit('googledrive.initialized', true);
+                            this.auth = gapi?.auth2?.getAuthInstance?.();
+                            if (this.auth) {
+                                this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
+                                this.updateLoginStatus(this.auth.isSignedIn.get());
+                                globalObserver.emit('googledrive.initialized', true);
 
-                            $('#integrations').removeClass('invisible');
-                            $('#save-google-drive')
-                                .parent()
-                                .removeClass('invisible');
-                            $('#load-google-drive')
-                                .parent()
-                                .removeClass('invisible');
+                                $('#integrations').removeClass('invisible');
+                                $('#save-google-drive')
+                                    .parent()
+                                    .removeClass('invisible');
+                                $('#load-google-drive')
+                                    .parent()
+                                    .removeClass('invisible');
+                            }
                         },
                         error => errLogger(error, translate('There was an error initialising Google Drive.'))
                     );
