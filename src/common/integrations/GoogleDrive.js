@@ -50,15 +50,15 @@ class GoogleDriveUtil {
             callback: () => {
                 gapi.client
                     .init({
-                        apiKey: this.apiKey,
-                        clientId: this.clientId,
-                        scope: this.scope,
+                        apiKey       : this.apiKey,
+                        clientId     : this.clientId,
+                        scope        : this.scope,
                         discoveryDocs: this.discoveryDocs,
                     })
                     .then(
                         () => {
                             if (this.auth !== null && this.auth !== undefined) {
-                                this.auth = gapi.auth2.getAuthInstance();
+                            this.auth = gapi.auth2.getAuthInstance();
                                 this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
                                 this.updateLoginStatus(this.auth.isSignedIn.get());
                                 globalObserver.emit('googledrive.initialized', true);
@@ -160,7 +160,7 @@ class GoogleDriveUtil {
 
                     gapi.client.drive.files
                         .get({
-                            alt: 'media',
+                            alt     : 'media',
                             fileId,
                             mimeType: 'text/plain',
                         })
@@ -193,12 +193,12 @@ class GoogleDriveUtil {
             };
 
             this.createFilePickerView({
-                title: translate('Select a Binary Bot strategy'),
+                title            : translate('Select a Binary Bot strategy'),
                 afterAuthCallback: gapi.client.drive.files.list,
-                mimeType: ['text/xml', 'application/xml'],
-                pickerCallback: userPickedFile,
-                generalCallback: resolve,
-                rejectCallback: err => {
+                mimeType         : ['text/xml', 'application/xml'],
+                pickerCallback   : userPickedFile,
+                generalCallback  : resolve,
+                rejectCallback   : err => {
                     if (err.status && err.status === 401) this.logout();
 
                     const error = new TrackJSError(
@@ -210,7 +210,7 @@ class GoogleDriveUtil {
                     reject(error);
                 },
                 generalRejectCallback: reject,
-                selectFolderEnabled: false,
+                selectFolderEnabled  : false,
             });
         });
     }
@@ -231,9 +231,9 @@ class GoogleDriveUtil {
                         gapi.client.drive.files
                             .create({
                                 resource: {
-                                    name: this.botFolder,
+                                    name    : this.botFolder,
                                     mimeType: 'application/vnd.google-apps.folder',
-                                    fields: 'id',
+                                    fields  : 'id',
                                 },
                             })
                             .then(resolve)
@@ -264,9 +264,9 @@ class GoogleDriveUtil {
                     const folderId = data.docs[0].id;
                     const strategyFile = new Blob([options.content], { type: options.mimeType });
                     const strategyFileMetadata = JSON.stringify({
-                        name: options.name,
+                        name    : options.name,
                         mimeType: options.mimeType,
-                        parents: [folderId],
+                        parents : [folderId],
                     });
 
                     const formData = new FormData();
@@ -298,11 +298,11 @@ class GoogleDriveUtil {
             };
 
             this.createFilePickerView({
-                title: translate('Select a folder'),
-                afterAuthCallback: this.getDefaultFolderId.bind(this),
-                mimeType: 'application/vnd.google-apps.folder',
-                pickerCallback: savePickerCallback,
-                rejectCallback: reject,
+                title                : translate('Select a folder'),
+                afterAuthCallback    : this.getDefaultFolderId.bind(this),
+                mimeType             : 'application/vnd.google-apps.folder',
+                pickerCallback       : savePickerCallback,
+                rejectCallback       : reject,
                 generalRejectCallback: reject,
             });
         });
