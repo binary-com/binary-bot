@@ -57,7 +57,7 @@ class GoogleDriveUtil {
                     })
                     .then(
                         () => {
-                            if (this.auth != null && this.auth != undefined) {
+                            if (this.auth !== null && this.auth !== undefined) {
                             this.auth = gapi.auth2.getAuthInstance();
                                 this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
                                 this.updateLoginStatus(this.auth.isSignedIn.get());
