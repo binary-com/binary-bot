@@ -127,7 +127,7 @@ body {
     text-align: right;
     padding: 3px 20px;
     display: table;
-    @media (max-width: 400px) {
+    @media (max-width: 1024px) {
         min-height: 25px !important;
     }    
 }

@@ -38,7 +38,7 @@ const carouselSettings = {
 
 const Hero = () => {
     const renderContent = () => (
-        <div className='container-x_box-x left-x'>
+        <div className='hero-wrapper-container_box-binary hero-wrapper-container-left-binary'>
             <h1>{translate('We’re moving!')}</h1>
             <h2>
                 {translate('We’ve been')}<b>{translate(' Binary.com')}</b>{translate(' for 2 decades and it’s time for an exciting new chapter.')}
@@ -56,7 +56,7 @@ const Hero = () => {
     )
 
     const renderCarousel = () => (
-        <div className='container-x_box-x right-x'>
+        <div className='hero-wrapper-container_box-binary hero-wrapper-container-right-binary'>
             <Slider {...carouselSettings}>
                 {carouselImages.map((slide, index) => <img key={index} src={slide} />)}
             </Slider>
@@ -65,11 +65,11 @@ const Hero = () => {
 
 
     return (
-        <div className='background-x'>
-            <section className="container-x">
+        <div className='hero-wrapper'>
+            <section className="hero-wrapper-container">
                 {renderContent()}
                 {renderCarousel()}
-                <div className="logo-x">
+                <div className="hero-wrapper-container-logo-binary">
                     <img src="image/binary.png" />
                 </div>
             </section>
