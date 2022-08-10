@@ -83,7 +83,7 @@ export const renderBanner = () => {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
         if (dynamicRoutePathanme === 'bot-landing') {
-            // setStorage('setDueDateForBanner', expirationDate());
+            setStorage('setDueDateForBanner', expirationDate());
         }
         elements.map(elem => document.querySelector(elem).classList.add('hidden'));
         document.getElementById(dynamicRoutePathanme).classList.remove('hidden');
