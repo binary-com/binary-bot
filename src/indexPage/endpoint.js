@@ -2,18 +2,13 @@ import { get as getStorage, set as setStorage } from '../common/utils/storageMan
 import { generateWebSocketURL, getDefaultEndpoint, generateTestLiveApiInstance } from '../common/appId';
 import { translate } from '../common/i18n';
 
-if (document.location.href.endsWith('/endpoint')) {
-    window.location.replace(`${document.location.href}.html`);
-    throw new Error('Unexpected URL.'); // To prevent URL replace in index and further execution
-}
-
 const MessageProperties = {
     connected: () => `<b>Connected to the Endpoint ${getStorage('config.server_url')}!</b>`,
     error    : () => `Unable to connect to ${getStorage('config.server_url')}. Switching connection to default endpoint.`,
 };
 
 export default function endpoint() {
-    if (!document.location.href.match(/endpoint\.html/)) return false;
+    if (!document.location.pathname.includes('/endpoint')) return false;
     $(document).ready(() => {
         $('#error').hide();
         $('#connected').hide();
