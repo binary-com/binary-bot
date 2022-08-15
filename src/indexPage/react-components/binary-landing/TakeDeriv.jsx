@@ -5,7 +5,7 @@ const TakeDeriv = () => (
     <div className="take-deriv">
         <div className="take-deriv_background">
             <div className="take-deriv_iphone">
-                <img src="../image/phone-desctop.png" />
+                <img src="image/phone-desctop.png" />
             </div>
             <div className="take-deriv_qr-code">
                 <h1>{translate('Take Deriv with you')}</h1>
