@@ -43,7 +43,7 @@ const checkifBotRunning = () => {
 };
 let Component, dynamicRoutePathanme;
 export const getComponent = () => {
-    if (window.location.pathname === '/movetoderiv.html') {
+    if (window.location.pathname === '/movetoderiv.html' || window.location.pathname === '/www/movetoderiv.html') {
         Component = <BinaryLanding />;
         dynamicRoutePathanme = 'movetoderiv';
     } else {
@@ -79,7 +79,11 @@ export const setTimeOutBanner = route => {
 };
 
 export const renderBanner = () => {
-    if (window.location.href.indexOf('bot.html') === -1 || window.location.pathname === '/movetoderiv.html') {
+    if (
+        window.location.href.indexOf('bot.html') === -1 ||
+        window.location.pathname === '/movetoderiv.html' ||
+        window.location.pathname === '/www/movetoderiv.html'
+    ) {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
         if (dynamicRoutePathanme === 'bot-landing') {
@@ -136,7 +140,10 @@ const loginCheck = () => {
         loadLang();
     }
     $('.show-on-load').show();
-    if (bannerToken && window.location.pathname !== '/movetoderiv.html') {
+    if (
+        (bannerToken && window.location.pathname !== '/movetoderiv.html') ||
+        (bannerToken && window.location.pathname !== '/www/movetoderiv.html')
+    ) {
         if (getTokenList().length) {
             if (!window.location.pathname.includes('/bot.html')) {
                 window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
