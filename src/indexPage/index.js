@@ -25,13 +25,6 @@ export const elements = ['#notification-banner', '#main', '#footer', '#header', 
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 
-// eslint-disable-next-line arrow-body-style
-export const expirationDate = () => {
-    return today + oneMilliSec * oneMinute * oneMinute * oneDay * sevenDays;
-};
-
-export const calcSetTimeoutValueBanner = expirationDate() - new Date().getTime();
-
 // eslint-disable-next-line import/no-mutable-exports
 export let timerForBanner;
 
@@ -43,13 +36,8 @@ const checkifBotRunning = () => {
 };
 let Component, dynamicRoutePathanme;
 export const getComponent = () => {
-    if (window.location.pathname === '/movetoderiv.html' || window.location.pathname === '/www/movetoderiv.html') {
-        Component = <BinaryLanding />;
-        dynamicRoutePathanme = 'movetoderiv';
-    } else {
-        Component = <BotLanding />;
-        dynamicRoutePathanme = 'bot-landing';
-    }
+    Component = <BinaryLanding />;
+    dynamicRoutePathanme = 'bot-landing';
     return {
         Component,
         dynamicRoutePathanme,
@@ -79,16 +67,9 @@ export const setTimeOutBanner = route => {
 };
 
 export const renderBanner = () => {
-    if (
-        window.location.href.indexOf('bot.html') === -1 ||
-        window.location.pathname === '/movetoderiv.html' ||
-        window.location.pathname === '/www/movetoderiv.html'
-    ) {
+    if (window.location.href.indexOf('bot.html') === -1) {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
-        if (dynamicRoutePathanme === 'bot-landing') {
-            setStorage('setDueDateForBanner', expirationDate());
-        }
         elements.map(elem => document.querySelector(elem).classList.add('hidden'));
         document.getElementById(dynamicRoutePathanme).classList.remove('hidden');
         document.getElementById('bot-main').classList.remove('hidden');
@@ -110,7 +91,6 @@ const renderElements = () => {
         }
     } else {
         if (today > bannerToken) {
-            remove('setDueDateForBanner');
             renderBanner();
             return false;
         }
@@ -140,10 +120,7 @@ const loginCheck = () => {
         loadLang();
     }
     $('.show-on-load').show();
-    if (
-        (bannerToken && window.location.pathname !== '/movetoderiv.html') ||
-        (bannerToken && window.location.pathname !== '/www/movetoderiv.html')
-    ) {
+    if (bannerToken) {
         if (getTokenList().length) {
             if (!window.location.pathname.includes('/bot.html')) {
                 window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
