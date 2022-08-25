@@ -1,13 +1,15 @@
-import React from 'react'
+import React from 'react';
 import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
+import {getLanguageBase } from '../../../common/lang';
 
 const carouselImages = [
     'image/hero-dmt5.png',
     'image/hero-derivgo.png',
     'image/hero-derivx.png',
     'image/hero-dtrader.png',
-]
+];
+
 
 const carouselSettings = {
     dots          : false,
@@ -38,34 +40,42 @@ const carouselSettings = {
 
 const Hero = () => {
     const renderContent = () => (
-        <div className='hero-wrapper-container_box-binary hero-wrapper-container-left-binary'>
+        <div className="hero-wrapper-container_box-binary hero-wrapper-container-left-binary">
             <h1>{translate('We’re moving!')}</h1>
             <h2>
-                {translate('We’ve been')}<b>{translate(' Binary.com')}</b>{translate(' for 2 decades and it’s time for an exciting new chapter.')}
+                {translate('We’ve been')}
+                <b>{translate(' Binary.com')}</b>
+                {translate(' for 2 decades and it’s time for an exciting new chapter.')}
             </h2>
-            <h2>{translate('Say hello to our new home,')}<b>{translate(' Deriv.')}</b></h2>
+            <h2>
+                {translate('Say hello to our new home,')}
+                <b>{translate(' Deriv.')}</b>
+            </h2>
             <div className="btn-group">
-                <a href="https://deriv.com">
-                    <button className="l-btn primary">{translate('Hello Deriv!')}</button>
+                <a href={getLanguageBase('https://deriv.com/')}>
+                    <button className="l-btn primary">
+                        {translate('Hello Deriv!')}
+                    </button>
                 </a>
                 <a href="https://www.binary.com?binary-bot-lp" id="logo">
                     <button className="l-btn">{translate('Maybe later')}</button>
                 </a>
             </div>
         </div>
-    )
+    );
 
     const renderCarousel = () => (
-        <div className='hero-wrapper-container_box-binary hero-wrapper-container-right-binary'>
+        <div className="hero-wrapper-container_box-binary hero-wrapper-container-right-binary">
             <Slider {...carouselSettings}>
-                {carouselImages.map((slide, index) => <img key={index} src={slide} />)}
+                {carouselImages.map((slide, index) => (
+                    <img key={index} src={slide} />
+                ))}
             </Slider>
         </div>
-    )
-
+    );
 
     return (
-        <div className='hero-wrapper'>
+        <div className="hero-wrapper">
             <section className="hero-wrapper-container">
                 {renderContent()}
                 {renderCarousel()}
@@ -74,7 +84,7 @@ const Hero = () => {
                 </div>
             </section>
         </div>
-    )
+    );
 };
 
-export default Hero
+export default Hero;

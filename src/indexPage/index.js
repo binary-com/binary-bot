@@ -37,7 +37,7 @@ const checkifBotRunning = () => {
 let Component, dynamicRoutePathanme;
 export const getComponent = () => {
     Component = <BinaryLanding />;
-    dynamicRoutePathanme = 'bot-landing';
+    dynamicRoutePathanme = 'movetoderiv';
     return {
         Component,
         dynamicRoutePathanme,
@@ -101,7 +101,11 @@ const renderElements = () => {
             showBanner();
             $('#shop-url').attr(
                 'href',
-                createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
+                createUrl({
+                    subdomain   : 'shop',
+                    path        : 'collections/strategies',
+                    isNonBotPage: true,
+                })
             );
             elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
             document.getElementById(dynamicRoutePathanme).classList.add('hidden');

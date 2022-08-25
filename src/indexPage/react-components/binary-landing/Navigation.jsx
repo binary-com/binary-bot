@@ -1,6 +1,9 @@
 import React from 'react'
 import { translate } from '../../../common/i18n';
+import {getLanguage} from '../../../common/lang'
 
+const lang = getLanguage();
+const URL = `https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=${lang}&brand=deriv`;
 
 const MoveToDerivNav = () => (
     <div className='navigation'>
@@ -10,7 +13,7 @@ const MoveToDerivNav = () => (
                     <img src="image/binary.png" />
                 </a>
             </div>
-            <a href="https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=en&brand=deriv" className="navigation-to-deriv" rel="noopener noreferrer">
+            <a href={URL} className="navigation-to-deriv" rel="noopener noreferrer">
                 <button className='btn-group right-btn'>
                     {translate('Take me to Deriv')}
                 </button>

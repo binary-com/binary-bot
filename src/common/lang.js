@@ -88,3 +88,9 @@ export const showBanner = async () => {
         });
     }
 };
+
+export const getLanguageBase = url => {
+    const lang = getLanguage();
+    console.log(url + lang, 'language');
+    return url + lang;
+};
