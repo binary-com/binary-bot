@@ -24,11 +24,13 @@
 .movetoderiv_topbar_hide {
     position: absolute;
     top: -20px;
+    display: none;
 
     
     @media (max-width: 1024px) {
         position: relative;
         top: 0;
+        display: block;
     }
 }
 
