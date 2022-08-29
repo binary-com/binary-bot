@@ -1,5 +1,6 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
+import {getLanguageBase } from '../../../common/lang';
 
 const ChooseSection = () => (
     <section className='binary-choose-wrapper'>
@@ -66,7 +67,7 @@ const ChooseSection = () => (
                 </div>
             </div>
             <div className="binary-choose-wrapper-inner_btn">
-                <a href="http://deriv.com/">
+                <a href={getLanguageBase('deriv')}>
                     <button className="l-btn danger">{translate('Explore Deriv now')}</button>
                 </a>
             </div>

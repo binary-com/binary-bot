@@ -1,5 +1,9 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
+import { getLanguageBase } from '../../../common/lang';
+
+
+
 
 const SwitchSection = () => (
     <section className="switch">
@@ -13,10 +17,10 @@ const SwitchSection = () => (
                     {translate('Just log in using your Binary.com credentials. No sign-up needed.')}
                 </h2>
                 <div className="btn-group">
-                    <a href="https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=en&brand=deriv" rel="noopener noreferrer">
+                    <a href={getLanguageBase('oauth')} rel="noopener noreferrer">
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href="https://www.binary.com?binary-bot-lp">
+                    <a href={getLanguageBase('binary')}>
                         <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
                 </div>

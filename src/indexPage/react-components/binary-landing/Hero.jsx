@@ -1,7 +1,9 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
-import {getLanguageBase } from '../../../common/lang';
+import {getLanguageBase} from '../../../common/lang';
+
+
 
 const carouselImages = [
     'image/hero-dmt5.png',
@@ -52,12 +54,12 @@ const Hero = () => {
                 <b>{translate(' Deriv.')}</b>
             </h2>
             <div className="btn-group">
-                <a href={getLanguageBase('https://deriv.com/')}>
+                <a href={getLanguageBase('deriv')}>
                     <button className="l-btn primary">
                         {translate('Hello Deriv!')}
                     </button>
                 </a>
-                <a href="https://www.binary.com?binary-bot-lp" id="logo">
+                <a href={getLanguageBase('binary')} id="logo">
                     <button className="l-btn">{translate('Maybe later')}</button>
                 </a>
             </div>

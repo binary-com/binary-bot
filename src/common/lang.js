@@ -89,8 +89,30 @@ export const showBanner = async () => {
     }
 };
 
-export const getLanguageBase = url => {
+export const getLanguageBase = (origin = '') => {
     const lang = getLanguage();
-    console.log(url + lang, 'language');
-    return url + lang;
+    switch (origin) {
+        case 'binary':
+            return `https://www.binary.com/${lang}/trading.html`;
+        case 'deriv':
+            return `https://deriv.com/${lang}`;
+        case 'oauth':
+            return `https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=${lang}&brand=deriv`;
+        case 'smart_trader':
+            return `https://smarttrader.deriv.com/${lang}/trading.html`;
+        case 'bot':
+            return `https://bot.deriv.com/?l=${lang}`;
+        case 'mt5':
+            return `https://deriv.com/${lang}/dmt5/`;
+        case 'dtrader':
+            return `https://deriv.com/${lang}/dtrader/`;
+        case 'dbot':
+            return `https://deriv.com/${lang}/dbot/`;
+        case 'derivx':
+            return `https://deriv.com/${lang}/derivx/`;
+        case 'derivgo':
+            return `https://deriv.com/${lang}/deriv-go/`;
+        default:
+            return 'https://deriv.com/';
+    }
 };

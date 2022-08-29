@@ -1,52 +1,53 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
+import {getLanguageBase} from '../../../common/lang'
 
 const carouselContentArray = [
     {
-        url                 : 'https://smarttrader.deriv.com/',
+        url                 : getLanguageBase('smart_trader'),
         action_text         : translate('Check it out'),
         img                 : 'image/landing-carousel/smart-trader.png',
         platform_title      : translate('SmartTrader'),
         platform_description: translate('Our classic options trading platform'),
     },
     {
-        url                 : 'https://bot.deriv.com/',
+        url                 : getLanguageBase('bot'),
         action_text         : translate('Check it out'),
         img                 : 'image/landing-carousel/binary-bot.png',
         platform_title      : translate('Binary Bot'),
         platform_description: translate('Our classic automated trading platform'),
     },
     {
-        url                 : 'https://deriv.com/dmt5/',
+        url                 : getLanguageBase('mt5'),
         action_text         : translate('Learn more'),
         img                 : 'image/landing-carousel/mt5.png',
         platform_title      : translate('Deriv MT5'),
         platform_description: translate('The world-famous CFD trading platform'),
     },
     {
-        url                 : 'https://deriv.com/dtrader/',
+        url                 : getLanguageBase('dtrader'),
         action_text         : translate('Learn more'),
         img                 : 'image/landing-carousel/dtrader.png',
         platform_title      : translate('DTrader'),
         platform_description: translate('Our flagship options and multipliers trading platform'),
     },
     {
-        url                 : 'https://deriv.com/dbot/',
+        url                 : getLanguageBase('dbot'),
         action_text         : translate('Learn more'),
         img                 : 'image/landing-carousel/dbot.png',
         platform_title      : translate('DBot'),
         platform_description: translate('Our next generation automated trading platform'),
     },
     {
-        url                 : 'https://deriv.com/landing/deriv-go/',
+        url                 : getLanguageBase('derivgo'),
         action_text         : translate('Learn more'),
         img                 : 'image/landing-carousel/deriv-go.png',
         platform_title      : translate('Deriv GO'),
         platform_description: translate('Trade on-the-go with our mobile trading platform'),
     },
     {
-        url                 : 'https://deriv.com/derivx/',
+        url                 : getLanguageBase('derivx'),
         action_text         : translate('Learn more'),
         img                 : 'image/landing-carousel/derivX.png',
         platform_title      : translate('Deriv X'),
