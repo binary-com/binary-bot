@@ -3,6 +3,9 @@
     top: 60px;
     right: 190px;
 
+    @media only screen and (max-width: 1534px) and (min-width: 1025px){
+        right: 200px;
+    }
     @media (max-width: 1024px) {
         top: 1px;
         right: -38px;
