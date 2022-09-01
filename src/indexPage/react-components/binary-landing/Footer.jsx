@@ -13,7 +13,7 @@ const Footer = () => (
                 </div>
                 <div className='about-trade-wrapper-social-icons'>
                     <a href="https://www.reddit.com/user/Deriv_official/" target="_blank"><img src='image/reddit.svg' /></a>
-                    <a href="https://t.me/binarydotcom" target="_blank"><img src='image/telegram.svg' /></a>
+                    <a href="https://t.me/derivdotcomofficial" target="_blank"><img src='image/telegram.svg' /></a>
                     <a href="https://www.facebook.com/derivdotcom" target="_blank"><img src='image/facebook.svg' /></a>
                     <a href="https://twitter.com/derivdotcom/" target="_blank"><img src='image/twitter.svg' /></a>
                     <a href="https://www.instagram.com/deriv_official/" target="_blank"><img src='image/instagram.svg' /></a>
@@ -22,8 +22,7 @@ const Footer = () => (
             </div>
             <div className='about-trade-wrapper-inner-social-icons-mobile'>
                 <a href="https://www.reddit.com/user/Deriv_official/" target="_blank"><img src='image/reddit.svg' /></a>
-                <a href="https://t.me/binarydotcom" target="_blank"><img src='image/telegram.svg' /></a>
-
+                <a href="https://t.me/derivdotcomofficial" target="_blank"><img src='image/telegram.svg' /></a>
                 <a href="https://www.facebook.com/derivdotcom" target="_blank"><img src='image/facebook.svg' /></a>
                 <a href="https://twitter.com/derivdotcom/" target="_blank"><img src='image/twitter.svg' /></a>
                 <a href="https://www.instagram.com/deriv_official/" target="_blank"><img src='image/instagram.svg' /></a>
