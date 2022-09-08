@@ -1,9 +1,8 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
-import {getLanguageBase} from '../../../common/lang';
-
-
+import { getLanguageBase } from '../../../common/lang';
+import { setBinaryCookieAndRedirect } from './utils';
 
 const carouselImages = [
     'image/hero-dmt5.png',
@@ -11,7 +10,6 @@ const carouselImages = [
     'image/hero-derivx.png',
     'image/hero-dtrader.png',
 ];
-
 
 const carouselSettings = {
     dots          : false,
@@ -59,7 +57,7 @@ const Hero = () => {
                         {translate('Hello Deriv!')}
                     </button>
                 </a>
-                <a href={getLanguageBase('binary')} id="logo">
+                <a id="logo" onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
                     <button className="l-btn">{translate('Maybe later')}</button>
                 </a>
             </div>

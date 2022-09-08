@@ -1,6 +1,7 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
 import { getLanguageBase } from '../../../common/lang';
+import { setBinaryCookieAndRedirect } from './utils';
 
 
 
@@ -20,7 +21,7 @@ const SwitchSection = () => (
                     <a href={getLanguageBase('oauth')} rel="noopener noreferrer">
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href={getLanguageBase('binary')}>
+                    <a onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
                         <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
                 </div>
