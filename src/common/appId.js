@@ -107,6 +107,7 @@ const options = {
     apiUrl  : getWebSocketURL(),
     language: getLanguage().toUpperCase(),
     appId   : getAppIdFallback(),
+    brand   : 'binary',
 };
 
 export const generateLiveApiInstance = () => new LiveApi(options);
