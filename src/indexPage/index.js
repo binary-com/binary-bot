@@ -64,7 +64,7 @@ export const setTimeOutBanner = route => {
             (route === 'index' && !!bannerDisplayed === false) ||
             (route === 'views' && checkifBotRunning() === false)
         ) {
-            const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
+            const getDefaultPath = window.location.href.replace(/\/bot(\.html)?/, serialize(qs));
             window.location.replace(getDefaultPath);
             renderBanner();
         } else if (
@@ -79,7 +79,7 @@ export const setTimeOutBanner = route => {
 };
 
 export const renderBanner = () => {
-    if (window.location.href.indexOf('bot.html') === -1 || window.location.pathname === '/movetoderiv.html') {
+    if (window.location.pathname.indexOf('/bot') === -1 || window.location.pathname === '/movetoderiv.html') {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
         if (dynamicRoutePathanme === 'bot-landing') {
@@ -101,7 +101,7 @@ const renderElements = () => {
     $('.barspinner').show();
 
     if (!bannerToken) {
-        if (window.location.href.indexOf('bot.html') === -1) {
+        if (window.location.pathname.indexOf('/bot') === -1) {
             renderBanner();
         }
     } else {
@@ -110,7 +110,7 @@ const renderElements = () => {
             renderBanner();
             return false;
         }
-        if (window.location.href.indexOf('bot.html') === -1) {
+        if (window.location.pathname.indexOf('/bot') === -1) {
             render(<Logo />, document.getElementById('binary-logo'));
             render(<Footer />, document.getElementById('footer'));
             isEuCountry().then(isEu => showHideEuElements(isEu));
@@ -132,13 +132,13 @@ const renderElements = () => {
 const loginCheck = () => {
     if (endpoint()) return;
     moveToDeriv();
-    if (window.location.href.indexOf('bot.html') === -1) {
+    if (window.location.pathname.indexOf('/bot') === -1) {
         loadLang();
     }
     $('.show-on-load').show();
     if (bannerToken && window.location.pathname !== '/movetoderiv.html') {
         if (getTokenList().length) {
-            if (!window.location.pathname.includes('/bot.html')) {
+            if (!window.location.pathname.includes('/bot')) {
                 window.location.pathname = `${window.location.pathname.replace(/\/+$/, '')}/bot.html`;
             }
             document.getElementById('bot-main').classList.remove('hidden');

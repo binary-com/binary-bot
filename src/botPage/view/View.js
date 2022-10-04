@@ -848,12 +848,12 @@ function renderReactComponents() {
     const qs = parseQueryString();
     if (new Date().getTime() > Number(bannerToken)) {
         remove('setDueDateForBanner');
-        const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
+        const getDefaultPath = window.location.href.replace(/\/bot(\.html)?/, serialize(qs));
         window.location.replace(getDefaultPath);
         return false;
     }
     if (bannerToken === null || bannerToken === undefined) {
-        const getDefaultPath = window.location.href.replace('/bot.html', serialize(qs));
+        const getDefaultPath = window.location.href.replace(/\/bot(\.html)?/, serialize(qs));
         window.location.replace(getDefaultPath);
         document.getElementById('errorArea').remove();
         $('.barspinner').hide();
@@ -867,7 +867,7 @@ function renderReactComponents() {
                     !(
                         typeof window.location !== 'undefined' &&
                         isProduction() &&
-                        window.location.pathname === '/bot.html'
+                        window.location.pathname.includes('/bot')
                     )
                 }
             />,
