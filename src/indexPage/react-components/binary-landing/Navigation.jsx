@@ -4,7 +4,7 @@ import {getLanguageBase} from '../../../common/lang'
 
 
 
-const MoveToDerivNav = () => (
+const MoveToDerivNav = ({isFromBinary}) => (
     <div className='navigation'>
         <div className='navigation-container'>
             <div className="navigation-logo">
@@ -12,11 +12,11 @@ const MoveToDerivNav = () => (
                     <img src="image/binary.png" />
                 </a>
             </div>
-            <a href={getLanguageBase('oauth')} className="navigation-to-deriv" rel="noopener noreferrer">
+            {!isFromBinary && <a href={getLanguageBase('oauth')} className="navigation-to-deriv" rel="noopener noreferrer">
                 <button className='btn-group right-btn'>
                     {translate('Take me to Deriv')}
                 </button>
-            </a>
+            </a>}
         </div>
     </div>
 

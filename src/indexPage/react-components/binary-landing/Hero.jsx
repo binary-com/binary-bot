@@ -38,8 +38,27 @@ const carouselSettings = {
     ],
 };
 
-const Hero = () => {
-    const renderContent = () => (
+const Hero = ({isFromBinary}) => {
+    const renderFromBinaryContent = () => (
+        <div className="hero-wrapper-container_box-binary hero-wrapper-container-left-binary">
+            <h1>{translate('We have a new home: Deriv.')}</h1>
+            <h2>
+                {translate('We’ve rebranded the online trading space by offering new innovative products, intuitive platforms, and outstanding services.')}
+            </h2>
+            <div className="btn-group">
+                <a href={getLanguageBase('deriv')}>
+                    <button className="l-btn primary">
+                        {translate('Explore Deriv')}
+                    </button>
+                </a>
+                <a id="logo" href={getLanguageBase('oauth')}>
+                    <button className="l-btn">{translate('Create a demo account')}</button>
+                </a>
+            </div>
+        </div>
+    );
+
+    const renderBinaryLandingContent = () => (
         <div className="hero-wrapper-container_box-binary hero-wrapper-container-left-binary">
             <h1>{translate('We’re moving!')}</h1>
             <h2>
@@ -77,7 +96,7 @@ const Hero = () => {
     return (
         <div className="hero-wrapper">
             <section className="hero-wrapper-container">
-                {renderContent()}
+                {isFromBinary ? renderFromBinaryContent() : renderBinaryLandingContent()}
                 {renderCarousel()}
                 <div className="hero-wrapper-container-logo-binary">
                     <img src="image/binary.png" />

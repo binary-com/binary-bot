@@ -44,11 +44,12 @@ export const load = () => {
             elements.map(elem => document.querySelector(elem).classList.add('hidden'));
             document.getElementById('bot-landing').classList.remove('hidden');
             document.getElementById('bot-main').classList.remove('hidden');
-            document.location.search = `l=${newLang}`;
             $('.barspinner').hide();
-        } else {
-            document.location.search = `l=${newLang}`;
         }
+
+        const params = new URLSearchParams(window.location.search);
+        params.set('l', newLang);
+        document.location.search = params.toString();
     });
 
     $('.language').text(
