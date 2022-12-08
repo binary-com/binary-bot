@@ -16,6 +16,12 @@ export const getLanguage = () => {
     return lang;
 };
 
+export const changeLanguage = language => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('l', language);
+    document.location.search = params.toString();
+};
+
 const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {
         const el = $(this);
@@ -47,9 +53,7 @@ export const load = () => {
             $('.barspinner').hide();
         }
 
-        const params = new URLSearchParams(window.location.search);
-        params.set('l', newLang);
-        document.location.search = params.toString();
+        changeLanguage(newLang);
     });
 
     $('.language').text(
@@ -94,7 +98,7 @@ export const getLanguageBase = (origin = '') => {
     const lang = getLanguage();
     switch (origin) {
         case 'binary':
-            return `https://www.binary.com/${lang}/trading.html`;
+            return `/${lang}/trading.html`;
         case 'deriv':
             return `https://deriv.com/${lang}`;
         case 'oauth':

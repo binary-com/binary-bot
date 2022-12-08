@@ -12,12 +12,12 @@ import TakeDeriv from './TakeDeriv.jsx';
 
 const BinaryLanding = () => {
     const params = new URLSearchParams(window.location.search);
-    const is_from_binary = params.get('source') === 'binary';
+    const isFromBinary = params.get('source') === 'binary';
 
     return (
-        <>
-            <MoveToDerivNav isFromBinary={is_from_binary} />
-            <Hero isFromBinary={is_from_binary} />
+        <div>
+            <MoveToDerivNav isFromBinary={isFromBinary} />
+            <Hero isFromBinary={isFromBinary} />
             <SwitchSection />
             <CarouselTitle />
             <Carousel />
@@ -26,7 +26,7 @@ const BinaryLanding = () => {
             <CardSection />
             <WaitSection />
             <Footer />
-        </>
+        </div>
     )
 }
 

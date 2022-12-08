@@ -98,9 +98,6 @@ const Hero = ({isFromBinary}) => {
             <section className="hero-wrapper-container">
                 {isFromBinary ? renderFromBinaryContent() : renderBinaryLandingContent()}
                 {renderCarousel()}
-                <div className="hero-wrapper-container-logo-binary">
-                    <img src="image/binary.png" />
-                </div>
             </section>
         </div>
     );

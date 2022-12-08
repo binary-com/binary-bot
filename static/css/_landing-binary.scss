@@ -26,16 +26,11 @@ $header-color : #333333;
 
 .navigation {
   display: block;
-  padding: 0 2rem;
   background: #16212d; 
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-
-  @include for-size(mobile) {
-    display: none;
-  }
   background: transparent;
 
   &-container{
@@ -45,6 +40,10 @@ $header-color : #333333;
     padding: 2rem 3rem;
     max-width: 1440px;
     margin: 0px auto;
+
+    @include for-size(mobile) {
+      padding: 16px;
+    }
   }
 
   &-logo {
@@ -60,6 +59,11 @@ $header-color : #333333;
     font: 700 0.9rem $font-IBM;
     text-transform: none;
     border-radius: 6px;
+    margin-left: 22px;
+
+    @include for-size(mobile) {
+      display: none;
+    }
   }
 }
 
@@ -73,7 +77,7 @@ $header-color : #333333;
   height: 2.5rem;
   border-radius: 0.25rem;
   font: 700 0.875rem $font-IBM;
-  background-color: #C2C2C2;
+  background-color: $white !important;
   color: #000;
   outline: none;
   border: none;
@@ -81,27 +85,27 @@ $header-color : #333333;
   cursor: pointer;
   text-transform: none;
   &.primary {
-    background-color: #2E8836;
+    background-color: #2E8836 !important;
     color: $white;
 
     &:hover {
-      background-color: #246d2a;
+      background-color: #246d2a !important;
       color: $white;
     }
   }
 
   &.danger {
-    background: #FF444F;
+    background: #FF444F !important;
     color: $white;
 
     &:hover {
-      background-color: #cd353e;
+      background-color: #cd353e !important;
       color: $white;
     }
   }
 
   &:hover {
-    background-color: #979797;
+    background-color: #C2C2C2 !important;
     color: #000;
   }
 }
@@ -780,7 +784,7 @@ $header-color : #333333;
         font: 400 2rem $font-IBM;
     
         @include for-size(mobile) {
-          font: 400 1rem $font-IBM;
+          font: 400 1.5rem $font-IBM;
           margin: 0 0 1.5rem 0;
         }
       }
@@ -801,24 +805,6 @@ $header-color : #333333;
         margin: 0 10%;
       }
     }
-    &-logo-binary {
-      display: none;
-      justify-content: center;
-      
-      img {
-        width: 50%;
-      }
-      
-      @include for-size(mobile) {
-        display: flex;
-      }
-
-      @media only screen
-
-and (max-device-width: 375px) {
-    
-}
-    }
   }
 }
 
@@ -831,4 +817,112 @@ and (max-device-width: 375px) {
   display: flex !important;
   justify-content: center;
   align-items: center;
+}
+
+.language-selector {
+  position: relative;
+
+  &-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 200ms;
+
+    &:hover {
+      opacity: 0.5;
+    }
+
+    &-flag {
+      width: 24px;
+      height: 16px;
+    }
+
+    &-name {
+      font: 700 16px $font-IBM;
+      color: $white;
+      margin: 4px !important;
+    }
+
+    &-arrow {
+      width: 16px;
+      height: 16px;
+      background-image: url(../image/dropdown-arrow.svg) !important;
+      transition: all 200ms;
+
+      &.up {
+        rotate: -180deg;
+      }
+
+      &.down {
+        rotate: 0deg;
+      }
+    }
+  }
+
+  &-container {
+    background-color: $white;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    border-radius: 8px;
+    min-width: 176px;
+    position: absolute;
+    z-index: 9999;
+    top: 40px;
+    right: 0;
+    transition: all 200ms;
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      right: 30px;
+      border: 5px solid transparent;
+      border-right-color: $white;;
+      top: -10px;
+      rotate: 90deg;
+    }
+
+    &.open {
+      opacity: 1;
+      top: 40px;
+      pointer-events: 'unset';
+    }
+
+    &.close {
+      opacity: 0;
+      top: 30px;
+      pointer-events: none;
+    }
+  }
+
+  &-item-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 200ms;
+
+    &:hover {
+      scale: 1.05;
+    }
+  }
+
+  &-item-flag {
+    width: 24px;
+    height: 16px;
+  }
+
+  &-item-name {
+    font: 400 14px $font-IBM;
+    color: #333333;
+    margin: 0 0 0 8px !important;
+
+    &.selected {
+      font: 700 14px $font-IBM;
+    }
+  }
 }
