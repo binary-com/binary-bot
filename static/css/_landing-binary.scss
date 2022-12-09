@@ -73,7 +73,7 @@ $header-color : #333333;
 
 }
 
-.l-btn {
+.l-btn-binary {
   height: 2.5rem;
   border-radius: 0.25rem;
   font: 700 0.875rem $font-IBM;
@@ -110,14 +110,20 @@ $header-color : #333333;
   }
 }
 
-.btn-group {
+.btn-group-binary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+
   button {
-    margin-right: 1rem;
+    flex: 1;
+    min-width: max-content;
   }
 
   @include for-size(mobile) {
     text-align: center;
     margin-bottom: 2.4rem;
+    gap: 16px;
   }
 }
 
@@ -833,11 +839,6 @@ $header-color : #333333;
       opacity: 0.5;
     }
 
-    &-flag {
-      width: 24px;
-      height: 16px;
-    }
-
     &-name {
       font: 700 16px $font-IBM;
       color: $white;
@@ -909,11 +910,6 @@ $header-color : #333333;
     &:hover {
       scale: 1.05;
     }
-  }
-
-  &-item-flag {
-    width: 24px;
-    height: 16px;
   }
 
   &-item-name {

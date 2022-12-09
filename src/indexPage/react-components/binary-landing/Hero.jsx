@@ -45,15 +45,14 @@ const Hero = ({isFromBinary}) => {
             <h2>
                 {translate('We’ve rebranded the online trading space by offering new innovative products, intuitive platforms, and outstanding services.')}
             </h2>
-            <div className="btn-group">
-                <a href={getLanguageBase('deriv')}>
-                    <button className="l-btn primary">
-                        {translate('Explore Deriv')}
-                    </button>
-                </a>
-                <a id="logo" href={getLanguageBase('oauth')}>
-                    <button className="l-btn">{translate('Create a demo account')}</button>
-                </a>
+            <div className="btn-group-binary">
+                <button className="l-btn-binary primary" onClick={() => getLanguageBase('deriv')}>
+                    {translate('Explore Deriv')}
+                </button>
+                <button className="l-btn-binary" onClick={() => getLanguageBase('deriv')}>
+                    {translate('Create a demo account')}
+
+                </button>
             </div>
         </div>
     );
@@ -70,15 +69,13 @@ const Hero = ({isFromBinary}) => {
                 {translate('Say hello to our new home,')}
                 <b>{translate(' Deriv.')}</b>
             </h2>
-            <div className="btn-group">
-                <a href={getLanguageBase('deriv')}>
-                    <button className="l-btn primary">
-                        {translate('Hello Deriv!')}
-                    </button>
-                </a>
-                <a id="logo" onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
-                    <button className="l-btn">{translate('Maybe later')}</button>
-                </a>
+            <div className="btn-group-binary">
+                <button className="l-btn-binary primary" onClick={() => getLanguageBase('deriv')}>
+                    {translate('Hello Deriv!')}
+                </button>
+                <button className="l-btn-binary" onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
+                    {translate('Maybe later')}
+                </button>
             </div>
         </div>
     );
