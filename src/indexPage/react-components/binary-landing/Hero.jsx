@@ -1,9 +1,8 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { translate } from '../../../common/i18n';
-import {getLanguageBase} from '../../../common/lang';
-
-
+import { getLanguageBase } from '../../../common/lang';
+import { setBinaryCookieAndRedirect } from './utils';
 
 const carouselImages = [
     'image/hero-dmt5.png',
@@ -11,7 +10,6 @@ const carouselImages = [
     'image/hero-derivx.png',
     'image/hero-dtrader.png',
 ];
-
 
 const carouselSettings = {
     dots          : false,
@@ -40,8 +38,26 @@ const carouselSettings = {
     ],
 };
 
-const Hero = () => {
-    const renderContent = () => (
+const Hero = ({isFromBinary}) => {
+    const renderFromBinaryContent = () => (
+        <div className="hero-wrapper-container_box-binary hero-wrapper-container-left-binary">
+            <h1>{translate('We have a new home: Deriv.')}</h1>
+            <h2>
+                {translate('We’ve rebranded the online trading space by offering new innovative products, intuitive platforms, and outstanding services.')}
+            </h2>
+            <div className="btn-group-binary">
+                <button className="l-btn-binary primary" onClick={() => getLanguageBase('deriv')}>
+                    {translate('Explore Deriv')}
+                </button>
+                <button className="l-btn-binary" onClick={() => getLanguageBase('deriv')}>
+                    {translate('Create a demo account')}
+
+                </button>
+            </div>
+        </div>
+    );
+
+    const renderBinaryLandingContent = () => (
         <div className="hero-wrapper-container_box-binary hero-wrapper-container-left-binary">
             <h1>{translate('We’re moving!')}</h1>
             <h2>
@@ -53,15 +69,13 @@ const Hero = () => {
                 {translate('Say hello to our new home,')}
                 <b>{translate(' Deriv.')}</b>
             </h2>
-            <div className="btn-group">
-                <a href={getLanguageBase('deriv')}>
-                    <button className="l-btn primary">
-                        {translate('Hello Deriv!')}
-                    </button>
-                </a>
-                <a href={getLanguageBase('binary')} id="logo">
-                    <button className="l-btn">{translate('Maybe later')}</button>
-                </a>
+            <div className="btn-group-binary">
+                <button className="l-btn-binary primary" onClick={() => getLanguageBase('deriv')}>
+                    {translate('Hello Deriv!')}
+                </button>
+                <button className="l-btn-binary" onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
+                    {translate('Maybe later')}
+                </button>
             </div>
         </div>
     );
@@ -79,11 +93,8 @@ const Hero = () => {
     return (
         <div className="hero-wrapper">
             <section className="hero-wrapper-container">
-                {renderContent()}
+                {isFromBinary ? renderFromBinaryContent() : renderBinaryLandingContent()}
                 {renderCarousel()}
-                <div className="hero-wrapper-container-logo-binary">
-                    <img src="image/binary.png" />
-                </div>
             </section>
         </div>
     );

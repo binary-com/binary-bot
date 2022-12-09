@@ -12,7 +12,7 @@ import { get as getStorage, set as setStorage, remove, getTokenList } from '../c
 import { createUrl, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
-import BinaryLanding from './react-components/binary-landing';
+import BinaryLanding from './react-components/binary-landing/index.jsx';
 
 const today = new Date().getTime();
 // eslint-disable-next-line one-var

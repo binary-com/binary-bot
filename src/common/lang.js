@@ -16,6 +16,12 @@ export const getLanguage = () => {
     return lang;
 };
 
+export const changeLanguage = language => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('l', language);
+    document.location.search = params.toString();
+};
+
 const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {
         const el = $(this);
@@ -44,11 +50,10 @@ export const load = () => {
             elements.map(elem => document.querySelector(elem).classList.add('hidden'));
             document.getElementById('bot-landing').classList.remove('hidden');
             document.getElementById('bot-main').classList.remove('hidden');
-            document.location.search = `l=${newLang}`;
             $('.barspinner').hide();
-        } else {
-            document.location.search = `l=${newLang}`;
         }
+
+        changeLanguage(newLang);
     });
 
     $('.language').text(
@@ -93,7 +98,7 @@ export const getLanguageBase = (origin = '') => {
     const lang = getLanguage();
     switch (origin) {
         case 'binary':
-            return `https://www.binary.com/${lang}/trading.html`;
+            return `/${lang}/trading.html`;
         case 'deriv':
             return `https://deriv.com/${lang}`;
         case 'oauth':

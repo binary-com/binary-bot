@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
-import {getLanguageBase } from '../../../common/lang';
+import { getLanguageBase } from '../../../common/lang';
 
 const ChooseSection = () => (
     <section className='binary-choose-wrapper'>
@@ -51,8 +51,8 @@ const ChooseSection = () => (
                             <img src="image/market_types.svg" />
                         </div>
                         <div className='binary-choose-wrapper-inner-description'>
-                            <h1>{translate('6 market types')}</h1>
-                            <h2>{translate('Expand your portfolio with a wide range of markets such as forex, stocks, cryptocurrencies, synthetics, and more.')}</h2>
+                            <h1>{translate('5 market types')}</h1>
+                            <h2>{translate('Expand your portfolio with a wide range of markets such as forex, stocks, cryptocurrencies, derived, and more.')}</h2>
                         </div>
                     </div>
                     <div className='binary-choose-wrapper-inner-right-content'>
