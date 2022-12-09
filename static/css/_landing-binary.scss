@@ -784,7 +784,7 @@ $header-color : #333333;
         font: 400 2rem $font-IBM;
     
         @include for-size(mobile) {
-          font: 400 1.5rem $font-IBM;
+          font: 400 1rem $font-IBM;
           margin: 0 0 1.5rem 0;
         }
       }
