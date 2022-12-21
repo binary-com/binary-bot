@@ -6,7 +6,7 @@ import { setBinaryCookieAndRedirect } from './utils';
 
 
 
-const SwitchSection = () => (
+const SwitchSection = ({isFromBinary}) => (
     <section className="switch">
         <div className="switch-inner section-container">
             <div className="switch-inner__placeholder">
@@ -21,9 +21,11 @@ const SwitchSection = () => (
                     <a href={getLanguageBase('oauth')} rel="noopener noreferrer">
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
+                    {!isFromBinary &&
                     <a onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
                         <button className="l-btn transparent">{translate('Maybe later')}</button>
                     </a>
+                    }
                 </div>
             </div>
         </div>
