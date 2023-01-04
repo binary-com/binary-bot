@@ -7,7 +7,9 @@ const OfficialVersionWarning = ({ show }) =>
     show ? (
         <div style={style.bottomWarning}>
             <div id="end-note">
-                {`${translate('This is not an official version of Binary Bot, use at your own risk.')} `}
+                {`${translate(
+                    '🚀 Lembre-se sempre de seguir o manual de negociação. Não há garantia de lucros aqui.'
+                )} `}
                 <a style={style.bottomWarningLink} href="https://bot.binary.com/bot.html">
                     {translate('Official Version')}
                 </a>

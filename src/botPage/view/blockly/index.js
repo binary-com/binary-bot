@@ -373,6 +373,15 @@ export default class _Blockly {
                     }
                 });
 
+                // Adiciona os retornos de chamada de categoria personalizada abaixo.
+                workspace.registerToolboxCategoryCallback('ctf_v5_1_1', async () => {
+                    const xmlString = await fetch('xml/main.xml').then(response => response.text());
+                    const xml = Blockly.Xml.textToDom(xmlString);
+
+                    loadWorkspace(xml);
+                    workspace.toolbox_.clearSelection(); // eslint-disable-line
+                });
+
                 const renderInstance = render(workspace);
                 window.addEventListener('resize', renderInstance, false);
                 renderInstance();
