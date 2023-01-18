@@ -228,6 +228,7 @@ workflows:
           filters:
             branches:
               only: /^master$/
+          context: binary-frontend-artifact-upload
       - publish_cloudflare_staging:
           requires:
             - release_staging
