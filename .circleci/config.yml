@@ -13,6 +13,16 @@ commands:
           with:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+      - step2:
+          name: Generate Binary Bot ID for deployment Preview URL
+          id: generate_app_id
+          uses: binary-com/binary-bot-id-action@v1
+          with:
+              DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
+              DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              max_retries: 5
+              vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
   git_checkout_from_cache:
     description: "Git checkout and save cache"
     steps:
