@@ -129,7 +129,8 @@ commands:
           include_project_field: false
           failure_message: "Release failed for binary bot with version *$(cat www/version)*"
           success_message: "Release succeeded for binary bot with version *$(cat www/version)*"
-          webhook: ${SLACK_WEBHOOK}
+          webhook: ${SLACK_WEBHOOK} 
+
 
   publish_to_pages_staging:
     description: "Publish to cloudflare pages"
