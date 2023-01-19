@@ -319,9 +319,9 @@ workflows:
           with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
-        - name: Generate Deriv App ID for deployment Preview URL
+        - name: Generate Binary Bot ID for deployment Preview URL
           id: generate_app_id
-          uses: binary-com/deriv-app-id-action@v1
+          uses: binary-com/binary-bot-id-action@v1
           with:
             DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
             DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
@@ -334,7 +334,7 @@ workflows:
           uses: marocchino/sticky-pull-request-comment@v1
           with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            header: deriv-app-id-action
+            header: binary-bot-id-action
             number: ${{github.event.issue.number}}
             message: |
               A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
