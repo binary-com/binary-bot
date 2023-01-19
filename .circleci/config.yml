@@ -5,15 +5,14 @@ orbs:
 commands:
   git_gh_actions:
     description: "Capture Vercel preview URL"
-        steps: 
-            - step1:
-                name: Capture Vercel preview URL
-                id: vercel_preview_url
-                uses: binary-com/vercel-preview-url-action@v1.0.5
-                with:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
-
+    steps: 
+      - step1:
+          name: Capture Vercel preview URL
+          id: vercel_preview_url
+          uses: binary-com/vercel-preview-url-action@v1.0.5
+          with:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
   git_checkout_from_cache:
     description: "Git checkout and save cache"
     steps:
