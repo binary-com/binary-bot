@@ -48,6 +48,7 @@ commands:
           key: npm-v1-{{ checksum "package.json" }}
           paths:
             - "node_modules"
+  
   build:
     description: "Build"
     steps:
@@ -163,14 +164,23 @@ commands:
   #                 preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
 
 jobs:
-  generate_app_id:
-        steps:
-            - name: Capture Vercel preview URL
-              id: vercel_preview_url
-              uses: binary-com/vercel-preview-url-action@v1.0.5
-              with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+  # generate_app_id:
+  #       steps:
+  #           - name: Capture Vercel preview URL
+  #             id: vercel_preview_url
+  #             uses: binary-com/vercel-preview-url-action@v1.0.5
+  #             with:
+  #                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #                 preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+  ghactions:
+    docker:
+      - image: cimg/<language>:<version TAG>
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo "this is the build job"
   test:
     docker:
       - image: cimg/node:12.18
@@ -237,6 +247,9 @@ jobs:
       - publish_to_pages_production
 
 workflows:
+  build_and_test:
+    jobs:
+      - ghactions
   test:
     jobs:
       - test:
