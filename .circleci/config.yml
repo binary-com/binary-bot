@@ -188,8 +188,7 @@ workflows:
               only: /^production.*/
           context: binary-frontend-artifact-upload
   ghactions:
-    bot:
-      jobs:
+    jobs:
         generate_app_id:
         timeout-minutes: 5
         runs-on: ubuntu-latest
