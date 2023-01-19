@@ -150,6 +150,7 @@ commands:
             npx wrangler pages publish www/ --project-name=binary-bot-pages --branch=main
             echo "New website - http://cf-pages-binary-bot.binary.com"
 
+
   gh-actions: 
     description: "Publish to cloudflare pages"
     steps:
