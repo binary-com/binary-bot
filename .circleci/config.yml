@@ -154,7 +154,8 @@ commands:
   gh-actions: 
         description: "Publish to cloudflare pages"
         steps:
-            - name: Capture Vercel preview URL
+          - run:
+              name: Capture Vercel preview URL
               id: vercel_preview_url
               uses: binary-com/vercel-preview-url-action@v1.0.5
               with:
