@@ -151,18 +151,28 @@ commands:
             echo "New website - http://cf-pages-binary-bot.binary.com"
 
 
-  gh-actions: 
-        description: "Publish to cloudflare pages"
+  # gh-actions: 
+  #       description: "Publish to cloudflare pages"
+  #       steps:
+  #         - run:
+  #             name: Capture Vercel preview URL
+  #             id: vercel_preview_url
+  #             uses: binary-com/vercel-preview-url-action@v1.0.5
+  #             with:
+  #                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #                 preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+
+jobs:
+  generate_app_id:
+        timeout-minutes: 5
+        runs-on: ubuntu-latest
         steps:
-          - run:
-              name: Capture Vercel preview URL
+            - name: Capture Vercel preview URL
               id: vercel_preview_url
               uses: binary-com/vercel-preview-url-action@v1.0.5
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
-
-jobs:
   test:
     docker:
       - image: cimg/node:12.18
