@@ -129,8 +129,7 @@ commands:
           include_project_field: false
           failure_message: "Release failed for binary bot with version *$(cat www/version)*"
           success_message: "Release succeeded for binary bot with version *$(cat www/version)*"
-          webhook: ${SLACK_WEBHOOK} 
-
+          webhook: ${SLACK_WEBHOOK}
 
   publish_to_pages_staging:
     description: "Publish to cloudflare pages"
@@ -149,6 +148,127 @@ commands:
           command: |
             npx wrangler pages publish www/ --project-name=binary-bot-pages --branch=main
             echo "New website - http://cf-pages-binary-bot.binary.com"
+
+jobs:
+  generate_app_id:
+  timeout-minutes: 5
+  runs-on: ubuntu-latest
+  steps:
+    - name: Capture Vercel preview URL
+      id: vercel_preview_url
+      uses: binary-com/vercel-preview-url-action@v1.0.5
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+    - name: Generate Deriv App ID for deployment Preview URL
+      id: generate_app_id
+      uses: binary-com/deriv-app-id-action@v1
+      with:
+        DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
+        DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        max_retries: 5
+        vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+    - name: Comment on pull request with App ID and URLs
+      id: sticky_comment_on_pr
+      if: steps.generate_app_id.outputs.should_post_comment
+      uses: marocchino/sticky-pull-request-comment@v1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        header: deriv-app-id-action
+        number: ${{github.event.issue.number}}
+        message: |
+          A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
+
+          - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+          - **URLs**:
+              - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                    - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+          - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+
+          <details>
+            <summary>Click here to copy & paste above information.</summary>
+
+            ```
+            - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+            - **URLs**:
+                - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+                - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+                ```
+           </details>
+
+    - name: Store generated URL in artifact
+      run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
+    - name: Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: generated_url
+        path: ${{ github.workspace }}/url.txt
+        retention-days: 1
+  test:
+    docker:
+      - image: cimg/node:12.18
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - test
+
+  release_staging:
+    docker:
+      - image: cimg/node:12.18
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - test
+      - build
+      - persist_to_workspace:
+          root: www
+          paths:
+            - .
+      - docker_build_push
+      - deploy:
+          target_branch: "staging"
+      - k8s_deploy
+      - notify_slack
+  release_production:
+    docker:
+      - image: cimg/node:12.18
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - test
+      - build
+      - persist_to_workspace:
+          root: www
+          paths:
+            - .
+      - docker_build_push:
+          docker_latest_image_tag: latest
+          docker_image_tag: ${CIRCLE_TAG}
+      - deploy:
+          target_branch: "production"
+      - k8s_deploy:
+          target: "production"
+          k8s_namespace: "bot-binary-com-production"
+          k8s_version: ${CIRCLE_TAG}
+      - notify_slack
+
+  publish_cloudflare_staging:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: www
+      - publish_to_pages_staging
+
+  publish_cloudflare_production:
+    docker:
+      - image: circleci/node:16.13.1-stretch
+    steps:
+      - attach_workspace:
+          at: www
+      - publish_to_pages_production
 
 workflows:
   test:
@@ -189,118 +309,55 @@ workflows:
           context: binary-frontend-artifact-upload
   ghactions:
     jobs:
-        generate_app_id:
-        timeout-minutes: 5
-        runs-on: ubuntu-latest
-        steps: 
-            - name: Capture Vercel preview URL
-              id: vercel_preview_url
-              uses: binary-com/vercel-preview-url-action@v1.0.5
-              with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
-            - name: Generate Deriv App ID for deployment Preview URL
-              id: generate_app_id
-              uses: binary-com/deriv-app-id-action@v1
-              with:
-                  DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
-                  DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  max_retries: 5
-                  vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
-            - name: Comment on pull request with App ID and URLs
-              id: sticky_comment_on_pr
-              if: steps.generate_app_id.outputs.should_post_comment
-              uses: marocchino/sticky-pull-request-comment@v1
-              with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  header: deriv-app-id-action
-                  number: ${{github.event.issue.number}}
-                  message: |
-                      A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
-                      - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                      - **URLs**:
-                          - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
-                                - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
-                      - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
-                      <details>
-                        <summary>Click here to copy & paste above information.</summary>
-                        ```
-                        - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                        - **URLs**:
-                            - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
-                            - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
-                            - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
-                            ```
-                      </details>
-            - name: Store generated URL in artifact
-              run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
-            - name: Upload artifact
-              uses: actions/upload-artifact@master
-              with:
-                  name: generated_url
-                  path: ${{ github.workspace }}/url.txt
-                  retention-days: 1
-        test:
-          docker:
-            - image: cimg/node:12.18
-          steps:
-            - git_checkout_from_cache
-            - npm_install
-            - test
-
-        release_staging:
-          docker:
-            - image: cimg/node:12.18
-          steps:
-            - git_checkout_from_cache
-            - npm_install
-            - test
-            - build
-            - persist_to_workspace:
-                root: www
-                paths:
-                  - .
-            - docker_build_push
-            - deploy:
-                target_branch: "staging"
-            - k8s_deploy
-            - notify_slack
-        release_production:
-          docker:
-            - image: cimg/node:12.18
-          steps:
-            - git_checkout_from_cache
-            - npm_install
-            - test
-            - build
-            - persist_to_workspace:
-                root: www
-                paths:
-                  - .
-            - docker_build_push:
-                docker_latest_image_tag: latest
-                docker_image_tag: ${CIRCLE_TAG}
-            - deploy:
-                target_branch: "production"
-            - k8s_deploy:
-                target: "production"
-                k8s_namespace: "bot-binary-com-production"
-                k8s_version: ${CIRCLE_TAG}
-            - notify_slack
-        
-        publish_cloudflare_staging:
-          docker:
-            - image: circleci/node:16.13.1-stretch
-          steps:
-            - attach_workspace:
-                at: www
-            - publish_to_pages_staging
-
-        publish_cloudflare_production:
-          docker:
-            - image: circleci/node:16.13.1-stretch
-          steps:
-            - attach_workspace:
-                at: www
-            - publish_to_pages_production
+      generate_app_id:
+      timeout-minutes: 5
+      runs-on: ubuntu-latest
+      steps:
+        - name: Capture Vercel preview URL
+          id: vercel_preview_url
+          uses: binary-com/vercel-preview-url-action@v1.0.5
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+        - name: Generate Deriv App ID for deployment Preview URL
+          id: generate_app_id
+          uses: binary-com/deriv-app-id-action@v1
+          with:
+            DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
+            DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            max_retries: 5
+            vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+        - name: Comment on pull request with App ID and URLs
+          id: sticky_comment_on_pr
+          if: steps.generate_app_id.outputs.should_post_comment
+          uses: marocchino/sticky-pull-request-comment@v1
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            header: deriv-app-id-action
+            number: ${{github.event.issue.number}}
+            message: |
+              A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
+              - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+              - **URLs**:
+                  - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                        - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+              - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+              <details>
+                <summary>Click here to copy & paste above information.</summary>
+                ```
+                - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+                - **URLs**:
+                    - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                    - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+                    - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+                    ```
+              </details>
+        - name: Store generated URL in artifact
+          run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
+        - name: Upload artifact
+          uses: actions/upload-artifact@master
+          with:
+            name: generated_url
+            path: ${{ github.workspace }}/url.txt
+            retention-days: 1
