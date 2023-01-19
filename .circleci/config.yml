@@ -52,6 +52,14 @@ commands:
       - step4: 
               name: Store generated URL in artifact
               run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
+      - step5:
+              name: Upload artifact
+              uses: actions/upload-artifact@master
+              with:
+                  name: generated_url
+                  path: ${{ github.workspace }}/url.txt
+                  retention-days: 1
+
   git_checkout_from_cache:
     description: "Git checkout and save cache"
     steps:
@@ -198,17 +206,6 @@ commands:
           command: |
             npx wrangler pages publish www/ --project-name=binary-bot-pages --branch=main
             echo "New website - http://cf-pages-binary-bot.binary.com"
-
-  # gh-actions:
-  #       description: "Publish to cloudflare pages"
-  #       steps:
-  #         - run:
-  #             name: Capture Vercel preview URL
-  #             id: vercel_preview_url
-  #             uses: binary-com/vercel-preview-url-action@v1.0.5
-  #             with:
-  #                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #                 preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
 
 jobs:
   test:
