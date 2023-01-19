@@ -152,13 +152,16 @@ commands:
 
 
   gh-actions: 
-    description: "Publish to cloudflare pages"
-    steps:
-      - run:
-          name: "Publish to cloudflare pages (production)"
-          command: |
-            npx wrangler pages publish www/ --project-name=binary-bot-pages --branch=main
-            echo "New website - http://cf-pages-binary-bot.binary.com"
+        description: "Publish to cloudflare pages"
+        timeout-minutes: 5
+        runs-on: ubuntu-latest
+        steps:
+            - name: Capture Vercel preview URL
+              id: vercel_preview_url
+              uses: binary-com/vercel-preview-url-action@v1.0.5
+              with:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
 
 jobs:
   test:
