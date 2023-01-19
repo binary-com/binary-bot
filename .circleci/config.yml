@@ -153,8 +153,6 @@ commands:
 
   gh-actions: 
         description: "Publish to cloudflare pages"
-        timeout-minutes: 5
-        runs-on: ubuntu-latest
         steps:
             - name: Capture Vercel preview URL
               id: vercel_preview_url
