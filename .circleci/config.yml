@@ -49,6 +49,9 @@ commands:
                 - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
                  ```
                </details>
+      - step4: 
+              name: Store generated URL in artifact
+              run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
   git_checkout_from_cache:
     description: "Git checkout and save cache"
     steps:
