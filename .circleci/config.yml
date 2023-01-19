@@ -164,8 +164,6 @@ commands:
 
 jobs:
   generate_app_id:
-        timeout-minutes: 5
-        runs-on: ubuntu-latest
         steps:
             - name: Capture Vercel preview URL
               id: vercel_preview_url
