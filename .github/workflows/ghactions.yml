@@ -225,7 +225,7 @@ workflows:
   generate_app_id:
     jobs:
     steps:
-      - step1:
+      - run:
           name: Capture Vercel preview URL
           id: vercel_preview_url
           uses: binary-com/vercel-preview-url-action@v1.0.5
