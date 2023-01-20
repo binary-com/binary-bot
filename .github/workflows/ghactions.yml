@@ -225,13 +225,11 @@ workflows:
   generate_app_id:
     jobs:
     steps:
-      - run:
-          name: Capture Vercel preview URL
-          id: vercel_preview_url
-          uses: binary-com/vercel-preview-url-action@v1.0.5
-          with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
+      - restore_cache:
+          name: Restore npm cache
+          keys:
+            - npm-v1-{{ checksum "package.json" }}
+            - npm-v1-
       # - run:
       #     name: Fetch git tags
       #     command: |
