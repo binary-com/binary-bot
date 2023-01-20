@@ -6,7 +6,7 @@ commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
     steps:
-      - restore_cache:
+      - run:
           name: Git restore cache
           keys:
             - source-v1-{{ .Branch }}-{{ .Revision }}
