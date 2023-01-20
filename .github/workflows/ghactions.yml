@@ -225,7 +225,7 @@ workflows:
   generate_app_id:
     jobs:
     steps:
-      - restore_cache:
+      - run:
           name: Restore npm cache
           keys:
             - npm-v1-{{ checksum "package.json" }}
