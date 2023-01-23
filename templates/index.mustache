@@ -67,7 +67,7 @@
     {{> gtm_iframe }}
    </div>
     <script>
-        if(location.hostname !== 'localhost' && location.hostname !== 'bot.binary.com') {
+        if(location.hostname !== 'localhost' && location.hostname !== 'bot.binary.com' && !location.hostname.includes('binary-bot-git-fork')) {
             const puzzle = document.getElementsByClassName('half-width bottom-image puzzle-logo');
             const logo = document.getElementsByClassName('logo-wrapper');
             puzzle[0].remove();
