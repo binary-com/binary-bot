@@ -26,7 +26,7 @@
     </div>
     <div id="movetoderiv"></div>
     <div id="bot-landing"></div>
-	
+
 	<div id="header">
 		<div class="wrapper">
             <div class="logo-wrapper">
@@ -66,5 +66,13 @@
     {{> index}}
     {{> gtm_iframe }}
    </div>
+    <script>
+        if(location.hostname !== 'localhost' && location.hostname !== 'bot.binary.com') {
+            const puzzle = document.getElementsByClassName('half-width bottom-image puzzle-logo');
+            const logo = document.getElementsByClassName('logo-wrapper');
+            puzzle[0].remove();
+            logo[0].remove();
+        };
+    </script>
 </body>
 </html>
