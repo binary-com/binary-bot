@@ -157,3 +157,12 @@ const loginCheck = () => {
 };
 
 loginCheck();
+
+window.onload = () => {
+    if (document.readyState === 'complete') {
+        if (!isBinaryDomain) {
+            document.getElementsByClassName('half-width bottom-image puzzle-logo')[0].remove();
+            document.getElementsByClassName('logo-wrapper')[0].remove();
+        }
+    }
+};

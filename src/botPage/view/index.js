@@ -5,7 +5,7 @@ import View from './View';
 import '../../common/binary-ui/dropdown';
 import Elevio from '../../common/elevio';
 import GTM from '../../common/gtm';
-import { isProduction } from '../../common/utils/tools';
+import { isBinaryDomain, isProduction } from '../../common/utils/tools';
 
 $.ajaxSetup({
     cache: false,
@@ -40,3 +40,12 @@ view.initPromise.then(() => {
         });
     }
 });
+
+window.onload = () => {
+    if (document.readyState === 'complete') {
+        if (!isBinaryDomain) {
+            document.getElementsByClassName('dbot-banner eu-hide')[0].remove();
+            document.getElementById('logo').remove();
+        }
+    }
+};
