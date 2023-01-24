@@ -12,7 +12,7 @@ gulp.task(
     gulp.series(done => {
         connect.server({
             root      : 'www',
-            port      : 80,
+            port      : 8000,
             livereload: true,
         });
         done();
@@ -24,7 +24,7 @@ gulp.task(
     gulp.series(done => {
         gulp.src('www/index.html').pipe(
             open({
-                uri: 'http://localhost:80/',
+                uri: 'http://localhost:8000/',
             })
         );
         done();
@@ -75,7 +75,10 @@ gulp.task(
     })
 );
 
-gulp.task('test-deploy', gulp.series('build-min', 'serve', () => {}));
+gulp.task(
+    'test-deploy',
+    gulp.series('build-min', 'serve', () => {})
+);
 
 gulp.task(
     'watch-static',

@@ -9,7 +9,7 @@ import GTM from '../common/gtm';
 import { load as loadLang, showBanner } from '../common/lang';
 import { moveToDeriv } from '../common/utils/utility';
 import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
-import { createUrl, parseQueryString, serialize } from '../common/utils/tools';
+import { createUrl, isBinaryDomain, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
 import BinaryLanding from './react-components/binary-landing';
@@ -111,7 +111,7 @@ const renderElements = () => {
             return false;
         }
         if (window.location.pathname.indexOf('/bot') === -1) {
-            render(<Logo />, document.getElementById('binary-logo'));
+            render(isBinaryDomain && <Logo />, document.getElementById('binary-logo'));
             render(<Footer />, document.getElementById('footer'));
             isEuCountry().then(isEu => showHideEuElements(isEu));
             showBanner();
