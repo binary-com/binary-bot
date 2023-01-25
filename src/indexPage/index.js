@@ -163,6 +163,7 @@ window.onload = () => {
         if (!isBinaryDomain) {
             document.getElementsByClassName('half-width bottom-image puzzle-logo')[0].remove();
             document.getElementsByClassName('dbot-banner__separator')[0].remove();
+            document.getElementsByClassName('half-width top-image')[0].remove();
         }
     }
 };
