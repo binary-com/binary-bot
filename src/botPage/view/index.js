@@ -41,11 +41,7 @@ view.initPromise.then(() => {
     }
 });
 
-window.onload = () => {
-    if (document.readyState === 'complete') {
-        if (!isBinaryDomain) {
-            document.getElementsByClassName('dbot-banner__separator')[0].remove();
-            document.getElementById('logo').remove();
-        }
-    }
-};
+if (!isBinaryDomain) {
+    document.getElementsByClassName('dbot-banner__separator')[0].remove();
+    document.getElementById('logo').remove();
+}
