@@ -41,7 +41,7 @@ import {
     getToken,
     remove,
 } from '../../common/utils/storageManager';
-import { isBinaryDomain, isProduction, parseQueryString, serialize } from '../../common/utils/tools';
+import { is_binary_domain, isProduction, parseQueryString, serialize } from '../../common/utils/tools';
 import GTM from '../../common/gtm';
 import {
     getMissingBlocksTypes,
@@ -196,9 +196,9 @@ const updateLogo = token => {
     $('.binary-logo-text > img').attr('src', '');
     const currentLandingCompany = getLandingCompanyForToken(token);
     if (currentLandingCompany === 'maltainvest') {
-        $('.binary-logo-text > img').attr('src', `${isBinaryDomain && './image/binary-type-logo.svg'}`);
+        $('.binary-logo-text > img').attr('src', `${is_binary_domain && './image/binary-type-logo.svg'}`);
     } else {
-        $('.binary-logo-text > img').attr('src', `${isBinaryDomain && './image/binary-style/logo/type.svg'}`);
+        $('.binary-logo-text > img').attr('src', `${is_binary_domain && './image/binary-style/logo/type.svg'}`);
     }
     setTimeout(() => window.dispatchEvent(new Event('resize')));
 };
