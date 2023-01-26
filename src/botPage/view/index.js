@@ -41,9 +41,9 @@ view.initPromise.then(() => {
     }
 });
 
-window.onload = () => {
-    if (window.document.readyState === 'complete' && !isBinaryDomain) {
-        window.document.getElementsByClassName('dbot-banner__separator')[0]?.remove();
-        window.document.getElementById('logo')?.remove();
-    }
-};
+if (!isBinaryDomain) {
+    const separator = document.getElementsByClassName('dbot-banner__separator');
+    const logo = document.getElementById('logo');
+    separator[0].remove();
+    logo.remove();
+}

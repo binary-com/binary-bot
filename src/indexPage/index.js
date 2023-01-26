@@ -159,7 +159,10 @@ const loginCheck = () => {
 loginCheck();
 
 if (!isBinaryDomain) {
-    document.getElementsByClassName('half-width bottom-image puzzle-logo')[0].remove();
-    document.getElementsByClassName('dbot-banner__separator')[0].remove();
-    document.getElementsByClassName('half-width top-image')[0].remove();
+    const puzzle = document.getElementsByClassName('half-width bottom-image puzzle-logo');
+    const separator = document.getElementsByClassName('dbot-banner__separator');
+    const banner = document.getElementsByClassName('half-width top-image');
+    puzzle[0].remove();
+    separator[0].remove();
+    banner[0].remove();
 }
