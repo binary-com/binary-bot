@@ -42,8 +42,8 @@ view.initPromise.then(() => {
 });
 
 if (!isBinaryDomain) {
-    const separator = document.getElementsByClassName('dbot-banner__separator');
-    const logo = document.getElementById('logo');
-    separator[0].remove();
-    logo.remove();
+    // eslint-disable-next-line no-unused-expressions
+    document.getElementsByClassName('dbot-banner__separator')[0]?.remove();
+    // eslint-disable-next-line no-unused-expressions
+    document.getElementById('logo')?.remove();
 }
