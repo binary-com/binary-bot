@@ -6,15 +6,13 @@ commands:
   generate_app_id:
     description: "Capture Vercel preview URL"
     steps:
-      - run:
-          name: Capture Vercel preview URL
+        - name: Capture Vercel preview URL
           id: vercel_preview_url
           uses: binary-com/vercel-preview-url-action@v1.0.5
           with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
-      - run:
-          name: Generate Binary Bot ID for deployment Preview URL
+        - name: Generate Binary Bot ID for deployment Preview URL
           id: generate_app_id
           uses: binary-com/binary-bot-id-action@v1
           with:
@@ -23,8 +21,7 @@ commands:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             max_retries: 5
             vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
-      - run:
-          name: Comment on pull request with App ID and URLs
+        - name: Comment on pull request with App ID and URLs
           id: sticky_comment_on_pr
           if: steps.generate_app_id.outputs.should_post_comment
           uses: marocchino/sticky-pull-request-comment@v1
@@ -49,11 +46,9 @@ commands:
                 - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
                  ```
                </details>
-      - run: 
-              name: Store generated URL in artifact
+      - name: Store generated URL in artifact
               run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
-      - run:
-              name: Upload artifact
+      - name: Upload artifact
               uses: actions/upload-artifact@master
               with:
                   name: generated_url
