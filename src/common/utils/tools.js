@@ -147,3 +147,8 @@ export const errLogger = (err, msg) => {
     const errMsg = `${msg} - Error: ${errStr}`;
     console.warn(errMsg);
 };
+
+export const isBinaryDomain =
+    document.location.hostname === 'localhost' ||
+    document.location.hostname === 'bot.binary.com' ||
+    document.location.hostname.includes('binary-bot-git-fork');

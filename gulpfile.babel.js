@@ -75,7 +75,10 @@ gulp.task(
     })
 );
 
-gulp.task('test-deploy', gulp.series('build-min', 'serve', () => {}));
+gulp.task(
+    'test-deploy',
+    gulp.series('build-min', 'serve', () => {})
+);
 
 gulp.task(
     'watch-static',

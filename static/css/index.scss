@@ -72,7 +72,7 @@ ul.bullet {
     text-align: center;
 }
 .half-width {
-    width: 50%;
+    width: 100%;
     float: left;
 }
 .clear {
@@ -96,7 +96,7 @@ ul.bullet {
     z-index: 101;
 }
 
-/* Keep this below since css after this 
+/* Keep this below since css after this
  * will be interfering with small
  * screen sizes
  */
@@ -123,7 +123,7 @@ ul.bullet {
         width: 100%;
     }
     .half-width p, .half-width img {
-        margin: 1em; 
+        margin: 1em;
     }
     .bottom-image {
         display: none;

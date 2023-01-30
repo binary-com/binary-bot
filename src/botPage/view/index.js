@@ -5,7 +5,7 @@ import View from './View';
 import '../../common/binary-ui/dropdown';
 import Elevio from '../../common/elevio';
 import GTM from '../../common/gtm';
-import { isProduction } from '../../common/utils/tools';
+import { isBinaryDomain, isProduction } from '../../common/utils/tools';
 
 $.ajaxSetup({
     cache: false,
@@ -40,3 +40,10 @@ view.initPromise.then(() => {
         });
     }
 });
+
+if (!isBinaryDomain) {
+    // eslint-disable-next-line no-unused-expressions
+    document.getElementsByClassName('dbot-banner__separator')[0]?.remove();
+    // eslint-disable-next-line no-unused-expressions
+    document.getElementById('logo')?.remove();
+}
