@@ -3,10 +3,7 @@ import { translate } from '../../../common/i18n';
 import { getLanguageBase } from '../../../common/lang';
 import { setBinaryCookieAndRedirect } from './utils';
 
-
-
-
-const SwitchSection = ({isFromBinary}) => (
+const SwitchSection = ({ isFromBinary }) => (
     <section className="switch">
         <div className="switch-inner section-container">
             <div className="switch-inner__placeholder">
@@ -15,21 +12,31 @@ const SwitchSection = ({isFromBinary}) => (
             <div className="switch-inner__content">
                 <h1>{translate('It’s so easy to switch to Deriv')}</h1>
                 <h2>
-                    {translate('Just log in using your Binary.com credentials. No sign-up needed.')}
+                    {translate(
+                        'Just log in using your Binary.com credentials. No sign-up needed.'
+                    )}
                 </h2>
-                <div className="btn-group">
-                    <a href={getLanguageBase('oauth')} rel="noopener noreferrer">
-                        <button className="l-btn danger">{translate('Try it now')}</button>
-                    </a>
-                    {!isFromBinary &&
-                    <a onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
-                        <button className="l-btn transparent">{translate('Maybe later')}</button>
-                    </a>
-                    }
+                <div className="btn-group-binary">
+                    <button
+                        className="l-btn-binary danger"
+                        onClick={() => window.open(getLanguageBase('oauth'), '_self')}
+                    >
+                        {translate('Try it now')}
+                    </button>
+                    {!isFromBinary && (
+                        <button
+                            className="l-btn-binary transparent"
+                            onClick={() =>
+                                setBinaryCookieAndRedirect(getLanguageBase('binary'))
+                            }
+                        >
+                            {translate('Maybe later')}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
     </section>
 );
 
-export default SwitchSection
+export default SwitchSection;
