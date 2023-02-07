@@ -107,6 +107,15 @@ $header-color : #333333;
   &:hover {
     background-color: #C2C2C2 !important;
     color: #000;
+  } 
+
+  &.transparent {
+    background-color: transparent !important;
+    border: solid 2px #999999;
+    text-transform: none;
+    &:hover {
+      background-color: #C2C2C2 !important;
+    }
   }
 }
 
@@ -116,7 +125,6 @@ $header-color : #333333;
   gap: 24px;
 
   button {
-    flex: 1;
     min-width: max-content;
   }
 
@@ -124,6 +132,10 @@ $header-color : #333333;
     text-align: center;
     margin-bottom: 2.4rem;
     gap: 16px;
+
+    button {
+      flex: 1;
+    }
   }
 }
 
@@ -179,20 +191,16 @@ $header-color : #333333;
           padding: 0 2rem;
         }
       }
-      .l-btn.transparent {
-        background-color: transparent;
-        border: solid 2px #999999;
-        text-transform: none;
-        &:hover {
-          background-color: #C2C2C2;
-        }
+      
+        .btn-group-binary {
+          @include for-size(mobile) {
+            padding: 0 1rem 0 1rem;
+          }
+          }
       }
     }
   }
 
-   
-  
-}
 
 .landing_carousel {
   display: flex !important;

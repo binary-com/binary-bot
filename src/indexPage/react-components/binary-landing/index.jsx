@@ -18,7 +18,7 @@ const BinaryLanding = () => {
         <div>
             <MoveToDerivNav isFromBinary={isFromBinary} />
             <Hero isFromBinary={isFromBinary} />
-            <SwitchSection />
+            <SwitchSection isFromBinary={isFromBinary}/>
             <CarouselTitle />
             <Carousel />
             <ChooseSection />

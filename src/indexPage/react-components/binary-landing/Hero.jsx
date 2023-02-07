@@ -46,10 +46,10 @@ const Hero = ({isFromBinary}) => {
                 {translate('We’ve rebranded the online trading space by offering new innovative products, intuitive platforms, and outstanding services.')}
             </h2>
             <div className="btn-group-binary">
-                <button className="l-btn-binary primary" onClick={() => getLanguageBase('deriv')}>
+                <button className="l-btn-binary primary" onClick={() => window.open(getLanguageBase('deriv'),'_self')}>
                     {translate('Explore Deriv')}
                 </button>
-                <button className="l-btn-binary" onClick={() => getLanguageBase('deriv')}>
+                <button className="l-btn-binary" onClick={() => window.open(getLanguageBase('oauth'),'_self')}>
                     {translate('Create a demo account')}
 
                 </button>
@@ -70,7 +70,7 @@ const Hero = ({isFromBinary}) => {
                 <b>{translate(' Deriv.')}</b>
             </h2>
             <div className="btn-group-binary">
-                <button className="l-btn-binary primary" onClick={() => getLanguageBase('deriv')}>
+                <button className="l-btn-binary primary" onClick={() => window.open(getLanguageBase('deriv'),'_self')}>
                     {translate('Hello Deriv!')}
                 </button>
                 <button className="l-btn-binary" onClick={() => setBinaryCookieAndRedirect(getLanguageBase('binary'))}>
