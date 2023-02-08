@@ -49,7 +49,7 @@ const Hero = ({isFromBinary}) => {
                 <button className="l-btn-binary primary" onClick={() => window.open(getLanguageBase('deriv'),'_self')}>
                     {translate('Explore Deriv')}
                 </button>
-                <button className="l-btn-binary" onClick={() => window.open(getLanguageBase('oauth'),'_self')}>
+                <button className="l-btn-binary" onClick={() => window.open(getLanguageBase('signup'),'_self')}>
                     {translate('Create a demo account')}
 
                 </button>
