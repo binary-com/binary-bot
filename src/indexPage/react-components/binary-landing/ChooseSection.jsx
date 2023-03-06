@@ -23,7 +23,7 @@ const ChooseSection = () => (
                         </div>
                         <div className='binary-choose-wrapper-inner-description'>
                             <h1>{translate('3 trade types')}</h1>
-                            <h2>{translate('Trade CFDs, digital options, and multipliers, a new exciting trade type that boosts your potential profits with limited risk.')}</h2>
+                            <h2>{translate('Trade CFDs, digital options, and multipliers — a new exciting trade type that boosts your potential profits with limited risk.')}</h2>
                         </div>
                     </div>
                     <div className='binary-choose-wrapper-inner-right-content'>
@@ -32,7 +32,7 @@ const ChooseSection = () => (
                         </div>
                         <div className='binary-choose-wrapper-inner-description'>
                             <h1 className='mb0'>{translate('Crypto deposits via fiat on-ramp')}</h1>
-                            <h2>{translate('Make crypto deposits easily via exchange services such as Changelly, Banxa, and XanPool.')}</h2>
+                            <h2>{translate('Make crypto deposits easily via exchange services such as Banxa.')}</h2>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@ const ChooseSection = () => (
                         </div>
                         <div className='binary-choose-wrapper-inner-description'>
                             <h1>{translate('Over 100+ instruments')}</h1>
-                            <h2>{translate('Trade what you like — forex, commodities, stocks, stock indices, and synthetic indices. ')}</h2>
+                            <h2>{translate('Trade what you like — forex, commodities, stocks, stock indices, and derived indices.')}</h2>
                         </div>
                     </div>
                     <div className='binary-choose-wrapper-inner-left-content'>
@@ -61,7 +61,7 @@ const ChooseSection = () => (
                         </div>
                         <div className='binary-choose-wrapper-inner-description'>
                             <h1>{translate('Support when you need it')}</h1>
-                            <h2>{translate('Get round-the-clock customer support and access to the Help Centre.')}</h2>
+                            <h2>{translate('Get round-the-clock customer support and access to the Help centre.')}</h2>
                         </div>
                     </div>
                 </div>
