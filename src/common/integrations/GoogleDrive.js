@@ -209,7 +209,7 @@ class GoogleDriveUtil {
             this.createFilePickerView({
                 title            : translate('Select a Binary Bot strategy'),
                 afterAuthCallback: this.listFiles,
-                mime_type        : ['text/xml', 'application/xml'],
+                mimeType         : ['text/xml', 'application/xml'],
                 pickerCallback   : userPickedFile,
                 generalCallback  : resolve,
                 rejectCallback   : err => {
@@ -315,7 +315,7 @@ class GoogleDriveUtil {
             this.createFilePickerView({
                 title                : translate('Select a folder'),
                 afterAuthCallback    : this.getDefaultFolderId.bind(this),
-                mime_type            : 'application/vnd.google-apps.folder',
+                mimeType             : 'application/vnd.google-apps.folder',
                 pickerCallback       : savePickerCallback,
                 rejectCallback       : reject,
                 generalRejectCallback: reject,
