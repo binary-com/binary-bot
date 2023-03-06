@@ -44,7 +44,7 @@ const Load = React.memo(({ closeDialog }) => {
             if (!googleDriveUtil.accessToken) {
                 googleDriveUtil.client.requestAccessToken({ prompt: '' });
             } else {
-                gapi.client.setToken({ access_token: googleDriveUtil.accessToken });
+                window.gapi.client.setToken({ access_token: googleDriveUtil.accessToken });
                 createFilePicker();
                 if (isMounted()) setLoading(false);
                 closeDialog();

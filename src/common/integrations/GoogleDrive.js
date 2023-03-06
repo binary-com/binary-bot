@@ -243,7 +243,7 @@ class GoogleDriveUtil {
 
                     if (folder) return resolve();
 
-                    gapi.client.drive.files
+                    return gapi.client.drive.files
                         .create({
                             resource: {
                                 name    : this.botFolder,
@@ -309,7 +309,6 @@ class GoogleDriveUtil {
                         reject(error);
                     };
                     xhr.send(formData);
-                    
                 }
             };
 
