@@ -21,16 +21,34 @@ const Load = React.memo(({ closeDialog }) => {
 
     const onChange = e => setLoadType(e.target.value);
 
+    const createFilePicker = () => {
+        googleDriveUtil
+            .createFilePicker()
+            .then(() => closeDialog())
+            .finally(() => isMounted() && setLoading(false));
+    };
+
     const onSubmit = e => {
         e.preventDefault();
 
         if (loadType === SAVE_LOAD_TYPE.google_drive) {
             setLoading(true);
-
-            googleDriveUtil
-                .createFilePicker()
-                .then(() => closeDialog())
-                .finally(() => isMounted() && setLoading(false));
+            googleDriveUtil.client.callback = response => {
+                googleDriveUtil.removeGdBackground();
+                googleDriveUtil.accessToken = response.access_token;
+                localStorage.setItem('accessToken', response.access_token);
+                createFilePicker();
+                if (isMounted()) setLoading(false);
+                closeDialog();
+            };
+            if (!googleDriveUtil.accessToken) {
+                googleDriveUtil.client.requestAccessToken({ prompt: '' });
+            } else {
+                gapi.client.setToken({ access_token: googleDriveUtil.accessToken });
+                createFilePicker();
+                if (isMounted()) setLoading(false);
+                closeDialog();
+            }
         } else {
             document.getElementById('files').click();
             closeDialog();

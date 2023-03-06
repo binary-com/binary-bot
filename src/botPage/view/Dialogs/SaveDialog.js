@@ -25,16 +25,7 @@ const Save = React.memo(({ closeDialog, onSave }) => {
     const onChange = e =>
         e.target.type === 'radio' ? setSaveType(e.target.value) : setSaveAsCollection(e.target.checked);
 
-    const onSubmit = e => {
-        e.preventDefault();
-
-        if (saveType === SAVE_LOAD_TYPE.local) {
-            onSave({ fileName, saveAsCollection });
-            closeDialog();
-            return;
-        }
-
-        setLoading(true);
+    const saveInGoogleDrive = () => {
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
         xml.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
@@ -49,6 +40,27 @@ const Save = React.memo(({ closeDialog, onSave }) => {
             })
             .then(() => globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive')))
             .finally(() => isMounted() && setLoading(false));
+    };
+
+    const onSubmit = e => {
+        e.preventDefault();
+        if (saveType === SAVE_LOAD_TYPE.local) {
+            onSave({ fileName, saveAsCollection });
+            closeDialog();
+            return;
+        }
+        setLoading(true);
+        googleDriveUtil.client.callback = response => {
+            googleDriveUtil.accessToken = response.access_token;
+            localStorage.setItem('accessToken', response.access_token);
+            saveInGoogleDrive();
+        };
+        if (!googleDriveUtil.accessToken) {
+            googleDriveUtil.client.requestAccessToken({ prompt: '' });
+        } else {
+            gapi.client.setToken({ access_token: googleDriveUtil.accessToken });
+            saveInGoogleDrive();
+        }
     };
 
     return (
