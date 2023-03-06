@@ -103,6 +103,8 @@ export const getLanguageBase = (origin = '') => {
             return `https://deriv.com/${lang}`;
         case 'oauth':
             return `https://oauth.deriv.com/oauth2/authorize?app_id=16929&l=${lang}&brand=deriv`;
+        case 'signup':
+            return `https://deriv.com/${lang}/signup/`;
         case 'smart_trader':
             return `https://smarttrader.deriv.com/${lang}/trading.html`;
         case 'bot':
