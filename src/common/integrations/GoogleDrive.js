@@ -22,7 +22,8 @@ class GoogleDriveUtil {
         clientId = GD_CONFIG.CLIENT_ID,
         apiKey = GD_CONFIG.API_KEY,
         appId = GD_CONFIG.APP_ID,
-        apiUrl = GD_CONFIG.API_URL,
+        apiUrlIdentity = GD_CONFIG.API_URL_IDENTITY,
+        apiUrlGdrive = GD_CONFIG.API_URL_GDRIVE,
         authScope = GD_CONFIG.AUTH_SCOPE,
         scope = GD_CONFIG.SCOPE,
         discoveryDocs = GD_CONFIG.DISCOVERY_DOCS,
@@ -31,87 +32,102 @@ class GoogleDriveUtil {
         this.clientId = clientId;
         this.apiKey = apiKey;
         this.appId = appId;
-        this.apiUrl = apiUrl;
+        this.apiUrlIdentity = apiUrlIdentity;
+        this.apiUrlGdrive = apiUrlGdrive;
         this.authScope = authScope;
         this.scope = scope;
         this.discoveryDocs = discoveryDocs;
         this.botFolder = botFolder;
         this.auth = null;
         this.isAuthorized = false;
-        this.profile = null;
+        this.client = '';
+        this.accessToken = '';
         // Fetch Google API script and initialize class fields
-        loadExternalScript(this.apiUrl)
-            .then(this.init)
-            .catch(err => errLogger(err, translate('There was an error loading Google API script.')));
+        loadExternalScript(this.apiUrlIdentity)
+            .then(() => this.initUrlIdentity())
+            .catch(err => errLogger(err, translate('There was an error loading Google Identity API script.')));
+        loadExternalScript(this.apiUrlGdrive)
+            .then(() =>
+                gapi.load(this.authScope, async () => {
+                    await gapi.client.load(...this.discoveryDocs);
+                })
+            )
+            .then(() => {
+                globalObserver.emit('googledrive.initialized', true);
+
+                $('#integrations').removeClass('invisible');
+                $('#save-google-drive')
+                    .parent()
+                    .removeClass('invisible');
+                $('#load-google-drive')
+                    .parent()
+                    .removeClass('invisible');
+            })
+            .catch(err => {
+                errLogger(err, translate('There was an error loading Google Drive API script.'));
+            });
     }
 
-    init = () => {
-        gapi.load(this.authScope, {
-            callback: () => {
-                gapi.client
-                    .init({
-                        apiKey       : this.apiKey,
-                        clientId     : this.clientId,
-                        scope        : this.scope,
-                        discoveryDocs: this.discoveryDocs,
-                    })
-                    .then(
-                        () => {
-                            this.auth = gapi?.auth2?.getAuthInstance?.();
-                            if (this.auth) {
-                                this.auth.isSignedIn.listen(isLoggedIn => this.updateLoginStatus(isLoggedIn));
-                                this.updateLoginStatus(this.auth.isSignedIn.get());
-                                globalObserver.emit('googledrive.initialized', true);
-
-                                $('#integrations').removeClass('invisible');
-                                $('#save-google-drive')
-                                    .parent()
-                                    .removeClass('invisible');
-                                $('#load-google-drive')
-                                    .parent()
-                                    .removeClass('invisible');
-                            }
-                        },
-                        error => errLogger(error, translate('There was an error initialising Google Drive.'))
-                    );
+    initUrlIdentity = () => {
+        this.accessToken = localStorage.getItem('accessToken') || null;
+        if (localStorage.getItem('accessToken')) {
+            this.updateLoginStatus(true);
+        }
+        this.client = google.accounts.oauth2.initTokenClient({
+            client_id: GD_CONFIG.CLIENT_ID,
+            scope    : GD_CONFIG.SCOPE,
+            callback : response => {
+                this.accessToken = response.access_token;
+                localStorage.setItem('accessToken', this.accessToken);
+                this.updateLoginStatus(true);
             },
-            onerror: error => errLogger(error, translate('There was an error loading Google Drive libraries')),
         });
     };
 
-    updateLoginStatus(isLoggedIn) {
-        if (isLoggedIn) this.profile = this.auth.currentUser.get().getBasicProfile();
-        else this.profile = null;
+    login = () => {
+        gapi.client.setToken('');
+        this.client.requestAccessToken({ prompt: '' });
+    };
 
+    updateLoginStatus(isLoggedIn) {
         globalObserver.emit('googledrive.authorised', isLoggedIn);
         this.isAuthorized = isLoggedIn;
     }
 
-    authorise() {
-        return new Promise((resolve, reject) => {
-            if (this.isAuthorized) {
-                resolve();
-                return;
-            }
-            this.auth
-                .signIn({ prompt: 'select_account' })
-                .then(resolve)
-                .catch(response => {
-                    if (response.error === 'access_denied') {
-                        globalObserver.emit(
-                            'ui.log.warn',
-                            translate('Please grant permission to view and manage your Google Drive files')
-                        );
-                        return;
-                    }
-                    if (response.error !== 'popup_closed_by_user') reject(response);
-                });
-        });
-    }
+    logout = () => {
+        this.updateLoginStatus(false);
+        if (localStorage.getItem('accessToken')) localStorage.removeItem('accessToken');
+        if (this.accessToken) {
+            gapi.client.setToken('');
+            google.accounts.oauth2.revoke(this.accessToken);
+        }
+        this.accessToken = '';
+    };
 
-    logout() {
-        if (this.isAuthorized) this.auth.signOut();
-    }
+    listFiles = async () => {
+        try {
+            await gapi.client.drive.files.list({
+                pageSize: 10,
+                fields  : 'files(id, name)',
+            });
+        } catch (err) {
+            if (err?.status === 403) this.logout();
+            if (err?.status === 401) {
+                setTimeout(() => {
+                    const picker = document.getElementsByClassName('picker-dialog-content')[0];
+                    picker.parentNode.removeChild(picker);
+                }, 500);
+                this.client.requestAccessToken({ prompt: '' });
+            }
+
+            const error = new TrackJSError(
+                'GoogleDrive',
+                translate('There was an error listing files from Google Drive'),
+                err
+            );
+            globalObserver.emit('Error', error);
+        }
+    };
 
     createFilePickerView({
         title,
@@ -120,35 +136,30 @@ class GoogleDriveUtil {
         pickerCallback,
         generalCallback,
         rejectCallback,
-        generalRejectCallback,
         selectFolderEnabled = true,
     }) {
-        this.authorise()
+        afterAuthCallback()
             .then(() => {
-                afterAuthCallback()
-                    .then(() => {
-                        const view = new google.picker.DocsView();
-                        view.setIncludeFolders(true)
-                            .setSelectFolderEnabled(selectFolderEnabled)
-                            .setMimeTypes(mimeType);
+                const view = new google.picker.DocsView();
+                view.setIncludeFolders(true)
+                    .setSelectFolderEnabled(selectFolderEnabled)
+                    .setMimeTypes(mimeType);
 
-                        const picker = new google.picker.PickerBuilder();
-                        picker
-                            .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                            .setTitle(translate(title))
-                            .addView(view)
-                            .setLocale(getPickerLanguage())
-                            .setAppId(this.appId)
-                            .setOAuthToken(gapi.auth.getToken().access_token)
-                            .setDeveloperKey(this.apiKey)
-                            .setCallback(pickerCallback)
-                            .build()
-                            .setVisible(true);
-                        if (typeof generalCallback === 'function') generalCallback();
-                    })
-                    .catch(rejectCallback);
+                const picker = new google.picker.PickerBuilder();
+                picker
+                    .setOrigin(`${window.location.protocol}//${window.location.host}`)
+                    .setTitle(translate(title))
+                    .addView(view)
+                    .setLocale(getPickerLanguage())
+                    .setAppId(this.appId)
+                    .setOAuthToken(this.accessToken)
+                    .setDeveloperKey(this.apiKey)
+                    .setCallback(pickerCallback)
+                    .build()
+                    .setVisible(true);
+                if (typeof generalCallback === 'function') generalCallback();
             })
-            .catch(generalRejectCallback);
+            .catch(rejectCallback);
     }
 
     createFilePicker() {
@@ -178,7 +189,8 @@ class GoogleDriveUtil {
                             }
                         })
                         .catch(err => {
-                            if (err.status && err.status === 401) this.logout();
+                            if (err.status && err.status === 403) this.logout();
+                            if (err.status && err.status === 401) this.client.requestAccessToken({ prompt: '' });
 
                             const error = new TrackJSError(
                                 'GoogleDrive',
@@ -186,72 +198,76 @@ class GoogleDriveUtil {
                                 err
                             );
 
-                            globalObserver.emit('Error', error);
+                            if (err.status && err.status !== 401) {
+                                globalObserver.emit('Error', error);
+                            }
                             reject(error);
                         });
-                } else if (data.action === google.picker.Action.CANCEL) reject();
+                }
             };
 
             this.createFilePickerView({
                 title            : translate('Select a Binary Bot strategy'),
-                afterAuthCallback: gapi.client.drive.files.list,
+                afterAuthCallback: this.listFiles,
                 mimeType         : ['text/xml', 'application/xml'],
                 pickerCallback   : userPickedFile,
                 generalCallback  : resolve,
                 rejectCallback   : err => {
-                    if (err.status && err.status === 401) this.logout();
-
-                    const error = new TrackJSError(
-                        'GoogleDrive',
-                        translate('There was an error listing files from Google Drive'),
-                        err
-                    );
+                    const error = new TrackJSError('GoogleDrive', translate(err.message), err);
                     globalObserver.emit('Error', error);
                     reject(error);
                 },
-                generalRejectCallback: reject,
-                selectFolderEnabled  : false,
             });
         });
     }
 
+    removeGdBackground = () => {
+        const pickerBackground = document.getElementsByClassName('picker-dialog-bg');
+        if (pickerBackground.length) {
+            for (let i = 0; i < pickerBackground.length; i++) {
+                pickerBackground[i].style.display = 'none';
+            }
+        }
+    };
+
     getDefaultFolderId() {
         return new Promise((resolve, reject) => {
             // Avoid duplicate auth flow by checking if user is already authed
-            Promise.all(!this.isAuthorized ? this.authorise : [])
-                .then(() => {
-                    // eslint-disable-next-line
-                    gapi.client.drive.files.list({ q: 'trashed=false' }).then(response => {
-                        const folder = response.result.files.find(
-                            file => file.mimeType === 'application/vnd.google-apps.folder'
-                        );
+            // eslint-disable-next-line
+            gapi.client.drive.files
+                .list({ q: 'trashed=false' })
+                .then(response => {
+                    const folder = response.result.files.find(
+                        file => file.mimeType === 'application/vnd.google-apps.folder'
+                    );
 
-                        if (folder) return resolve();
+                    if (folder) return resolve();
 
-                        gapi.client.drive.files
-                            .create({
-                                resource: {
-                                    name    : this.botFolder,
-                                    mimeType: 'application/vnd.google-apps.folder',
-                                    fields  : 'id',
-                                },
-                            })
-                            .then(resolve)
-                            .catch(err => {
-                                if (err?.status === 401) this.logout();
+                    return gapi.client.drive.files
+                        .create({
+                            resource: {
+                                name    : this.botFolder,
+                                mimeType: 'application/vnd.google-apps.folder',
+                                fields  : 'id',
+                            },
+                        })
+                        .then(resolve)
+                        .catch(err => {
+                            if (err?.status === 403) this.logout();
+                            if (err?.status === 401) this.client.requestAccessToken({ prompt: '' });
 
-                                const error = new TrackJSError(
-                                    'GoogleDrive',
-                                    translate('There was an error retrieving files from Google Drive'),
-                                    err
-                                );
-                                globalObserver.emit('Error', error);
-                                reject(error);
-                            });
-                    });
+                            const error = new TrackJSError(
+                                'GoogleDrive',
+                                translate('There was an error retrieving files from Google Drive'),
+                                err
+                            );
+                            globalObserver.emit('Error', error);
+                            reject(error);
+                        });
                 })
-                .catch(() => {
-                    /* Auth error, already handled in authorise()-promise */
+                .catch(error => {
+                    if (error?.status === 403) this.logout();
+                    if (error?.status === 401) this.client.requestAccessToken({ prompt: '' });
                 });
         });
     }
@@ -276,13 +292,14 @@ class GoogleDriveUtil {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = 'json';
                     xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart');
-                    xhr.setRequestHeader('Authorization', `Bearer ${gapi.auth.getToken().access_token}`);
+                    xhr.setRequestHeader('Authorization', `Bearer ${this.accessToken}`);
                     xhr.onload = () => {
                         if (xhr.status === 200) {
                             resolve();
                             return;
                         }
-                        if (xhr.status === 401) this.logout();
+                        if (xhr.status === 403) this.logout();
+                        if (xhr.status === 401) this.client.requestAccessToken({ prompt: '' });
                         const error = new TrackJSError(
                             'GoogleDrive',
                             translate('There was an error processing your request'),
@@ -292,9 +309,7 @@ class GoogleDriveUtil {
                         reject(error);
                     };
                     xhr.send(formData);
-                    return;
                 }
-                if (data.action === google.picker.Action.CANCEL) reject();
             };
 
             this.createFilePickerView({

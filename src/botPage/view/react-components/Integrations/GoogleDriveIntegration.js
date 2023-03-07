@@ -15,14 +15,9 @@ const GoogleDriveIntegration = () => {
             <div className="left">
                 <h2>Google Drive</h2>
                 <div className="description">{translate('Save your blocks and strategies to Google Drive')}</div>
-                {isGdLoggedIn && (
-                    <div className="integration-user">
-                        {`${translate('You are logged in as')} ${googleDriveUtil.profile?.getEmail()}`}
-                    </div>
-                )}
             </div>
             <div className="right">
-                <a onClick={() => googleDriveUtil.authorise()} className={!isGdLoggedIn ? 'button' : 'button-disabled'}>
+                <a onClick={() => googleDriveUtil.login()} className={!isGdLoggedIn ? 'button' : 'button-disabled'}>
                     <span id="connect-google-drive" style={{ minWidth: '130px' }}>
                         {translate('Connect')}
                     </span>
