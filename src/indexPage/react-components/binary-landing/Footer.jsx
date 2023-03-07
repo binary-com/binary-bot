@@ -38,7 +38,9 @@ const Footer = () => (
                     <p>{translate('Deriv (FX) Ltd is licensed by Labuan Financial Services Authority ')}<b><a href='https://deriv.com/regulatory/Deriv_(FX)_Ltd.pdf' target="_blank">{translate('(licence)')}</a></b>{translate('. The registered office of Deriv (FX) Ltd is at F16, Level 1, Paragon Labuan, Jalan Tun Mustapha, 87000 Labuan, Malaysia.')}</p>
                     <p>{translate('Deriv (BVI) Ltd is licensed by the British Virgin Islands Financial Services Commission ')}<b><a href='https://deriv.com/regulatory/Deriv_(BVI)_Ltd.pdf' target="_blank">{translate('(licence)')}</a></b>{translate('. The registered office of Deriv (BVI) is at Kingston Chambers, P.O. Box 173, Road Town, Tortola, British Virgin Islands.')}</p>
                     <p>{translate('Deriv (V) Ltd is licensed and regulated by the Vanuatu Financial Services Commission ')}<b><a href='https://deriv.com/regulatory/Deriv_(V)_Ltd.pdf' target="_blank">{translate('(licence)')}</a></b>{translate('. The registered office of Deriv (V) Ltd is at 1276 Kumul Highway, Port Vila, Vanuatu.')}</p>
-                    <p>{translate('Deriv (SVG) LLC has a registered office at Hinds Buildings, Kingstown, St. Vincent and the Grenadines. Deriv Holdings (Guernsey) Limited — 2nd Floor, 1 Cornet Street, St Peter Port, Guernsey, GY1 1BZ — is the holding company for the above subsidiaries.')}</p>
+                    <p>{translate('Deriv (SVG) LLC has a registered office at Hinds Buildings, Kingstown, St. Vincent and the Grenadines.')}</p>
+                    <p>{translate('Deriv Holdings (Guernsey) Limited — 2nd Floor, 1 Cornet Street, St Peter Port, Guernsey, GY1 1BZ — is the holding company for the above subsidiaries.')}</p>
+
                 </div>
                 <div className='about-trade-wrapper-inner-info-trade'>
                     <p>{translate('Please remember that CFDs and other products offered on this website are complex derivatives and may not be suitable for all clients. Trading in these products carries a substantial risk of losing money rapidly.')}</p>
