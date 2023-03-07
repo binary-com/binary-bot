@@ -87,7 +87,7 @@ class GoogleDriveUtil {
     login = () => {
         gapi.client.setToken('');
         this.client.requestAccessToken({ prompt: '' });
-        updateLoginStatus(true);
+        this.updateLoginStatus(true);
     };
 
     updateLoginStatus(isLoggedIn) {
