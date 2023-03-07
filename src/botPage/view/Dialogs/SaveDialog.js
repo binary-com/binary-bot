@@ -53,6 +53,7 @@ const Save = React.memo(({ closeDialog, onSave }) => {
         googleDriveUtil.client.callback = response => {
             googleDriveUtil.accessToken = response.access_token;
             localStorage.setItem('accessToken', response.access_token);
+            setLoading(false);
             saveInGoogleDrive();
         };
         if (!googleDriveUtil.accessToken) {
@@ -60,6 +61,7 @@ const Save = React.memo(({ closeDialog, onSave }) => {
         } else {
             window.gapi.client.setToken({ access_token: googleDriveUtil.accessToken });
             saveInGoogleDrive();
+            setLoading(false);
         }
     };
 
