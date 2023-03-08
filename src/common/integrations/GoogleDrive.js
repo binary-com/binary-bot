@@ -92,7 +92,6 @@ class GoogleDriveUtil {
             this.updateLoginStatus(true);
         };
         this.client.requestAccessToken({ prompt: '' });
-        this.updateLoginStatus(true);
     };
 
     updateLoginStatus(isLoggedIn) {
