@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Inconsolata&family=Montserrat:ital,wght@0,900;1,700&family=Poppins&family=Sura&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Inconsolata&family=Montserrat:ital,wght@0,900;1,700&family=Poppins&family=Sura&display=swap");
 
-$font-IBM: 'IBM Plex Sans',
-  sans-serif;
-$hero-BG : #08223d;
-$white :#fff;
-$header-color : #333333;
+$font-IBM: "IBM Plex Sans", sans-serif;
+$hero-BG: #08223d;
+$white: #fff;
+$header-color: #333333;
 
 //mixin setup
 @mixin for-size($size) {
@@ -12,9 +11,7 @@ $header-color : #333333;
     @media (max-width: 1024px) {
       @content;
     }
-  }
-
-  @else if $size==desktop {
+  } @else if $size==desktop {
     @media (max-width: 1080px) {
       @content;
     }
@@ -32,8 +29,8 @@ $header-color : #333333;
   background-size: cover;
   padding: 0 2rem;
   @include for-size(mobile) {
-      padding: 0;
-    }
+    padding: 0;
+  }
   @include for-size(mobile) {
     background: $hero-BG url(../image/MBG1.png) no-repeat;
     background-size: cover;
@@ -61,7 +58,7 @@ $header-color : #333333;
       flex: 1 1 50%;
 
       h1 {
-        color: #FFF;
+        color: #fff;
         margin: 2rem 2rem 2rem 0;
         font: 700 5rem $font-IBM;
 
@@ -118,7 +115,7 @@ $header-color : #333333;
   height: 2.5rem;
   border-radius: 0.25rem;
   font: 700 0.875rem $font-IBM;
-  background-color: #C2C2C2;
+  background-color: #c2c2c2;
   color: #000;
   outline: none;
   border: none;
@@ -127,10 +124,10 @@ $header-color : #333333;
   text-transform: none;
 
   &.primary {
-    background-color: #2E8836;
+    background-color: #2e8836;
     color: $white;
     @include for-size(mobile) {
-          margin-bottom: 1rem;
+      margin-bottom: 1rem;
     }
     &:hover {
       background-color: #246d2a;
@@ -139,11 +136,11 @@ $header-color : #333333;
   }
 
   &.danger {
-    background: #FF444F;
+    background: #ff444f;
     color: $white;
     @include for-size(mobile) {
-        margin-bottom: 1rem;
-      }
+      margin-bottom: 1rem;
+    }
     &:hover {
       background-color: #cd353e;
       color: $white;
@@ -192,10 +189,10 @@ $header-color : #333333;
     }
 
     &__content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 2rem 0;
       h1 {
         margin-bottom: 1.5rem;
         margin: 0;
@@ -230,14 +227,11 @@ $header-color : #333333;
         text-transform: none;
 
         &:hover {
-          background-color: #C2C2C2;
+          background-color: #c2c2c2;
         }
       }
     }
   }
-
-
-
 }
 
 .landing_carousel {
@@ -297,13 +291,12 @@ $header-color : #333333;
         object-fit: contain;
         width: 100%;
       }
-
     }
   }
 }
 
 .choose-wrapper {
-  background: #F2F3F4;
+  background: #f2f3f4;
 
   &-inner {
     padding: 7.5rem 0;
@@ -311,10 +304,10 @@ $header-color : #333333;
       padding: 2.5rem 0;
     }
     &-title {
-        font: 700 2rem $font-IBM;
-        color: #333;
-        text-align: center;
-        margin-bottom: 2.5rem;
+      font: 700 2rem $font-IBM;
+      color: #333;
+      text-align: center;
+      margin-bottom: 2.5rem;
     }
 
     &-section-content {
@@ -326,44 +319,42 @@ $header-color : #333333;
         flex-direction: column;
         padding: 0 2rem;
       }
-      &-row{
+      &-row {
         display: flex;
         width: 100%;
-        @include for-size(mobile){
+        @include for-size(mobile) {
           flex-direction: column;
         }
         &-inner {
           display: flex;
           width: 50%;
-          &:first-child{
+          &:first-child {
             margin-right: 1rem;
           }
           @include for-size(mobile) {
-              width: 100%;
+            width: 100%;
           }
           &-placeholder {
-             margin-right: 1rem;
+            margin-right: 1rem;
           }
-          &-description{
-              h1{
-                font: 700 1.5rem $font-IBM;
-                color: #333;
-                margin-top: 0;
-                line-height: 36px;
-                margin-bottom: 0.5rem;
-              }
-              h2{
-                font: 400 1rem $font-IBM;
-                color: #333;
-                line-height: 24px;
-                margin-bottom: 1.5rem;
-              }
+          &-description {
+            h1 {
+              font: 700 1.5rem $font-IBM;
+              color: #333;
+              margin-top: 0;
+              line-height: 36px;
+              margin-bottom: 0.5rem;
+            }
+            h2 {
+              font: 400 1rem $font-IBM;
+              color: #333;
+              line-height: 24px;
+              margin-bottom: 1.5rem;
+            }
           }
         }
       }
     }
-
-
 
     &-right,
     &-left {
@@ -390,8 +381,6 @@ $header-color : #333333;
           display: block;
         }
       }
-
-
 
       &-content {
         display: flex;
@@ -432,7 +421,6 @@ $header-color : #333333;
             margin-bottom: 0;
           }
         }
-
       }
     }
 
@@ -482,7 +470,6 @@ $header-color : #333333;
     @include for-size(mobile) {
       left: 0;
     }
-
   }
 
   .placeholder-outer {
@@ -517,10 +504,8 @@ $header-color : #333333;
         }
       }
     }
-
   }
 }
-
 
 .arrow {
   &.right {
@@ -529,14 +514,14 @@ $header-color : #333333;
 }
 
 .wait-wrapper {
-  background: url('../image/pattern.png') no-repeat right;
+  background: url("../image/pattern.png") no-repeat right;
   background-size: 65% 100%;
   min-height: 18.75rem;
   position: relative;
   padding: 0 2rem;
   @include for-size(mobile) {
-      padding: 0;
-    }
+    padding: 0;
+  }
   @include for-size(mobile) {
     min-height: 43.75rem;
     background-image: none;
@@ -571,7 +556,7 @@ $header-color : #333333;
 
     &-placeholder {
       @include for-size(mobile) {
-        background: url('../image/Dont_Wait_Mobile.png') no-repeat right;
+        background: url("../image/Dont_Wait_Mobile.png") no-repeat right;
         background-size: 100% 100%;
         min-height: 28.125rem;
       }
@@ -594,7 +579,7 @@ $header-color : #333333;
 }
 
 .about-trade-wrapper {
-  background-color: #F8FAFB;
+  background-color: #f8fafb;
   padding: 0;
   padding: 0 2rem;
   @include for-size(mobile) {
@@ -617,7 +602,6 @@ $header-color : #333333;
       }
     }
 
-
     img {
       margin-right: 1rem;
     }
@@ -626,7 +610,7 @@ $header-color : #333333;
       margin-right: 1rem;
 
       @include for-size(mobile) {
-        margin-top: 1rem
+        margin-top: 1rem;
       }
     }
 
@@ -638,12 +622,13 @@ $header-color : #333333;
         justify-content: center;
         align-items: center;
         padding: 1.4rem 0;
+        flex-wrap: wrap;
+        gap: 8px;
 
         img {
           margin-right: 1rem;
         }
       }
-
     }
 
     &-info {
@@ -658,7 +643,6 @@ $header-color : #333333;
         @include for-size(mobile) {
           margin-bottom: 1.5rem;
         }
-
       }
 
       &-trade {
@@ -669,7 +653,7 @@ $header-color : #333333;
         color: #333;
 
         a {
-          color: #333333
+          color: #333333;
         }
 
         @include for-size(mobile) {
@@ -677,10 +661,7 @@ $header-color : #333333;
         }
       }
     }
-
   }
-
-
 
   &-deriv-icons {
     text-align: left;
@@ -702,10 +683,7 @@ $header-color : #333333;
       text-align: left;
     }
   }
-
-
 }
-
 
 .bot-gif-placeholder {
   display: flex;
@@ -798,7 +776,7 @@ $header-color : #333333;
     text-align: center;
 
     .default {
-      background: #C2C2C2;
+      background: #c2c2c2;
       margin-right: 1rem;
 
       :hover {
@@ -806,7 +784,6 @@ $header-color : #333333;
       }
     }
   }
-
 }
 
 .mobilecontent {
@@ -817,7 +794,6 @@ $header-color : #333333;
   display: block;
 }
 
-
 @include for-size(mobile) {
   .desktopcontent {
     display: none;
@@ -827,4 +803,3 @@ $header-color : #333333;
     display: block;
   }
 }
-
