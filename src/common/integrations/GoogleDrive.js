@@ -120,7 +120,6 @@ class GoogleDriveUtil {
                 fields  : 'files(id, name)',
             });
         } catch (err) {
-            if (err?.status === 403) this.logout();
             if (err?.status === 401) {
                 setTimeout(() => {
                     const picker = document.getElementsByClassName('picker-dialog-content')[0];
@@ -198,7 +197,6 @@ class GoogleDriveUtil {
                             }
                         })
                         .catch(err => {
-                            if (err.status && err.status === 403) this.logout();
                             if (err.status && err.status === 401) this.client.requestAccessToken({ prompt: '' });
 
                             const error = new TrackJSError(
@@ -262,7 +260,6 @@ class GoogleDriveUtil {
                         })
                         .then(resolve)
                         .catch(err => {
-                            if (err?.status === 403) this.logout();
                             if (err?.status === 401) this.client.requestAccessToken({ prompt: '' });
 
                             const error = new TrackJSError(
@@ -275,7 +272,6 @@ class GoogleDriveUtil {
                         });
                 })
                 .catch(error => {
-                    if (error?.status === 403) this.logout();
                     if (error?.status === 401) this.client.requestAccessToken({ prompt: '' });
                 });
         });
@@ -307,7 +303,6 @@ class GoogleDriveUtil {
                             resolve();
                             return;
                         }
-                        if (xhr.status === 403) this.logout();
                         if (xhr.status === 401) this.client.requestAccessToken({ prompt: '' });
                         const error = new TrackJSError(
                             'GoogleDrive',
