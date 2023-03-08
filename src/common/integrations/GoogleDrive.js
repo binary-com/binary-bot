@@ -85,13 +85,15 @@ class GoogleDriveUtil {
     };
 
     login = () => {
-        gapi.client.setToken('');
-        this.client.callback = response => {
-            this.accessToken = response.access_token;
-            localStorage.setItem('accessToken', this.accessToken);
-            this.updateLoginStatus(true);
-        };
-        this.client.requestAccessToken({ prompt: '' });
+        if (!this.accessToken) {
+            gapi.client.setToken('');
+            this.client.callback = response => {
+                this.accessToken = response.access_token;
+                localStorage.setItem('accessToken', this.accessToken);
+                this.updateLoginStatus(true);
+            };
+            this.client.requestAccessToken({ prompt: '' });
+        }
     };
 
     updateLoginStatus(isLoggedIn) {
@@ -100,13 +102,15 @@ class GoogleDriveUtil {
     }
 
     logout = () => {
-        this.updateLoginStatus(false);
-        if (localStorage.getItem('accessToken')) localStorage.removeItem('accessToken');
         if (this.accessToken) {
-            gapi.client.setToken('');
-            google.accounts.oauth2.revoke(this.accessToken);
+            this.updateLoginStatus(false);
+            if (localStorage.getItem('accessToken')) localStorage.removeItem('accessToken');
+            if (this.accessToken) {
+                gapi.client.setToken('');
+                google.accounts.oauth2.revoke(this.accessToken);
+            }
+            this.accessToken = '';
         }
-        this.accessToken = '';
     };
 
     listFiles = async () => {
