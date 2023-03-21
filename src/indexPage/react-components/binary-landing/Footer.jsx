@@ -44,7 +44,7 @@ const Footer = () => (
                 </div>
                 <div className='about-trade-wrapper-inner-info-trade'>
                     <p>{translate('Please remember that CFDs and other products offered on this website are complex derivatives and may not be suitable for all clients. Trading in these products carries a substantial risk of losing money rapidly.')}</p>
-                    <p>{translate('Make sure to read our ')}<b><a href='https://deriv.com/terms-and-conditions/' target="_blank">{translate('Terms and conditions')}</a></b>{translate(', ')} <b><a href='https://deriv.com/terms-and-conditions/' target="_blank">{translate('Risk disclosure')}</a></b>{translate(', and')} <b><a href='https://deriv.com/responsible/' target="_blank">{translate('Secure and responsible trading')}</a></b>{translate(' to fully understand the risks involved before using our services. Please also note that the information on this website does not constitute investment advice.')}</p>
+                    <p>{translate('Make sure to read our ')}<b><a href='https://deriv.com/terms-and-conditions/' target="_blank">{translate('Terms and conditions')}</a></b>{translate(', ')} <b><a href='https://deriv.com/tnc/risk-disclosure.pdf' target="_blank">{translate('Risk disclosure')}</a></b>{translate(', and')} <b><a href='https://deriv.com/responsible/' target="_blank">{translate('Secure and responsible trading')}</a></b>{translate(' to fully understand the risks involved before using our services. Please also note that the information on this website does not constitute investment advice.')}</p>
                 </div>
             </div>
 
