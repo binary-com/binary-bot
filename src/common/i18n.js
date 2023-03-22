@@ -25,7 +25,6 @@ export const supportedLanguages = {
     fr,
     en,
     ach,
-    id,
 };
 
 const fallbackLang = en;
