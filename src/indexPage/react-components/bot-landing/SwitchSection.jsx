@@ -19,9 +19,7 @@ const SwitchSection = () => (
                     <a href={getOAuthURLDeriv()}>
                         <button className="l-btn danger">{translate('Try it now')}</button>
                     </a>
-                    <a href={generateURL(window.location.href)}>
-                        <button className="l-btn transparent">{translate('Maybe later')}</button>
-                    </a>
+                    
                 </div>
             </div>
         </div>
