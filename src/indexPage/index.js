@@ -8,7 +8,7 @@ import { isEuCountry, showHideEuElements } from '../common/footer-checks';
 import GTM from '../common/gtm';
 import { load as loadLang, showBanner } from '../common/lang';
 import { moveToDeriv } from '../common/utils/utility';
-import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
+import { get as getStorage, remove, getTokenList } from '../common/utils/storageManager';
 import { createUrl, isBinaryDomain, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
@@ -81,9 +81,6 @@ export const renderBanner = () => {
     if (window.location.pathname.indexOf('/bot') === -1 || window.location.pathname === '/movetoderiv.html') {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
-        if (dynamicRoutePathanme === 'bot-landing') {
-            // setStorage('setDueDateForBanner', expirationDate());
-        }
         elements.map(elem => document.querySelector(elem).classList.add('hidden'));
         document.getElementById(dynamicRoutePathanme).classList.remove('hidden');
         document.getElementById('bot-main').classList.remove('hidden');
