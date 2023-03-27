@@ -10,7 +10,11 @@ import BotLanding from '../indexPage/react-components/bot-landing';
 const elements = ['#notification-banner', '#main', '#footer', '#header'];
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
-    const lang = queryLang in supportedLanguages ? queryLang : getStorage('lang') || 'en';
+    const checkIsSupported = queryLang in supportedLanguages;
+    const un_supported_languages = ['id', 'tr'];
+    const checkLanguageNotSupported = () =>
+        un_supported_languages.includes(queryLang) ? 'en' : getStorage('lang') || 'en';
+    const lang = checkIsSupported ? queryLang : checkLanguageNotSupported();
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;
@@ -31,7 +35,6 @@ const addUiLang = () => {
 export const load = () => {
     if (typeof $ !== 'function') return; // Adding this check to skip unit test
     const lang = getLanguage();
-
     $('#select_language li:not(:first)').click(function click() {
         const newLang = $(this).attr('class');
         if (
