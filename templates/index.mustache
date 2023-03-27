@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div id="bot-main" class="hidden" style="width: 100%; position: relative;">
+    <div id="bot-main" style="width: 100%; position: relative;">
 	{{> ../templates/partials/loading }}
 	</div>
     <div id="topbar">
@@ -27,7 +27,7 @@
     <div id="movetoderiv"></div>
     <div id="bot-landing"></div>
 
-	<div id="header">
+	<div id="header" class="hidden">
 		<div class="wrapper">
             <div class="logo-wrapper">
             <div id="binary-logo"></div>
@@ -35,9 +35,9 @@
         </div>
     </div>
 	</div>
-    <div id="notification-banner"></div>
+    <div id="notification-banner" class="hidden"></div>
     <div id="bot-landing-alert-popup" class="bot-landing-alert bot-landing-alert-popup"></div>
-	<div id="main">
+	<div id="main" class="hidden">
 		<div>
 			<div class="content show-on-load">
 				<h1 class="center" data-i18n-text="Binary Bot"></h1>

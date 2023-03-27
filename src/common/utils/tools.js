@@ -10,7 +10,8 @@ export const parseQueryString = () => {
     str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
         objURL[a1] = a3;
     });
-    return objURL;
+
+    return objURL || false;
 };
 export const generateURL = url => {
     if (url.split('?').length !== null && url.split('?').length !== undefined) {

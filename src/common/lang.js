@@ -9,8 +9,13 @@ import BotLanding from '../indexPage/react-components/bot-landing';
 
 const elements = ['#notification-banner', '#main', '#footer', '#header'];
 export const getLanguage = () => {
-    const queryLang = parseQueryString().l;
-    const lang = queryLang in supportedLanguages ? queryLang : getStorage('lang') || 'en';
+    const queryLang = parseQueryString().l || 'en';
+    const checkIsSupported = queryLang in supportedLanguages;
+    // eslint-disable-next-line camelcase
+    const un_supported_languages = ['id', 'tr'];
+    const checkLanguageNotSupported = () =>
+        un_supported_languages.includes(queryLang) ? 'en' : getStorage('lang') || 'en';
+    const lang = checkIsSupported ? queryLang : checkLanguageNotSupported();
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;
@@ -31,7 +36,6 @@ const addUiLang = () => {
 export const load = () => {
     if (typeof $ !== 'function') return; // Adding this check to skip unit test
     const lang = getLanguage();
-
     $('#select_language li:not(:first)').click(function click() {
         const newLang = $(this).attr('class');
         if (
@@ -43,7 +47,7 @@ export const load = () => {
             render(<BotLanding />, document.getElementById('bot-landing'));
             elements.map(elem => document.querySelector(elem).classList.add('hidden'));
             document.getElementById('bot-landing').classList.remove('hidden');
-            document.getElementById('bot-main').classList.remove('hidden');
+            document.getElementById('bot-main').classList.add('hidden');
             document.location.search = `l=${newLang}`;
             $('.barspinner').hide();
         } else {
@@ -68,6 +72,7 @@ export const load = () => {
         script.src = `${document.location.protocol}//cdn.crowdin.com/jipt/jipt.js`;
         $('body').append(script);
     }
+    console.log(lang, 'dnashjdnajksdnajksdnakjsdnksajnkjs');
 
     init(lang);
 

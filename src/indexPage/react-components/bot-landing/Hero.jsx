@@ -1,6 +1,5 @@
 import React from 'react'
 import { translate } from '../../../common/i18n';
-import { generateURL } from '../../../common/utils/tools'
 
 const Hero = () => (
     <section className="hero">
@@ -15,9 +14,7 @@ const Hero = () => (
                     <a href="https://bot.deriv.com">
                         <button className="l-btn primary">{translate('Take me to Binary Bot on Deriv')}</button>
                     </a>
-                    <a href={generateURL(window.location.href)}>
-                        <button className="l-btn">{translate('Maybe later')}</button>
-                    </a>
+                   
                 </div>
             </div>
             <div className="hero-inner__placeholder">

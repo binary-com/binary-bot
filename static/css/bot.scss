@@ -31,6 +31,14 @@ body {
     font-size: 1em;
 }
 
+#bot-main{
+    background: $hero-BG url(../image/BG-1.webp) no-repeat !important;
+    background-size: cover !important;
+    position: absolute;
+    height: 100%;
+    z-index: -1;
+}
+
 #server-status .online {
     background-color: green;
 }

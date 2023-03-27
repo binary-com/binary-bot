@@ -8,7 +8,7 @@ import { isEuCountry, showHideEuElements } from '../common/footer-checks';
 import GTM from '../common/gtm';
 import { load as loadLang, showBanner } from '../common/lang';
 import { moveToDeriv } from '../common/utils/utility';
-import { get as getStorage, set as setStorage, remove, getTokenList } from '../common/utils/storageManager';
+import { get as getStorage, remove, getTokenList } from '../common/utils/storageManager';
 import { createUrl, isBinaryDomain, parseQueryString, serialize } from '../common/utils/tools';
 import '../common/binary-ui/dropdown';
 import BotLanding from './react-components/bot-landing';
@@ -21,7 +21,6 @@ const sevenDays = 7;
 const oneMinute = 60;
 const oneDay = 24;
 
-export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 
@@ -72,7 +71,6 @@ export const setTimeOutBanner = route => {
             (route === 'views' && checkifBotRunning() === true)
         ) {
             remove('setDueDateForBanner');
-            setStorage('setDueDateForBanner', expirationDate());
             return false;
         }
     }, calcSetTimeoutValueBanner);
@@ -82,12 +80,7 @@ export const renderBanner = () => {
     if (window.location.pathname.indexOf('/bot') === -1 || window.location.pathname === '/movetoderiv.html') {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
-        if (dynamicRoutePathanme === 'bot-landing') {
-            setStorage('setDueDateForBanner', expirationDate());
-        }
-        elements.map(elem => document.querySelector(elem).classList.add('hidden'));
         document.getElementById(dynamicRoutePathanme).classList.remove('hidden');
-        document.getElementById('bot-main').classList.remove('hidden');
         document.getElementById('topbar').classList.remove('hidden');
         $('.barspinner').hide();
     }
@@ -103,11 +96,13 @@ const renderElements = () => {
     if (!bannerToken) {
         if (window.location.pathname.indexOf('/bot') === -1) {
             renderBanner();
+            document.getElementById('bot-main').classList.add('hidden');
         }
     } else {
         if (today > bannerToken) {
             remove('setDueDateForBanner');
             renderBanner();
+            document.getElementById('bot-main').classList.add('hidden');
             return false;
         }
         if (window.location.pathname.indexOf('/bot') === -1) {
@@ -119,10 +114,9 @@ const renderElements = () => {
                 'href',
                 createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
             );
-            elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
             document.getElementById(dynamicRoutePathanme).classList.add('hidden');
         }
-        document.getElementById('bot-main').classList.remove('hidden');
+
         setTimeout(() => {
             $('.barspinner').hide();
         }, 2000);
@@ -152,6 +146,7 @@ const loginCheck = () => {
     } else {
         setTimeout(() => {
             renderBanner();
+            document.getElementById('bot-main').classList.add('hidden');
         }, 0);
     }
 };
