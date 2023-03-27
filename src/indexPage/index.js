@@ -81,7 +81,6 @@ export const renderBanner = () => {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
         document.getElementById(dynamicRoutePathanme).classList.remove('hidden');
-        document.getElementById('bot-main').classList.remove('hidden');
         document.getElementById('topbar').classList.remove('hidden');
         $('.barspinner').hide();
     }
@@ -97,11 +96,13 @@ const renderElements = () => {
     if (!bannerToken) {
         if (window.location.pathname.indexOf('/bot') === -1) {
             renderBanner();
+            document.getElementById('bot-main').classList.add('hidden');
         }
     } else {
         if (today > bannerToken) {
             remove('setDueDateForBanner');
             renderBanner();
+            document.getElementById('bot-main').classList.add('hidden');
             return false;
         }
         if (window.location.pathname.indexOf('/bot') === -1) {
@@ -115,6 +116,7 @@ const renderElements = () => {
             );
             document.getElementById(dynamicRoutePathanme).classList.add('hidden');
         }
+
         setTimeout(() => {
             $('.barspinner').hide();
         }, 2000);
@@ -144,6 +146,7 @@ const loginCheck = () => {
     } else {
         setTimeout(() => {
             renderBanner();
+            document.getElementById('bot-main').classList.add('hidden');
         }, 0);
     }
 };

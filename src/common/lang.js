@@ -9,7 +9,7 @@ import BotLanding from '../indexPage/react-components/bot-landing';
 
 const elements = ['#notification-banner', '#main', '#footer', '#header'];
 export const getLanguage = () => {
-    const queryLang = parseQueryString().l;
+    const queryLang = parseQueryString().l || 'en';
     const checkIsSupported = queryLang in supportedLanguages;
     // eslint-disable-next-line camelcase
     const un_supported_languages = ['id', 'tr'];
@@ -47,7 +47,7 @@ export const load = () => {
             render(<BotLanding />, document.getElementById('bot-landing'));
             elements.map(elem => document.querySelector(elem).classList.add('hidden'));
             document.getElementById('bot-landing').classList.remove('hidden');
-            document.getElementById('bot-main').classList.remove('hidden');
+            document.getElementById('bot-main').classList.add('hidden');
             document.location.search = `l=${newLang}`;
             $('.barspinner').hide();
         } else {
@@ -72,6 +72,7 @@ export const load = () => {
         script.src = `${document.location.protocol}//cdn.crowdin.com/jipt/jipt.js`;
         $('body').append(script);
     }
+    console.log(lang, 'dnashjdnajksdnajksdnakjsdnksajnkjs');
 
     init(lang);
 
