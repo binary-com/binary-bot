@@ -1,6 +1,5 @@
 import React from 'react'
 import { translate } from '../../../common/i18n';
-import { generateURL } from '../../../common/utils/tools'
 
 const Hero = () => (
     <section className="hero">

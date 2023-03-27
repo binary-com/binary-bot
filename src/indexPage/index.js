@@ -21,7 +21,6 @@ const sevenDays = 7;
 const oneMinute = 60;
 const oneDay = 24;
 
-export const elements = ['#notification-banner', '#main', '#footer', '#header', '#topbar'];
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
 
@@ -81,7 +80,6 @@ export const renderBanner = () => {
     if (window.location.pathname.indexOf('/bot') === -1 || window.location.pathname === '/movetoderiv.html') {
         getComponent();
         render(Component, document.getElementById(dynamicRoutePathanme));
-        elements.map(elem => document.querySelector(elem).classList.add('hidden'));
         document.getElementById(dynamicRoutePathanme).classList.remove('hidden');
         document.getElementById('bot-main').classList.remove('hidden');
         document.getElementById('topbar').classList.remove('hidden');
@@ -115,10 +113,8 @@ const renderElements = () => {
                 'href',
                 createUrl({ subdomain: 'shop', path: 'collections/strategies', isNonBotPage: true })
             );
-            elements.map(elem => document.querySelector(elem).classList.remove('hidden'));
             document.getElementById(dynamicRoutePathanme).classList.add('hidden');
         }
-        document.getElementById('bot-main').classList.remove('hidden');
         setTimeout(() => {
             $('.barspinner').hide();
         }, 2000);

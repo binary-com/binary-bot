@@ -29,6 +29,8 @@ body {
     max-width: 100%;
     max-height: 100%;
     font-size: 1em;
+    background: $hero-BG url(../image/BG-1.webp) no-repeat !important;
+    background-size: cover !important;
 }
 
 #server-status .online {
