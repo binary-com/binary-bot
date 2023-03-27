@@ -11,6 +11,7 @@ const elements = ['#notification-banner', '#main', '#footer', '#header'];
 export const getLanguage = () => {
     const queryLang = parseQueryString().l;
     const checkIsSupported = queryLang in supportedLanguages;
+    // eslint-disable-next-line camelcase
     const un_supported_languages = ['id', 'tr'];
     const checkLanguageNotSupported = () =>
         un_supported_languages.includes(queryLang) ? 'en' : getStorage('lang') || 'en';
