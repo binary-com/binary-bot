@@ -23,6 +23,9 @@ const oneDay = 24;
 
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
+if (bannerToken) {
+    remove('setDueDateForBanner');
+}
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
@@ -105,7 +108,7 @@ const renderElements = () => {
             document.getElementById('bot-main').classList.add('hidden');
             return false;
         }
-        if (window.location.pathname.indexOf('/bot') === -1) {
+        if (isBinaryDomain) {
             render(isBinaryDomain && <Logo />, document.getElementById('binary-logo'));
             render(<Footer />, document.getElementById('footer'));
             isEuCountry().then(isEu => showHideEuElements(isEu));
