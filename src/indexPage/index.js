@@ -108,7 +108,7 @@ const renderElements = () => {
             document.getElementById('bot-main').classList.add('hidden');
             return false;
         }
-        if (window.location.pathname.indexOf('/bot') === -1) {
+        if (isBinaryDomain) {
             render(isBinaryDomain && <Logo />, document.getElementById('binary-logo'));
             render(<Footer />, document.getElementById('footer'));
             isEuCountry().then(isEu => showHideEuElements(isEu));
