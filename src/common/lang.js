@@ -72,7 +72,6 @@ export const load = () => {
         script.src = `${document.location.protocol}//cdn.crowdin.com/jipt/jipt.js`;
         $('body').append(script);
     }
-    console.log(lang, 'dnashjdnajksdnajksdnakjsdnksajnkjs');
 
     init(lang);
 

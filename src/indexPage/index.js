@@ -23,6 +23,9 @@ const oneDay = 24;
 
 // eslint-disable-next-line one-var
 export const bannerToken = getStorage('setDueDateForBanner');
+if (bannerToken) {
+    remove('setDueDateForBanner');
+}
 
 // eslint-disable-next-line arrow-body-style
 export const expirationDate = () => {
