@@ -11,10 +11,6 @@ const languages = [
         name: 'Español',
     },
     {
-        code: 'id',
-        name: 'Indonesia',
-    },
-    {
         code: 'pt',
         name: 'Português',
     },
@@ -24,11 +20,11 @@ const LanguageSelector = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const currentLanguage = getLanguage();
     const selectedLanguage = languages.find((language) => language.code === currentLanguage) || languages[0]
-    
-    
+
+
     React.useEffect(() => {
         const onClickOutside = (e) => {
-            if( $(e.target).closest('.language-selector').length > 0 ) {
+            if ($(e.target).closest('.language-selector').length > 0) {
                 return false;
             }
 
@@ -38,9 +34,9 @@ const LanguageSelector = () => {
         document.documentElement.addEventListener('click', onClickOutside);
 
         return () => document.documentElement.removeEventListener('click', onClickOutside);
-    },[]);
+    }, []);
 
-    const LanguageItem = ({language}) => {
+    const LanguageItem = ({ language }) => {
         const onLanguageSelect = () => {
             setIsOpen(false);
             changeLanguage(language.code)
@@ -56,7 +52,7 @@ const LanguageSelector = () => {
             </div>
         );
     }
-    
+
     return (
         <div className='language-selector' onClick={() => setIsOpen(old => !old)}>
             <div className='language-selector-button'>
@@ -64,7 +60,7 @@ const LanguageSelector = () => {
                 <div className={`language-selector-button-arrow ${isOpen ? 'up' : 'down'}`} />
             </div>
             <div className={`language-selector-container ${isOpen ? 'open' : 'close'}`}>
-                {languages.map(language => <LanguageItem language={language}/>) }
+                {languages.map(language => <LanguageItem language={language} />)}
             </div>
         </div>
     );

@@ -1,9 +1,8 @@
 import React from 'react';
 import { translate } from '../../../common/i18n';
 import { getLanguageBase } from '../../../common/lang';
-import { setBinaryCookieAndRedirect } from './utils';
 
-const SwitchSection = ({ isFromBinary }) => (
+const SwitchSection = () => (
     <section className="switch">
         <div className="switch-inner section-container">
             <div className="switch-inner__placeholder">
@@ -23,16 +22,6 @@ const SwitchSection = ({ isFromBinary }) => (
                     >
                         {translate('Try it now')}
                     </button>
-                    {!isFromBinary && (
-                        <button
-                            className="l-btn-binary transparent"
-                            onClick={() =>
-                                setBinaryCookieAndRedirect(getLanguageBase('binary'))
-                            }
-                        >
-                            {translate('Maybe later')}
-                        </button>
-                    )}
                 </div>
             </div>
         </div>
