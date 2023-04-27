@@ -1,5 +1,5 @@
 ﻿<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
-  <block type="trade" id="xgH69|xFn9=70w.*3Vo@" x="0" y="0">
+  <block type="trade" id="xgH69|xFn9=70w.*3Vo@" x="1" y="0">
     <statement name="SUBMARKET">
       <block type="tradeOptions" id="x=V33~4Lb|(sLv`J[:Eb">
         <field name="DURATIONTYPE_LIST">t</field>
