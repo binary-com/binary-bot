@@ -17,7 +17,7 @@ export default class DataCollection {
 
     IS_PENDING = false;
     IS_PROCESSED = true;
-    endpoint = 'https://dbot-conf-dot-deriv-bi-reporting.as.r.appspot.com';
+    endpoint = 'https://dbot-conf-dot-deriv-bi-reporting.as.r.appspot.com/dbotconf';
     loginid;
     runId = '';
     runStart = 0;
