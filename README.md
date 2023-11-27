@@ -113,13 +113,6 @@ npm run release-production # to release it to production
 git pull --rebase upstream master
 npm install
 ```
-## Running the CLI command
-
-```
-npm i -g binary-bot
-bot -h // For a quick help
-bot bot-example.js
-```
 
 ### Running with a specific endpoint **Use only if you know what you're doing**
 
