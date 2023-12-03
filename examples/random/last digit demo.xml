@@ -23,6 +23,11 @@
             <field name="NUM">1</field>
           </block>
         </value>
+        <value name="martingale">
+          <block type="math_number" id="ergr9r10fQR4T55K">
+            <field nam="NUM">1.2</field>
+          </block>
+        </value>
         <value name="PREDICTION">
           <block type="math_number" id="Bm/_14k}%TixIz)8q`}M">
             <field name="NUM">1</field>
