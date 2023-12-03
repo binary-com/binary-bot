@@ -158,7 +158,9 @@ loginCheck();
 
 if (!isBinaryDomain) {
     // eslint-disable-next-line no-unused-expressions
-    document.getElementsByClassName('half-width bottom-image puzzle-logo')[0]?.remove();
+    document.getElementsByClassName('center')[1]?.remove();
+    // eslint-disable-next-line no-unused-expressions
+    document.getElementById('split-container')?.remove();
     // eslint-disable-next-line no-unused-expressions
     document.getElementsByClassName('dbot-banner__separator')[0]?.remove();
     // eslint-disable-next-line no-unused-expressions
