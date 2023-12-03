@@ -86,7 +86,7 @@
     "jquery-ui": "1.12.1",
     "jquery-ui-css": "1.11.4",
     "js-interpreter": "2.2.0",
-    "json2csv": "^3.11.5",
+    "json2csv": "^5.0.7",
     "lint-staged": "^8.1.7",
     "loader-utils": "^1.1.0",
     "notifyjs-browser": "^0.4.2",
